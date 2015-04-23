@@ -1,0 +1,31 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#Snap Attached Volume</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Instance Id:</label>
+        <property>instance</property>
+        <required>1</required>
+        <documentation>Instance ID of a running EC2 instance.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Results Location:</label>
+        <property>propResult</property>
+        <required>1</required>
+        <documentation>Where to put the result. If not specified, the result is only printed.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Volume Id:</label>
+        <property>volume</property>
+        <required>1</required>
+        <documentation>The volume ID to be snapped. Separate list of volume id's with semi-colons.</documentation>
+    </formElement>
+</editor>

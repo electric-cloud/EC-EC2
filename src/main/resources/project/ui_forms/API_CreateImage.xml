@@ -1,0 +1,54 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#API_CreateImage</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement> 
+    <formElement>
+        <type>entry</type>
+        <label>Instance:</label>
+        <property>instance</property>
+        <required>1</required>
+        <documentation>The instance to duplicate.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>New Image Name:</label>
+        <property>name</property>
+        <required>1</required>
+        <documentation>The new name for the created image.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>New Image Description:</label>
+        <property>desc</property>
+        <required>1</required>
+        <documentation>The description for the new image.</documentation>
+    </formElement>
+    <formElement>
+        <type>select</type>
+        <label>No Reboot:</label>
+        <property>noreboot</property>
+        <documentation>By default, this parameter is set to false, which means Amazon EC2 attempts to cleanly shut down the instance before image creation and reboots the instance afterwards. When the parameter is set to true, Amazon EC2 does not shut down the instance before creating the image. When this option is used, file system integrity on the created image cannot be guaranteed.</documentation>
+        <required>1</required>       
+        <value>0</value>
+        <option>
+            <name>False</name>
+            <value>0</value>
+        </option>
+        <option>
+            <name>True</name>
+            <value>1</value>
+        </option>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Results Location:</label>
+        <property>propResult</property>
+        <required>1</required>
+        <documentation>Where to put the result. If not specified, the result is only printed.</documentation>
+    </formElement>   
+</editor>

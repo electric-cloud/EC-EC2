@@ -1,0 +1,24 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#EC2 Auto Pause</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>List of Instances:</label>
+        <property>instances</property>
+        <required>1</required>
+        <documentation>List of instances to terminate. Can be a reservation, a single instance, or list of instances</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>List of Volumes:</label>
+        <property>volumes</property>
+        <required>1</required>
+        <documentation>List of volumes to detach from instances.</documentation>
+    </formElement>
+</editor>

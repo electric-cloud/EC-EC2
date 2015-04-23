@@ -1,0 +1,32 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#API_AttachVolumes</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement> 
+    <formElement>
+        <type>entry</type>
+        <label>Device:</label>
+        <property>device</property>
+        <value>/dev/sdh</value>
+        <required>1</required>
+        <documentation>How the device is exposed to the instance.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>List of Instances:</label>
+        <property>instances</property>
+        <required>1</required>
+        <documentation>The instances to which the volumes will be attached.</documentation>
+    </formElement> 
+    <formElement>
+        <type>entry</type>
+        <label>List of Volumes:</label>
+        <property>volumes</property>
+        <required>1</required>
+        <documentation>The volumes that will be attached to the instances.</documentation>
+    </formElement>
+</editor>

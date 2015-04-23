@@ -1,0 +1,12 @@
+.gradle
+build
+target
+staging
+.idea
+/bin/
+.classpath
+.project
+.settings
+*.iml
+openstack-test.properties
+ecplugin.properties

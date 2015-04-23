@@ -1,0 +1,131 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#EC2 Auto Resume</help>
+    <formElement>
+        <type>entry</type>
+        <label>Cleanup tag:</label>
+        <property>cleanup_tag</property>
+        <value>tag</value>
+        <required>1</required>
+        <documentation>A key used to match a cleanup step to the right provision step. This allows recursive and/or multiple calls within a procedure.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Number of Instances:</label>
+        <property>count</property>
+        <required>1</required>
+        <value>1</value>
+        <documentation>How many Instances to AutoResume.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>EC2 AMI:</label>
+        <property>EC2 AMI</property>
+        <required>1</required>
+        <documentation>The name of the EC2 instance that you would like to deploy.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Group:</label>
+        <value>default</value>
+        <property>group</property>
+        <required>1</required>
+        <documentation>The security group to use.</documentation>
+    </formElement>
+    <formElement>
+        <type>select</type>
+        <label>Instance Type:</label>
+        <value>m1.large</value>
+        <property>instanceType</property>
+        <required>1</required>
+        <documentation>The instance type.</documentation>
+        <option>
+            <name>Small(m1.small)</name>
+            <value>m1.small</value>
+        </option>
+        <option>
+            <name>Large(m1.large)</name>
+            <value>m1.large</value>
+        </option>
+        <option>
+            <name>Extra Large(m1.xlarge)</name>
+            <value>m1.xlarge</value>
+        </option>
+        <option>
+            <name>Micro(t1.micro)</name>
+            <value>t1.micro</value>
+        </option>
+        <option>
+            <name>High-Memory Extra Large(m2.xlarge)</name>
+            <value>m2.xlarge</value>
+        </option>
+        <option>
+            <name>High-Memory Double Extra Large(m2.2xlarge)</name>
+            <value>m2.2xlarge</value>
+        </option>
+        <option>
+            <name>High-Memory Quadruple Extra Large(m2.4xlarge)</name>
+            <value>m2.4xlarge</value>
+        </option>
+        <option>
+            <name>High-CPU Medium(c1.medium)</name>
+            <value>c1.medium</value>
+        </option>
+        <option>
+            <name>High-CPU Extra Large(c1.xlarge)</name>
+            <value>c1.xlarge</value>
+        </option>
+        <option>
+            <name>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</name>
+            <value>cc1.4xlarge</value>
+        </option>
+        <option>
+            <name>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</name>
+            <value>cg1.4xlarge</value>
+        </option>
+    </formElement>  
+    <formElement>
+        <type>entry</type>
+        <label>Key name:</label>
+        <property>keyname</property>
+        <required>1</required>
+        <documentation>The name of the key pair to use.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Results Location:</label>
+        <property>propResult</property>
+        <value>/myJob/Amazon EC2</value>
+        <required>1</required>
+        <documentation>Where to put the result. If not specified, the result is only printed.</documentation>
+    </formElement> 
+    <formElement>
+        <type>entry</type>
+        <label>Volume device:</label>
+        <property>volumeDevice</property>
+        <value>xvdf</value>
+        <required>0</required>
+        <documentation>Volume device for attachment&#10;OS dependent: Example: /dev/sdf in Linux and UNIX or xvdf in Windows.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>List of Volumes:</label>
+        <property>volumes</property>
+        <required>1</required>
+        <documentation>List of volumes to attach to the new instances.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Zone:</label>
+        <property>zone</property>
+        <value>xen-cluster</value>
+        <required>1</required>
+        <documentation>The Zone where the instance should be created.</documentation>
+    </formElement>
+</editor>

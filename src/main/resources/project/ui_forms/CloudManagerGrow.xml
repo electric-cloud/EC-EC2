@@ -1,0 +1,122 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#CloudManagerGrow</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>ec2_config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all EC-EC2 connection information.</documentation>
+    </formElement>     
+    <formElement>
+        <type>entry</type>
+        <label>Security Group:</label>
+        <value>default</value>
+        <property>ec2_security_group</property>
+        <required>1</required>
+        <documentation>The EC2 security group for the new instances.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Image Name:</label>
+        <property>ec2_image</property>
+        <required>1</required>
+        <documentation>The AMI or EMI image to use.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Device:</label>
+        <property>ec2_device</property>
+        <value></value>
+        <required>0</required>
+        <documentation>The OS device that the optional snapshot should be connected to.</documentation>
+    </formElement>
+    <formElement>
+        <type>select</type>
+        <label>Instance Type:</label>
+        <value>m1.small</value>
+        <property>ec2_instance_type</property>
+        <required>1</required>
+        <documentation>The EC2 instance type to create.</documentation>
+        <option>
+            <name>Small(m1.small)</name>
+            <value>m1.small</value>
+        </option>
+        <option>
+            <name>Large(m1.large)</name>
+            <value>m1.large</value>
+        </option>
+        <option>
+            <name>Extra Large(m1.xlarge)</name>
+            <value>m1.xlarge</value>
+        </option>
+        <option>
+            <name>Micro(t1.micro)</name>
+            <value>t1.micro</value>
+        </option>
+        <option>
+            <name>High-Memory Extra Large(m2.xlarge)</name>
+            <value>m2.xlarge</value>
+        </option>
+        <option>
+            <name>High-Memory Double Extra Large(m2.2xlarge)</name>
+            <value>m2.2xlarge</value>
+        </option>
+        <option>
+            <name>High-Memory Quadruple Extra Large(m2.4xlarge)</name>
+            <value>m2.4xlarge</value>
+        </option>
+        <option>
+            <name>High-CPU Medium(c1.medium)</name>
+            <value>c1.medium</value>
+        </option>
+        <option>
+            <name>High-CPU Extra Large(c1.xlarge)</name>
+            <value>c1.xlarge</value>
+        </option>
+        <option>
+            <name>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</name>
+            <value>cc1.4xlarge</value>
+        </option>
+        <option>
+            <name>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</name>
+            <value>cg1.4xlarge</value>
+        </option>
+    </formElement>
+    <formElement>
+        <type>textarea</type>
+        <label>User Data:</label>
+        <property>ec2_userData</property>
+        <required>0</required>
+        <documentation>Optional data to pass to the instance.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Snapshot:</label>
+        <property>ec2_snapshot</property>
+        <required>0</required>
+        <documentation>An optional EC2 snapshot. If specified, a new volume will be created from the snapshot and attach to the running instance.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Zone:</label>
+        <property>ec2_zone</property>
+        <value>us-east-1b</value>
+        <required>1</required>
+        <documentation>The Availability Zone you want to launch the instance into.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Resources Pool:</label>
+        <property>poolName</property>
+        <required>1</required>
+        <documentation>Pool name for resources.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Number of new Instances:</label>
+        <property>number</property>
+        <required>1</required>
+        <documentation>Number of new servers</documentation>
+    </formElement>      
+</editor>
+

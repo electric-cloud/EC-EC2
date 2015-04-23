@@ -1,0 +1,18 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#API_DeleteKey</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>   
+    <formElement>
+        <type>entry</type>
+        <label>Key name:</label>
+        <property>keyname</property>
+        <value>&#36;[/myJob/Amazon EC2/&#36;[cleanup_tag]/KeyPairId]</value>
+        <required>1</required>
+        <documentation>Name of the key pair to delete.</documentation>
+    </formElement>        
+</editor>

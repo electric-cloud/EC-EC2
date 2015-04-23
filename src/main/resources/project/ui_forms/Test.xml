@@ -1,0 +1,101 @@
+<editor>
+    <formElement>
+        <type>entry</type>
+        <label>Cleanup tag:</label>
+        <property>cleanup_tag</property>
+        <value>tag</value>
+        <required>1</required>
+        <documentation>A key used to match a cleanup step to the right provision step. This allows recursive and/or multiple calls within a procedure.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Machine Image:</label>
+        <value>emi-f96014e1</value>
+        <property>ami</property>
+        <required>1</required>
+        <documentation></documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Number of Instances:</label>
+        <property>count</property>
+        <value>5</value>
+        <required>1</required>
+        <documentation>How many Instances to AutoDeploy.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Snapshot Id:</label>
+        <property>snapshot</property>
+        <value>snap-85B507AF</value>
+        <required>1</required>
+        <documentation>Snapshot id to be snapped into a volume and attached to the new instances&#10;If no snapshot id is given, no volumes will be attached.</documentation>
+    </formElement>
+    <formElement>
+        <type>select</type>
+        <label>Instance Type:</label>
+        <value>m1.large</value>
+        <property>type</property>
+        <required>1</required>
+        <documentation>The instance type.</documentation>
+        <option>
+            <name>Small(m1.small)</name>
+            <value>m1.small</value>
+        </option>
+        <option>
+            <name>Large(m1.large)</name>
+            <value>m1.large</value>
+        </option>
+        <option>
+            <name>Extra Large(m1.xlarge)</name>
+            <value>m1.xlarge</value>
+        </option>
+        <option>
+            <name>Micro(t1.micro)</name>
+            <value>t1.micro</value>
+        </option>
+        <option>
+            <name>High-Memory Extra Large(m2.xlarge)</name>
+            <value>m2.xlarge</value>
+        </option>
+        <option>
+            <name>High-Memory Double Extra Large(m2.2xlarge)</name>
+            <value>m2.2xlarge</value>
+        </option>
+        <option>
+            <name>High-Memory Quadruple Extra Large(m2.4xlarge)</name>
+            <value>m2.4xlarge</value>
+        </option>
+        <option>
+            <name>High-CPU Medium(c1.medium)</name>
+            <value>c1.medium</value>
+        </option>
+        <option>
+            <name>High-CPU Extra Large(c1.xlarge)</name>
+            <value>c1.xlarge</value>
+        </option>
+        <option>
+            <name>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</name>
+            <value>cc1.4xlarge</value>
+        </option>
+        <option>
+            <name>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</name>
+            <value>cg1.4xlarge</value>
+        </option>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Zone:</label>
+        <property>zone</property>
+        <value>xen-cluster</value>
+        <required>1</required>
+        <documentation>The Zone where the instance should be created.</documentation>
+    </formElement>
+</editor>

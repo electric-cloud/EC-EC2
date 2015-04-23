@@ -1,0 +1,38 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#EC2 Auto Cleanup</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Key name:</label>
+        <property>keyname</property>
+        <required>1</required>
+        <documentation>Name of the key pair to delete.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Reservation Id:</label>
+        <property>reservation</property>
+        <required>1</required>
+        <documentation>The reservation id to clean up.  All instances in the reservation will be cleaned up.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>List of Volumes:</label>
+        <property>volumes</property>
+        <required>0</required>
+        <documentation>Name of volumes to delete on termination.  Separate list of volume id's with semi-colons.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>List of Resources:</label>
+        <property>resources</property>
+        <required>0</required>
+        <documentation>List of Commander resources to delete. Separate a list of resources with semi-colons.</documentation>
+    </formElement>
+</editor>

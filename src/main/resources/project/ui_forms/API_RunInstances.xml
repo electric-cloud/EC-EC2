@@ -1,0 +1,184 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#API_RunInstances</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Number of Instances:</label>
+        <value>1</value>
+        <property>count</property>
+        <required>1</required>
+        <documentation>The number of instances to start.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Group:</label>
+        <value>default</value>
+        <property>group</property>
+        <required>1</required>
+        <documentation>The security group to use.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Image:</label>
+        <property>image</property>
+        <required>1</required>
+        <documentation>The name of the EC2 image that you would like to deploy.</documentation>
+    </formElement>      
+    <formElement>
+        <type>select</type>
+        <label>Instance Type:</label>
+        <value>m1.small</value>
+        <property>instanceType</property>
+        <required>1</required>
+        <documentation>The instance type.</documentation>
+        <option>
+            <name>Small(m1.small)</name>
+            <value>m1.small</value>
+        </option>
+        <option>
+            <name>Large(m1.large)</name>
+            <value>m1.large</value>
+        </option>
+        <option>
+            <name>Extra Large(m1.xlarge)</name>
+            <value>m1.xlarge</value>
+        </option>
+        <option>
+            <name>Micro(t1.micro)</name>
+            <value>t1.micro</value>
+        </option>
+        <option>
+            <name>High-Memory Extra Large(m2.xlarge)</name>
+            <value>m2.xlarge</value>
+        </option>
+        <option>
+            <name>High-Memory Double Extra Large(m2.2xlarge)</name>
+            <value>m2.2xlarge</value>
+        </option>
+        <option>
+            <name>High-Memory Quadruple Extra Large(m2.4xlarge)</name>
+            <value>m2.4xlarge</value>
+        </option>
+
+	<option>
+            <name>High-Memory Medium(m3.medium)</name>
+            <value>m3.medium</value>
+        </option>
+	<option>
+            <name>High-Memory Large(m3.large)</name>
+            <value>m3.large</value>
+        </option>
+	<option>
+            <name>High-Memory Extra Large(m3.xlarge)</name>
+            <value>m3.xlarge</value>
+        </option>
+	<option>
+            <name>High-Memory Double Extra Large(m3.2xlarge)</name>
+            <value>m3.2xlarge</value>
+        </option>
+
+	
+	<option>
+            <name>General-Purpose Micro(t2.micro)</name>
+            <value>t2.micro</value>
+        </option>
+	<option>
+            <name>General-Purpose Small(t2.small)</name>
+            <value>t2.small</value>
+        </option>
+	<option>
+            <name>General-Purpose Medium(t2.medium)</name>
+            <value>t2.medium</value>
+        </option>
+	
+	
+        <option>
+            <name>High-CPU Medium(c1.medium)</name>
+            <value>c1.medium</value>
+        </option>
+        <option>
+            <name>High-CPU Extra Large(c1.xlarge)</name>
+            <value>c1.xlarge</value>
+        </option>
+        <option>
+            <name>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</name>
+            <value>cc1.4xlarge</value>
+        </option>
+        <option>
+            <name>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</name>
+            <value>cg1.4xlarge</value>
+        </option>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Key name:</label>
+        <property>keyname</property>
+        <required>1</required>
+        <documentation>The name of the key pair to use.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Results Location:</label>
+        <property>propResult</property>
+        <required>0</required>
+        <documentation>Where to save the output properties. If not specified, will default to '/myParent/parent'.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>User Data:</label>
+        <property>userData</property>
+        <required>0</required>
+        <documentation>Extra user data to pass to runInstance.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Zone:</label>
+        <property>zone</property>
+        <required>1</required>
+        <documentation>The Availability Zone you want to launch the instance into.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Resource Pool:</label>
+        <property>res_poolName</property>
+        <required>0</required>
+        <documentation>If you would like to add Commander resources for each instance created, enter the Commander pool name for the new resource. If left blank no resource will be created.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Commander Workspace:</label>
+        <property>res_workspace</property>
+        <required>0</required>
+        <documentation>If you specify a resource pool name in res_poolName, this is the workspace that will be used when creating the resource.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Resource port:</label>
+        <property>res_port</property>
+        <required>0</required>
+        <documentation>If you specify a resource pool name in res_poolName, this is the port that will be used when creating the resource. If no value is specified, port 7800 will be used by default when creating the resource.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Subnet Id:</label>
+        <property>subnet_id</property>
+        <required>0</required>
+        <documentation>The ID of the subnet to launch the instance(s) into (for use with VPCs)</documentation>
+    </formElement>
+    <formElement>
+      <type>checkbox</type>
+      <label>Use Private IP for subnet?:</label>
+      <property>use_private_ip</property>
+      <required>0</required>
+      <checkedValue>1</checkedValue>
+      <uncheckedValue>0</uncheckedValue>
+      <initiallyChecked>1</initiallyChecked>
+      <documentation>If checked, private IP will be used for the resource creation.</documentation>
+    </formElement>
+</editor>

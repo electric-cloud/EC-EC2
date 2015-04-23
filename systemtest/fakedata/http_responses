@@ -1,0 +1,298 @@
+### Format: <Action>|<Code>|<Response>
+
+### Quit ###
+## Shut down server
+Quit|-1|0
+
+
+### EC2 Auto Cleanup ###
+## DeleteKeyPair successful
+DeleteKeyPair|200|<DeleteKeyPairResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><return>true</return></DeleteKeyPairResponse>
+
+## Helper response for TerminateInstances, successful
+DescribeInstances|200|<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>98e3c9a4-848c-4d6d-8e8a-b1bdEXAMPLE</requestId><reservationSet><item><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>16</code><name>running</name></instanceState><privateDnsName>domU-12-31-39-10-56-34.compute-1.internal</privateDnsName><dnsName>ec2-174-129-165-232.compute-1.amazonaws.com</dnsName><reason/><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><productCodes/><instanceType>m1.small</instanceType><launchTime>2010-08-17T01:15:18.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone><groupName/></placement><kernelId>aki-94c527fd</kernelId><ramdiskId>ari-96c527ff</ramdiskId><monitoring><state>disabled</state></monitoring><privateIpAddress>10.198.85.190</privateIpAddress><ipAddress>10.0.0.1</ipAddress><architecture>i386</architecture><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/sda1</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/sda1</deviceName><ebs><volumeId>v-volume1</volumeId><status>attached</status><attachTime>2010-08-17T01:15:21.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></ebs></item></blockDeviceMapping><instanceLifecycle>spot</instanceLifecycle><spotInstanceRequestId>sir-7a688402</spotInstanceRequestId><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet><requesterId>854251627541</requesterId></item></reservationSet></DescribeInstancesResponse>
+
+## TerminateInstances successful
+TerminateInstances|200|<TerminateInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><instancesSet><item><instanceId>i-instance1</instanceId><currentState><code>32</code><name>shutting-down</name></currentState><previousState><code>16</code><name>running</name></previousState></item></instancesSet></TerminateInstancesResponse>
+
+## Helper response for DeleteVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+
+## DeleteVolume successful
+DeleteVolume|200|<DeleteVolumeResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><return>true</return></DeleteVolumeResponse>
+
+
+### EC2 Auto Deploy ###
+## CreateKeyPair successful
+CreateKeyPair|200|<CreateKeyPairResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><keyName>keypair1</keyName><keyFingerprint>1f:51:ae:28:bf:89:e9:d8:1f:25:5d:37:2d:7d:b8:ca:9f:f5:f1:6f</keyFingerprint><keyMaterial>-----BEGIN RSA PRIVATE KEY-----MIIEoQIBAAKCAQBuLFg5ujHrtm1jnutSuoO8Xe56LlT+HM8v/xkaa39EstM3/aFxTHgElQiJLChpHungXQ29VTc8rc1bW0lkdi23OH5eqkMHGhvEwqa0HWASUMll4o3o/IX+0f2UcPoKCOVUR+jx71Sg5AU52EQfanIn3ZQ8lFW7Edp5a3q4DhjGlUKToHVbicL5E+g45zfB95wIyywWZfeW/UUF3LpGZyq/ebIUlq1qTbHkLbCC2r7RTn8vpQWp47BGVYGtGSBMpTRP5hnbzzuqj3itkiLHjU39S2sJCJ0TrJx5i8BygR4s3mHKBj8l+ePQxG1kGbF6R4yg6sECmXn17MRQVXODNHZbAgMBAAECggEAY1tsiUsIwDl591CXirkYGuVfLyLflXenxfI50mDFms/mumTqloHO7tr0oriHDR5K7wMcY/YY5YkcXNo7mvUVD1pMZNUJs7rw9gZRTrf7LylaJ58kOcyajw8TsC4e4LPbFaHwS1d6K8rXh64o6WgW4SrsB6ICmr1kGQI73wcfgt5ecIu4TZf0OE9IHjn+2eRlsrjBdeORi7KiUNC/pAG23I6MdDOFEQRcCSigCj+4/mciFUSASWS4dMbrpb9FNSIcf9dcLxVM7/6KxgJNfZc9XWzUw77Jg8x92Zd0fVhHOux5IZC+UvSKWB4dyfcItE8C3p9bbU9VGyY5vLCAiIb4qQKBgQDLiO24GXrIkswF32YtBBMuVgLGCwU9h9HlO9mKAc2m8Cm1jUE5IpzRjTedc9I2qiIMUTwtgnw42auSCzbUeYMURPtDqyQ7p6AjMujp9EPemcSVOK9vXYL0PtcoxW9MC0dtV6iPkCN7gOqiZXPRKaFbWADp16p8UAIvS/a5XXk5jwKBgQCKkpHi2EISh1uRkhxljyWCiDCiK6JBRsMvpLbc0v5dKwP5alo1fmdR5PJaV2qvZSj5CYNpMAy1/EDNTY5OSIJU+0KFmQbyhsbmrdLNLDL4+TcnT7c62/aH01ohYaf/VCbRhtLlBfqGoQc7+sAc8vmKkesnF7CqCEKDyF/dhrxYdQKBgC0iZzzNAapayz1+JcVTwwEid6j9JqNXbBc+Z2YwMi+T0Fv/P/hwkX/ypeOXnIUcw0Ih/YtGBVACDQbsz7LcY1HqXiHKYNWNvXgwwO+oiChjxvEkSdsTTIfnK4VSCvU9BxDbQHjdiNDJbL6oar92UN7VrBYvChJZF7LvUH4YmVpHAoGAbZ2X7XvoeEO+uZ58/BGKOIGHByHBDiXtzMhdJr15HTYjxK7OgTZmgK+8zp4L9IbvLGDMJO8vft32XPEWuvI8twCzFH+CsWLQADZMZKSsBasOZ/h1FwhdMgCMcY+Qlzd4JZKjTSu3i7vhvx6RzdSedXEMNTZWN4qlIx3kR5aHcukCgYA9T+Zrvm1F0seQPbLknn7EqhXIjBaTP8TTvW/6bdPi23ExzxZn7KOdrfclYRph1LHMpAONv/x2xALIf91UB+v5ohy1oDoasL0gij1houRe2ERKKdwz0ZL9SWq6VTdhr/5G994CK72fy5WhyERbDjUIdHaK3M849JJuf8cSrvSb4g==-----END RSA PRIVATE KEY-----</keyMaterial></CreateKeyPairResponse>
+
+## RunInstances successful
+RunInstances|200|<RunInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>0</code><name>pending</name></instanceState><privateDnsName></privateDnsName><dnsName></dnsName><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><instanceType>m1.small</instanceType><launchTime>2007-08-07T11:51:50.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone></placement><monitoring><enabled>true</enabled></monitoring><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet></RunInstancesResponse>
+
+## Helper response for RunInstances, successful
+DescribeInstances|200|<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>98e3c9a4-848c-4d6d-8e8a-b1bdEXAMPLE</requestId><reservationSet><item><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>16</code><name>running</name></instanceState><privateDnsName>domU-12-31-39-10-56-34.compute-1.internal</privateDnsName><dnsName>ec2-174-129-165-232.compute-1.amazonaws.com</dnsName><reason/><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><productCodes/><instanceType>m1.small</instanceType><launchTime>2010-08-17T01:15:18.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone><groupName/></placement><kernelId>aki-94c527fd</kernelId><ramdiskId>ari-96c527ff</ramdiskId><monitoring><state>disabled</state></monitoring><privateIpAddress>10.198.85.190</privateIpAddress><ipAddress>10.0.0.1</ipAddress><architecture>i386</architecture><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/sda1</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/sda1</deviceName><ebs><volumeId>v-volume1</volumeId><status>attached</status><attachTime>2010-08-17T01:15:21.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></ebs></item></blockDeviceMapping><instanceLifecycle>spot</instanceLifecycle><spotInstanceRequestId>sir-7a688402</spotInstanceRequestId><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet><requesterId>854251627541</requesterId></item></reservationSet></DescribeInstancesResponse>
+
+## Helper response for RunInstances, successful (second describeInstances call)
+DescribeInstances|200|<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>98e3c9a4-848c-4d6d-8e8a-b1bdEXAMPLE</requestId><reservationSet><item><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>16</code><name>running</name></instanceState><privateDnsName>domU-12-31-39-10-56-34.compute-1.internal</privateDnsName><dnsName>ec2-174-129-165-232.compute-1.amazonaws.com</dnsName><reason/><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><productCodes/><instanceType>m1.small</instanceType><launchTime>2010-08-17T01:15:18.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone><groupName/></placement><kernelId>aki-94c527fd</kernelId><ramdiskId>ari-96c527ff</ramdiskId><monitoring><state>disabled</state></monitoring><privateIpAddress>10.198.85.190</privateIpAddress><ipAddress>10.0.0.1</ipAddress><architecture>i386</architecture><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/sda1</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/sda1</deviceName><ebs><volumeId>v-volume1</volumeId><status>attached</status><attachTime>2010-08-17T01:15:21.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></ebs></item></blockDeviceMapping><instanceLifecycle>spot</instanceLifecycle><spotInstanceRequestId>sir-7a688402</spotInstanceRequestId><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet><requesterId>854251627541</requesterId></item></reservationSet></DescribeInstancesResponse>
+
+## CreateVolume successful
+CreateVolume|200|<CreateVolumeResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>creating</status><createTime>2008-05-07T11:51:50.000Z</createTime></CreateVolumeResponse>
+
+## Helper response for CreateVolume, successful (called from CreateVolume)
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+
+## Helper response for CreateVolume, successful (called from AttachVolume)
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+
+## Successful
+AttachVolume|200|<AttachVolumeResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attaching</status><attachTime>2008-05-07T11:51:50.000Z</attachTime></AttachVolumeResponse>
+
+
+### EC2 Auto Pause ###
+## Helper response for DetachVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>in-use</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+
+## Helper response for DetachVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+
+## DetachVolume successful
+DetachVolume|200|<DetachVolumeResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>detaching</status><attachTime>2008-05-08T11:51:50.000Z</attachTime></DetachVolumeResponse>
+
+## TerminateInstances successful
+TerminateInstances|200|<TerminateInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><instancesSet><item><instanceId>i-instance1</instanceId><currentState><code>32</code><name>shutting-down</name></currentState><previousState><code>16</code><name>running</name></previousState></item></instancesSet></TerminateInstancesResponse>
+
+
+### EC2 Auto Resume ###
+## Helper response for RunInstances, successful
+DescribeInstances|200|<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>98e3c9a4-848c-4d6d-8e8a-b1bdEXAMPLE</requestId><reservationSet><item><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>16</code><name>running</name></instanceState><privateDnsName>domU-12-31-39-10-56-34.compute-1.internal</privateDnsName><dnsName>ec2-174-129-165-232.compute-1.amazonaws.com</dnsName><reason/><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><productCodes/><instanceType>m1.small</instanceType><launchTime>2010-08-17T01:15:18.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone><groupName/></placement><kernelId>aki-94c527fd</kernelId><ramdiskId>ari-96c527ff</ramdiskId><monitoring><state>disabled</state></monitoring><privateIpAddress>10.198.85.190</privateIpAddress><ipAddress>10.0.0.1</ipAddress><architecture>i386</architecture><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/sda1</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/sda1</deviceName><ebs><volumeId>v-volume1</volumeId><status>attached</status><attachTime>2010-08-17T01:15:21.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></ebs></item></blockDeviceMapping><instanceLifecycle>spot</instanceLifecycle><spotInstanceRequestId>sir-7a688402</spotInstanceRequestId><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet><requesterId>854251627541</requesterId></item></reservationSet></DescribeInstancesResponse>
+
+## RunInstances successful
+RunInstances|200|<RunInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>0</code><name>pending</name></instanceState><privateDnsName></privateDnsName><dnsName></dnsName><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><instanceType>m1.small</instanceType><launchTime>2007-08-07T11:51:50.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone></placement><monitoring><enabled>true</enabled></monitoring><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet></RunInstancesResponse>
+
+## Helper response for RunInstances, successful (second describeInstances call)
+DescribeInstances|200|<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>98e3c9a4-848c-4d6d-8e8a-b1bdEXAMPLE</requestId><reservationSet><item><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>16</code><name>running</name></instanceState><privateDnsName>domU-12-31-39-10-56-34.compute-1.internal</privateDnsName><dnsName>ec2-174-129-165-232.compute-1.amazonaws.com</dnsName><reason/><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><productCodes/><instanceType>m1.small</instanceType><launchTime>2010-08-17T01:15:18.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone><groupName/></placement><kernelId>aki-94c527fd</kernelId><ramdiskId>ari-96c527ff</ramdiskId><monitoring><state>disabled</state></monitoring><privateIpAddress>10.198.85.190</privateIpAddress><ipAddress>10.0.0.1</ipAddress><architecture>i386</architecture><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/sda1</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/sda1</deviceName><ebs><volumeId>v-volume1</volumeId><status>attached</status><attachTime>2010-08-17T01:15:21.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></ebs></item></blockDeviceMapping><instanceLifecycle>spot</instanceLifecycle><spotInstanceRequestId>sir-7a688402</spotInstanceRequestId><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet><requesterId>854251627541</requesterId></item></reservationSet></DescribeInstancesResponse>
+
+## Helper response for AttachVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+
+## AttachVolume successful
+AttachVolume|200|<AttachVolumeResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attaching</status><attachTime>2008-05-07T11:51:50.000Z</attachTime></AttachVolumeResponse>
+
+
+### Snap Attached Volume ###
+## Helper response for SnapVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## Successful
+CreateSnapshot|200|<CreateSnapshotResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><snapshotId>snapshot1</snapshotId><volumeId>v-volume1</volumeId><status>pending</status><startTime>2008-05-07T12:51:50.000Z</startTime><progress>60%</progress><ownerId>213457642086</ownerId><volumeSize>10</volumeSize><description>Daily Backup</description></CreateSnapshotResponse>
+
+## Helper response for SnapVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## Return an exception
+CreateSnapshot|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Helper response for SnapVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## Return garbage
+CreateSnapshot|200|Garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage
+
+## Helper response for SnapVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## No return value
+CreateSnapshot|0|0
+
+
+### AllocateAddress ###
+## Successful
+AllocateAddress|200|<AllocateAddressResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><publicIp>10.0.0.1</publicIp></AllocateAddressResponse>
+
+## Return an exception
+AllocateAddress|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage (incomplete response)
+AllocateAddress|200|<AllocateAddressResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId>
+
+## No return value
+AllocateAddress|0|0
+
+
+### AssociateAddress ###
+## Successful
+AssociateAddress|200|<AssociateAddressResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><return>true</return></AssociateAddressResponse>
+
+## Return an exception
+AssociateAddress|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage (incomplete response)
+AssociateAddress|200|<AssociateAddressResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><request
+
+## No return value
+AssociateAddress|0|0
+
+
+### AttachVolume ###
+## Helper response for AttachVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>detached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## Successful
+AttachVolume|200|<AttachVolumeResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attaching</status><attachTime>2008-05-07T11:51:50.000Z</attachTime></AttachVolumeResponse>
+
+## Helper response for AttachVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>detached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## Return an exception
+AttachVolume|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Helper response for AttachVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>detached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## Return garbage (incomplete response)
+AttachVolume|200|<AttachVolumeResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><sta
+
+## Helper response for AttachVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>detached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## No return value
+AttachVolume|0|0
+
+
+### CreateImage ###
+## Successful
+CreateImage|200|<CreateImageResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><imageId>image1</imageId></CreateImageResponse>
+## Helper response for CreateImage, successful
+DescribeImages|200|<DescribeImagesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><imagesSet><item><imageId>image1</imageId><imageLocation>amazon/getting-started</imageLocation><imageState>available</imageState><imageOwnerId>206029621532</imageOwnerId><isPublic>true</isPublic><architecture>i386</architecture><imageType>machine</imageType><kernelId>aki-d3376696</kernelId><ramdiskId>ari-e73766a2</ramdiskId><imageOwnerAlias>amazon</imageOwnerAlias><name>getting-started</name><description>Fedora 8 v1.11 i386 lvm-rootVG-rootFS ext3 ec2pnp enabled</description><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/sda</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/sda</deviceName><ebs><snapshotId>snapshot1</snapshotId><volumeSize>15</volumeSize><deleteOnTermination>false</deleteOnTermination></ebs></item></blockDeviceMapping><virtualizationType>paravirtual</virtualizationType><tagSet/><hypervisor>xen</hypervisor></item></imagesSet></DescribeImagesResponse>
+
+## Return an exception
+CreateImage|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage (incomplete response)
+CreateImage|200|<DescribeImagesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/">
+
+## No return value
+CreateImage|0|0
+
+
+### CreateKeyPair ###
+## Successful
+CreateKeyPair|200|<CreateKeyPairResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><keyName>keypair1</keyName><keyFingerprint>1f:51:ae:28:bf:89:e9:d8:1f:25:5d:37:2d:7d:b8:ca:9f:f5:f1:6f</keyFingerprint><keyMaterial>-----BEGIN RSA PRIVATE KEY-----MIIEoQIBAAKCAQBuLFg5ujHrtm1jnutSuoO8Xe56LlT+HM8v/xkaa39EstM3/aFxTHgElQiJLChpHungXQ29VTc8rc1bW0lkdi23OH5eqkMHGhvEwqa0HWASUMll4o3o/IX+0f2UcPoKCOVUR+jx71Sg5AU52EQfanIn3ZQ8lFW7Edp5a3q4DhjGlUKToHVbicL5E+g45zfB95wIyywWZfeW/UUF3LpGZyq/ebIUlq1qTbHkLbCC2r7RTn8vpQWp47BGVYGtGSBMpTRP5hnbzzuqj3itkiLHjU39S2sJCJ0TrJx5i8BygR4s3mHKBj8l+ePQxG1kGbF6R4yg6sECmXn17MRQVXODNHZbAgMBAAECggEAY1tsiUsIwDl591CXirkYGuVfLyLflXenxfI50mDFms/mumTqloHO7tr0oriHDR5K7wMcY/YY5YkcXNo7mvUVD1pMZNUJs7rw9gZRTrf7LylaJ58kOcyajw8TsC4e4LPbFaHwS1d6K8rXh64o6WgW4SrsB6ICmr1kGQI73wcfgt5ecIu4TZf0OE9IHjn+2eRlsrjBdeORi7KiUNC/pAG23I6MdDOFEQRcCSigCj+4/mciFUSASWS4dMbrpb9FNSIcf9dcLxVM7/6KxgJNfZc9XWzUw77Jg8x92Zd0fVhHOux5IZC+UvSKWB4dyfcItE8C3p9bbU9VGyY5vLCAiIb4qQKBgQDLiO24GXrIkswF32YtBBMuVgLGCwU9h9HlO9mKAc2m8Cm1jUE5IpzRjTedc9I2qiIMUTwtgnw42auSCzbUeYMURPtDqyQ7p6AjMujp9EPemcSVOK9vXYL0PtcoxW9MC0dtV6iPkCN7gOqiZXPRKaFbWADp16p8UAIvS/a5XXk5jwKBgQCKkpHi2EISh1uRkhxljyWCiDCiK6JBRsMvpLbc0v5dKwP5alo1fmdR5PJaV2qvZSj5CYNpMAy1/EDNTY5OSIJU+0KFmQbyhsbmrdLNLDL4+TcnT7c62/aH01ohYaf/VCbRhtLlBfqGoQc7+sAc8vmKkesnF7CqCEKDyF/dhrxYdQKBgC0iZzzNAapayz1+JcVTwwEid6j9JqNXbBc+Z2YwMi+T0Fv/P/hwkX/ypeOXnIUcw0Ih/YtGBVACDQbsz7LcY1HqXiHKYNWNvXgwwO+oiChjxvEkSdsTTIfnK4VSCvU9BxDbQHjdiNDJbL6oar92UN7VrBYvChJZF7LvUH4YmVpHAoGAbZ2X7XvoeEO+uZ58/BGKOIGHByHBDiXtzMhdJr15HTYjxK7OgTZmgK+8zp4L9IbvLGDMJO8vft32XPEWuvI8twCzFH+CsWLQADZMZKSsBasOZ/h1FwhdMgCMcY+Qlzd4JZKjTSu3i7vhvx6RzdSedXEMNTZWN4qlIx3kR5aHcukCgYA9T+Zrvm1F0seQPbLknn7EqhXIjBaTP8TTvW/6bdPi23ExzxZn7KOdrfclYRph1LHMpAONv/x2xALIf91UB+v5ohy1oDoasL0gij1houRe2ERKKdwz0ZL9SWq6VTdhr/5G994CK72fy5WhyERbDjUIdHaK3M849JJuf8cSrvSb4g==-----END RSA PRIVATE KEY-----</keyMaterial></CreateKeyPairResponse>
+
+## Return an exception
+CreateKeyPair|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage
+CreateKeyPair|200|Garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage
+
+## No return value
+CreateKeyPair|0|0
+
+
+### DeleteKeyPair ###
+## Successful
+DeleteKeyPair|200|<DeleteKeyPairResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><return>true</return></DeleteKeyPairResponse>
+
+## Return an exception
+DeleteKeyPair|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage
+DeleteKeyPair|200|Garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage
+
+## No return value
+DeleteKeyPair|0|0
+
+
+### DeleteVolume ###
+## Helper response for DeleteVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## Successful
+DeleteVolume|200|<DeleteVolumeResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><return>true</return></DeleteVolumeResponse>
+
+## Helper response for DeleteVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## Return an exception
+DeleteVolume|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Helper response for DeleteVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## Return garbage
+DeleteVolume|200|Garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage
+
+## Helper response for DeleteVolume, successful
+DescribeVolumes|200|<DescribeVolumesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeSet><item><volumeId>v-volume1</volumeId><size>80</size><snapshotId/><availabilityZone>us-east-1b</availabilityZone><status>available</status><createTime>2008-05-07T11:51:50.000Z</createTime><attachmentSet><item><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>attached</status><attachTime>2008-05-07T12:51:50.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></item></attachmentSet><tagSet/></item></volumeSet></DescribeVolumesResponse>
+## No return value
+DeleteVolume|0|0
+
+
+## Helper response for DeleteVolume, successful
+DetachVolume|200|<DetachVolumeResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><volumeId>v-volume1</volumeId><instanceId>i-instance1</instanceId><device>/dev/sdh</device><status>detaching</status><attachTime>2008-05-08T11:51:50.000Z</attachTime></DetachVolumeResponse>
+
+
+### ReleaseAddress ###
+## Successful
+ReleaseAddress|200|<ReleaseAddressResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><return>true</return></ReleaseAddressResponse>
+
+## Return an exception
+ReleaseAddress|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage
+ReleaseAddress|200|Garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage
+
+## No return value
+ReleaseAddress|0|0
+
+
+### RunInstances ###
+## Successful
+RunInstances|200|<RunInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>0</code><name>pending</name></instanceState><privateDnsName></privateDnsName><dnsName></dnsName><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><instanceType>m1.small</instanceType><launchTime>2007-08-07T11:51:50.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone></placement><monitoring><enabled>true</enabled></monitoring><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet></RunInstancesResponse>
+## Helper response for RunInstances, successful
+DescribeInstances|200|<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>98e3c9a4-848c-4d6d-8e8a-b1bdEXAMPLE</requestId><reservationSet><item><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>16</code><name>running</name></instanceState><privateDnsName>domU-12-31-39-10-56-34.compute-1.internal</privateDnsName><dnsName>ec2-174-129-165-232.compute-1.amazonaws.com</dnsName><reason/><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><productCodes/><instanceType>m1.small</instanceType><launchTime>2010-08-17T01:15:18.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone><groupName/></placement><kernelId>aki-94c527fd</kernelId><ramdiskId>ari-96c527ff</ramdiskId><monitoring><state>disabled</state></monitoring><privateIpAddress>10.198.85.190</privateIpAddress><ipAddress>10.0.0.1</ipAddress><architecture>i386</architecture><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/sda1</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/sda1</deviceName><ebs><volumeId>v-volume1</volumeId><status>attached</status><attachTime>2010-08-17T01:15:21.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></ebs></item></blockDeviceMapping><instanceLifecycle>spot</instanceLifecycle><spotInstanceRequestId>sir-7a688402</spotInstanceRequestId><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet><requesterId>854251627541</requesterId></item></reservationSet></DescribeInstancesResponse>
+## Helper response for RunInstances, successful (second describeInstances call)
+DescribeInstances|200|<DescribeInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>98e3c9a4-848c-4d6d-8e8a-b1bdEXAMPLE</requestId><reservationSet><item><reservationId>reservation1</reservationId><ownerId>owner1</ownerId><groupSet><item><groupId>default</groupId></item></groupSet><instancesSet><item><instanceId>i-instance1</instanceId><imageId>image1</imageId><instanceState><code>16</code><name>running</name></instanceState><privateDnsName>domU-12-31-39-10-56-34.compute-1.internal</privateDnsName><dnsName>ec2-174-129-165-232.compute-1.amazonaws.com</dnsName><reason/><keyName>keypair1</keyName><amiLaunchIndex>0</amiLaunchIndex><productCodes/><instanceType>m1.small</instanceType><launchTime>2010-08-17T01:15:18.000Z</launchTime><placement><availabilityZone>us-east-1b</availabilityZone><groupName/></placement><kernelId>aki-94c527fd</kernelId><ramdiskId>ari-96c527ff</ramdiskId><monitoring><state>disabled</state></monitoring><privateIpAddress>10.198.85.190</privateIpAddress><ipAddress>10.0.0.1</ipAddress><architecture>i386</architecture><rootDeviceType>ebs</rootDeviceType><rootDeviceName>/dev/sda1</rootDeviceName><blockDeviceMapping><item><deviceName>/dev/sda1</deviceName><ebs><volumeId>v-volume1</volumeId><status>attached</status><attachTime>2010-08-17T01:15:21.000Z</attachTime><deleteOnTermination>false</deleteOnTermination></ebs></item></blockDeviceMapping><instanceLifecycle>spot</instanceLifecycle><spotInstanceRequestId>sir-7a688402</spotInstanceRequestId><virtualizationType>paravirtual</virtualizationType><clientToken/><tagSet/><hypervisor>xen</hypervisor></item></instancesSet><requesterId>854251627541</requesterId></item></reservationSet></DescribeInstancesResponse>
+
+## Return an exception
+RunInstances|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage
+RunInstances|200|Garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage
+
+## No return value
+RunInstances|0|0
+
+
+### StartInstances ###
+## Successful
+StartInstances|200|<StartInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><instancesSet><item><instanceId>i-instance1</instanceId><currentState><code>0</code><name>pending</name></currentState><previousState><code>80</code><name>stopped</name></previousState></item></instancesSet></StartInstancesResponse>
+
+## Return an exception
+StartInstances|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage
+StartInstances|200|Garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage
+
+## No return value
+StartInstances|0|0
+
+
+### StopInstances ###
+## Successful
+StopInstances|200|<StopInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><instancesSet><item><instanceId>i-instance1</instanceId><currentState><code>64</code><name>stopping</name></currentState><previousState><code>16</code><name>running</name></previousState></item></instancesSet></StopInstancesResponse>
+
+## Return an exception
+StopInstances|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage
+StopInstances|200|Garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage
+
+## No return value
+StopInstances|0|0
+
+
+### TerminateInstances ###
+## Successful
+TerminateInstances|200|<TerminateInstancesResponse xmlns="http://ec2.amazonaws.com/doc/2010-06-15/"><requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><instancesSet><item><instanceId>i-instance1</instanceId><currentState><code>32</code><name>shutting-down</name></currentState><previousState><code>16</code><name>running</name></previousState></item></instancesSet></TerminateInstancesResponse>
+
+## Return an exception
+TerminateInstances|501|<requestId>59dbff89-35bd-4eac-99ed-be587EXAMPLE</requestId><Error><Code>501</Code><Message>Internal error</Message></Error>
+
+## Return garbage
+TerminateInstances|200|Garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage,garbage
+
+## No return value
+TerminateInstances|0|0
+
+### CreateTags
+CreateTags|200|<CreateTagsResponse xmlns="http://ec2.amazonaws.com/doc/2013-10-15/"><requestId>7a62c49f-347e-4fc4-9331-6e8e</requestId><return>true</return></CreateTagsResponse>

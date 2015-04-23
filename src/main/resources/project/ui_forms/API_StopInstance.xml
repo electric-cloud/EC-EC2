@@ -1,0 +1,18 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#API_StopInstance</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Instance id:</label>
+        <property>instance</property>
+        <required>1</required>
+        <documentation>The id of the EC2 instance that you would like to stop.</documentation>
+    </formElement>
+</editor>
+ 

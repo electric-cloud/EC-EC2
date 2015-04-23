@@ -1,0 +1,28 @@
+<project name="EC-EC2" default="package" basedir=".">
+	<description>
+        Build the EC-EC2 plugin
+    </description>
+
+    <property name="buildconfigdir" value="c:/tools/CommanderSDK/build" />
+    
+	<!-- plugin specific properties -->
+	<property name="pluginKey" value="EC-EC2" />
+	<property name="pluginVersion" value="1.0.0.0" />
+	<property name="gwtModules" value="ecplugins.ec2.ConfigurationManagement" />
+    <property name="package.export.src" value="ec2.srcs"/>
+
+    <path id="extras">
+    	<pathelement location="../../../out/common/main/ec_internal/ec_internal.jar"/>
+    </path>
+    <property name="gwt.path.extras" value="extras" />
+
+    <import file="${buildconfigdir}/buildTargets.xml"/>
+
+    <!-- Package sources for exported utility classes. -->
+    <fileset id="ec2.srcs" dir="${dir.src}">
+      <include name="**/PluginConstants.java"/>
+      <include name="**/EC2ConfigList.java"/>
+      <include name="**/EC2ConfigListLoader.*"/>
+    </fileset>
+</project>
+

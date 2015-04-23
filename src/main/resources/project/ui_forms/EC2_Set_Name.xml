@@ -1,0 +1,23 @@
+<editor>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Instance:</label>
+        <property>resourceId</property>
+        <required>1</required>
+        <documentation>The instance ID.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Name:</label>
+        <property>name</property>
+        <required>1</required>
+        <documentation>New name of the instance.</documentation>
+    </formElement>
+</editor>

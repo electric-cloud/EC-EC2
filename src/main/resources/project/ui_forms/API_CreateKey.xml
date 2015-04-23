@@ -1,0 +1,25 @@
+<editor>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#API_CreateKey</help>
+    <formElement>
+        <type>entry</type>
+        <label>Configuration:</label>
+        <property>config</property>
+        <required>1</required>
+        <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
+    </formElement>   
+    <formElement>
+        <type>entry</type>
+        <label>Key name:</label>
+        <property>keyname</property>
+        <value>cmdr-&#36;[jobStepId]</value>
+        <required>1</required>
+        <documentation>A unique name for the key pair (default is cmdr-&#36;[jobStepId]).</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Results Location:</label>
+        <property>propResult</property>
+        <required>0</required>
+        <documentation>Where to put the result. If not specified, the result is only printed.</documentation>
+    </formElement>  
+</editor>
