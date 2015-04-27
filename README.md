@@ -1,6 +1,3 @@
-EC-EC2
-============
-
 The ElectricFlow Amazon EC2 integration
 
 ## Compile ##

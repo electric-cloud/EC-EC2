@@ -7,20 +7,18 @@
 // All rights reserved
 
 buildscript {
-    repositories {
-        maven {
-            url 'http://dl.bintray.com/ecpluginsdev/maven'
-        }
-
-        jcenter()
-    }
-    dependencies {
-        classpath group: 'com.electriccloud.plugins', name: 'flow-gradle-plugin', version: '+'
-    }
+	repositories {
+		maven { url 'http://dl.bintray.com/ecpluginsdev/maven' }
+		jcenter()
+	}
+	dependencies {
+		classpath group: 'com.electriccloud.plugins', name: 'flow-gradle-plugin', version: '+'
+	}
 }
 
 repositories {
 	maven {
+		url 'http://dl.bintray.com/ecpluginsdev/maven'
 		url "https://oss.sonatype.org/content/repositories/snapshots"
 	}
 }
@@ -31,15 +29,6 @@ version = "2.3.1"
 
 apply plugin: 'flow-gradle-plugin'
 
-dependencies {
-	compile group: project.group, name: "commander-sdk", version: "5.0.2-SNAPSHOT"
-	compile group: project.group, name: "ec_internal", version: "5.1.1-SNAPSHOT"
-}
+task wrapper(type: Wrapper) { gradleVersion = '2.3' }
 
-task wrapper(type: Wrapper) {
-	gradleVersion = '2.3'
-}
-
-gwt {
-	modules 'ecplugins.ec2.ConfigurationManagement'
-}
+gwt { modules 'ecplugins.ec2.ConfigurationManagement' }
