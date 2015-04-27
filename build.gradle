@@ -16,13 +16,6 @@ buildscript {
 	}
 }
 
-repositories {
-	maven {
-		url 'http://dl.bintray.com/ecpluginsdev/maven'
-		url "https://oss.sonatype.org/content/repositories/snapshots"
-	}
-}
-
 group = "com.electriccloud"
 description = "Plugins : EC-EC2"
 version = "2.3.1"
