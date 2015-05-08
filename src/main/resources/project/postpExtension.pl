@@ -178,9 +178,9 @@ push (@::gMatchers,
 
 push (@::gMatchers,
     {
-        id =>              "VPC terminated",
-        pattern =>          q{VPC created},
-        action =>           q{replaceSummary("VPC created");},
+        id =>              "VPC created",
+        pattern =>          q{VPC\s(.+)\screated},
+        action =>           q{replaceSummary("VPC $1 created");},
     },
 );
 
