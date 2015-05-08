@@ -34,6 +34,7 @@ use Amazon::EC2::Model::DescribeInstancesRequest;
 use Amazon::EC2::Model::DeregisterImageRequest;
 use Amazon::EC2::Model::CreateImageRequest;
 use Amazon::EC2::Model::RunInstancesRequest;
+use Amazon::EC2::Model::CreateVpcRequest;
 use Amazon::EC2::Model::Placement;
 
 
@@ -721,6 +722,69 @@ sub API_CreateKeyPair {
     ## extract private key from results
     extract_keyfile($newkeyname . ".pem", $pem);
     mesg(1, "KeyPair $newkeyname created\n");
+    exit 0;
+}
+
+sub API_CreateVPC {
+    my ($opts, $service) = @_;
+
+    mesg(1, "--Creating Amazon VPC -------\n");
+
+    my $CIDRBlock = getRequiredParam("CidrBlock",  $opts);
+    my $propResult = getOptionalParam("propResult", $opts);
+
+
+    mesg(1, "Create request...\n");
+    my $request = new Amazon::EC2::Model::CreateVpcRequest({ "CidrBlock" => "$CIDRBlock" });
+
+    eval {
+
+        my $response = $service->createVpc($request);
+        if ($response->isSetCreateVpcResult()) {
+            mesg(10, "CreateVpcResult\n");
+            my $createVpcResult = $response->getCreateVpcResult();
+            if ($createVpcResult->isSetVpc()) {
+                print("                Vpc\n");
+                my $vpc = $createVpcResult->getVpc();
+                if ($vpc->isSetVpcId())
+                {
+                   mesg(10, "VpcId\n");
+                   mesg(10, "    " . $vpc->getVpcId() . "\n");
+                   if ("$propResult" ne "") {
+                           $opts->{pdb}->setProp($propResult . "/VpcId", $vpc->getVpcId());
+                   }
+                }
+                if ($vpc->isSetVpcState())
+                {
+                   mesg(10, "VpcState\n");
+                   mesg(10, "    " . $vpc->getVpcState() . "\n");
+                   if ("$propResult" ne "") {
+                           $opts->{pdb}->setProp($propResult . "/VpcStat", $vpc->getVpcState());
+                   }
+                }
+                if ($vpc->isSetCidrBlock())
+                {
+                   mesg(10, "CidrBlock\n");
+                   mesg(10, "    " . $vpc->getCidrBlock() . "\n");
+                   if ("$propResult" ne "") {
+                            $opts->{pdb}->setProp($propResult . "/CidrBloc", $vpc->getCidrBlock());
+                   }
+                }
+                if ($vpc->isSetDhcpOptionsId())
+                {
+                   mesg(10, "DhcpOptionsId\n");
+                   mesg(10, "    " . $vpc->getDhcpOptionsId() . "\n");
+                   if ("$propResult" ne "") {
+                           $opts->{pdb}->setProp($propResult . "/DhcpOptionsId", $vpc->getDhcpOptionsId());
+                   }
+
+                }
+            }
+        }
+    };
+    if ($@) { throwEC2Error($@); }
+
+    mesg(1, "VPC created\n");
     exit 0;
 }
 

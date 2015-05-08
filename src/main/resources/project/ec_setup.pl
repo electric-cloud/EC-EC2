@@ -139,6 +139,12 @@ my %test = (
     category    => "Resource Management"
 );
 
+my %createVPC = (
+    label       => "EC2 - Create VPC",
+    procedure   => "API_CreateVPC",
+    description => "Create a new Virtual Private Network.",
+    category    => "Resource Management"
+);
 
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - CloudManagerShrink");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - CloudManagerGrow");
@@ -164,6 +170,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - EC2_Auto_Re
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - Snap_Attached_Volume");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - Tear Down Resource");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - Test");
+$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - Create VPC");
 
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - CloudManagerShrink");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - CloudManagerGrow");
@@ -189,6 +196,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - EC2_Auto_Resum
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Snap_Attached_Volume");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Tear Down Resource");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Test");
+$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_CreateVPC");
 
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Allocate IP");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Associate IP");
@@ -209,8 +217,9 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Auto Resume");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Snap Attached Volume");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Test");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Tear Down Resource");
+$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Create VPC");
 
-@::createStepPickerSteps = (\%allocateip, \%associateip, \%attachvolumes, \%createimage, \%createkey, \%deletekey, \%deletevolume, \%releaseip, \%runinstances, \%startinstance, \%stopinstance, \%terminate, \%autocleanup, \%autodeploy, \%autopause, \%autoresume, \%snapattachedvolume, \%test, \%teardownresource, \%createTags);
+@::createStepPickerSteps = (\%allocateip, \%associateip, \%attachvolumes, \%createimage, \%createkey, \%deletekey, \%deletevolume, \%releaseip, \%runinstances, \%startinstance, \%stopinstance, \%terminate, \%autocleanup, \%autodeploy, \%autopause, \%autoresume, \%snapattachedvolume, \%test, \%teardownresource, \%createTags, \%createVPC);
 
 if ($promoteAction ne '') {
     my @objTypes = ('projects', 'resources', 'workspaces');
@@ -323,7 +332,7 @@ if ($upgradeAction eq 'upgrade') {
                                         procedureName => 'EC2 Auto Resume',
                                         stepName      => 'Attach Volumes'
                                      }
-                                    );                        
+                                    );
         }
     }
 }
