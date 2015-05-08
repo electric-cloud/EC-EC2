@@ -126,6 +126,14 @@ my %snapattachedvolume = (
     description => "Create a new snapshot from volume attached to instance. Note, only snaps first volume found",
     category    => "Resource Management"
 );
+
+my %createSubnet = (
+    label       => "EC2 - Create Subnet",
+    procedure   => "API_CreateSubnet",
+    description => "Create a new subnet.",
+    category    => "Resource Management"
+);
+
 my %createTags = (
     label       => "EC2 - Create Tags",
     procedure   => "API_CreateTags",
@@ -145,6 +153,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - CloudManage
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - API_AllocateIP");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - API_DescribeInstances");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - API_AssociateIP");
+$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - API_CreateSubnet");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - API_AttachVolumes");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - Attacholumes");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - API_CreateImage");
@@ -170,6 +179,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - CloudManagerGr
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_AllocateIP");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_DescribeInstances");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_AssociateIP");
+$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_CreateSubnet");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_AttachVolumes");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Attacholumes");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_CreateImage");
@@ -192,6 +202,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Test");
 
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Allocate IP");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Associate IP");
+$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Create Subnet");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Attach Volumes");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Create Image");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Create Key");
@@ -210,7 +221,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Snap Attached 
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Test");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Tear Down Resource");
 
-@::createStepPickerSteps = (\%allocateip, \%associateip, \%attachvolumes, \%createimage, \%createkey, \%deletekey, \%deletevolume, \%releaseip, \%runinstances, \%startinstance, \%stopinstance, \%terminate, \%autocleanup, \%autodeploy, \%autopause, \%autoresume, \%snapattachedvolume, \%test, \%teardownresource, \%createTags);
+@::createStepPickerSteps = (\%allocateip, \%associateip, \%attachvolumes, \%createimage, \%createkey, \%deletekey, \%deletevolume, \%releaseip, \%runinstances, \%startinstance, \%stopinstance, \%terminate, \%autocleanup, \%autodeploy, \%autopause, \%autoresume, \%snapattachedvolume, \%test, \%teardownresource, \%createTags, \%createSubnet);
 
 if ($promoteAction ne '') {
     my @objTypes = ('projects', 'resources', 'workspaces');

@@ -168,11 +168,20 @@ push (@::gMatchers,
     },
 );
 
-push (@::gMatchers, 
+push (@::gMatchers,
     {
         id =>              "instances terminated",
         pattern =>          q{(.*) instances terminated.},
         action =>           q{replaceSummary("$1 instances terminated");},
+    },
+);
+
+
+push (@::gMatchers, 
+    {
+        id =>              "Subnet created",
+        pattern =>          q{Subnet with ID\s(.+)\screated},
+        action =>           q{replaceSummary("Subnet with ID $1 created");},
     },
 );
 
