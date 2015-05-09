@@ -1657,14 +1657,16 @@ sub API_RunInstance {
 
     mesg(1, "--Run Amazon EC2 Instances -------\n");
 
-    my $ami          = getRequiredParam("image",        $opts);
-    my $key          = getRequiredParam("keyname",      $opts);
-    my $instanceType = getRequiredParam("instanceType", $opts);
-    my $group        = getRequiredParam("group",        $opts);
-    my $zone         = getRequiredParam("zone",         $opts);
-    my $count        = getRequiredParam("count",        $opts);
-    my $poolName     = getOptionalParam("res_poolName", $opts);
-    my $propResult   = getPropResultLocationForPool($opts, $poolName);
+    my $ami          = getRequiredParam( "image",        $opts );
+    my $key          = getRequiredParam( "keyname",      $opts );
+    my $instanceType = getRequiredParam( "instanceType", $opts );
+    my $group        = getRequiredParam( "group",        $opts );
+    my $zone         = getRequiredParam( "zone",         $opts );
+    my $count        = getRequiredParam( "count",        $opts );
+    my $poolName = getOptionalParam( "res_poolName", $opts );
+    my $privateIp = getOptionalParam( "privateIp", $opts );
+    my $instanceInitiatedShutdownBehavior = getOptionalParam( "instanceInitiatedShutdownBehavior", $opts );
+    my $propResult = getPropResultLocationForPool( $opts, $poolName );
 
     my $workspace = getOptionalParam("res_workspace", $opts);
     my $port      = getOptionalParam("res_port",      $opts);
@@ -1706,6 +1708,8 @@ sub API_RunInstance {
                 "InstanceType"  => "$instanceType",
                 "UserData"      => "$userData",
                 "SubnetId"      => $subnet_id,
+                "InstanceInitiatedShutdownBehavior" => "$instanceInitiatedShutdownBehavior",
+                "PrivateIpAddress" => "$privateIp"
             }
         );
         $request->setPlacement($placement);
