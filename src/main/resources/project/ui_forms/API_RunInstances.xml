@@ -145,6 +145,35 @@
     </formElement>
     <formElement>
         <type>entry</type>
+        <label>Subnet Id:</label>
+        <property>subnet_id</property>
+        <required>0</required>
+        <documentation>The ID of the subnet to launch the instance(s) into (for use with VPCs)</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Private IP:</label>
+        <property>privateIp</property>
+        <required>0</required>
+        <documentation>The primary IP address. You must specify a value from the IP address range of the subnet.If no value is supplied then IP address from the IP address range of the subnet is selected.(for use with VPCs)</documentation>
+    </formElement>
+    <formElement>
+    <type>select</type>
+    <label>Instance Initiated Shutdown Behavior:</label>
+    <property>instanceInitiatedShutdownBehavior</property>
+    <required>0</required>
+    <documentation>Specify the instance behaviour when an OS-level shutdown is performed.Instance can be either terminated or shut down.</documentation>
+    <option>
+        <name>Terminate</name>
+        <value>terminate</value>
+    </option>
+    <option>
+        <name>Shutdown</name>
+        <value>shutdown</value>
+    </option>
+    </formElement>
+    <formElement>
+        <type>entry</type>
         <label>Resource Pool:</label>
         <property>res_poolName</property>
         <required>0</required>
@@ -163,13 +192,6 @@
         <property>res_port</property>
         <required>0</required>
         <documentation>If you specify a resource pool name in res_poolName, this is the port that will be used when creating the resource. If no value is specified, port 7800 will be used by default when creating the resource.</documentation>
-    </formElement>
-    <formElement>
-        <type>entry</type>
-        <label>Subnet Id:</label>
-        <property>subnet_id</property>
-        <required>0</required>
-        <documentation>The ID of the subnet to launch the instance(s) into (for use with VPCs)</documentation>
     </formElement>
     <formElement>
       <type>checkbox</type>

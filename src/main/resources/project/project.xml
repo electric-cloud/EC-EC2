@@ -6256,6 +6256,26 @@
                                     </propertySheet>
                                 </property>
                                 <property>
+                                    <propertyName>privateIp</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+                                <property>
+                                    <propertyName>instanceInitiatedShutdownBehavior</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+                                <property>
                                     <propertyName>userData</propertyName>
                                     <propertySheet>
                                         <property>
@@ -6352,6 +6372,20 @@
             <formalParameterName>subnet_id</formalParameterName>
                 <defaultValue/>
                 <description>The ID of the subnet to launch the instance(s) into (for use with VPCs)</description>
+                <required>0</required>
+                <type>entry</type>
+            </formalParameter>
+            <formalParameter>
+            <formalParameterName>privateIp</formalParameterName>
+                <defaultValue/>
+                <description>The primary IP address. You must specify a value from the IP address range of the subnet.If no value is supplied then IP address from the IP address range of the subnet is selected.(for use with VPCs)</description>
+                <required>0</required>
+                <type>entry</type>
+            </formalParameter>
+            <formalParameter>
+                <formalParameterName>instanceInitiatedShutdownBehavior</formalParameterName>
+                <defaultValue/>
+                <description>Specify the instance behaviour when an OS-level shutdown is performed.Instance can be either terminated or shut down.</description>
                 <required>0</required>
                 <type>entry</type>
             </formalParameter>
