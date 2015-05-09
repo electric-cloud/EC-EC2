@@ -1621,6 +1621,10 @@
     <xpath>//procedure[procedureName=&quot;API_AttachVolumes&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
   <file>
+    <path>ui_forms/API_DeleteVPC.xml</path>
+    <xpath>//procedure[procedureName=&quot;API_DeleteVPC&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
+  </file>
+  <file>
     <path>ui_forms/API_CreateImage.xml</path>
     <xpath>//procedure[procedureName=&quot;API_CreateImage&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
