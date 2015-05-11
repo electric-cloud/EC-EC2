@@ -176,6 +176,14 @@ push (@::gMatchers,
     },
 );
 
+push (@::gMatchers,
+    {
+        id =>              "vpc deleted",
+        pattern =>          q{VPC\s(.+)\sdeleted.},
+        action =>           q{addToSummary("VPC $1 deleted.");},
+    },
+);
+
 push (@::gMatchers, 
     {
         id =>              "amazon error",
