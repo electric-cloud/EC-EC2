@@ -5394,6 +5394,165 @@
         </procedure>
 
         <procedure>
+            <procedureName>API_CreateSubnet</procedureName>
+            <description>Create a new subnet</description>
+            <jobNameTemplate>EC2-createSubnet-$[jobId]</jobNameTemplate>
+            <resourceName/>
+            <workspaceName>default</workspaceName>
+            <propertySheet>
+                <property>
+                    <propertyName>ec_customEditorData</propertyName>
+                    <propertySheet>
+                        <property>
+                            <propertyName>parameters</propertyName>
+                            <propertySheet>
+
+                                <property>
+                                    <propertyName>config</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+
+                                <property>
+                                    <propertyName>VpcId</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+
+                                <property>
+                                    <propertyName>CidrBlock</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+
+                                <property>
+                                    <propertyName>availabilityZone</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+
+                                <property>
+                                    <propertyName>propResult</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+
+                            </propertySheet>
+                        </property>
+                    </propertySheet>
+                </property>
+                <property>
+                    <propertyName>ec_parameterForm</propertyName>
+                    <description/>
+                    <expandable>1</expandable>
+                    <value/>
+                </property>
+            </propertySheet>
+            <formalParameter>
+                <formalParameterName>config</formalParameterName>
+                <defaultValue/>
+                <description>The name of the config which holds all the connection information. This must reference a valid existing configuration.</description>
+                <required>1</required>
+                <type>entry</type>
+            </formalParameter>
+            <formalParameter>
+                <formalParameterName>VpcId</formalParameterName>
+                <defaultValue/>
+                <description>VPC to use for this subnet.</description>
+                <required>1</required>
+                <type>entry</type>
+            </formalParameter>
+            <formalParameter>
+                <formalParameterName>CidrBlock</formalParameterName>
+                <defaultValue/>
+                <description>The range of IPs to use in subnet, in CIDR format, for example,10.0.0.0/24.The range of IP addresses in subnet must be subset of IP address in VPC.Size subnet can equal the size of VPC.</description>
+                <required>1</required>
+                <type>entry</type>
+            </formalParameter>
+            <formalParameter>
+                <formalParameterName>availabilityZone</formalParameterName>
+                <defaultValue/>
+                <description>Availability zone where this subnet will reside.If no preferences is entered, Amazon will choose an availability zone for you.</description>
+                <required>1</required>
+                <type>entry</type>
+            </formalParameter>
+            <formalParameter>
+                <formalParameterName>propResult</formalParameterName>
+                <defaultValue/>
+                <description>Where to put the result. If not specified, the result is only printed.</description>
+                <required>0</required>
+                <type>entry</type>
+            </formalParameter>
+            <step>
+                <stepName>CreateSubnet</stepName>
+                <alwaysRun>0</alwaysRun>
+                <broadcast>0</broadcast>
+                <condition/>
+                <description/>
+                <errorHandling>failProcedure</errorHandling>
+                <exclusive>0</exclusive>
+                <parallel>0</parallel>
+                <releaseExclusive>0</releaseExclusive>
+                <resourceName/>
+                <retries>0</retries>
+                <subprocedure>API_Run</subprocedure>
+                <subproject>/plugins/EC-EC2/project</subproject>
+                <postProcessor>postp --loadProperty "/myProject/postpExtension"</postProcessor>
+                <timeLimit/>
+                <timeLimitUnits>minutes</timeLimitUnits>
+                <actualParameters>
+                    <property>
+                        <propertyName>config</propertyName>
+                        <expandable>1</expandable>
+                        <value>$[config]</value>
+                    </property>
+                    <property>
+                        <propertyName>method</propertyName>
+                        <expandable>1</expandable>
+                        <value>API_CreateSubnet</value>
+                    </property>
+                </actualParameters>
+                <propertySheet>
+                    <property>
+                        <propertyName>ec_customEditorData</propertyName>
+                        <propertySheet>
+                            <property>
+                                <propertyName>formType</propertyName>
+                                <expandable>1</expandable>
+                                <value>procedure</value>
+                            </property>
+                        </propertySheet>
+                    </property>
+                </propertySheet>
+            </step>
+        </procedure>
+
+        <procedure>
             <procedureName>API_DeleteKey</procedureName>
             <description>Delete security Key pair</description>
             <jobNameTemplate>EC2-deleteKey-$[jobId]</jobNameTemplate>
