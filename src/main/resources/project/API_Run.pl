@@ -2091,16 +2091,19 @@ sub API_CreateVPC {
 
     sub API_RunInstance {
         my ( $opts, $service ) = @_;
+        my $request;
 
         mesg( 1, "--Run Amazon EC2 Instances -------\n" );
 
         my $ami          = getRequiredParam( "image",        $opts );
         my $key          = getRequiredParam( "keyname",      $opts );
         my $instanceType = getRequiredParam( "instanceType", $opts );
-        my $group        = getRequiredParam( "group",        $opts );
+        my $group        = getOptionalParam( "group",        $opts );
         my $zone         = getRequiredParam( "zone",         $opts );
         my $count        = getRequiredParam( "count",        $opts );
         my $poolName = getOptionalParam( "res_poolName", $opts );
+        my $privateIp = getOptionalParam( "privateIp", $opts );
+        my $instanceInitiatedShutdownBehavior = getOptionalParam( "instanceInitiatedShutdownBehavior", $opts );
         my $propResult = getPropResultLocationForPool( $opts, $poolName );
 
         my $workspace = getOptionalParam( "res_workspace", $opts );
@@ -2134,19 +2137,39 @@ sub API_CreateVPC {
             my $placement = new Amazon::EC2::Model::Placement();
             $placement->setAvailabilityZone("$zone");
 
-            my $request = new Amazon::EC2::Model::RunInstancesRequest(
-                {
-                    "ImageId"       => "$ami",
-                    "Placement"     => $placement,
-                    "MinCount"      => "$count",
-                    "MaxCount"      => "$count",
-                    "KeyName"       => "$key",
-                    "SecurityGroup" => "$group",
-                    "InstanceType"  => "$instanceType",
-                    "UserData"      => "$userData",
-                    "SubnetId"      => $subnet_id,
-                }
-            );
+            if($group){
+                $request = new Amazon::EC2::Model::RunInstancesRequest(
+                    {
+                        "ImageId"       => "$ami",
+                        "Placement"     => $placement,
+                        "MinCount"      => "$count",
+                        "MaxCount"      => "$count",
+                        "KeyName"       => "$key",
+                        "SecurityGroup" => "$group",
+                        "InstanceType"  => "$instanceType",
+                        "UserData"      => "$userData",
+                        "SubnetId"      => $subnet_id,
+                        "InstanceInitiatedShutdownBehavior" => "$instanceInitiatedShutdownBehavior",
+                        "PrivateIpAddress" => "$privateIp"
+                    }
+                );
+            } else {
+                $request = new Amazon::EC2::Model::RunInstancesRequest(
+                    {
+                        "ImageId"       => "$ami",
+                        "Placement"     => $placement,
+                        "MinCount"      => "$count",
+                        "MaxCount"      => "$count",
+                        "KeyName"       => "$key",
+                        "InstanceType"  => "$instanceType",
+                        "UserData"      => "$userData",
+                        "SubnetId"      => $subnet_id,
+                        "InstanceInitiatedShutdownBehavior" => "$instanceInitiatedShutdownBehavior",
+                        "PrivateIpAddress" => "$privateIp"
+                    }
+                );
+
+            }
             $request->setPlacement($placement);
 
             my $response = $service->runInstances($request);
