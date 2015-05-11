@@ -54,6 +54,11 @@ $xpath = $ec->attachCredential($projName, $credName,
      stepName => "Attach Volumes"});
 $errors .= $ec->checkAllErrors($xpath);
 
+$xpath = $ec->attachCredential($projName, $credName,
+    {procedureName => "API_CreateSubnet",
+     stepName => "CreateSubnet"});
+$errors .= $ec->checkAllErrors($xpath);
+
 if ("$errors" ne "") {
     # Cleanup the partially created configuration we just created
     $ec->deleteProperty($configPath);
