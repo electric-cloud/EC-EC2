@@ -1637,6 +1637,10 @@
     <xpath>//procedure[procedureName=&quot;API_CreateSubnet&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
   <file>
+    <path>ui_forms/API_DeleteVPC.xml</path>
+    <xpath>//procedure[procedureName=&quot;API_DeleteVPC&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
+  </file>
+  <file>
     <path>ui_forms/API_CreateTags.xml</path>
     <xpath>//procedure[procedureName=&quot;API_CreateTags&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
