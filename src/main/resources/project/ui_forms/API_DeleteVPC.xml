@@ -17,6 +17,14 @@
     </formElement>
     <formElement>
         <type>entry</type>
+        <label>Subnet IDs:</label>
+        <property>subnetIds</property>
+        <value/>
+        <required>1</required>
+        <documentation>Comma separated list of subnet IDs within VPC to delete.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
         <label>Results Location:</label>
         <property>propResult</property>
         <required>0</required>
