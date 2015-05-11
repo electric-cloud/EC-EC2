@@ -35,6 +35,7 @@ use Amazon::EC2::Model::DeregisterImageRequest;
 use Amazon::EC2::Model::CreateImageRequest;
 use Amazon::EC2::Model::RunInstancesRequest;
 use Amazon::EC2::Model::CreateVpcRequest;
+use Amazon::EC2::Model::CreateSubnetRequest;
 use Amazon::EC2::Model::Placement;
 
 $::gMockData     = false;
@@ -865,6 +866,137 @@ sub API_CreateVPC {
         }
 
         mesg( 1, "VPC $VpcId created\n" );
+        exit 0;
+    }
+
+    sub API_CreateSubnet {
+        my ($opts, $service) = @_;
+
+        mesg(1, "--Creating subnet -------\n");
+
+        my $CIDRBlock = getRequiredParam("CidrBlock",  $opts);
+        my $vpcId = getRequiredParam("VpcId",  $opts);
+        my $availabilityZone = getRequiredParam("availabilityZone",  $opts);
+        my $propResult = getOptionalParam("propResult", $opts);
+        my $subnetId = "";
+        my $subnetStatus;
+        my $createSubnetResult;
+
+        mesg(1, "Create request...\n");
+        my $request = new Amazon::EC2::Model::CreateSubnetRequest({ "VpcId" => "$vpcId", "CidrBlock" => "$CIDRBlock", "AvailabilityZone" => "$availabilityZone" });
+
+        eval {
+
+                    my $response = $service->createSubnet($request);
+
+                    if ($response->isSetCreateSubnetResult()) {
+
+                        mesg(10, "CreateSubnetResult\n");
+                        $createSubnetResult = $response->getCreateSubnetResult();
+                        if ($createSubnetResult->isSetSubnet()) {
+
+                            my $subnet = $createSubnetResult->getSubnet();
+
+                            print("Subnet\n");
+                            if ($subnet->isSetSubnetState()){
+                                $subnetStatus = $subnet->getSubnetState();
+                                mesg(10, "SubnetState\n");
+                                mesg(10, "    " . $subnet->getSubnetState() . "\n");
+                               if ("$propResult" ne "") {
+                                     $opts->{pdb}->setProp($propResult . "/SubnetStat", $subnet->getSubnetState());
+                               }
+
+                            }
+
+                            if ($subnet->isSetSubnetId()) {
+                                $subnetId = $subnet->getSubnetId();
+                                 mesg(10, "SubnetId\n");
+                                 mesg(10, "    " . $subnet->getSubnetId() . "\n");
+                                 if ("$propResult" ne "") {
+                                      $opts->{pdb}->setProp($propResult . "/SubnetId", $subnet->getSubnetId());
+                                 }
+                            }
+
+                            if ($subnet->isSetVpcId())
+                           {
+                               mesg(10, "VpcId\n");
+                               mesg(10, "    " . $subnet->getVpcId() . "\n");
+                               if ("$propResult" ne "") {
+                                     $opts->{pdb}->setProp($propResult . "/VpcId", $subnet->getVpcId());
+                               }
+                           }
+                           if ($subnet->isSetCidrBlock())
+                           {
+                               mesg(10, "CidrBlock\n");
+                               mesg(10, "    " . $subnet->getCidrBlock() . "\n");
+                               if ("$propResult" ne "") {
+                                     $opts->{pdb}->setProp($propResult . "/CidrBlock", $subnet->getCidrBlock());
+                               }
+                           }
+                           if ($subnet->isSetAvailableIpAddressCount())
+                           {
+                               mesg(10, "AvailableIpAddressCount\n");
+                               mesg(10, "    " . $subnet->getAvailableIpAddressCount() . "\n");
+                               if ("$propResult" ne "") {
+                                     $opts->{pdb}->setProp($propResult . "/AvailableIpAddressCoun", $subnet->getAvailableIpAddressCount());
+                               }
+                           }
+                           if ($subnet->isSetAvailabilityZone())
+                           {
+                               mesg(10, "AvailabilityZone\n");
+                               mesg(10, "    " . $subnet->getAvailabilityZone() . "\n");
+                               if ("$propResult" ne "") {
+                                     $opts->{pdb}->setProp($propResult . "/AvailabilityZone", $subnet->getAvailabilityZone());
+                               }
+                           }
+                           }
+                        }
+                };
+                if ($@) { throwEC2Error($@); };
+
+                require  Amazon::EC2::Model::DescribeSubnetsRequest;
+                require  Amazon::EC2::Model::DescribeSubnetsResponse;
+                require  Amazon::EC2::Model::DescribeSubnetsResult;
+
+                if ( $subnetStatus ne "available" || $subnetStatus eq "" ) {
+                    mesg(10 , "Waiting for subnet to become available\n");
+                }
+
+                ## Wait till subnet becomes available
+                while ( $subnetStatus ne "available" || $subnetStatus eq "") {
+                    if ($subnetStatus ne "") {
+                        mesg(10 , "Waiting for 30 sec.\n");
+                        sleep(30);
+                        mesg(10 , "Done waiting\n");
+                    }
+                    eval {
+
+                            my $describeRequest = new Amazon::EC2::Model::DescribeSubnetsRequest({ "SubnetId" => "$subnetId" });
+                            my $describeSubnetResponse = $service->describeSubnets($describeRequest);
+                            if ($describeSubnetResponse->isSetDescribeSubnetsResult()) {
+                                my $describeSubnetsResult = $describeSubnetResponse->getDescribeSubnetsResult();
+                                my $subnetList = $describeSubnetsResult->getSubnet();
+                                my $subnet = @$subnetList[0];
+                                if ($subnet->isSetSubnetId()) {
+                                    if($subnet->getSubnetId() eq "$subnetId") {
+
+                                        if ($subnet->isSetSubnetState()) {
+                                            $subnetStatus = $subnet->getSubnetState();
+                                            mesg(10 , "Subnet Status = " . $subnetStatus . " for subnet " . $subnet->getSubnetId() . "\n");
+                                        }
+                                    }
+                                }
+                            }
+                        };
+                        if ($@) { throwEC2Error($@); };
+                }
+
+                ## Set the final subnet status in properties
+                if ("$propResult" ne "") {
+                     $opts->{pdb}->setProp($propResult . "/SubnetStat", $subnetStatus);
+                }
+
+        mesg(1, "Subnet with ID $subnetId created\n");
         exit 0;
     }
 
