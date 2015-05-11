@@ -16,7 +16,7 @@
     </formElement>
     <formElement>
         <type>entry</type>
-        <label>CIRD Block:</label>
+        <label>CIDR Block:</label>
         <property>CidrBlock</property>
         <value/>
         <required>1</required>
