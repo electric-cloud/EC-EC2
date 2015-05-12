@@ -5605,16 +5605,6 @@
                                     </propertySheet>
                                 </property>
                                 <property>
-                                    <propertyName>subnetIds</propertyName>
-                                    <propertySheet>
-                                        <property>
-                                            <propertyName>formType</propertyName>
-                                            <expandable>1</expandable>
-                                            <value>standard</value>
-                                        </property>
-                                    </propertySheet>
-                                </property>
-                                <property>
                                     <propertyName>propResult</propertyName>
                                     <propertySheet>
                                         <property>
@@ -5646,13 +5636,6 @@
                 <formalParameterName>vpcId</formalParameterName>
                 <defaultValue/>
                 <description>ID of VPC to delete</description>
-                <required>1</required>
-                <type>entry</type>
-            </formalParameter>
-            <formalParameter>
-                <formalParameterName>subnetIds</formalParameterName>
-                <defaultValue/>
-                <description>Comma separated list of subnet IDs within VPC to delete.</description>
                 <required>1</required>
                 <type>entry</type>
             </formalParameter>
