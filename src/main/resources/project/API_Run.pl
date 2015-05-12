@@ -2135,6 +2135,7 @@ sub MOCK_CreateImage {
     exit 0;
 }
 
+
 sub API_RunInstance {
     my ( $opts, $service ) = @_;
     my $request;
