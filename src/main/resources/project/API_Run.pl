@@ -757,6 +757,7 @@ sub API_CreateVPC {
 
     mesg( 1, "--Creating Amazon VPC -------\n" );
 
+    my $VpcName = getOptionalParam( "VpcName", $opts );
     my $CIDRBlock = getRequiredParam( "CidrBlock", $opts );
     my $propResult = getOptionalParam( "propResult", $opts );
     my $VpcId;
@@ -866,6 +867,10 @@ sub API_CreateVPC {
         }
 
         mesg( 1, "VPC $VpcId created\n" );
+        if($VpcName){
+            # Assign name to VPC if provided by user
+            createTag( $VpcId, "Name", $VpcName, $service);
+        }
         exit 0;
     }
 
