@@ -879,6 +879,7 @@ sub API_CreateVPC {
 
         mesg(1, "--Creating subnet -------\n");
 
+        my $subnetName = getOptionalParam("subnetName", $opts);
         my $CIDRBlock = getRequiredParam("CidrBlock",  $opts);
         my $vpcId = getRequiredParam("VpcId",  $opts);
         my $availabilityZone = getRequiredParam("availabilityZone",  $opts);
@@ -1002,6 +1003,10 @@ sub API_CreateVPC {
                 }
 
         mesg(1, "Subnet with ID $subnetId created\n");
+        if($subnetName){
+            ## Assign name to subnet if provided by user.
+            createTag( $subnetId, "Name", $subnetName, $service);
+        }
         exit 0;
     }
 
