@@ -1086,6 +1086,80 @@ sub API_CreateVPC {
         exit 0;
     }
 
+    sub API_DeleteVPC {
+        my ( $opts, $service ) = @_;
+        my $request;
+        my $response;
+
+
+
+        my $subnetIds = getRequiredParam( "subnetIds" , $opts );
+        my @listOfSubnets = split( ",", $subnetIds);
+
+        foreach $subnet (@listOfSubnets) {
+
+            mesg( 1, "--Deleting subnet $subnet -------\n" );
+            $request =
+                  new Amazon::EC2::Model::DeleteSubnetRequest( { "SubnetId" => "$subnet" } );
+
+            eval {
+
+                    $response = $service->deleteSubnet($request);
+                    if ($response->isSetResponseMetadata()) {
+                        mesg( 1, "ResponseMetadata\n");
+                        my $responseMetadata = $response->getResponseMetadata();
+                        if ($responseMetadata->isSetRequestId())
+                        {
+                             mesg( 1, "RequestId\n");
+                             mesg( 1,
+                                "          " . $responseMetadata->getRequestId() . "\n" );
+                            if ( "$propResult" ne "" ) {
+                                $opts->{pdb}->setProp(
+                                    $propResult . "/$subnet/SubnetDeleteRequestId",
+                                    $responseMetadata->getRequestId()
+                                );
+                            }
+                        }
+                    }
+                    mesg( 1, "--Deleted subnet $subnet -------\n" );
+            };
+            if ($@) { throwEC2Error($@); }
+
+        }
+        my $vpcId = getRequiredParam( "vpcId", $opts );
+        my $propResult = getOptionalParam( "propResult", $opts );
+
+        mesg( 1, "--Deleting VPC $vpcId -------\n" );
+        $request =
+          new Amazon::EC2::Model::DeleteVpcRequest( { "VpcId" => "$vpcId" } );
+
+        eval {
+
+            $response = $service->deleteVpc($request);
+            if ( $response->isSetResponseMetadata() ) {
+                mesg( 1, "ResponseMetadata\n" );
+                my $responseMetadata = $response->getResponseMetadata();
+                if ( $responseMetadata->isSetRequestId() ) {
+                    mesg( 1, "RequestId\n" );
+                    mesg( 1,
+                        "          " . $responseMetadata->getRequestId() . "\n" );
+
+                    if ( "$propResult" ne "" ) {
+                        $opts->{pdb}->setProp(
+                            $propResult . "/VPCDeleteRequestId",
+                            $responseMetadata->getRequestId()
+                        );
+                    }
+                }
+
+            }
+        };
+        if ($@) { throwEC2Error($@); }
+
+        mesg( 1, "VPC $vpcId deleted.\n" );
+        exit 0;
+    }
+
     sub MOCK_API_CreateKeyPair {
         my ( $opts, $service ) = @_;
 
