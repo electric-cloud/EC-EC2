@@ -178,8 +178,8 @@
             <value>terminate</value>
         </option>
         <option>
-            <name>Shutdown</name>
-            <value>shutdown</value>
+            <name>Stop</name>
+            <value>stop</value>
         </option>
     </formElement>
     <formElement>
