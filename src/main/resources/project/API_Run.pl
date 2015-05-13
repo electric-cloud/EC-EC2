@@ -2135,7 +2135,6 @@ sub MOCK_CreateImage {
     exit 0;
 }
 
-
 sub API_RunInstance {
     my ( $opts, $service ) = @_;
     my $request;
@@ -2145,13 +2144,15 @@ sub API_RunInstance {
     my $ami          = getRequiredParam( "image",        $opts );
     my $key          = getRequiredParam( "keyname",      $opts );
     my $instanceType = getRequiredParam( "instanceType", $opts );
-    my $group = getOptionalParam( "group", $opts );
-    my $zone  = getRequiredParam( "zone",  $opts );
-    my $count = getRequiredParam( "count", $opts );
+    my $zone         = getRequiredParam( "zone",         $opts );
+    my $count        = getRequiredParam( "count",        $opts );
+
+    my $group     = getOptionalParam( "group",        $opts );
     my $poolName  = getOptionalParam( "res_poolName", $opts );
     my $privateIp = getOptionalParam( "privateIp",    $opts );
     my $instanceInitiatedShutdownBehavior =
       getOptionalParam( "instanceInitiatedShutdownBehavior", $opts );
+
     my $propResult = getPropResultLocationForPool( $opts, $poolName );
 
     my $workspace = getOptionalParam( "res_workspace", $opts );
@@ -2180,46 +2181,38 @@ sub API_RunInstance {
 
     ## run new instance
     my $reservation = "";
+    my $placement   = new Amazon::EC2::Model::Placement();
+    $placement->setAvailabilityZone("$zone");
 
+    my %requestParameters = (
+        "ImageId"      => "$ami",
+        "Placement"    => $placement,
+        "MinCount"     => "$count",
+        "MaxCount"     => "$count",
+        "KeyName"      => "$key",
+        "InstanceType" => "$instanceType",
+        "UserData"     => "$userData",
+    );
+
+    ## Add optional agruements
+    if ($group) {
+        $requestParameters{"SecurityGroup"} = "$group";
+    }
+    if ($subnet_id) {
+        $requestParameters{"SubnetId"} = "$subnet_id";
+    }
+    if ($instanceInitiatedShutdownBehavior) {
+        $requestParameters{"InstanceInitiatedShutdownBehavior"} =
+          "$instanceInitiatedShutdownBehavior";
+    }
+    if ($privateIp) {
+        $requestParameters{"PrivateIpAddress"} = "$privateIp";
+    }
+    
     eval {
-        my $placement = new Amazon::EC2::Model::Placement();
-        $placement->setAvailabilityZone("$zone");
-        if ($group) {
-            $request = new Amazon::EC2::Model::RunInstancesRequest(
-                {
-                    "ImageId"       => "$ami",
-                    "Placement"     => $placement,
-                    "MinCount"      => "$count",
-                    "MaxCount"      => "$count",
-                    "KeyName"       => "$key",
-                    "SecurityGroup" => "$group",
-                    "InstanceType"  => "$instanceType",
-                    "UserData"      => "$userData",
-                    "SubnetId"      => $subnet_id,
-                    "InstanceInitiatedShutdownBehavior" =>
-                      "$instanceInitiatedShutdownBehavior",
-                    "PrivateIpAddress" => "$privateIp"
-                }
-            );
-        }
-        else {
-            $request = new Amazon::EC2::Model::RunInstancesRequest(
-                {
-                    "ImageId"      => "$ami",
-                    "Placement"    => $placement,
-                    "MinCount"     => "$count",
-                    "MaxCount"     => "$count",
-                    "KeyName"      => "$key",
-                    "InstanceType" => "$instanceType",
-                    "UserData"     => "$userData",
-                    "SubnetId"     => $subnet_id,
-                    "InstanceInitiatedShutdownBehavior" =>
-                      "$instanceInitiatedShutdownBehavior",
-                    "PrivateIpAddress" => "$privateIp"
-                }
-            );
 
-        }
+        $request =
+          new Amazon::EC2::Model::RunInstancesRequest( \%requestParameters );
         $request->setPlacement($placement);
 
         my $response = $service->runInstances($request);
