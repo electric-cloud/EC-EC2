@@ -12,7 +12,7 @@ buildscript {
 		jcenter()
 	}
 	dependencies {
-		classpath group: 'com.electriccloud.plugins', name: 'flow-gradle-plugin', version: '+'
+		classpath group: 'com.electriccloud.plugins', name: 'flow-gradle-plugin', version: '1.15'
 	}
 }
 
@@ -22,6 +22,28 @@ version = "2.3.1"
 
 apply plugin: 'flow-gradle-plugin'
 
+
 task wrapper(type: Wrapper) { gradleVersion = '2.3' }
+
+dependencies {
+	testCompile 'junit:junit:[4,)'
+	testCompile 'org.mockito:mockito-core:1.9.5'
+	testCompile 'com.amazonaws:aws-java-sdk-ec2:1.9.33'
+}
+
+test {
+	Properties props = new Properties()
+
+	systemProperties['COMMANDER_SERVER'] = "$commanderServer"
+	systemProperties['PLUGIN_VERSION'] = version
+	//TODO: load properties for WebSphere
+
+
+	testLogging {
+		// Show that tests are run in the command-line output
+		events 'started', 'passed'
+		exceptionFormat = 'full'
+	}
+}
 
 gwt { modules 'ecplugins.ec2.ConfigurationManagement' }

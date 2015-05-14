@@ -826,7 +826,7 @@ sub API_CreateVPC {
     require Amazon::EC2::Model::DescribeVpcsResult;
 
     if ( $VpcState eq "pending" ) {
-        mesg( 1, "Waiting for VPC $VpcId to become available." );
+        mesg( 1, "Waiting for VPC $VpcId to become available.\n" );
     }
 
     ## Wait till VPC becomes available
