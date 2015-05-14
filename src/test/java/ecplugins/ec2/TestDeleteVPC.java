@@ -1,8 +1,10 @@
 package ecplugins.ec2;
 
-import com.amazonaws.auth.BasicAWSCredentials;
+import com.amazonaws.AmazonServiceException;
 import com.amazonaws.services.ec2.AmazonEC2Client;
 import com.amazonaws.services.ec2.model.*;
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -15,14 +17,10 @@ import java.util.Properties;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-import org.json.JSONArray;
-
-import org.json.JSONObject;
-
 /**
  * Created by clogeny on 5/13/2015.
  */
-public class TestCreateVPC {
+public class TestDeleteVPC {
 
     private static Properties props;
     private static String vpcId = null;
@@ -38,18 +36,21 @@ public class TestCreateVPC {
 
     }
 
-    @Test
-    public  void testCreateVPC() throws Exception {
 
+    @Test(expected = AmazonServiceException.class)
+    public  void testDeleteVPC() throws Exception {
+
+        // Create a VPC that can be deleted through API_DeleteVPC procedure
+        CreateVpcResult createVpcResult = ec2Client.createVpc(new CreateVpcRequest("10.0.0.0/20"));
+        Vpc vpc = createVpcResult.getVpc();
+        vpcId = vpc.getVpcId();
 
         long jobTimeoutMillis = 5 * 60 * 1000;
-        String cidrBlock = "10.0.0.0/20";
-        String VpcName = "AutomatedTest-TestVPC";
 
         JSONObject jo = new JSONObject();
 
         jo.put("projectName", "EC-EC2-" + StringConstants.PLUGIN_VERSION);
-        jo.put("procedureName", "API_CreateVPC");
+        jo.put("procedureName", "API_DeleteVPC");
 
 
         JSONArray actualParameterArray = new JSONArray();
@@ -58,12 +59,8 @@ public class TestCreateVPC {
                 .put("actualParameterName", "config"));
 
         actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "VpcName")
-                .put("value", VpcName));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "CidrBlock")
-                .put("value", cidrBlock));
+                .put("actualParameterName", "vpcId")
+                .put("value", vpcId));
 
         actualParameterArray.put(new JSONObject()
                 .put("actualParameterName", "propResult")
@@ -78,67 +75,20 @@ public class TestCreateVPC {
         // Check job status
         assertEquals("Job completed with errors", "success", response);
 
-        JSONObject outputProperties = TestUtil.getJobOutputProperties(jobId);
-        JSONArray objectArray = outputProperties.getJSONArray("object");
-        JSONObject object = null;
-
-        for (int i = 0 ; i < objectArray.length(); i++) {
-            object = objectArray.getJSONObject(i);
-            if (object.getJSONObject("property").get("propertyName").toString().equalsIgnoreCase("VpcId")) {
-                vpcId = object.getJSONObject("property").get("value").toString();
-            }
-        }
-
-        // VpcId is the must output property to be stored in property sheet.
-        assertNotNull("No VPC ID is set in property sheet",vpcId);
-
+        // Following method invocation must throw com.amazonaws.AmazonServiceException
         DescribeVpcsResult describeVpcsResult = ec2Client.describeVpcs(new DescribeVpcsRequest().withVpcIds(vpcId));
-        assertNotNull("No VPC with id " + vpcId + " found",describeVpcsResult);
-
-        List<Vpc> vpcList = describeVpcsResult.getVpcs();
-        Iterator<Vpc> i = vpcList.listIterator();
-        Vpc requiredVPC = null;
-        Vpc vpc = null;
-
-        while (i.hasNext()) {
-            vpc = i.next();
-            if (vpc.getVpcId().equalsIgnoreCase(vpcId)){
-                requiredVPC = vpc;
-                break;
-            }
-        }
-
-        // Check that vpc with the VPC ID reported by procedure in property sheet actually exists on AWS.
-        assertNotNull(requiredVPC);
-
-        assertEquals("VPC is not in available state", "available", requiredVPC.getState());
-        assertEquals("CIDR block is not correctly set", cidrBlock, requiredVPC.getCidrBlock());
-
-        ListIterator<Tag> tagListIterator = requiredVPC.getTags().listIterator();
-        Tag requiredTag = null;
-
-        while (tagListIterator.hasNext()){
-            Tag tag = tagListIterator.next();
-            if(tag.getKey().equalsIgnoreCase("Name")){
-                requiredTag = tag;
-            }
-            break;
-        }
-
-        assertNotNull("No name got attached to VPC", requiredTag);
-        assertEquals("VPC name does not match", requiredTag.getValue(), VpcName);
 
     }
 
     @Test
-    public  void testCreateVPCInvalidCIDR() throws Exception {
+    public  void testDeleteVPCInvalidVPCID() throws Exception {
 
 
         long jobTimeoutMillis = 5 * 60 * 1000;
         JSONObject jo = new JSONObject();
 
         jo.put("projectName", "EC-EC2-" + StringConstants.PLUGIN_VERSION);
-        jo.put("procedureName", "API_CreateVPC");
+        jo.put("procedureName", "API_DeleteVPC");
 
 
         JSONArray actualParameterArray = new JSONArray();
@@ -147,12 +97,8 @@ public class TestCreateVPC {
                 .put("actualParameterName", "config"));
 
         actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "VpcName")
-                .put("value", "AutomatedTest-TestVPC"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "CidrBlock")
-                .put("value", "SomeRandomIp"));
+                .put("actualParameterName", "vpcId")
+                .put("value", "SomeRandomID"));
 
         actualParameterArray.put(new JSONObject()
                 .put("actualParameterName", "propResult")
@@ -178,8 +124,8 @@ public class TestCreateVPC {
             }
         }
 
-        assertNotNull("No failure reason is set",failureReason);
-        assertEquals("No proper failure reason is set","AWS Error: Value (SomeRandomIp) for parameter cidrBlock is invalid. This is not a valid CIDR block.",failureReason);
+        assertNotNull("No failure reason is set", failureReason);
+        assertEquals("AWS Error: The vpc ID 'SomeRandomID' does not exist",failureReason);
 
     }
 
@@ -187,9 +133,17 @@ public class TestCreateVPC {
     public static void cleanup(){
 
         /*
-            Cleanup the vpc created by the API_CreateVPC procedure during test
+            Delete the VPC created just as a precaution if testDeleteVPC test fails.
+            If the test testDeleteVPC executes successfully, there will not be any VPC with vpcId.
+            In that case deleteVpc() will throw an exception which is expected and hence catching it here.
          */
-        ec2Client.deleteVpc(new DeleteVpcRequest(vpcId));
+        try {
+            ec2Client.deleteVpc(new DeleteVpcRequest(vpcId));
+        } catch (com.amazonaws.AmazonServiceException e){
+             System.out.println("API_DeleteVPC deleted " + vpcId + " successfully.No need of separate cleanup.");
+
+        }
+
     }
 
 }
