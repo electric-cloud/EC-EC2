@@ -756,15 +756,15 @@ sub API_CreateVPC {
 
     mesg( 1, "--Creating Amazon VPC -------\n" );
 
-    my $VpcName = getOptionalParam( "VpcName", $opts );
-    my $CIDRBlock = getRequiredParam( "CidrBlock", $opts );
+    my $vpcName = getOptionalParam( "vpcName", $opts );
+    my $cidrBlock = getRequiredParam( "cidrBlock", $opts );
     my $propResult = getOptionalParam( "propResult", $opts );
     my $VpcId;
     my $VpcState;
 
     mesg( 1, "Create request...\n" );
     my $request = new Amazon::EC2::Model::CreateVpcRequest(
-        { "CidrBlock" => "$CIDRBlock" } );
+        { "CidrBlock" => "$cidrBlock" } );
 
     eval {
 
@@ -866,9 +866,9 @@ sub API_CreateVPC {
         }
 
         mesg( 1, "VPC $VpcId created\n" );
-        if($VpcName){
+        if($vpcName){
             # Assign name to VPC if provided by user
-            createTag( $VpcId, "Name", $VpcName, $service);
+            createTag( $VpcId, "Name", $vpcName, $service);
         }
         exit 0;
     }
