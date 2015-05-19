@@ -5274,7 +5274,7 @@
                                     </propertySheet>
                                 </property>
                                 <property>
-                                    <propertyName>VpcName</propertyName>
+                                    <propertyName>vpcName</propertyName>
                                     <propertySheet>
                                         <property>
                                             <propertyName>formType</propertyName>
@@ -5285,7 +5285,7 @@
                                     </propertySheet>
                                 </property>
                                 <property>
-                                    <propertyName>CidrBlock</propertyName>
+                                    <propertyName>cidrBlock</propertyName>
                                     <propertySheet>
                                         <property>
                                             <propertyName>formType</propertyName>
@@ -5327,7 +5327,7 @@
             </formalParameter>
 
             <formalParameter>
-                <formalParameterName>VpcName</formalParameterName>
+                <formalParameterName>vpcName</formalParameterName>
                 <defaultValue />
                 <description>Name to be given to VPC.</description>
                 <required>0</required>
@@ -5335,7 +5335,7 @@
             </formalParameter>
 
             <formalParameter>
-                <formalParameterName>CidrBlock</formalParameterName>
+                <formalParameterName>cidrBlock</formalParameterName>
                 <defaultValue />
                 <description>The range of IPs to use for your VPC, in CIDR format, for example,10.0.0.0/24.Block size must be between a /16 netmask and /28 netmask.</description>
                 <required>1</required>
