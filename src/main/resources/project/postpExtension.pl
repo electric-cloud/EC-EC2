@@ -184,6 +184,14 @@ push (@::gMatchers,
     },
 );
 
+push (@::gMatchers,
+    {
+        id =>              "Subnet created",
+        pattern =>          q{Subnet with ID\s(.+)\screated},
+        action =>           q{replaceSummary("Subnet with ID $1 created");},
+    },
+);
+
 push (@::gMatchers, 
     {
         id =>              "amazon error",
