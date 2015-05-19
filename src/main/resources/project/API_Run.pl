@@ -909,7 +909,7 @@ sub API_CreateVPC {
                                 mesg(10, "SubnetState\n");
                                 mesg(10, "    " . $subnet->getSubnetState() . "\n");
                                if ("$propResult" ne "") {
-                                     $opts->{pdb}->setProp($propResult . "/SubnetStat", $subnet->getSubnetState());
+                                     $opts->{pdb}->setProp($propResult . "/SubnetState", $subnet->getSubnetState());
                                }
 
                             }
@@ -944,7 +944,7 @@ sub API_CreateVPC {
                                mesg(10, "AvailableIpAddressCount\n");
                                mesg(10, "    " . $subnet->getAvailableIpAddressCount() . "\n");
                                if ("$propResult" ne "") {
-                                     $opts->{pdb}->setProp($propResult . "/AvailableIpAddressCoun", $subnet->getAvailableIpAddressCount());
+                                     $opts->{pdb}->setProp($propResult . "/AvailableIpAddressCount", $subnet->getAvailableIpAddressCount());
                                }
                            }
                            if ($subnet->isSetAvailabilityZone())
