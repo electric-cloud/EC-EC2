@@ -176,6 +176,14 @@ push (@::gMatchers,
     },
 );
 
+push (@::gMatchers,
+    {
+        id =>              "VPC created",
+        pattern =>          q{VPC\s(.+)\screated},
+        action =>           q{replaceSummary("VPC $1 created");},
+    },
+);
+
 push (@::gMatchers, 
     {
         id =>              "amazon error",

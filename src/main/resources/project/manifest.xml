@@ -1629,6 +1629,10 @@
     <xpath>//procedure[procedureName=&quot;API_CreateKey&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
   <file>
+    <path>ui_forms/API_CreateVPC.xml</path>
+    <xpath>//procedure[procedureName=&quot;API_CreateVPC&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
+  </file>
+  <file>
     <path>ui_forms/API_CreateTags.xml</path>
     <xpath>//procedure[procedureName=&quot;API_CreateTags&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>

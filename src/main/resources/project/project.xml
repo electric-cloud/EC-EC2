@@ -5249,6 +5249,150 @@
                 </propertySheet>
             </step>
         </procedure>
+
+        <procedure>
+            <procedureName>API_CreateVPC</procedureName>
+            <description>Create a new Virtual Private Network.</description>
+            <jobNameTemplate>EC2-createVPC-$[jobId]</jobNameTemplate>
+            <resourceName/>
+            <workspaceName>default</workspaceName>
+            <propertySheet>
+                <property>
+                    <propertyName>ec_customEditorData</propertyName>
+                    <propertySheet>
+                        <property>
+                            <propertyName>parameters</propertyName>
+                            <propertySheet>
+                                <property>
+                                    <propertyName>config</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+                                <property>
+                                    <propertyName>vpcName</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+
+                                    </propertySheet>
+                                </property>
+                                <property>
+                                    <propertyName>cidrBlock</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+
+                                    </propertySheet>
+                                </property>
+
+                                <property>
+                                    <propertyName>propResult</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+
+                                    </propertySheet>
+                                </property>
+                            </propertySheet>
+                        </property>
+                    </propertySheet>
+                </property>
+                <property>
+                    <propertyName>ec_parameterForm</propertyName>
+                    <description/>
+                    <expandable>1</expandable>
+                    <value/>
+                </property>
+            </propertySheet>
+            <formalParameter>
+                <formalParameterName>config</formalParameterName>
+                <defaultValue />
+                <description>The name of the config which holds all the connection information. This must reference a valid existing configuration.</description>
+                <required>1</required>
+                <type>entry</type>
+            </formalParameter>
+
+            <formalParameter>
+                <formalParameterName>vpcName</formalParameterName>
+                <defaultValue />
+                <description>Name to be given to VPC.</description>
+                <required>0</required>
+                <type>entry</type>
+            </formalParameter>
+
+            <formalParameter>
+                <formalParameterName>cidrBlock</formalParameterName>
+                <defaultValue />
+                <description>The range of IPs to use for your VPC, in CIDR format, for example,10.0.0.0/24.Block size must be between a /16 netmask and /28 netmask.</description>
+                <required>1</required>
+                <type>entry</type>
+            </formalParameter>
+
+            <formalParameter>
+                <formalParameterName>propResult</formalParameterName>
+                <defaultValue />
+                <description>Where to put the result. If not specified, the result is only printed.</description>
+                <required>0</required>
+                <type>select</type>
+            </formalParameter>
+            <step>
+                <stepName>CreateVPC</stepName>
+                <alwaysRun>0</alwaysRun>
+                <broadcast>0</broadcast>
+                <condition/>
+                <description/>
+                <errorHandling>failProcedure</errorHandling>
+                <exclusive>0</exclusive>
+                <parallel>0</parallel>
+                <releaseExclusive>0</releaseExclusive>
+                <resourceName/>
+                <retries>0</retries>
+                <subprocedure>API_Run</subprocedure>
+                <subproject>/plugins/EC-EC2/project</subproject>
+                <postProcessor>postp --loadProperty "/myProject/postpExtension"</postProcessor>
+                <timeLimit/>
+                <timeLimitUnits>minutes</timeLimitUnits>
+                <actualParameters>
+                    <property>
+                        <propertyName>config</propertyName>
+                        <expandable>1</expandable>
+                        <value>$[config]</value>
+                    </property>
+                    <property>
+                        <propertyName>method</propertyName>
+                        <expandable>1</expandable>
+                        <value>API_CreateVPC</value>
+                    </property>
+                </actualParameters>
+                <propertySheet>
+                    <property>
+                        <propertyName>ec_customEditorData</propertyName>
+                        <propertySheet>
+                            <property>
+                                <propertyName>formType</propertyName>
+                                <expandable>1</expandable>
+                                <value>procedure</value>
+                            </property>
+                        </propertySheet>
+                    </property>
+                </propertySheet>
+            </step>
+        </procedure>
+
         <procedure>
             <procedureName>API_DeleteKey</procedureName>
             <description>Delete security Key pair</description>
