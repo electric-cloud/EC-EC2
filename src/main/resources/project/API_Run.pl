@@ -880,8 +880,8 @@ sub API_CreateVPC {
         mesg(1, "--Creating subnet -------\n");
 
         my $subnetName = getOptionalParam("subnetName", $opts);
-        my $CIDRBlock = getRequiredParam("CidrBlock",  $opts);
-        my $vpcId = getRequiredParam("VpcId",  $opts);
+        my $cidrBlock = getRequiredParam("cidrBlock",  $opts);
+        my $vpcId = getRequiredParam("vpcId",  $opts);
         my $availabilityZone = getRequiredParam("availabilityZone",  $opts);
         my $propResult = getOptionalParam("propResult", $opts);
         my $subnetId = "";
@@ -889,7 +889,7 @@ sub API_CreateVPC {
         my $createSubnetResult;
 
         mesg(1, "Create request...\n");
-        my $request = new Amazon::EC2::Model::CreateSubnetRequest({ "VpcId" => "$vpcId", "CidrBlock" => "$CIDRBlock", "AvailabilityZone" => "$availabilityZone" });
+        my $request = new Amazon::EC2::Model::CreateSubnetRequest({ "VpcId" => "$vpcId", "CidrBlock" => "$cidrBlock", "AvailabilityZone" => "$availabilityZone" });
 
         eval {
 

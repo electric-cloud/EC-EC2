@@ -5431,7 +5431,7 @@
                                 </property>
 
                                 <property>
-                                    <propertyName>VpcId</propertyName>
+                                    <propertyName>vpcId</propertyName>
                                     <propertySheet>
                                         <property>
                                             <propertyName>formType</propertyName>
@@ -5442,7 +5442,7 @@
                                 </property>
 
                                 <property>
-                                    <propertyName>CidrBlock</propertyName>
+                                    <propertyName>cidrBlock</propertyName>
                                     <propertySheet>
                                         <property>
                                             <propertyName>formType</propertyName>
@@ -5500,7 +5500,7 @@
                 <type>entry</type>
             </formalParameter>
             <formalParameter>
-                <formalParameterName>CidrBlock</formalParameterName>
+                <formalParameterName>cidrBlock</formalParameterName>
                 <defaultValue/>
                 <description>The range of IPs to use in subnet, in CIDR format, for example,10.0.0.0/24.The range of IP addresses in subnet must be subset of IP address in VPC.Size subnet can equal the size of VPC.</description>
                 <required>1</required>
@@ -5514,7 +5514,7 @@
                 <type>entry</type>
             </formalParameter>
             <formalParameter>
-                <formalParameterName>VpcId</formalParameterName>
+                <formalParameterName>vpcId</formalParameterName>
                 <defaultValue/>
                 <description>VPC to use for this subnet.</description>
                 <required>1</required>

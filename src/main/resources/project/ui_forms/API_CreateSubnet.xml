@@ -18,7 +18,7 @@
     <formElement>
         <type>entry</type>
         <label>CIDR Block:</label>
-        <property>CidrBlock</property>
+        <property>cidrBlock</property>
         <value/>
         <required>1</required>
         <documentation>The range of IPs to use in subnet, in CIDR format, for example,10.0.0.0/24.The range of IP addresses in subnet must be subset of IP addresses in VPC.Size subnet can equal the size of VPC.</documentation>
@@ -33,7 +33,7 @@
     <formElement>
         <type>entry</type>
         <label>VPC ID:</label>
-        <property>VpcId</property>
+        <property>vpcId</property>
         <required>1</required>
         <documentation>VPC to use for this subnet.</documentation>
     </formElement>
