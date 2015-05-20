@@ -760,15 +760,15 @@ sub API_CreateVPC {
 
     mesg( 1, "--Creating Amazon VPC -------\n" );
 
-    my $VpcName = getOptionalParam( "VpcName", $opts );
-    my $CIDRBlock = getRequiredParam( "CidrBlock", $opts );
+    my $vpcName = getOptionalParam( "vpcName", $opts );
+    my $cidrBlock = getRequiredParam( "cidrBlock", $opts );
     my $propResult = getOptionalParam( "propResult", $opts );
     my $VpcId;
     my $VpcState;
 
     mesg( 1, "Create request...\n" );
     my $request = new Amazon::EC2::Model::CreateVpcRequest(
-        { "CidrBlock" => "$CIDRBlock" } );
+        { "CidrBlock" => "$cidrBlock" } );
 
     eval {
 
@@ -870,10 +870,10 @@ sub API_CreateVPC {
     }
 
     mesg( 1, "VPC $VpcId created\n" );
-    if ($VpcName) {
+    if ($vpcName) {
 
         # Assign name to VPC if provided by user
-        createTag( $VpcId, "Name", $VpcName, $service );
+        createTag( $VpcId, "Name", $vpcName, $service );
     }
     exit 0;
 }
@@ -884,8 +884,8 @@ sub API_CreateSubnet {
     mesg( 1, "--Creating subnet -------\n" );
 
     my $subnetName = getOptionalParam( "subnetName", $opts );
-    my $CIDRBlock        = getRequiredParam( "CidrBlock",        $opts );
-    my $vpcId            = getRequiredParam( "VpcId",            $opts );
+    my $cidrBlock        = getRequiredParam( "cidrBlock",        $opts );
+    my $vpcId            = getRequiredParam( "vpcId",            $opts );
     my $availabilityZone = getRequiredParam( "availabilityZone", $opts );
     my $propResult = getOptionalParam( "propResult", $opts );
     my $subnetId = "";
@@ -896,7 +896,7 @@ sub API_CreateSubnet {
     my $request = new Amazon::EC2::Model::CreateSubnetRequest(
         {
             "VpcId"            => "$vpcId",
-            "CidrBlock"        => "$CIDRBlock",
+            "CidrBlock"        => "$cidrBlock",
             "AvailabilityZone" => "$availabilityZone"
         }
     );
@@ -920,7 +920,7 @@ sub API_CreateSubnet {
                     mesg( 10, "    " . $subnet->getSubnetState() . "\n" );
                     if ( "$propResult" ne "" ) {
                         $opts->{pdb}->setProp(
-                            $propResult . "/SubnetStat",
+                            $propResult . "/SubnetState",
                             $subnet->getSubnetState()
                         );
                     }
@@ -961,7 +961,7 @@ sub API_CreateSubnet {
                         "    " . $subnet->getAvailableIpAddressCount() . "\n" );
                     if ( "$propResult" ne "" ) {
                         $opts->{pdb}->setProp(
-                            $propResult . "/AvailableIpAddressCoun",
+                            $propResult . "/AvailableIpAddressCount",
                             $subnet->getAvailableIpAddressCount()
                         );
                     }
@@ -2253,7 +2253,7 @@ sub API_RunInstance {
     if ($privateIp) {
         $requestParameters{"PrivateIpAddress"} = "$privateIp";
     }
-    
+
     eval {
 
         $request =

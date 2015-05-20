@@ -14,9 +14,9 @@
     </formElement>
     <formElement>
         <type>entry</type>
-        <label>Resource Pool:</label>
+        <label>Resource Pool to use:</label>
         <property>resource_pool</property>
-        <documentation>The name of the pool of resources on which the integration steps can run. </documentation>
+        <documentation>The name of the pool of resources on which the plugin procedure steps can run.</documentation>
         <required>1</required>
     </formElement>
     <formElement>
