@@ -155,8 +155,8 @@
           <td>The service URL for the EC2 service. For the Amazon public EC2, this should be <i>https://ec2.amazonaws.com</i>. (Required)</td>
         </tr>
         <tr>
-          <td class='required'>Resource Pool</td>
-          <td>The name of the pool of resources on which the integration steps can run. The default is <i>default</i> (Required)</td>
+            <td class='required'>Resource Pool to use</td>
+            <td>The name of the pool of resources on which the plugin procedure steps can run. The default is <i>default</i> (Required)</td>
         </tr>
         <tr>
           <td class='required'>Workspace</td>
