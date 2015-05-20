@@ -39,6 +39,7 @@ use Amazon::EC2::Model::CreateSubnetRequest;
 use Amazon::EC2::Model::DeleteVpcRequest;
 use Amazon::EC2::Model::DeleteSubnetRequest;
 use Amazon::EC2::Model::Placement;
+use Amazon::EC2::Model::Filter;
 
 $::gMockData     = false;
 $::gMockRegistry = q{};
@@ -1016,43 +1017,68 @@ sub API_CreateVPC {
         my ( $opts, $service ) = @_;
         my $request;
         my $response;
+        my $vpcId = getRequiredParam( "vpcId", $opts );
+        my $subnetList;
+        my @listOfSubnets;
 
+        ## Get the list of all subnets within VPC.
+        my $subnetFilter = new Amazon::EC2::Model::Filter(
+            { "Name" => "vpc-id", "Value" => "$vpcId" } );
 
+        require Amazon::EC2::Model::DescribeSubnetsRequest;
+        require Amazon::EC2::Model::DescribeSubnetsResponse;
+        require Amazon::EC2::Model::DescribeSubnetsResult;
 
-        my $subnetIds = getRequiredParam( "subnetIds" , $opts );
-        my @listOfSubnets = split( ",", $subnetIds);
+        eval {
+            my $describeRequest = new Amazon::EC2::Model::DescribeSubnetsRequest();
+            $describeRequest->setFilter($subnetFilter);
+            my $describeSubnetResponse =
+              $service->describeSubnets($describeRequest);
+            if ( $describeSubnetResponse->isSetDescribeSubnetsResult() ) {
+                my $describeSubnetsResult =
+                  $describeSubnetResponse->getDescribeSubnetsResult();
+                $subnetList = $describeSubnetsResult->getSubnet();
+                foreach $subnet (@$subnetList) {
+                     if ($subnet->isSetSubnetId())
+                     {
+                        push @listOfSubnets, $subnet->getSubnetId();
+                     }
+                }
+            }
+        };
+        if ($@) { throwEC2Error($@); }
 
         foreach $subnet (@listOfSubnets) {
 
             mesg( 1, "--Deleting subnet $subnet -------\n" );
-            $request =
-                  new Amazon::EC2::Model::DeleteSubnetRequest( { "SubnetId" => "$subnet" } );
+            $request = new Amazon::EC2::Model::DeleteSubnetRequest(
+                { "SubnetId" => "$subnet" } );
 
             eval {
 
-                    $response = $service->deleteSubnet($request);
-                    if ($response->isSetResponseMetadata()) {
-                        mesg( 1, "ResponseMetadata\n");
-                        my $responseMetadata = $response->getResponseMetadata();
-                        if ($responseMetadata->isSetRequestId())
-                        {
-                             mesg( 1, "RequestId\n");
-                             mesg( 1,
-                                "          " . $responseMetadata->getRequestId() . "\n" );
-                            if ( "$propResult" ne "" ) {
-                                $opts->{pdb}->setProp(
-                                    $propResult . "/$subnet/SubnetDeleteRequestId",
-                                    $responseMetadata->getRequestId()
-                                );
-                            }
+                $response = $service->deleteSubnet($request);
+                if ( $response->isSetResponseMetadata() ) {
+                    mesg( 1, "ResponseMetadata\n" );
+                    my $responseMetadata = $response->getResponseMetadata();
+                    if ( $responseMetadata->isSetRequestId() ) {
+                        mesg( 1, "RequestId\n" );
+                        mesg( 1,
+                                "          "
+                              . $responseMetadata->getRequestId()
+                              . "\n" );
+                        if ( "$propResult" ne "" ) {
+                            $opts->{pdb}->setProp(
+                                $propResult . "/$subnet/SubnetDeleteRequestId",
+                                $responseMetadata->getRequestId() );
                         }
                     }
-                    mesg( 1, "--Deleted subnet $subnet -------\n" );
+                }
+                mesg( 1, "--Deleted subnet $subnet -------\n" );
             };
             if ($@) { throwEC2Error($@); }
 
         }
-        my $vpcId = getRequiredParam( "vpcId", $opts );
+
         my $propResult = getOptionalParam( "propResult", $opts );
 
         mesg( 1, "--Deleting VPC $vpcId -------\n" );
