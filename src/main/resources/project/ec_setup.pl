@@ -153,6 +153,13 @@ my %createSubnet = (
     category    => "Resource Management"
 );
 
+my %deleteVPC = (
+    label       => "EC2 - Delete VPC",
+    procedure   => "API_DeleteVPC",
+    description => "Delete existing Virtual Private Cloud.",
+    category    => "Resource Management"
+);
+
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - CloudManagerShrink");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - CloudManagerGrow");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - API_AllocateIP");
@@ -179,7 +186,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - Tear Down R
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - Test");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - Create VPC");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - API_CreateSubnet");
-
+$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC-EC2 - API_DeleteVPC");
 
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - CloudManagerShrink");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - CloudManagerGrow");
@@ -207,6 +214,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Tear Down Reso
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Test");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_CreateVPC");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_CreateSubnet");
+$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - API_DeleteVPC");
 
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Allocate IP");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Associate IP");
@@ -230,7 +238,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Tear Down Reso
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Create VPC");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Create Subnet");
 
-@::createStepPickerSteps = (\%allocateip, \%associateip, \%attachvolumes, \%createimage, \%createkey, \%deletekey, \%deletevolume, \%releaseip, \%runinstances, \%startinstance, \%stopinstance, \%terminate, \%autocleanup, \%autodeploy, \%autopause, \%autoresume, \%snapattachedvolume, \%test, \%teardownresource, \%createTags, \%createVPC, \%createSubnet);
+@::createStepPickerSteps = (\%allocateip, \%associateip, \%attachvolumes, \%createimage, \%createkey, \%deletekey, \%deletevolume, \%releaseip, \%runinstances, \%startinstance, \%stopinstance, \%terminate, \%autocleanup, \%autodeploy, \%autopause, \%autoresume, \%snapattachedvolume, \%test, \%teardownresource, \%createTags, \%createVPC, \%createSubnet, \%deleteVPC);
 
 if ($promoteAction ne '') {
     my @objTypes = ('projects', 'resources', 'workspaces');

@@ -65,6 +65,10 @@ $xpath = $ec->attachCredential($projName, $credName,
      stepName => "CreateSubnet"});
 $errors .= $ec->checkAllErrors($xpath);
 
+$xpath = $ec->attachCredential($projName, $credName,
+    {procedureName => "API_DeleteVPC",
+     stepName => "DeleteVPC"});
+$errors .= $ec->checkAllErrors($xpath);
 
 if ("$errors" ne "") {
     # Cleanup the partially created configuration we just created
