@@ -2395,6 +2395,104 @@ sub API_CreateVPC {
         exit 0;
     }
 
+    sub MOCK_API_RunInstance {
+            my ( $opts, $service ) = @_;
+
+            mesg( 1, "--Run Amazon EC2 Instances -------\n" );
+
+            my $ami          = getRequiredParam( "image",        $opts );
+            my $key          = getRequiredParam( "keyname",      $opts );
+            my $instanceType = getRequiredParam( "instanceType", $opts );
+            my $group        = getRequiredParam( "group",        $opts );
+            my $zone         = getRequiredParam( "zone",         $opts );
+            my $count        = getRequiredParam( "count",        $opts );
+            my $poolName = getOptionalParam( "res_poolName", $opts );
+            my $propResult = getPropResultLocationForPool( $opts, $poolName );
+
+            my $workspace = getOptionalParam( "res_workspace", $opts );
+            my $port      = getOptionalParam( "res_port",      $opts );
+
+            my $userData = getOptionalParam( "userData", $opts );
+            if ( "$userData" eq "" ) {
+                $userData = MIME::Base64::encode_base64("none");
+            }
+            else {
+                $userData = MIME::Base64::encode_base64("$userData");
+            }
+
+            mesg( 1,
+    "Running $count instance(s) of $ami in zone $zone as type $instanceType with group $group\n"
+            );
+
+            ## run new instance
+
+            my $reservation = "";
+
+            for ( my $num = 0 ; $num < $count ; $num++ ) {
+                my $r  = getRandKey(9999999);
+                my $id = "i-$r";
+                $opts->{pdb}
+                  ->setProp( "$::gMockRegistry/Instances/$id/state", "running" );
+                $opts->{pdb}
+                  ->setProp( "$::gMockRegistry/Instances/$id/key", "$key" );
+                $opts->{pdb}
+                  ->setProp( "$::gMockRegistry/Instances/$id/group", "$group" );
+                $opts->{pdb}
+                  ->setProp( "$::gMockRegistry/Instances/$id/zone", "$zone" );
+                $opts->{pdb}->setProp( "$::gMockRegistry/Instances/$id/userData",
+                    "$userData" );
+                $opts->{pdb}
+                  ->setProp( "$::gMockRegistry/Instances/$id/ami", "$ami" );
+                $opts->{pdb}
+                  ->setProp( "$::gMockRegistry/Instances/$id/root", "ebs" );
+
+                my $publicIP = $opts->{pdb}->getProp("/myProject/publicIP");
+                if ( $publicIP eq "" ) {
+                    $publicIP =
+                      "192.168." . getRandKey(255) . "." . getRandKey(255);
+                }
+                my $privateIP =
+                  "192.168." . getRandKey(255) . "." . getRandKey(255);
+                $opts->{pdb}->setProp( "$::gMockRegistry/Instances/$id/prvdns",
+                    "$privateIP" );
+                $opts->{pdb}
+                  ->setProp( "$::gMockRegistry/Instances/$id/pubdns", "$publicIP" );
+
+                my $resource = "";
+                if ( "$poolName" ne "" ) {
+                    $resource =
+                      makeNewResource( $opts, $publicIP, $poolName, $workspace,
+                        $port );
+                }
+
+                if ( "$propResult" ne "" ) {
+                    $opts->{pdb}->setProp( "$propResult/Instance-$id/AMI", "$ami" );
+                    $opts->{pdb}
+                      ->setProp( "$propResult/Instance-$id/RootType", "ebs" );
+                    $opts->{pdb}
+                      ->setProp( "$propResult/Instance-$id/Address", "$publicIP" );
+                    $opts->{pdb}
+                      ->setProp( "$propResult/Instance-$id/Private", "$privateIP" );
+                    $opts->{pdb}
+                      ->setProp( "$propResult/Instance-$id/Zone", "$zone" );
+                    $opts->{pdb}
+                      ->setProp( "$propResult/Instance-$id/Resource", "$resource" );
+                }
+                if ( "$instlist" ne "" ) { $instlist .= ";"; }
+                $instlist .= "$id";
+                mesg( 1, "Adding $id to instance list\n" );
+            }
+
+            if ( "$propResult" ne "" ) {
+                mesg( 1, "Saving instance list $instlist\n" );
+                $opts->{pdb}->setProp( "$propResult/InstanceList", $instlist );
+                $opts->{pdb}->setProp( "$propResult/Reservation",  $reservation );
+                $opts->{pdb}->setProp( "$propResult/Count",        $count );
+            }
+
+            exit 0;
+        }
+
     sub deleteResource() {
         my ( $opts, $resource ) = @_;
 
