@@ -2493,6 +2493,68 @@ sub API_CreateVPC {
             exit 0;
         }
 
+    sub makeNewResource() {
+            my ( $opts, $host, $pool, $workspace, $port ) = @_;
+
+            # host must be present
+            if ( "$host" eq "" ) {
+                mesg( 1, "No host provided to makeNewResource.\n" );
+                return "";
+            }
+
+       # workspace and port can be blank
+       # default the port to 7800, the default agent port, if port was not specified
+            if ( !$port ) {
+                $port = 7800;
+            }
+
+            mesg( 1, "Creating resource for machine $host in pool $pool\n" );
+
+            my $resName = "$pool-$now_$seq";
+
+            #-------------------------------------
+            # Create the resource
+            #-------------------------------------
+            for ( my $seq = 1 ; $seq < 9999 ; $seq++ ) {
+                my $now = time();
+                $resName = "$pool" . "-" . $now . "_" . $seq;
+                my $cmdrresult = $opts->{pdb}->getCmdr()->createResource(
+                    $resName,
+                    {
+                        description   => "EC2 provisioned resource (dynamic)",
+                        workspaceName => "$workspace",
+                        port          => "$port",
+                        hostName      => "$host",
+
+                        #pools         => "$pool"
+                    }
+                );
+
+                # resource created.
+
+                # Check for error return
+                my $errMsg = $opts->{pdb}->getCmdr()->checkAllErrors($cmdrresult);
+                if ( $errMsg ne "" ) {
+                    if ( $errMsg =~ /DuplicateResourceName/ ) {
+                        mesg( 4, "resource $resName exists\n" );
+                        next;
+                    }
+                    else {
+                        mesg( 1, "Error: $errMsg\n" );
+                        return "";
+                    }
+                }
+                mesg( 1, "Resource Name:$resName\n" );
+                $opts->{pdb}->getCmdr()
+                  ->addResourcesToPool( $pool, { resourceName => [$resName] } );
+
+                return $resName;
+            }
+
+            return "";
+
+        }
+
     sub deleteResource() {
         my ( $opts, $resource ) = @_;
 
