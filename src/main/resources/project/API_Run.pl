@@ -1858,7 +1858,52 @@ sub API_TerminateInstances {
         if ($@) { throwEC2Error($@); }
         $termCount++;
     }
-    mesg( 1, "$termCount instances terminated.\n" );
+
+    my $terminated = 0;         # instances terminated till now
+    my $total   = @list;        # total number of instance to terminate
+    my $instanceState = "";     # initial state of an instance
+
+     foreach (@list) {
+         my $instanceId = $_;
+
+            while($instanceState ne "terminated"){
+                eval {
+                    my $request = new Amazon::EC2::Model::DescribeInstancesRequest(
+                        { "InstanceId" => "$instanceId" } );
+                    my $response = $service->describeInstances($request);
+
+                    if ( $response->isSetDescribeInstancesResult() ) {
+                        my $result  = $response->getDescribeInstancesResult();
+                        my $resList = $result->getReservation();
+                        foreach (@$resList) {
+                            my $res   = $_;
+                            $instanceList = $res->getRunningInstance();
+                            foreach (@$instanceList) {
+                                my $instance = $_;
+                                my $id       = $instance->getInstanceId();
+                                if ( "$id" ne "$instanceId" ) { next; }
+                                my $stateObj = $instance->getInstanceState();
+                                $instanceState   = $stateObj->getName();
+                                mesg( 1, "Evaluating instance $id in state $instanceState\n" );
+                                $total += 1;
+                                if ( "$instanceState" eq "terminated" )
+                                {
+                                    $terminated += 1;
+                                } else {
+                                    # Wait for some time and check the state again
+                                    sleep(30);
+                                }
+                            }
+                        }
+                    }
+                };if ($@) { throwEC2Error($@); }
+
+            } # end of while
+            # Instance terminated successfully, reset the flag for next instance in the list.
+            $instanceState = "";
+    } # end of instance list
+
+    mesg( 1, "$terminated instances terminated.\n" );
 
     mesg( 1, "Deleting resources.\n" );
     my @rlist = split( /;/, $resources );
