@@ -1111,7 +1111,7 @@ sub API_CreateVPC {
         mesg( 1, "VPC $vpcId deleted.\n" );
         exit 0;
     }
-
+    
     sub MOCK_API_CreateKeyPair {
         my ( $opts, $service ) = @_;
 
