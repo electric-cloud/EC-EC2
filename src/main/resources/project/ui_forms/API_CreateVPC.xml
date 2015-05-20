@@ -10,7 +10,7 @@
     <formElement>
         <type>entry</type>
         <label>VPC Name:</label>
-        <property>VpcName</property>
+        <property>vpcName</property>
         <value/>
         <required>0</required>
         <documentation>Name to be given to VPC.</documentation>
@@ -18,7 +18,7 @@
     <formElement>
         <type>entry</type>
         <label>CIDR Block:</label>
-        <property>CidrBlock</property>
+        <property>cidrBlock</property>
         <value/>
         <required>1</required>
         <documentation>The range of IPs to use for your VPC, in CIDR format, for example,10.0.0.0/24.Block size must be between a /16 netmask and /28 netmask.</documentation>
