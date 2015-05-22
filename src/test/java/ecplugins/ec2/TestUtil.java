@@ -16,6 +16,7 @@ import org.json.JSONObject;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.HashMap;
 import java.util.Properties;
 import java.util.Random;
 import java.util.regex.Matcher;
@@ -321,5 +322,17 @@ public class TestUtil {
             ec2Client = new AmazonEC2Client(credentials);
         }
         return  ec2Client;
+    }
+
+    public static JSONArray getJSONActualParameterArray(HashMap<String,String> actualParameters) throws JSONException {
+
+        JSONArray actualParameterArray = new JSONArray();
+        for(String key: actualParameters.keySet()){
+            actualParameterArray.put(new JSONObject()
+                    .put("actualParameterName", key)
+                    .put("value", actualParameters.get(key)));
+
+        }
+        return actualParameterArray;
     }
 }

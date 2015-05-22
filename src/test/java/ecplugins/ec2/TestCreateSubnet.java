@@ -8,37 +8,31 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Created by clogeny on 5/13/2015.
- */
 public class TestCreateSubnet {
 
-    private static Properties props;
-    private static AmazonEC2Client ec2Client;
-    private static String VpcId = null;
-    private static String SubnetId = null;
+    private static Properties m_props;
+    private static AmazonEC2Client m_ec2Client;
+    private static String m_vpcId = null;
+    private static String m_subnetId = null;
 
     @BeforeClass
     public static void  setup() throws Exception {
 
-        props = TestUtil.getProperties();
+        m_props = TestUtil.getProperties();
         TestUtil.deleteConfiguration();
         TestUtil.createConfiguration();
-        ec2Client = TestUtil.getEC2client();
+        m_ec2Client = TestUtil.getEC2client();
 
         // Create a VPC before creating a subnet
-        CreateVpcResult createVpcResult = ec2Client.createVpc(new CreateVpcRequest("10.0.0.0/20"));
+        CreateVpcResult createVpcResult = m_ec2Client.createVpc(new CreateVpcRequest("10.0.0.0/20"));
         Vpc vpc = createVpcResult.getVpc();
-        VpcId = vpc.getVpcId();
+        m_vpcId = vpc.getVpcId();
 
     }
 
@@ -56,31 +50,16 @@ public class TestCreateSubnet {
         jo.put("projectName", "EC-EC2-" + StringConstants.PLUGIN_VERSION);
         jo.put("procedureName", "API_CreateSubnet");
 
+        HashMap actualParameters = new HashMap();
 
-        JSONArray actualParameterArray = new JSONArray();
-        actualParameterArray.put(new JSONObject()
-                .put("value", "ec2cfg")
-                .put("actualParameterName", "config"));
+        actualParameters.put("config","ec2cfg");
+        actualParameters.put("subnetName",subnetName);
+        actualParameters.put("cidrBlock",cidrBlock);
+        actualParameters.put("availabilityZone",m_props.getProperty(StringConstants.AVAILABILITY_ZONE));
+        actualParameters.put("vpcId",m_vpcId);
+        actualParameters.put("propResult", "/myJob");
 
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "subnetName")
-                .put("value", subnetName));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "CidrBlock")
-                .put("value", cidrBlock));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "availabilityZone")
-                .put("value", props.getProperty(StringConstants.AVAILABILITY_ZONE)));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "VpcId")
-                .put("value", VpcId));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "propResult")
-                .put("value", "/myJob"));
+        JSONArray actualParameterArray = TestUtil.getJSONActualParameterArray(actualParameters);
 
         jo.put("actualParameter", actualParameterArray);
 
@@ -98,15 +77,15 @@ public class TestCreateSubnet {
         for (int i = 0 ; i < objectArray.length(); i++) {
             object = objectArray.getJSONObject(i);
             if (object.getJSONObject("property").get("propertyName").toString().equalsIgnoreCase("SubnetId")) {
-                SubnetId = object.getJSONObject("property").get("value").toString();
+                m_subnetId = object.getJSONObject("property").get("value").toString();
             }
         }
 
         // SubnetId is the must output property to be stored in property sheet.
-        assertNotNull("No subnet ID is set in property sheet",SubnetId);
+        assertNotNull("No subnet ID is set in property sheet",m_subnetId);
 
-        DescribeSubnetsResult describeSubnetsResult = ec2Client.describeSubnets(new DescribeSubnetsRequest().withSubnetIds(SubnetId));
-        assertNotNull("No subnet with id " + SubnetId + " found",describeSubnetsResult);
+        DescribeSubnetsResult describeSubnetsResult = m_ec2Client.describeSubnets(new DescribeSubnetsRequest().withSubnetIds(m_subnetId));
+        assertNotNull("No subnet with id " + m_subnetId + " found",describeSubnetsResult);
 
         List<Subnet> subnetList = describeSubnetsResult.getSubnets();
         Iterator<Subnet> i = subnetList.listIterator();
@@ -115,7 +94,7 @@ public class TestCreateSubnet {
 
         while (i.hasNext()) {
             subnet = i.next();
-            if (subnet.getSubnetId().equalsIgnoreCase(SubnetId)){
+            if (subnet.getSubnetId().equalsIgnoreCase(m_subnetId)){
                 requiredSubnet = subnet;
                 break;
             }
@@ -140,8 +119,8 @@ public class TestCreateSubnet {
 
         assertNotNull("No name got attached to subnet", requiredTag);
         assertEquals("Subnet name does not match", requiredTag.getValue(), subnetName);
-        assertEquals("Availability zone not set properly", requiredSubnet.getAvailabilityZone(), props.getProperty(StringConstants.AVAILABILITY_ZONE));
-        assertEquals("Subnet created in some other VPC", VpcId, requiredSubnet.getVpcId());
+        assertEquals("Availability zone not set properly", requiredSubnet.getAvailabilityZone(), m_props.getProperty(StringConstants.AVAILABILITY_ZONE));
+        assertEquals("Subnet created in some other VPC", m_vpcId, requiredSubnet.getVpcId());
 
     }
 
@@ -155,31 +134,16 @@ public class TestCreateSubnet {
         jo.put("projectName", "EC-EC2-" + StringConstants.PLUGIN_VERSION);
         jo.put("procedureName", "API_CreateSubnet");
 
+        HashMap actualParameters = new HashMap();
 
-        JSONArray actualParameterArray = new JSONArray();
-        actualParameterArray.put(new JSONObject()
-                .put("value", "ec2cfg")
-                .put("actualParameterName", "config"));
+        actualParameters.put("config","ec2cfg");
+        actualParameters.put("subnetName","AutomatedTest-TestSubnet");
+        actualParameters.put("cidrBlock","SomeRandomString");
+        actualParameters.put("availabilityZone",m_props.getProperty(StringConstants.AVAILABILITY_ZONE));
+        actualParameters.put("vpcId",m_vpcId);
+        actualParameters.put("propResult", "/myJob");
 
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "subnetName")
-                .put("value", "AutomatedTest-TestSubnet"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "CidrBlock")
-                .put("value", "SomeRandomString"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "availabilityZone")
-                .put("value", props.getProperty(StringConstants.AVAILABILITY_ZONE)));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "VpcId")
-                .put("value", VpcId));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "propResult")
-                .put("value", "/myJob"));
+        JSONArray actualParameterArray = TestUtil.getJSONActualParameterArray(actualParameters);
 
         jo.put("actualParameter", actualParameterArray);
 
@@ -217,30 +181,16 @@ public class TestCreateSubnet {
         jo.put("procedureName", "API_CreateSubnet");
 
 
-        JSONArray actualParameterArray = new JSONArray();
-        actualParameterArray.put(new JSONObject()
-                .put("value", "ec2cfg")
-                .put("actualParameterName", "config"));
+        HashMap actualParameters = new HashMap();
 
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "subnetName")
-                .put("value", "AutomatedTest-TestSubnet"));
+        actualParameters.put("config","ec2cfg");
+        actualParameters.put("subnetName","AutomatedTest-TestSubnet");
+        actualParameters.put("cidrBlock","10.0.0.0/20");
+        actualParameters.put("availabilityZone",m_props.getProperty(StringConstants.AVAILABILITY_ZONE) + TestUtil.randInt());
+        actualParameters.put("vpcId",m_vpcId);
+        actualParameters.put("propResult", "/myJob");
 
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "CidrBlock")
-                .put("value", "10.0.0.0/20"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "availabilityZone")
-                .put("value", props.getProperty(StringConstants.AVAILABILITY_ZONE) + TestUtil.randInt()));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "VpcId")
-                .put("value", "vpc-f2537997"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "propResult")
-                .put("value", "/myJob"));
+        JSONArray actualParameterArray = TestUtil.getJSONActualParameterArray(actualParameters);
 
         jo.put("actualParameter", actualParameterArray);
 
@@ -277,31 +227,16 @@ public class TestCreateSubnet {
         jo.put("projectName", "EC-EC2-" + StringConstants.PLUGIN_VERSION);
         jo.put("procedureName", "API_CreateSubnet");
 
+        HashMap actualParameters = new HashMap();
 
-        JSONArray actualParameterArray = new JSONArray();
-        actualParameterArray.put(new JSONObject()
-                .put("value", "ec2cfg")
-                .put("actualParameterName", "config"));
+        actualParameters.put("config","ec2cfg");
+        actualParameters.put("subnetName","AutomatedTest-TestSubnet");
+        actualParameters.put("cidrBlock","10.0.0.0/20");
+        actualParameters.put("availabilityZone",m_props.getProperty(StringConstants.AVAILABILITY_ZONE));
+        actualParameters.put("vpcId","xyzad");
+        actualParameters.put("propResult", "/myJob");
 
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "subnetName")
-                .put("value", "AutomatedTest-TestSubnet"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "CidrBlock")
-                .put("value", "10.0.0.0/20"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "availabilityZone")
-                .put("value", props.getProperty(StringConstants.AVAILABILITY_ZONE)));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "VpcId")
-                .put("value", "xyzad"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "propResult")
-                .put("value", "/myJob"));
+        JSONArray actualParameterArray = TestUtil.getJSONActualParameterArray(actualParameters);
 
         jo.put("actualParameter", actualParameterArray);
 
@@ -334,8 +269,8 @@ public class TestCreateSubnet {
         /*
             Cleanup the vpc and the subnet created.
          */
-        ec2Client.deleteSubnet(new DeleteSubnetRequest(SubnetId));
-        ec2Client.deleteVpc(new DeleteVpcRequest(VpcId));
+        m_ec2Client.deleteSubnet(new DeleteSubnetRequest(m_subnetId));
+        m_ec2Client.deleteVpc(new DeleteVpcRequest(m_vpcId));
     }
 
 }

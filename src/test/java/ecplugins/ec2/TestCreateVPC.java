@@ -7,10 +7,7 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -19,22 +16,20 @@ import org.json.JSONArray;
 
 import org.json.JSONObject;
 
-/**
- * Created by clogeny on 5/13/2015.
- */
+
 public class TestCreateVPC {
 
-    private static Properties props;
-    private static String vpcId = null;
-    private static AmazonEC2Client ec2Client;
+
+    private static String m_vpcId = null;
+    private static AmazonEC2Client m_ec2Client;
 
     @BeforeClass
     public static void  setup() throws Exception {
 
-        props = TestUtil.getProperties();
+
         TestUtil.deleteConfiguration();
         TestUtil.createConfiguration();
-        ec2Client = TestUtil.getEC2client();
+        m_ec2Client = TestUtil.getEC2client();
 
     }
 
@@ -44,30 +39,21 @@ public class TestCreateVPC {
 
         long jobTimeoutMillis = 5 * 60 * 1000;
         String cidrBlock = "10.0.0.0/20";
-        String VpcName = "AutomatedTest-TestVPC";
+        String vpcName = "AutomatedTest-TestVPC";
 
         JSONObject jo = new JSONObject();
 
         jo.put("projectName", "EC-EC2-" + StringConstants.PLUGIN_VERSION);
         jo.put("procedureName", "API_CreateVPC");
 
+        HashMap actualParameters = new HashMap();
 
-        JSONArray actualParameterArray = new JSONArray();
-        actualParameterArray.put(new JSONObject()
-                .put("value", "ec2cfg")
-                .put("actualParameterName", "config"));
+        actualParameters.put("config","ec2cfg");
+        actualParameters.put("vpcName",vpcName);
+        actualParameters.put("cidrBlock",cidrBlock);
+        actualParameters.put("propResult", "/myJob");
 
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "VpcName")
-                .put("value", VpcName));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "CidrBlock")
-                .put("value", cidrBlock));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "propResult")
-                .put("value", "/myJob"));
+        JSONArray actualParameterArray = TestUtil.getJSONActualParameterArray(actualParameters);
 
         jo.put("actualParameter", actualParameterArray);
 
@@ -85,15 +71,15 @@ public class TestCreateVPC {
         for (int i = 0 ; i < objectArray.length(); i++) {
             object = objectArray.getJSONObject(i);
             if (object.getJSONObject("property").get("propertyName").toString().equalsIgnoreCase("VpcId")) {
-                vpcId = object.getJSONObject("property").get("value").toString();
+                m_vpcId = object.getJSONObject("property").get("value").toString();
             }
         }
 
         // VpcId is the must output property to be stored in property sheet.
-        assertNotNull("No VPC ID is set in property sheet",vpcId);
+        assertNotNull("No VPC ID is set in property sheet",m_vpcId);
 
-        DescribeVpcsResult describeVpcsResult = ec2Client.describeVpcs(new DescribeVpcsRequest().withVpcIds(vpcId));
-        assertNotNull("No VPC with id " + vpcId + " found",describeVpcsResult);
+        DescribeVpcsResult describeVpcsResult = m_ec2Client.describeVpcs(new DescribeVpcsRequest().withVpcIds(m_vpcId));
+        assertNotNull("No VPC with id " + m_vpcId + " found",describeVpcsResult);
 
         List<Vpc> vpcList = describeVpcsResult.getVpcs();
         Iterator<Vpc> i = vpcList.listIterator();
@@ -102,7 +88,7 @@ public class TestCreateVPC {
 
         while (i.hasNext()) {
             vpc = i.next();
-            if (vpc.getVpcId().equalsIgnoreCase(vpcId)){
+            if (vpc.getVpcId().equalsIgnoreCase(m_vpcId)){
                 requiredVPC = vpc;
                 break;
             }
@@ -126,7 +112,7 @@ public class TestCreateVPC {
         }
 
         assertNotNull("No name got attached to VPC", requiredTag);
-        assertEquals("VPC name does not match", requiredTag.getValue(), VpcName);
+        assertEquals("VPC name does not match", requiredTag.getValue(), vpcName);
 
     }
 
@@ -140,23 +126,14 @@ public class TestCreateVPC {
         jo.put("projectName", "EC-EC2-" + StringConstants.PLUGIN_VERSION);
         jo.put("procedureName", "API_CreateVPC");
 
+        HashMap actualParameters = new HashMap();
 
-        JSONArray actualParameterArray = new JSONArray();
-        actualParameterArray.put(new JSONObject()
-                .put("value", "ec2cfg")
-                .put("actualParameterName", "config"));
+        actualParameters.put("config","ec2cfg");
+        actualParameters.put("vpcName","AutomatedTest-TestVPC");
+        actualParameters.put("cidrBlock","SomeRandomIp");
+        actualParameters.put("propResult", "/myJob");
 
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "VpcName")
-                .put("value", "AutomatedTest-TestVPC"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "CidrBlock")
-                .put("value", "SomeRandomIp"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "propResult")
-                .put("value", "/myJob"));
+        JSONArray actualParameterArray = TestUtil.getJSONActualParameterArray(actualParameters);
 
         jo.put("actualParameter", actualParameterArray);
 
@@ -189,7 +166,7 @@ public class TestCreateVPC {
         /*
             Cleanup the vpc created by the API_CreateVPC procedure during test
          */
-        ec2Client.deleteVpc(new DeleteVpcRequest(vpcId));
+        m_ec2Client.deleteVpc(new DeleteVpcRequest(m_vpcId));
     }
 
 }

@@ -9,30 +9,23 @@ import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
-import java.util.Properties;
+import java.util.*;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 
-/**
- * Created by clogeny on 5/13/2015.
- */
 public class TestDeleteVPC {
 
-    private static Properties props;
-    private static String vpcId = null;
-    private static AmazonEC2Client ec2Client;
+
+    private static String m_vpcId = null;
+    private static AmazonEC2Client m_ec2Client;
 
     @BeforeClass
     public static void  setup() throws Exception {
 
-        props = TestUtil.getProperties();
         TestUtil.deleteConfiguration();
         TestUtil.createConfiguration();
-        ec2Client = TestUtil.getEC2client();
+        m_ec2Client = TestUtil.getEC2client();
 
     }
 
@@ -41,9 +34,9 @@ public class TestDeleteVPC {
     public  void testDeleteVPC() throws Exception {
 
         // Create a VPC that can be deleted through API_DeleteVPC procedure
-        CreateVpcResult createVpcResult = ec2Client.createVpc(new CreateVpcRequest("10.0.0.0/20"));
+        CreateVpcResult createVpcResult = m_ec2Client.createVpc(new CreateVpcRequest("10.0.0.0/20"));
         Vpc vpc = createVpcResult.getVpc();
-        vpcId = vpc.getVpcId();
+        m_vpcId = vpc.getVpcId();
 
         long jobTimeoutMillis = 5 * 60 * 1000;
 
@@ -52,19 +45,13 @@ public class TestDeleteVPC {
         jo.put("projectName", "EC-EC2-" + StringConstants.PLUGIN_VERSION);
         jo.put("procedureName", "API_DeleteVPC");
 
+        HashMap actualParameters = new HashMap();
 
-        JSONArray actualParameterArray = new JSONArray();
-        actualParameterArray.put(new JSONObject()
-                .put("value", "ec2cfg")
-                .put("actualParameterName", "config"));
+        actualParameters.put("config","ec2cfg");
+        actualParameters.put("vpcId",m_vpcId);
+        actualParameters.put("propResult", "/myJob");
 
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "vpcId")
-                .put("value", vpcId));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "propResult")
-                .put("value", "/myJob"));
+        JSONArray actualParameterArray = TestUtil.getJSONActualParameterArray(actualParameters);
 
         jo.put("actualParameter", actualParameterArray);
 
@@ -76,7 +63,7 @@ public class TestDeleteVPC {
         assertEquals("Job completed with errors", "success", response);
 
         // Following method invocation must throw com.amazonaws.AmazonServiceException
-        DescribeVpcsResult describeVpcsResult = ec2Client.describeVpcs(new DescribeVpcsRequest().withVpcIds(vpcId));
+        DescribeVpcsResult describeVpcsResult = m_ec2Client.describeVpcs(new DescribeVpcsRequest().withVpcIds(m_vpcId));
 
     }
 
@@ -90,19 +77,13 @@ public class TestDeleteVPC {
         jo.put("projectName", "EC-EC2-" + StringConstants.PLUGIN_VERSION);
         jo.put("procedureName", "API_DeleteVPC");
 
+        HashMap actualParameters = new HashMap();
 
-        JSONArray actualParameterArray = new JSONArray();
-        actualParameterArray.put(new JSONObject()
-                .put("value", "ec2cfg")
-                .put("actualParameterName", "config"));
+        actualParameters.put("config","ec2cfg");
+        actualParameters.put("vpcId","SomeRandomID");
+        actualParameters.put("propResult", "/myJob");
 
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "vpcId")
-                .put("value", "SomeRandomID"));
-
-        actualParameterArray.put(new JSONObject()
-                .put("actualParameterName", "propResult")
-                .put("value", "/myJob"));
+        JSONArray actualParameterArray = TestUtil.getJSONActualParameterArray(actualParameters);
 
         jo.put("actualParameter", actualParameterArray);
 
@@ -138,9 +119,9 @@ public class TestDeleteVPC {
             In that case deleteVpc() will throw an exception which is expected and hence catching it here.
          */
         try {
-            ec2Client.deleteVpc(new DeleteVpcRequest(vpcId));
+            m_ec2Client.deleteVpc(new DeleteVpcRequest(m_vpcId));
         } catch (com.amazonaws.AmazonServiceException e){
-             System.out.println("API_DeleteVPC deleted " + vpcId + " successfully.No need of separate cleanup.");
+             System.out.println("API_DeleteVPC deleted " + m_vpcId + " successfully.No need of separate cleanup.");
 
         }
 
