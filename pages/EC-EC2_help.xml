@@ -464,7 +464,7 @@
 
           <h2>API_CreateSubnet</h2>
 
-          <p>This procedure allows you to create a new subnet within Amazon VPC by specifying it's name, CIDR block, VPC ID and availability zone.</p>
+          <p>This procedure allows you to create a new subnet within Amazon VPC by specifying its name, CIDR block, VPC ID and availability zone.</p>
 
           <h3>Input</h3>
 
@@ -489,15 +489,15 @@
                           </tr>
                           <tr>
                               <td class='required'>CIDR Block</td>
-                              <td>The range of IPs to use in subnet, in CIDR format, for example,10.0.0.0/24.The range of IP addresses in subnet must be subset of IP addresses in VPC.Size subnet can equal the size of VPC.(Required)</td>
+                              <td>The range of IP addresses to use in the subnet in CIDR format (for example, 10.0.0.0/24). The range of IP addresses in the subnet must be subset of IP address in the VPC. The size subnet can equal the size of the VPC. (Required)</td>
                           </tr>
                           <tr>
                               <td class='required'>Availability Zone</td>
-                              <td>Availability zone where this subnet will reside.If no preferences is entered, Amazon will choose an availability zone for you.(Required)</td>
+                              <td>Availability zone where this subnet will reside. If no preferences are entered, Amazon will choose an availability zone for you. (Required)</td>
                           </tr>
                           <tr>
                               <td class='required'>VPC ID</td>
-                              <td>VPC to use for this subnet.(Required)</td>
+                              <td>VPC to use for this subnet. (Required)</td>
                           </tr>
                           <tr>
                               <td>Results Location</td>
@@ -516,7 +516,7 @@
 
           <h3>Output</h3>
 
-          <p>After the job runs, you can view the results on the Job Details page in ElectricCommander. In the <b>CreateSubnet</b> step,
+          <p>After the job runs, you can view the results on the Job Details page in ElectricCommander. In the <b>API_CreateSubnet</b> step,
               click the Log button to see the diagnostic information.</p>
 
       </div>
@@ -575,7 +575,7 @@
           <h2>API_CreateVPC</h2>
 
           <p>Amazon Virtual Private Cloud (Amazon VPC) lets you provision a logically isolated section of the Amazon Web Services (AWS) Cloud where you can launch AWS resources in a virtual network that you define.
-              This procedure allows you to create a new Amazon VPC by specifying name and CIDR block.</p>
+              This procedure allows you to create a new Amazon VPC by specifying the VPC name and CIDR block.</p>
 
           <h3>Input</h3>
 
@@ -600,7 +600,7 @@
                           </tr>
                           <tr>
                               <td class='required'>CIDR Block</td>
-                              <td>The range of IPs to use for your VPC, in CIDR format, for example,10.0.0.0/24.Block size must be between a /16 netmask and /28 netmask.(Required)</td>
+                              <td>The range of IP addresses to use for your VPC, in CIDR format, for example,10.0.0.0/24.Block size must be between a /16 netmask and /28 netmask. (Required)</td>
                           </tr>
                           <tr>
                               <td>Results Location</td>
@@ -619,7 +619,7 @@
 
           <h3>Output</h3>
 
-          <p>After the job runs, you can view the results on the Job Details page in ElectricCommander. In the <b>CreateVPC</b> step,
+          <p>After the job runs, you can view the results on the Job Details page in ElectricCommander. In the <b>API_CreateVPC</b> step,
               click the Log button to see the diagnostic information.</p>
 
       </div>
@@ -743,7 +743,7 @@
                           </tr>
                           <tr>
                               <td class='required'>VPC ID</td>
-                              <td>ID of VPC to delete.(Required)</td>
+                              <td>ID of VPC to delete. (Required)</td>
                           </tr>
                           <tr>
                               <td>Results Location</td>
@@ -762,7 +762,7 @@
 
           <h3>Output</h3>
 
-          <p>After the job runs, you can view the results on the Job Details page in ElectricCommander. In the <b>DeleteVPC</b> step,
+          <p>After the job runs, you can view the results on the Job Details page in ElectricCommander. In the <b>API_DeleteVPC</b> step,
               click the Log button to see the diagnostic information.</p>
 
       </div>
@@ -978,15 +978,15 @@
       </tr>
       <tr>
           <td>Private IP</td>
-          <td>The primary IP address. You must specify a value from the IP address range of the subnet. If no value is supplied then IP address from the IP address range of the subnet is selected.(for use with VPCs)</td>
+          <td>The primary IP address. You must specify a value from the IP address range of the subnet. If no value is entered, an IP address from the IP address range of the subnet is selected to use with theVPCs.</td>
       </tr>
       <tr>
           <td>Use Private IP for subnet?</td>
-          <td>If checked, private IP will be used for the resource creation.</td>
+          <td>If selected, a private IP address is used to create the resource.</td>
       </tr>
       <tr>
           <td>Instance Initiated Shutdown Behavior</td>
-          <td>Specify the instance behaviour when an OS-level shutdown is performed. Instance can be either terminated or shut down.</td>
+          <td>Specify the instance behaviour when an OS-level shutdown is performed. The instance can be either terminated or shut down.</td>
       </tr>
         <tr>
           <td>Resource Pool</td>
@@ -1765,7 +1765,7 @@
     <h1 id="example">Use Cases and Examples</h1>
 
     <!-- This section is for examples and use cases, including screenshots of the new Parameter Panel with example values filled in.
-        Unfortunately, I can't tell you what exactly to put here, but it's OK to put what seems like too much! Include both parameter
+        Unfortunately, I can't tell you what exactly to put here, but its OK to put what seems like too much! Include both parameter
         values and output where appropriate. Use a separate 'h2' header for each example. Under the h2 header try to stay with the style
         outline used above where possible.
         -->
