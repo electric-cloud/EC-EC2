@@ -37,9 +37,12 @@
 				<li><a href="#API_AttachVolumes">API_AttachVolumes</a></li>
 				<li><a href="#API_CreateImage">API_CreateImage</a></li>
 				<li><a href="#API_CreateKey">API_CreateKey</a></li>
-				<li><a href="#API_CreateTags">API_CreateTags</a></li>
+                <li><a href="#API_CreateSubnet">API_CreateSubnet</a></li>
+                <li><a href="#API_CreateTags">API_CreateTags</a></li>
+                <li><a href="#API_CreateVPC">API_CreateVPC</a></li>
 				<li><a href="#API_DeleteKey">API_DeleteKey</a></li>
 				<li><a href="#API_DeleteVolume">API_DeleteVolume</a></li>
+                <li><a href="#API_DeleteVPC">API_DeleteVPC</a></li>
 				<li><a href="#API_DescribeInstances">API_DescribeInstances</a></li>
 				<li><a href="#API_ReleaseIP">API_ReleaseIP</a></li>
 				<li><a href="#API_Run">API_Run</a></li>
@@ -456,6 +459,67 @@
 		click the Log button to see the diagnostic information.</p>
 				
 		</div>
+
+      <div id="API_CreateSubnet"><a name='API_CreateSubnet' id="API_CreateSubnet"></a>
+
+          <h2>API_CreateSubnet</h2>
+
+          <p>This procedure allows you to create a new subnet within Amazon VPC by specifying its name, CIDR block, VPC ID and availability zone.</p>
+
+          <h3>Input</h3>
+
+          <ol>
+              <li>Go to the API_CreateSubnet procedure.</li>
+              <li>Enter the following parameters:<br />
+                  <table class="grid">
+                      <thead>
+                          <tr>
+                              <th>Parameter</th>
+                              <th>Description</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td class='required'>Configuration</td>
+                              <td>The name of a valid existing configuration with the connection information. (Required)</td>
+                          </tr>
+                          <tr>
+                              <td>Subnet Name</td>
+                              <td>Name to be given to subnet.</td>
+                          </tr>
+                          <tr>
+                              <td class='required'>CIDR Block</td>
+                              <td>The range of IP addresses to use in the subnet in CIDR format (for example, 10.0.0.0/24). The range of IP addresses in the subnet must be subset of IP address in the VPC. The size subnet can equal the size of the VPC. (Required)</td>
+                          </tr>
+                          <tr>
+                              <td class='required'>Availability Zone</td>
+                              <td>Availability zone where this subnet will reside. If no preferences are entered, Amazon will choose an availability zone for you. (Required)</td>
+                          </tr>
+                          <tr>
+                              <td class='required'>VPC ID</td>
+                              <td>VPC to use for this subnet. (Required)</td>
+                          </tr>
+                          <tr>
+                              <td>Results Location</td>
+                              <td>Where to put the result. If not specified, the result is only printed.</td>
+                          </tr>
+                      </tbody>
+                  </table>
+
+              </li>
+
+              <br />
+              <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_CreateSubnet_panel.png" />
+              <br />
+
+          </ol>
+
+          <h3>Output</h3>
+
+          <p>After the job runs, you can view the results on the Job Details page in ElectricCommander. In the <b>API_CreateSubnet</b> step,
+              click the Log button to see the diagnostic information.</p>
+
+      </div>
 		
 		 <div id="API_CreateTags"><a name='API_CreateTags' id="API_CreateTags"></a>
 
@@ -505,6 +569,60 @@
 		click the Log button to see the diagnostic information.</p>
 				
 		</div>
+
+      <div id="API_CreateVPC"><a name='API_CreateVPC' id="API_CreateVPC"></a>
+
+          <h2>API_CreateVPC</h2>
+
+          <p>Amazon Virtual Private Cloud (Amazon VPC) lets you provision a logically isolated section of the Amazon Web Services (AWS) Cloud where you can launch AWS resources in a virtual network that you define.
+              This procedure allows you to create a new Amazon VPC by specifying the VPC name and CIDR block.</p>
+
+          <h3>Input</h3>
+
+          <ol>
+              <li>Go to the API_CreateVPC procedure.</li>
+              <li>Enter the following parameters:<br />
+                  <table class="grid">
+                      <thead>
+                          <tr>
+                              <th>Parameter</th>
+                              <th>Description</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td class='required'>Configuration</td>
+                              <td>The name of a valid existing configuration with the connection information. (Required)</td>
+                          </tr>
+                          <tr>
+                              <td>VPC Name</td>
+                              <td>Name to be given to VPC.</td>
+                          </tr>
+                          <tr>
+                              <td class='required'>CIDR Block</td>
+                              <td>The range of IP addresses to use for your VPC, in CIDR format, for example,10.0.0.0/24.Block size must be between a /16 netmask and /28 netmask. (Required)</td>
+                          </tr>
+                          <tr>
+                              <td>Results Location</td>
+                              <td>Where to put the result. If not specified, the result is only printed.</td>
+                          </tr>
+                      </tbody>
+                  </table>
+
+              </li>
+
+              <br />
+              <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_CreateVPC_panel.png" />
+              <br />
+
+          </ol>
+
+          <h3>Output</h3>
+
+          <p>After the job runs, you can view the results on the Job Details page in ElectricCommander. In the <b>API_CreateVPC</b> step,
+              click the Log button to see the diagnostic information.</p>
+
+      </div>
 
     <div id="API_DeleteKey"><a name='API_DeleteKey' id="API_DeleteKey"></a>
 
@@ -599,6 +717,55 @@
 		click the Log button to see the diagnostic information.</p>
 			
 		</div>
+
+      <div id="API_DeleteVPC"><a name='API_DeleteVPC' id="API_DeleteVPC"></a>
+
+          <h2>API_DeleteVPC</h2>
+
+          <p>This procedure allows you to delete the VPC and any subnets created within it by specifying the VPC ID.</p>
+
+          <h3>Input</h3>
+
+          <ol>
+              <li>Go to the API_DeleteVPC procedure.</li>
+              <li>Enter the following parameters:<br />
+                  <table class="grid">
+                      <thead>
+                          <tr>
+                              <th>Parameter</th>
+                              <th>Description</th>
+                          </tr>
+                      </thead>
+                      <tbody>
+                          <tr>
+                              <td class='required'>Configuration</td>
+                              <td>The name of a valid existing configuration with the connection information. (Required)</td>
+                          </tr>
+                          <tr>
+                              <td class='required'>VPC ID</td>
+                              <td>ID of VPC to delete. (Required)</td>
+                          </tr>
+                          <tr>
+                              <td>Results Location</td>
+                              <td>Where to put the result. If not specified, the result is only printed.</td>
+                          </tr>
+                      </tbody>
+                  </table>
+
+              </li>
+
+              <br />
+              <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_DeleteVPC_panel.png" />
+              <br />
+
+          </ol>
+
+          <h3>Output</h3>
+
+          <p>After the job runs, you can view the results on the Job Details page in ElectricCommander. In the <b>API_DeleteVPC</b> step,
+              click the Log button to see the diagnostic information.</p>
+
+      </div>
 		
 		<div id="API_DescribeInstances"><a name='API_DescribeInstances' id="API_DescribeInstances"></a>
 
@@ -762,8 +929,8 @@
           <td>The number of instances to start(default is '1'). (Required)</td>
         </tr>
         <tr>
-          <td class='required'>Group</td>
-          <td>The security group to use (default is 'default'). (Required)</td>
+          <td>Security Group</td>
+          <td>The security group to use (default is 'default').</td>
         </tr>
         <tr>
           <td class='required'>Image</td>
@@ -802,9 +969,25 @@
           <td>Extra user data to pass to runInstance.</td>
         </tr>
         <tr>
-          <td class='required'>Zone</td>
+          <td class='required'>Availability Zone</td>
           <td>The Availability Zone you want to launch the instance into. (Required)</td>
         </tr>
+      <tr>
+          <td>Subnet Id</td>
+          <td>The ID of the subnet to launch the instance(s) into (for use with VPCs)</td>
+      </tr>
+      <tr>
+          <td>Private IP</td>
+          <td>The primary IP address. You must specify a value from the IP address range of the subnet. If no value is entered, an IP address from the IP address range of the subnet is selected to use with theVPCs.</td>
+      </tr>
+      <tr>
+          <td>Use Private IP for subnet?</td>
+          <td>If selected, a private IP address is used to create the resource.</td>
+      </tr>
+      <tr>
+          <td>Instance Initiated Shutdown Behavior</td>
+          <td>Specify the instance behaviour when an OS-level shutdown is performed. The instance can be either terminated or shut down.</td>
+      </tr>
         <tr>
           <td>Resource Pool</td>
           <td>If you would like to add Commander resources for each instance created, enter the Commander pool name for the new resource. 
@@ -818,10 +1001,7 @@
           <td>Resource port</td>
           <td>If you specify a resource poolName in res_poolName, this is the port that will be used when creating the resource.</td>
         </tr>
-        <tr>
-          <td>Subnet Id</td>
-          <td>The ID of the subnet to launch the instance(s) into (for use with VPCs)</td>
-          </tr>
+
       </tbody>
     </table>
 		
@@ -1012,7 +1192,7 @@
 		click the Log button to see the diagnostic information.</p>
 	
 		</div>
-		
+
 		<div id="CloudManagerGrow"><a name='CloudManagerGrow' id="CloudManagerGrow"></a>
 
     <h2>CloudManagerGrow</h2>
@@ -1585,7 +1765,7 @@
     <h1 id="example">Use Cases and Examples</h1>
 
     <!-- This section is for examples and use cases, including screenshots of the new Parameter Panel with example values filled in.
-        Unfortunately, I can't tell you what exactly to put here, but it's OK to put what seems like too much! Include both parameter
+        Unfortunately, I can't tell you what exactly to put here, but its OK to put what seems like too much! Include both parameter
         values and output where appropriate. Use a separate 'h2' header for each example. Under the h2 header try to stay with the style
         outline used above where possible.
         -->
@@ -1679,6 +1859,16 @@
 
 
     <h1 id="rns">Release Notes</h1>
+
+      <h2>@PLUGIN_KEY@ 2.3.1</h2>
+
+      <ul>
+          <li>Added 'API_CreateVPC' procedure.</li>
+          <li>Added 'API_CreateSubnet' procedure.</li>
+          <li>Added 'API_DeleteVPC' procedure.</li>
+          <li>Added 'Private IP' and 'Instance Initiated Shutdown Behaviour' parameters to 'API_RunInstance' procedure.</li>
+          <li>Modified of API_Terminate procedure. Changed the behaviour of the procedure to wait till all instances get terminated in reservation/instance list.</li>
+      </ul>
 
    <h2>@PLUGIN_KEY@ 2.3.0</h2>
 
