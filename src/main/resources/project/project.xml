@@ -4819,7 +4819,7 @@
         </procedure>
         <procedure>
             <procedureName>API_CreateKey</procedureName>
-            <description>Create a key pair</description>
+            <description>Creates a key pair using Amazon EC2.</description>
             <jobNameTemplate>EC2-createKey-$[jobId]</jobNameTemplate>
             <resourceName/>
             <workspaceName>default</workspaceName>
@@ -5199,6 +5199,7 @@
                 <description/>
                 <required>1</required>
                 <type>entry</type>
+                <expansionDeferred>1</expansionDeferred>
             </formalParameter>
             <formalParameter>
                 <formalParameterName>propResult</formalParameterName>

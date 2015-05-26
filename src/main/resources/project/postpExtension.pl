@@ -32,8 +32,8 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Amazon Key Pair Create",
-        pattern =>          q{KeyPair (.*) created},
-        action =>           q{addToSummary("KeyPair $1 created");},
+        pattern =>          q{KeyPair (.*) created at (.*)},
+        action =>           q{addToSummary("KeyPair $1 created at $2");},
     },
 );
 

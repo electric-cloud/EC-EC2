@@ -9,7 +9,7 @@
     </formElement>
     <formElement>
         <type>checkbox</type>
-        <label>Detach Only?:</label>
+        <label>Detach Only?</label>
         <property>detachOnly</property>
         <required>1</required>
         <checkedValue>1</checkedValue>

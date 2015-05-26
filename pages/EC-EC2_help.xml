@@ -411,8 +411,12 @@
 
     <h2>API_CreateKey</h2>
 
-    <p>This procedure creates a new key pair with the specified name. The public key is stored by Amazon EC2, and the private key is 
-		returned to you. If a key with the specified name already exists, Amazon EC2 returns an error.</p>
+    <p>This procedure creates a new key pair with the specified name. If a key with the specified name already exists, Amazon EC2 returns an error.
+        The public key is stored by Amazon EC2, and the private key file is saved in the job workspace with read permission for the user running the agent.
+        The private key file name is the key pair name, with <i>.pem</i> as extension.
+        <br/><b>Important:</b> You should retrieve the private key file from the job workspace and save it in a secure place.
+        You will need the private key file in order to connect (using SSH or Windows Remote Desktop) to any EC2 instance that was launched using
+        the key pair name.</p>
 		
 		<h3>Input</h3>
 						

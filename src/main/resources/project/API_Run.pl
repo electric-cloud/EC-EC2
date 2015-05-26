@@ -8,6 +8,7 @@ use ElectricCommander;
 use ElectricCommander::PropDB;
 use ElectricCommander::PropMod qw(/myProject/lib);
 use Data::Dumper;
+use File::Spec;
 use MIME::Base64 qw(encode_base64);
 use XML::Simple;
 
@@ -87,7 +88,7 @@ sub extract_keyfile($$) {
     open FILE, ">", $filename or die $!;
     print FILE $pem . "\n";
     close FILE;
-    chmod( 0700, $filename );
+    chmod( 0400, $filename );
 }
 
 ####
@@ -120,12 +121,16 @@ sub mesg {
 ##
 ###########################
 sub getRequiredParam {
-    my ( $param, $opts ) = @_;
+    my ( $param, $opts, $expandValue ) = @_;
     if ( "$param" eq "" ) {
         mesg( 0, "Blank parameter name not allowed in getRequiredParam\n" );
         exit 1;
     }
     my $value = $opts->{$param};
+    if ($expandValue && $value) {
+        my $ec = $opts->{ec_instance};
+        $value = $ec->expandString($value)->findvalue("//value")  . '';
+    }
     if ( "$value" eq "" ) {
         mesg( 0, "Required parameter $param not found.\n" );
         exit 1;
@@ -721,8 +726,7 @@ sub API_CreateKeyPair {
     my ( $opts, $service ) = @_;
 
     mesg( 1, "--Creating Amazon EC2 KeyPair -------\n" );
-
-    my $newkeyname = getRequiredParam( "keyname", $opts );
+    my $newkeyname = getRequiredParam( "keyname", $opts, 1);
     my $propResult = getOptionalParam( "propResult", $opts );
     my $pem;
 
@@ -750,8 +754,11 @@ sub API_CreateKeyPair {
     }
 
     ## extract private key from results
-    extract_keyfile( $newkeyname . ".pem", $pem );
-    mesg( 1, "KeyPair $newkeyname created\n" );
+    my $currentDir = File::Spec->rel2abs(File::Spec->curdir());
+    my $keyFileLoc = File::Spec->catfile($currentDir, $newkeyname . ".pem");
+    extract_keyfile($keyFileLoc, $pem );
+    mesg( 1, "KeyPair $newkeyname created at $keyFileLoc\n" );
+    mesg( 1, "You should retrieve the private key file from the job workspace and save it in a secure place.\n" );
     exit 0;
 }
 
