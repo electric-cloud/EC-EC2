@@ -38,7 +38,7 @@
     </formElement>
     <formElement>
         <type>checkbox</type>
-        <label>Attempt Connection?:</label>
+        <label>Attempt Connection?</label>
         <property>attempt</property>
         <checkedValue>1</checkedValue>
         <uncheckedValue>0</uncheckedValue>

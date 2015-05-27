@@ -159,7 +159,7 @@
     </formElement>
     <formElement>
         <type>checkbox</type>
-        <label>Use Private IP for subnet?:</label>
+        <label>Use Private IP for subnet?</label>
         <property>use_private_ip</property>
         <required>0</required>
         <checkedValue>1</checkedValue>
