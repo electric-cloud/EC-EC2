@@ -1036,7 +1036,7 @@ sub API_CreateSubnet {
 
     ## Set the final subnet status in properties
     if ( "$propResult" ne "" ) {
-        $opts->{pdb}->setProp( $propResult . "/SubnetStat", $subnetStatus );
+        $opts->{pdb}->setProp( $propResult . "/SubnetState", $subnetStatus );
     }
 
     mesg( 1, "Subnet with ID $subnetId created\n" );
