@@ -1828,13 +1828,45 @@ sub MOCK_API_Stop {
 }
 
 sub _terminate_instance {
-    my ( $instance_id, $service ) = @_;
+    my ( $instanceId, $service ) = @_;
 
     my ( $request, $response );
     eval {
         $request = new Amazon::EC2::Model::TerminateInstancesRequest(
-            { "InstanceId" => "$instance_id" } );
+            { "InstanceId" => "$instanceId" } );
         $response = $service->terminateInstances($request);
+        my $instanceState = "";     # initial state of an instance
+            while($instanceState ne "terminated"){
+                eval {
+                    $request = new Amazon::EC2::Model::DescribeInstancesRequest(
+                        { "InstanceId" => "$instanceId" } );
+                    $response = $service->describeInstances($request);
+
+                    if ( $response->isSetDescribeInstancesResult() ) {
+                        my $result  = $response->getDescribeInstancesResult();
+                        my $resList = $result->getReservation();
+                        foreach (@$resList) {
+                            my $res   = $_;
+                            $instanceList = $res->getRunningInstance();
+                            foreach (@$instanceList) {
+                                my $instance = $_;
+                                my $id       = $instance->getInstanceId();
+                                if ( "$id" ne "$instanceId" ) { next; }
+                                    my $stateObj = $instance->getInstanceState();
+                                    $instanceState   = $stateObj->getName();
+                                    mesg( 1, "Evaluating instance $id,it's in state $instanceState\n" );
+
+                                    if ( "$instanceState" ne "terminated" )
+                                    {
+                                        ## Wait for some time and again check the state of instance
+                                        sleep(30);
+                                    }
+                            }
+                        }
+                    }
+                };if ($@) { throwEC2Error($@); }
+
+            } # end of while
         1;
     } or do {
         mesg( 1, "Can't terminate instance $instance_id :" . Dumper $@ . "\n" );
