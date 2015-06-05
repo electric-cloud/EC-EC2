@@ -784,7 +784,7 @@ sub API_CreateVPC {
             mesg( 10, "CreateVpcResult\n" );
             my $createVpcResult = $response->getCreateVpcResult();
             if ( $createVpcResult->isSetVpc() ) {
-                print("                Vpc\n");
+              
                 my $vpc = $createVpcResult->getVpc();
                 if ( $vpc->isSetVpcId() ) {
                     mesg( 10, "VpcId\n" );
