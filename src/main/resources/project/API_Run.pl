@@ -1827,52 +1827,15 @@ sub MOCK_API_Stop {
     exit 0;
 }
 
-sub _terminate_instance {
-    my ( $instance_id, $service ) = @_;
+sub _wait_for_instance_termination {
 
-    my ( $request, $response );
-    eval {
-        $request = new Amazon::EC2::Model::TerminateInstancesRequest(
-            { "InstanceId" => "$instance_id" } );
-        $response = $service->terminateInstances($request);
-        1;
-    } or do {
-        mesg( 1, "Can't terminate instance $instance_id :" . Dumper $@ . "\n" );
-        return 0;
-    };
-    return 1;
-}
-
-sub API_TerminateInstances {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Terminate Amazon EC2 Instance -------\n" );
-    my $id = getRequiredParam( "id", $opts );
-    my $resources = getOptionalParam( "resources", $opts );
-
-    ## terminate instance
-    my $termCount = 0;
-    my @list = getInstanceList( $id, $service );
-    foreach (@list) {
-        my $id = $_;
-
-        mesg( 1, "Terminating instance $id\n" );
-        eval {
-            my $request = new Amazon::EC2::Model::TerminateInstancesRequest(
-                { "InstanceId" => "$id" } );
-            my $response = $service->terminateInstances($request);
-        };
-        if ($@) { throwEC2Error($@); }
-        $termCount++;
-    }
-
+    my ($list, $service)  = @_;
     my $terminated = 0;         # instances terminated till now
     my $total   = @list;        # total number of instance to terminate
     my $instanceState = "";     # initial state of an instance
 
-     foreach (@list) {
+     foreach (@$list) {
          my $instanceId = $_;
-
             while($instanceState ne "terminated"){
                 eval {
                     my $request = new Amazon::EC2::Model::DescribeInstancesRequest(
@@ -1910,6 +1873,52 @@ sub API_TerminateInstances {
             $instanceState = "";
     } # end of instance list
 
+    return $terminated;
+}
+
+sub _terminate_instance {
+    my ( $instanceId, $service ) = @_;
+
+    my ( $request, $response );
+    eval {
+        $request = new Amazon::EC2::Model::TerminateInstancesRequest(
+            { "InstanceId" => "$instanceId" } );
+        $response = $service->terminateInstances($request);
+        my @list = ( $instanceId );
+        _wait_for_instance_termination(\@list, $service);
+        1;
+    } or do {
+        mesg( 1, "Can't terminate instance $instance_id :" . Dumper $@ . "\n" );
+        return 0;
+    };
+    return 1;
+}
+
+sub API_TerminateInstances {
+    my ( $opts, $service ) = @_;
+
+    mesg( 1, "--Terminate Amazon EC2 Instance -------\n" );
+    my $id = getRequiredParam( "id", $opts );
+    my $resources = getOptionalParam( "resources", $opts );
+
+    ## terminate instance
+    my $termCount = 0;
+    my $terminated;
+    my @list = getInstanceList( $id, $service );
+    foreach (@list) {
+        my $id = $_;
+
+        mesg( 1, "Terminating instance $id\n" );
+        eval {
+            my $request = new Amazon::EC2::Model::TerminateInstancesRequest(
+                { "InstanceId" => "$id" } );
+            my $response = $service->terminateInstances($request);
+        };
+        if ($@) { throwEC2Error($@); }
+        $termCount++;
+    }
+
+    $terminated = _wait_for_instance_termination(\@list, $service);
     mesg( 1, "$terminated instances terminated.\n" );
 
     mesg( 1, "Deleting resources.\n" );
