@@ -23,7 +23,7 @@
     <hr style="margin-left: -10px; margin-top: 10px; height: 1px; width: 100%; color: #5981BD;" 
             noshade="noshade" />
 		
-		<p>Revised on April 15, 2015</p>
+		<p>Revised on June 9, 2015</p>
 				
 				<h1>Contents</h1>
 				
@@ -1864,7 +1864,7 @@
 
     <h1 id="rns">Release Notes</h1>
 
-      <h2>@PLUGIN_KEY@ 2.3.1</h2>
+      <h2>@PLUGIN_KEY@ 2.3.2</h2>
 
       <ul>
           <li>Added 'API_CreateVPC' procedure.</li>
@@ -1874,15 +1874,15 @@
           <li>Modified of API_Terminate procedure. Changed the behaviour of the procedure to wait till all instances get terminated in reservation/instance list.</li>
       </ul>
 
-   <h2>@PLUGIN_KEY@ 2.3.0</h2>
+   <h2>@PLUGIN_KEY@ 2.3.1</h2>
 
         <ul>
             <li>Fixed the issue where the API_CreateTags procedure is visible from step picker. Default value for tag was set as "Name."</li>
             <li>Added properties in the 'ec_cloudprovisioning_plugin' property sheet for  ElectricFlow Deploy .</li>
             <li>Propogated the summary property to the upper level.</li>
             <li>Add VPC support to the API_RunInstances procedures.</li>
-						<li>Updated the Configuraton page UI.</li>
-						<li>Removed Eucalytus support from the plugin.</li>
+	    <li>Updated the Configuraton page UI.</li>
+	    <li>Removed Eucalytus support from the plugin.</li>
         </ul>
 
     <h2>@PLUGIN_KEY@ 2.2.0</h2>
