@@ -8,7 +8,7 @@
         <documentation>Provide a unique name for the connection, keeping in mind that you may need to create additional connections over time.</documentation>
     </formElement>
     <formElement>
-        <type>entry</type>
+        <type>textarea</type>
         <label>Description:</label>
         <property>desc</property>
         <value>EC2 integration</value>

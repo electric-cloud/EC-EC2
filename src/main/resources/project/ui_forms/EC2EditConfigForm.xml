@@ -1,6 +1,6 @@
 <editor>
     <formElement>
-        <type>entry</type>
+        <type>textarea</type>
         <label>Description:</label>
         <property>desc</property>
         <documentation>A description for this configuration.</documentation>
@@ -23,7 +23,7 @@
         <type>entry</type>
         <label>Workspace:</label>
         <property>workspace</property>
-        <documentation>The workspace to use for resourced dynamically created by this configuration.</documentation>
+        <documentation>The workspace to use for resources dynamically created by this configuration.</documentation>
         <required>1</required>
     </formElement>
     <formElement>
