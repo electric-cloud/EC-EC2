@@ -6757,16 +6757,6 @@
                                         </property>
                                     </propertySheet>
                                 </property>
-								<property>
-                                    <propertyName>resource_zone</propertyName>
-                                    <propertySheet>
-                                        <property>
-                                            <propertyName>formType</propertyName>
-                                            <expandable>1</expandable>
-                                            <value>standard</value>
-                                        </property>
-                                    </propertySheet>
-                                </property>	
                             </propertySheet>
                         </property>
                     </propertySheet>
@@ -6889,13 +6879,6 @@
               <description>Use private IP</description>
               <required>0</required>
               <type>checkbox</type>
-            </formalParameter>
-			<formalParameter>
-                <formalParameterName>resource_zone</formalParameterName>
-                <defaultValue/>
-                <description/>
-                <required>0</required>
-                <type>entry</type>
             </formalParameter>
             <step>
                 <stepName>RunInstances</stepName>

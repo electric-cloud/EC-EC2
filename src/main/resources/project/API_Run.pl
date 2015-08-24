@@ -2211,7 +2211,6 @@ sub API_RunInstance {
     my $group     = getOptionalParam( "group",        $opts );
     my $poolName  = getOptionalParam( "res_poolName", $opts );
     my $privateIp = getOptionalParam( "privateIp",    $opts );
-    my $resource_zone = getOptionalParam( "resource_zone", $opts );
     my $instanceInitiatedShutdownBehavior =
       getOptionalParam( "instanceInitiatedShutdownBehavior", $opts );
 
@@ -2406,7 +2405,7 @@ sub API_RunInstance {
                         mesg( 1, "Poolname is not empty, adding resources." );
                         $resource =
                           makeNewResource( $opts, $ip_for_resource_creation,
-                            $poolName, $workspace, $port, $resource_zone );
+                            $poolName, $workspace, $port );
                         my $p_path =
                           "/resources/$resource/ec_cloud_instance_details";
                         $ec->createProperty( $p_path,
@@ -2477,7 +2476,6 @@ sub MOCK_API_RunInstance {
     my $group        = getRequiredParam( "group",        $opts );
     my $zone         = getRequiredParam( "zone",         $opts );
     my $count        = getRequiredParam( "count",        $opts );
-    my $resource_zone = getOptionalParam( "resource_zone", $opts );
     my $poolName = getOptionalParam( "res_poolName", $opts );
     my $propResult = getPropResultLocationForPool( $opts, $poolName );
 
@@ -2527,7 +2525,7 @@ sub MOCK_API_RunInstance {
         my $resource = "";
         if ( "$poolName" ne "" ) {
             $resource =
-              makeNewResource( $opts, $publicIP, $poolName, $workspace, $port, $resource_zone );
+              makeNewResource( $opts, $publicIP, $poolName, $workspace, $port );
         }
 
         if ( "$propResult" ne "" ) {
@@ -2557,16 +2555,11 @@ sub MOCK_API_RunInstance {
 }
 
 sub makeNewResource() {
-    my ( $opts, $host, $pool, $workspace, $port, $zone ) = @_;
+    my ( $opts, $host, $pool, $workspace, $port ) = @_;
 
     # host must be present
     if ( "$host" eq "" ) {
         mesg( 1, "No host provided to makeNewResource.\n" );
-        return "";
-    }
-
-    if ( "$zone" eq "" ) {
-        mesg( 1, "No resource zone provided to makeNewResource.\n" );
         return "";
     }
 
@@ -2576,7 +2569,7 @@ sub makeNewResource() {
         $port = 7800;
     }
 
-    mesg( 1, "Creating resource for machine $host in pool $pool and zone $zone\n" );
+    mesg( 1, "Creating resource for machine $host in pool $pool\n" );
 
     my $resName = "$pool-$now_$seq";
 
@@ -2593,7 +2586,7 @@ sub makeNewResource() {
                 workspaceName => "$workspace",
                 port          => "$port",
                 hostName      => "$host",
-                zoneName      => "$zone",
+
                 #pools         => "$pool"
             }
         );
