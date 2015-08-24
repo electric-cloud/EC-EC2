@@ -1864,6 +1864,11 @@
 
     <h1 id="rns">Release Notes</h1>
 
+      <h2>@PLUGIN_KEY@ 2.3.4</h2>
+      <ul>
+          <li>Added the ability to create a resource in non-default zone.</li>
+      </ul>
+	  
       <h2>@PLUGIN_KEY@ 2.3.3</h2>
       <ul>
           <li>Fixed issue with configurations being cached for IE.</li>

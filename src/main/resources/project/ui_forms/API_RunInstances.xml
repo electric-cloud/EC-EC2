@@ -203,4 +203,12 @@
         <required>0</required>
         <documentation>If you specify a resource pool name in res_poolName, this is the port that will be used when creating the resource. If no value is specified, port 7800 will be used by default when creating the resource.</documentation>
     </formElement>
+	<formElement>
+        <label>Resource Zone Name:</label>
+        <property>resource_zone</property>
+        <value>default</value>
+        <documentation>Created resource will belong to the specified zone. Zone 'default' is used by default.</documentation>
+        <required>0</required>
+        <type>entry</type>
+    </formElement>
 </editor>
