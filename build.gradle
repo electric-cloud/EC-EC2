@@ -25,7 +25,14 @@ apply plugin: 'flow-gradle-plugin'
 
 task wrapper(type: Wrapper) { gradleVersion = '2.3' }
 
+configurations {
+	// Configuration for the jar files we want
+	// to include in the plugin jar
+	includeInPluginJar
+}
+
 dependencies {
+	includeInPluginJar 'com.amazonaws:aws-java-sdk-ec2:1.9.33'
 	testCompile 'junit:junit:[4,)'
 	testCompile 'org.mockito:mockito-core:1.9.5'
 	testCompile 'com.amazonaws:aws-java-sdk-ec2:1.9.33'
@@ -42,6 +49,13 @@ test {
 		events 'started', 'passed'
 		exceptionFormat = 'full'
 	}
+}
+
+// Include any dependent jars in the plugin jar file for
+// evaluating the validation and dynamic option scripts
+// on the ElectricFlow server.
+jar {
+	from(configurations.includeInPluginJar, { into('libs') })
 }
 
 gwt { modules 'ecplugins.ec2.ConfigurationManagement' }
