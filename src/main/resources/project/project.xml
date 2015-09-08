@@ -220,7 +220,12 @@
                     </property>
                 </propertySheet>
             </property>
-
+            <property>
+                <propertyName>ec_dsl_libraries_path</propertyName>
+                <description>Path where the supporting scripts and jars used for evaluating DSL scripts for validation and dynamic options are located. A relative path is considered relative to the plugin's install directory.</description>
+                <expandable>1</expandable>
+                <value>libs</value>
+            </property>
             <property>
                 <propertyName>lib</propertyName>
                 <description/>
