@@ -9,4 +9,3 @@ staging
 .settings
 *.iml
 openstack-test.properties
-ecplugin.properties

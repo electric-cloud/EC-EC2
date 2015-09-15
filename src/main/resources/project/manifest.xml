@@ -17,6 +17,10 @@
     <xpath>//procedure[procedureName=&quot;DeleteConfiguration&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
   <file>
+     <path>procedures/form_scripts/validation/createConfiguration.groovy</path>
+     <xpath>//procedure[procedureName=&quot;CreateConfiguration&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;validation&quot;]/propertySheet/property[propertyName=&quot;script&quot;]/value</xpath>
+  </file>
+  <file>
     <path>ui_forms/CloudManagerShrink.xml</path>
     <xpath>//procedure[procedureName=&quot;CloudManagerShrink&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
