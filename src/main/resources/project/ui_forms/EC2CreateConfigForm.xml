@@ -21,6 +21,7 @@
         <value>https://ec2.amazonaws.com</value>
         <documentation>The service URL for the EC2 service. For the Amazon public EC2, this should be https://ec2.amazonaws.com. For Eucalyptus EC2, this is the internal address, such as http://ip/services/Eucalyptus</documentation>
         <required>1</required>
+        <serverValidation>1</serverValidation>
     </formElement>
     <formElement>
         <type>entry</type>
@@ -47,6 +48,7 @@
         <retypePasswordLabel>Retype Secret Access Key:</retypePasswordLabel>
         <required>1</required>
         <documentation>The Access Key ID and Access Key that are required for communicating with EC2 (Access Key ID and Secret Access Key).</documentation>
+        <serverValidation>1</serverValidation>
     </formElement>
     <formElement>
         <type>checkbox</type>
