@@ -226,6 +226,12 @@
                 <expandable>1</expandable>
                 <value>libs</value>
             </property>
+            <!--Property used to specify the location path for the plugin configurations-->
+            <property>
+                <propertyName>ec_configurations</propertyName>
+                <expandable>1</expandable>
+                <value>ec2_cfgs</value>
+            </property>
             <property>
                 <propertyName>lib</propertyName>
                 <description/>
@@ -8477,6 +8483,8 @@
                         <property>
                             <propertyName>validation</propertyName>
                             <propertySheet>
+                                <!--Flag the property sheet as being protected by credentials attached to the enclosing procedure's steps.-->
+                                <credentialProtected>1</credentialProtected>
                                 <property>
                                     <propertyName>script</propertyName>
                                     <expandable>1</expandable>
