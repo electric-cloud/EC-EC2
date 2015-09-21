@@ -7,7 +7,7 @@ $::gBuildDirectory = "";
 push (@::gMatchers, 
     {
         id =>              "Amazon Elastic IP Allocate",
-        pattern =>          q{Address (.*) allocated},
+        pattern =>          q{Address\s(.*)\sallocated},
         action =>           q{addToSummary("Address $1 allocated");},
     },
 );
@@ -15,7 +15,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "address associated",
-        pattern =>          q{Address (.*) associated with instance (.*)},
+        pattern =>          q{Address\s(.*)\sassociated\swith\sinstance\s(.*)},
         action =>           q{addToSummary("Address $1 associated with instance $2");},
     },
 );
@@ -23,7 +23,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Amazon Elastic IP Release",
-        pattern =>          q{Address (.*) released},
+        pattern =>          q{Address\s(.*)\sreleased},
         action =>           q{addToSummary("Address $1 released");},
     },
 );
@@ -32,7 +32,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Amazon Key Pair Create",
-        pattern =>          q{KeyPair (.*) created at (.*)},
+        pattern =>          q{KeyPair\s(.*)\screated\sat\s(.*)},
         action =>           q{addToSummary("KeyPair $1 created at $2");},
     },
 );
@@ -40,7 +40,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Amazon Key Pair Delete",
-        pattern =>          q{KeyPair (.*) deleted},
+        pattern =>          q{KeyPair\s(.*)\sdeleted},
         action =>           q{addToSummary("KeyPair $1 deleted");},
     },
 );
@@ -49,7 +49,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "snapshot created 2",
-        pattern =>          q{Created new snapshot (.*)},
+        pattern =>          q{Created\snew\ssnapshot\s(.*)},
         action =>           q{replaceSummary("Created snapshot $1");},
     },
 );
@@ -57,7 +57,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "snapshot created",
-        pattern =>          q{Snapshot (.*) used to create volume (.*)},
+        pattern =>          q{Snapshot\s(.*)\sused\sto\screate\svolume\s(.*)},
         action =>           q{replaceSummary("Snapshot $1 used to create volume $2");},
     },
 );
@@ -65,7 +65,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "volumes created",
-        pattern =>          q{Snapshot (.*) used to create (.*) volumes},
+        pattern =>          q{Snapshot\s(.*)\sused\sto\screate\s(.*)\svolumes},
         action =>           q{replaceSummary("$2 volumes created from $1");},
     },
 );
@@ -74,7 +74,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "run instances",
-        pattern =>          q{(.*) of (.*) instances ready},
+        pattern =>          q{(.*)\sof\s(.*)\sinstances\sready},
         action =>           q{replaceSummary("$1 of $2 instances ready");},
     },
 );
@@ -82,7 +82,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Waiting for start",
-        pattern =>          q{Waiting for instance (.*) to start},
+        pattern =>          q{Waiting\sfor\sinstance\s(.*)\sto\sstart},
         action =>           q{replaceSummary("Instance $1 starting");},
     },
 );
@@ -90,7 +90,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Amazon Run",
-        pattern =>          q{AMI (.*) launched as (.*)},
+        pattern =>          q{AMI\s(.*)\slaunched\sas\s(.*)},
         action =>           q{addToSummary("AMI instance=$2");},
     },
 );
@@ -98,7 +98,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Amazon Terminate",
-        pattern =>          q{Instance (.*) terminated},
+        pattern =>          q{Instance\s(.*)\sterminated},
         action =>           q{addToSummary("AMI intance $1 terminated");},
     },
 );
@@ -106,7 +106,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Amazon Wait OK",
-        pattern =>          q{Instance started after (.*) seconds},
+        pattern =>          q{Instance\sstarted\safter\s(.*)\sseconds},
         action =>           q{addToSummary("Waited $1 seconds");},
     },
 );
@@ -114,7 +114,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Amazon Wait Error",
-        pattern =>          q{Instance did not start after (.*) seconds},
+        pattern =>          q{Instance\sdid\snot\sstart\safter\s(.*)\sseconds},
         action =>           q{addToSummary("Quit waiting after $1 seconds");},
     },
 );
@@ -122,7 +122,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Register Bundle",
-        pattern =>          q{Image (.*) created},
+        pattern =>          q{Image\s(.*)\screated},
         action =>           q{replaceSummary("AMI $1 created");},
     },
 );
@@ -131,7 +131,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "Waiting for start pending",
-        pattern =>          q{Instance (.*) state: (.*)},
+        pattern =>          q{Instance\s(.*)\sstate:\s(.*)},
         action =>           q{replaceSummary("Instance $1 in state $2");},
     },
 );
@@ -139,7 +139,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "instance started",
-        pattern =>          q{Instance (.*) running},
+        pattern =>          q{Instance\s(.*)\srunning},
         action =>           q{replaceSummary("Instance $1 is running");},
     },
 );
@@ -147,7 +147,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "volumes attached",
-        pattern =>          q{(.*) volumes were attached to instances.},
+        pattern =>          q{(.*)\svolumes\swere\sattached\sto\sinstances.},
         action =>           q{replaceSummary("$1 volumes attached");},
     },
 );
@@ -155,7 +155,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "volumes deleted",
-        pattern =>          q{(.*) volumes deleted.},
+        pattern =>          q{(.*)\svolumes\sdeleted.},
         action =>           q{replaceSummary("$1 volumes deleted");},
     },
 );
@@ -163,7 +163,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "volumes detached",
-        pattern =>          q{(.*) volumes detached.},
+        pattern =>          q{(.*)\svolumes\sdetached.},
         action =>           q{replaceSummary("$1 volumes detached");},
     },
 );
@@ -171,7 +171,7 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "instances terminated",
-        pattern =>          q{(.*) instances terminated.},
+        pattern =>          q{(.*)\sinstances\sterminated.},
         action =>           q{replaceSummary("$1 instances terminated");},
     },
 );
@@ -187,7 +187,7 @@ push (@::gMatchers,
 push (@::gMatchers,
     {
         id =>              "Subnet created",
-        pattern =>          q{Subnet with ID\s(.+)\screated},
+        pattern =>          q{Subnet\swith\sID\s(.+)\screated},
         action =>           q{replaceSummary("Subnet with ID $1 created");},
     },
 );
@@ -203,8 +203,16 @@ push (@::gMatchers,
 push (@::gMatchers, 
     {
         id =>              "amazon error",
-        pattern =>          q{Caught Exception: (.*)},
+        pattern =>          q{Caught\sException:\s(.*)},
         action =>           q{addToSummary("AWS Error: $1");},
+    },
+);
+
+push (@::gMatchers, 
+    {
+        id =>              "error",
+        pattern =>          q{ERROR:|[Ee]rror:},
+        action =>           q{addToSummary("Error: $1");},
     },
 );
 
