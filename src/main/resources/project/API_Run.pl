@@ -2565,9 +2565,9 @@ sub makeNewResource() {
         return "";
     }
 
-    if (!$zone) {
-        mesg( 1, "\nError: No resource zone provided to makeNewResource.\n" );
-        exit 1;
+    if ( "$zone" eq "" ) {
+        mesg( 1, "No resource zone provided to makeNewResource.\n" );
+        return "";
     }
 
    # workspace and port can be blank
@@ -2586,7 +2586,6 @@ sub makeNewResource() {
     for ( my $seq = 1 ; $seq < 9999 ; $seq++ ) {
         my $now = time();
         $resName = "$pool" . "-" . $now . "_" . $seq;
-
         my $cmdrresult = $opts->{pdb}->getCmdr()->createResource(
             $resName,
             {
