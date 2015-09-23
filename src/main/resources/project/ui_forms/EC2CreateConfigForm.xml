@@ -30,6 +30,7 @@
         <value>default</value>
         <documentation>The name of the pool of resources on which the plugin procedure steps can run.</documentation>
         <required>1</required>
+        <serverOptions>1</serverOptions>
     </formElement>
     <formElement>
         <type>entry</type>
@@ -38,6 +39,7 @@
         <value>default</value>
         <documentation>The workspace to use for resources dynamically created by this configuration.</documentation>
         <required>1</required>
+        <serverOptions>1</serverOptions>
     </formElement>
     <formElement>
         <type>credential</type>

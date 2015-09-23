@@ -21,6 +21,8 @@
         <value>default</value>
         <property>group</property>
         <required>0</required>
+        <serverOptions>1</serverOptions>
+        <dependsOn>config</dependsOn>
         <documentation>The security group to use.</documentation>
     </formElement>
     <formElement>
@@ -28,6 +30,8 @@
         <label>Image:</label>
         <property>image</property>
         <required>1</required>
+        <serverOptions>1</serverOptions>
+        <dependsOn>config</dependsOn>
         <documentation>The name of the EC2 image that you would like to deploy.</documentation>
     </formElement>      
     <formElement>
@@ -36,6 +40,8 @@
         <value>m1.small</value>
         <property>instanceType</property>
         <required>1</required>
+        <serverOptions>1</serverOptions>
+        <dependsOn>config</dependsOn>        
         <documentation>The instance type.</documentation>
         <option>
             <name>Small(m1.small)</name>
@@ -65,39 +71,34 @@
             <name>High-Memory Quadruple Extra Large(m2.4xlarge)</name>
             <value>m2.4xlarge</value>
         </option>
-
-	<option>
+        <option>
             <name>High-Memory Medium(m3.medium)</name>
             <value>m3.medium</value>
         </option>
-	<option>
+        <option>
             <name>High-Memory Large(m3.large)</name>
             <value>m3.large</value>
         </option>
-	<option>
+        <option>
             <name>High-Memory Extra Large(m3.xlarge)</name>
             <value>m3.xlarge</value>
         </option>
-	<option>
+        <option>
             <name>High-Memory Double Extra Large(m3.2xlarge)</name>
             <value>m3.2xlarge</value>
         </option>
-
-	
-	<option>
+        <option>
             <name>General-Purpose Micro(t2.micro)</name>
             <value>t2.micro</value>
         </option>
-	<option>
+        <option>
             <name>General-Purpose Small(t2.small)</name>
             <value>t2.small</value>
         </option>
-	<option>
+        <option>
             <name>General-Purpose Medium(t2.medium)</name>
             <value>t2.medium</value>
         </option>
-	
-	
         <option>
             <name>High-CPU Medium(c1.medium)</name>
             <value>c1.medium</value>
@@ -120,6 +121,8 @@
         <label>Key name:</label>
         <property>keyname</property>
         <required>1</required>
+        <serverOptions>1</serverOptions>
+        <dependsOn>config</dependsOn>
         <documentation>The name of the key pair to use.</documentation>
     </formElement>
     <formElement>
@@ -141,6 +144,8 @@
         <label>Availability Zone:</label>
         <property>zone</property>
         <required>1</required>
+        <serverOptions>1</serverOptions>
+		<dependsOn>config</dependsOn>
         <documentation>The Availability Zone you want to launch the instance into.</documentation>
     </formElement>
     <formElement>
@@ -148,12 +153,16 @@
         <label>Subnet Id:</label>
         <property>subnet_id</property>
         <required>0</required>
+        <serverOptions>1</serverOptions>
+        <dependsOn>config,zone</dependsOn>
         <documentation>The ID of the subnet to launch the instance(s) into (for use with VPCs)</documentation>
     </formElement>
     <formElement>
         <type>entry</type>
         <label>Private IP:</label>
         <property>privateIp</property>
+        <dependsOn>subnet_id</dependsOn>
+        <serverValidation>1</serverValidation>
         <required>0</required>
         <documentation>The primary IP address. You must specify a value from the IP address range of the subnet. If no value is supplied then IP address from the IP address range of the subnet is selected.(for use with VPCs)</documentation>
     </formElement>
@@ -187,6 +196,7 @@
         <label>Resource Pool:</label>
         <property>res_poolName</property>
         <required>0</required>
+        <serverOptions>1</serverOptions>
         <documentation>If you would like to add Commander resources for each instance created, enter the Commander pool name for the new resource. If left blank no resource will be created.</documentation>
     </formElement>
     <formElement>
@@ -194,6 +204,7 @@
         <label>Commander Workspace:</label>
         <property>res_workspace</property>
         <required>0</required>
+        <serverOptions>1</serverOptions>
         <documentation>If you specify a resource pool name in res_poolName, this is the workspace that will be used when creating the resource.</documentation>
     </formElement>
     <formElement>
@@ -206,6 +217,7 @@
 	<formElement>
         <label>Resource Zone Name:</label>
         <property>resource_zone</property>
+        <serverOptions>1</serverOptions>
         <value>default</value>
         <documentation>Created resource will belong to the specified zone. Zone 'default' is used by default.</documentation>
         <required>0</required>

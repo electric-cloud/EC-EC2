@@ -70,14 +70,7 @@ if (canValidate(args)) {
 	FormalParameterValidationResult.SUCCESS
 }
 
-//--------------------Helper classes and functions-----------------------------//
-public class InvalidParameterException extends IllegalArgumentException {
-	String parameter
-	InvalidParameterException(String parameter, String message) {
-		super(message)
-		this.parameter = parameter
-	}
-}
+//--------------------Helper functions-----------------------------//
 
 boolean canValidate(args) {
 	args?.parameters &&
