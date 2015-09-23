@@ -5,6 +5,14 @@
     <xpath>//property[propertyName=&quot;ui_forms&quot;]/propertySheet/property[propertyName=&quot;EC2CreateConfigForm&quot;]/value</xpath>
   </file>
   <file>
+    <path>procedures/form_scripts/parameterOptions/resources.groovy</path>
+    <xpath>//procedure[procedureName=&quot;CreateConfiguration&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;resource_pool&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/workspaces.groovy</path>
+    <xpath>//procedure[procedureName=&quot;CreateConfiguration&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;workspace&quot;]/value</xpath>
+  </file>
+  <file>
     <path>ui_forms/EC2EditConfigForm.xml</path>
     <xpath>//property[propertyName=&quot;ui_forms&quot;]/propertySheet/property[propertyName=&quot;EC2EditConfigForm&quot;]/value</xpath>
   </file>
@@ -1755,5 +1763,45 @@
   <file>
     <path>ec_setup.pl</path>
     <xpath>//property[propertyName=&quot;ec_setup&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/resourceZones.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;resource_zone&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/resources.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;res_poolname&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/workspaces.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;res_workspace&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/ec2Options.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;image&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/ec2Options.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;zone&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/ec2Options.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;group&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/ec2Options.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;instanceType&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/ec2Options.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;keyname&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>procedures/form_scripts/parameterOptions/ec2Options.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;subnet_id&quot;]/value</xpath>
+  </file>
+  <file>
+     <path>procedures/form_scripts/validation/ec2Validations.groovy</path>
+     <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;validation&quot;]/propertySheet/property[propertyName=&quot;script&quot;]/value</xpath>
   </file>
 </fileset>

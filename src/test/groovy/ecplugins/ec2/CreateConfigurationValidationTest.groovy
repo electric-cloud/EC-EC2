@@ -79,14 +79,12 @@ class CreateConfigurationValidationTest extends BaseScriptsTestCase {
 
 		def credential = json (
 				credentialName: "testCredential",
-				userName: USER,
-				password: PASSWORD
+				userName: testProperties.getString(PROP_AWS_KEY_ID),
+				password: testProperties.getString(PROP_AWS_KEY)
 				)
 
 		def actualParams = json (
-				identity_service_url : testProperties.getString(PROP_IDENTITY_SVC_URL),
-				keystone_api_version: version,
-				tenant_id: tenantId
+				service_url : testProperties.getString(PROP_SVC_URL)
 				)
 		def input = json (
 				parameters : actualParams,
