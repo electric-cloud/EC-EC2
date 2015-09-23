@@ -2463,6 +2463,8 @@ sub API_RunInstance {
         $opts->{pdb}->setProp( "$propResult/Count",        $count );
     }
 
+    exit 1 if !$resource_zone;
+
     exit 0;
 }
 
@@ -2553,6 +2555,8 @@ sub MOCK_API_RunInstance {
         $opts->{pdb}->setProp( "$propResult/Count",        $count );
     }
 
+    exit 1 if !$resource_zone;
+
     exit 0;
 }
 
@@ -2567,7 +2571,7 @@ sub makeNewResource() {
 
     if (!$zone) {
         mesg( 1, "\nError: No resource zone provided to makeNewResource.\n" );
-        exit 1;
+        return "";
     }
 
    # workspace and port can be blank
