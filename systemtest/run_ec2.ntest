@@ -9,7 +9,6 @@
 
 use strict;
 use ECTest;
-use ECSelenium;
 use Socket;
 use Sys::Hostname;
 
