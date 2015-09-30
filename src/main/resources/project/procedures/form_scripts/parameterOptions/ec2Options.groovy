@@ -61,42 +61,40 @@ Logger.getLogger("com.amazonaws").setLevel(Level.OFF);
 def result = new FormalParameterOptionsResult()
 
 if (canGetOptions(args)) {
-	try {
-		def ec2 = login(args.credential[0], args.configurationParameters[SERVICE_URL])
-		def list = []
 
-		switch (args.formalParameterName) {
-			case IMAGE:
-				list = getImages(ec2)
-				break
-			case KEYNAME:
-				list = getKeys(ec2)
-				break
-			case INSTANCE_TYPE:
-				list = getInstanceTypes()
-				break
-			case SECURITY_GROUP:
-				list = getSecurityGroups(ec2)
-				break
-			case SUBNET_ID:
-				list = getSubnetIds(ec2, args.parameters[AVAILABILITY_ZONE])
-				break
-			case AVAILABILITY_ZONE:
-				list = getAvailabilityZones(ec2)
-				break
-		}
+	def ec2 = loginEC2(args.credential[0], args.configurationParameters[SERVICE_URL])
+	def list = []
 
-		list.sort{ it[1] }.each {
-			result.add(it[0], it[1])
-		}
-	} catch (e) {
-		e.printStackTrace()
+	switch (args.formalParameterName) {
+		case IMAGE:
+			list = getImages(ec2)
+			break
+		case KEYNAME:
+			list = getKeys(ec2)
+			break
+		case INSTANCE_TYPE:
+			list = getInstanceTypes()
+			break
+		case SECURITY_GROUP:
+			list = getSecurityGroups(ec2)
+			break
+		case SUBNET_ID:
+			list = getSubnetIds(ec2, args.parameters[AVAILABILITY_ZONE])
+			break
+		case AVAILABILITY_ZONE:
+			list = getAvailabilityZones(ec2)
+			break
 	}
+
+	list.sort{ it[1] }.each {
+		result.add(it[0], it[1])
+	}
+
 }
 
 result
 
-def login(credential, serviceURL) {
+def loginEC2(credential, serviceURL) {
 	// Disable HTTPS certificate verification
 	System.setProperty("com.amazonaws.sdk.disableCertChecking", "true")
 
