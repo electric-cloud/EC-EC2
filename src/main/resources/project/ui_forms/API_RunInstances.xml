@@ -196,8 +196,14 @@
         <label>Resource Pool:</label>
         <property>res_poolName</property>
         <required>0</required>
-        <serverOptions>1</serverOptions>
         <documentation>If you would like to add Commander resources for each instance created, enter the Commander pool name for the new resource. If left blank no resource will be created.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Resource port:</label>
+        <property>res_port</property>
+        <required>0</required>
+        <documentation>If you specify a resource pool name in 'Resource Pool' field, this is the port that will be used when creating the resource. If no value is specified, port 7800 will be used by default when creating the resource.</documentation>
     </formElement>
     <formElement>
         <type>entry</type>
@@ -205,14 +211,7 @@
         <property>res_workspace</property>
         <required>0</required>
         <serverOptions>1</serverOptions>
-        <documentation>If you specify a resource pool name in res_poolName, this is the workspace that will be used when creating the resource.</documentation>
-    </formElement>
-    <formElement>
-        <type>entry</type>
-        <label>Resource port:</label>
-        <property>res_port</property>
-        <required>0</required>
-        <documentation>If you specify a resource pool name in res_poolName, this is the port that will be used when creating the resource. If no value is specified, port 7800 will be used by default when creating the resource.</documentation>
+        <documentation>If you specify a resource pool name in 'Resource Pool' field, this is the workspace that will be used when creating the resource.</documentation>
     </formElement>
 	<formElement>
         <label>Resource Zone Name:</label>
