@@ -6844,11 +6844,6 @@
                                     <value/>
                                 </property>
                                 <property>
-                                    <propertyName>res_poolname</propertyName>
-                                    <expandable>1</expandable>
-                                    <value/>
-                                </property>
-                                <property>
                                     <propertyName>res_workspace</propertyName>
                                     <expandable>1</expandable>
                                     <value/>

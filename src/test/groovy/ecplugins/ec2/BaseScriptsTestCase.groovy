@@ -4,7 +4,7 @@ import groovy.json.JsonOutput
 import groovy.json.JsonSlurper
 import groovy.util.GroovyShellTestCase
 
-public class BaseScriptsTestCase extends GroovyShellTestCase {
+abstract public class BaseScriptsTestCase extends GroovyShellTestCase {
 
 	protected ResourceBundle testProperties;
 

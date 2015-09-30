@@ -65,7 +65,7 @@ def doValidations(args) {
 	System.setProperty("com.amazonaws.sdk.disableCertChecking", "true")
 
 	try {
-		def ec2 = login(credential, args.configurationParameters[SERVICE_URL])
+		def ec2 = loginEC2(credential, args.configurationParameters[SERVICE_URL])
 		def privateIp = parameters[PRIVATE_IP]
 		def subnetId = parameters[SUBNET_ID]
 
@@ -79,7 +79,7 @@ def doValidations(args) {
 	result
 }
 
-def login(credential, serviceURL) {
+def loginEC2(credential, serviceURL) {
 	// Disable HTTPS certificate verification
 	System.setProperty("com.amazonaws.sdk.disableCertChecking", "true")
 

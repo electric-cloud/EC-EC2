@@ -1769,10 +1769,6 @@
     <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;resource_zone&quot;]/value</xpath>
   </file>
   <file>
-    <path>procedures/form_scripts/parameterOptions/resources.groovy</path>
-    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;res_poolname&quot;]/value</xpath>
-  </file>
-  <file>
     <path>procedures/form_scripts/parameterOptions/workspaces.groovy</path>
     <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;res_workspace&quot;]/value</xpath>
   </file>

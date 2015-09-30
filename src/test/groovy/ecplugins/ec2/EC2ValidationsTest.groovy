@@ -7,17 +7,23 @@ class EC2ValidationsTest extends BaseScriptsTestCase {
 	def SCRIPT = 'project/procedures/form_scripts/validation/ec2Validations.groovy'
 	def json = new JsonBuilder()
 	def subnetId = 'subnet-be3293db'
+	def credential
+	def configurationParams
 
-	def credential = json (
-	credentialName: 'testCredential',
-	userName: testProperties.getString(PROP_AWS_KEY_ID),
-	password: testProperties.getString(PROP_AWS_KEY)
-	)
+	@Override
+	void setUp() {
+		super.setUp()
 
-	def configurationParams = json (
-	service_url : testProperties.getString(PROP_SVC_URL)
-	)
+		credential = json (
+				credentialName: 'testCredential',
+				userName: testProperties.getString(PROP_AWS_KEY_ID),
+				password: testProperties.getString(PROP_AWS_KEY)
+				)
 
+		configurationParams = json (
+				service_url : testProperties.getString(PROP_SVC_URL)
+				)
+	}
 
 	void testIpNotInSubnetRange() {
 
