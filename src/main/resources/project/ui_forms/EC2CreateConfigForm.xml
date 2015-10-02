@@ -25,10 +25,10 @@
     </formElement>
     <formElement>
         <type>entry</type>
-        <label>Resource Pool to use:</label>
+        <label>Resource:</label>
         <property>resource_pool</property>
-        <value>default</value>
-        <documentation>The name of the pool of resources on which the plugin procedure steps can run.</documentation>
+        <value>local</value>
+        <documentation>The resource (or pool) on which the integration steps can run (default is 'local')</documentation>
         <required>1</required>
         <serverOptions>1</serverOptions>
     </formElement>
