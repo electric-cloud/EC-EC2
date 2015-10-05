@@ -15,6 +15,17 @@
         <documentation>A description for this configuration.</documentation>
     </formElement>
     <formElement>
+        <type>credential</type>
+        <label>Access Key:</label>
+        <property>credential</property>
+        <userNameLabel>Access Key ID:</userNameLabel>
+        <passwordLabel>Secret Access Key:</passwordLabel>
+        <retypePasswordLabel>Retype Secret Access Key:</retypePasswordLabel>
+        <required>1</required>
+        <documentation>The Access Key ID and Access Key that are required for communicating with EC2 (Access Key ID and Secret Access Key).</documentation>
+        <serverValidation>1</serverValidation>
+    </formElement>
+    <formElement>
         <type>entry</type>
         <label>Service URL:</label>
         <property>service_url</property>
@@ -40,17 +51,6 @@
         <documentation>The workspace to use for resources dynamically created by this configuration.</documentation>
         <required>1</required>
         <serverOptions>1</serverOptions>
-    </formElement>
-    <formElement>
-        <type>credential</type>
-        <label>Access Key:</label>
-        <property>credential</property>
-        <userNameLabel>Access Key ID:</userNameLabel>
-        <passwordLabel>Secret Access Key:</passwordLabel>
-        <retypePasswordLabel>Retype Secret Access Key:</retypePasswordLabel>
-        <required>1</required>
-        <documentation>The Access Key ID and Access Key that are required for communicating with EC2 (Access Key ID and Secret Access Key).</documentation>
-        <serverValidation>1</serverValidation>
     </formElement>
     <formElement>
         <type>checkbox</type>
