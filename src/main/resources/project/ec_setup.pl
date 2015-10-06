@@ -345,6 +345,17 @@ if ($upgradeAction eq 'upgrade') {
                                         stepName      => 'run'
                                      }
                                     );
+
+            # Attach the credential to the API_RunInstances since it is required
+            #for retrieving parameter options for dynamic environments UI.
+            $batch->attachCredential(
+                                     "\$[/plugins/$pluginName/project]",
+                                     $cred,
+                                     {
+                                        procedureName => 'API_RunInstances',
+                                        stepName      => 'RunInstances'
+                                     }
+                                    );
                                     
             $batch->attachCredential(
                                      "\$[/plugins/$pluginName/project]",
