@@ -6850,6 +6850,16 @@
                                 </property>
                                 </propertySheet>
                         </property>
+                        <property>
+                            <propertyName>configurationParameterRef</propertyName>
+                            <expandable>1</expandable>
+                            <value>config</value>
+                        </property>
+                        <property>
+                            <propertyName>usesConfigurationNameAsCredential</propertyName>
+                            <expandable>1</expandable>
+                            <value>1</value>
+                        </property>
                     </propertySheet>
                 </property>
                 <!--End-of Form scripts for validation and dynamic options-->
