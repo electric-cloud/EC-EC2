@@ -49,6 +49,13 @@ $xpath = $ec->attachCredential($projName, $credName,
      stepName => "run"});
 $errors .= $ec->checkAllErrors($xpath);
 
+# Attaching credential to API_RunInstances since it is required
+# for retrieving parameter options for dynamic environments UI.
+$xpath = $ec->attachCredential($projName, $credName,
+    {procedureName => "API_RunInstances",
+     stepName => "RunInstances"});
+$errors .= $ec->checkAllErrors($xpath);
+
 $xpath = $ec->attachCredential($projName, $credName,
     {procedureName => "EC2 Auto Resume",
      stepName => "Attach Volumes"});
