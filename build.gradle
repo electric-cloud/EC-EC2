@@ -13,6 +13,7 @@ buildscript {
 	}
 	dependencies {
 		classpath group: 'com.electriccloud.plugins', name: 'flow-gradle-plugin', version: '+'
+		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
 	}
 }
 
@@ -22,7 +23,12 @@ version = "2.3.4"
 
 apply plugin: 'groovy'
 apply plugin: 'flow-gradle-plugin'
+apply plugin: 'license'
 
+license {
+    header = file ('shortHeader.txt')
+    excludes ["**/project.xml", "src/main/resources/project/lib/*"]
+} 
 
 task wrapper(type: Wrapper) { gradleVersion = '2.3' }
 
