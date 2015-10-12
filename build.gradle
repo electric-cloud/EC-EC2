@@ -28,8 +28,11 @@ apply plugin: 'license'
 license {
     header = file ('shortHeader.txt')
     exclude "**/project.xml"
+
 } 
 
+
+	
 task wrapper(type: Wrapper) { gradleVersion = '2.3' }
 
 configurations {
