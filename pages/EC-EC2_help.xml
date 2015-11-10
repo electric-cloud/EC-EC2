@@ -994,11 +994,11 @@
       </tr>
         <tr>
           <td>Resource Pool</td>
-          <td>If you would like to add Commander resources for each instance created, enter the Commander pool name for the new resource. 
+          <td>If you would like to add ElectricFlow resources for each instance created, enter the ElectricFlow pool name for the new resource. 
 					If left blank no resource will be	created.</td>
         </tr>
         <tr>
-          <td>Commander Workspace</td>
+          <td>ElectricFlow Workspace</td>
           <td>If you specify a resource poolName in res_poolName, this is the workspace that will be used when creating the resource.</td>
         </tr>
         <tr>
@@ -1515,7 +1515,7 @@
           <td>Name of the resource pool. If you enter a name, a new resource is created and put in the pool.</td>
         </tr>
         <tr>
-          <td>Commander Workspace</td>
+          <td>ElectricFlow Workspace</td>
           <td>Name of the workspace where the resources are created.</td>
         </tr>
         <tr>
