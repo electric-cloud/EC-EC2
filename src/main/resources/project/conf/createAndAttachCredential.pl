@@ -71,6 +71,10 @@ $xpath = $ec->attachCredential($projName, $credName,
     {procedureName => "API_RunInstances",
      stepName => "RunInstances"});
 $errors .= $ec->checkAllErrors($xpath);
+$xpath = $ec->attachCredential($projName, $credName,
+    {procedureName => "API_RunInstances",
+     stepName => "AssignNameTags"});
+$errors .= $ec->checkAllErrors($xpath);
 
 $xpath = $ec->attachCredential($projName, $credName,
     {procedureName => "EC2 Auto Resume",
