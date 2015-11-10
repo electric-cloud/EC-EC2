@@ -91,7 +91,7 @@
     <p>For more information about Amazon EC2, go to the <a href="http://aws.amazon.com/ec2/">Amazon Web Services website</a>.</p>
 		<p>You can view the documentation at <a href="http://aws.amazon.com/documentation/ec2/">EC2</a>.</p>
 
-   <h2>140 Integration to EC2 Implementations</h2>
+   <h2>ElectricFlow Integration to EC2 Implementations</h2>
 
     <p>This plugin uses the Amazon EC2 application programming interface (API) that lets developers choose where their applications physically run and 
 		that provides access to infrastructure resources. Using this secure API, your application is automatically scaled up and down as needed. This integration 
