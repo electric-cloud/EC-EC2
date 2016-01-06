@@ -1442,6 +1442,67 @@ sub MOCK_SnapVolume {
     exit 0;
 }
 
+sub _DescribeInstance {
+    my ($service, $resultHash, $instanceName) = @_;
+
+    my $filter = {};
+
+    if(defined $instanceName) {
+        mesg( 2, " describing $instanceName\n" );
+        $filter = { "InstanceId" => $instanceName };
+    }
+
+    eval {
+        my $request = new Amazon::EC2::Model::DescribeInstancesRequest($filter);
+        my $response = $service->describeInstances($request);
+
+        if ( $response->isSetDescribeInstancesResult() ) {
+            my $result  = $response->getDescribeInstancesResult();
+            my $resList = $result->getReservation();
+
+            foreach my $res (@$resList) {
+                my $instanceList = $res->getRunningInstance();
+                foreach my $instance (@$instanceList) {
+                            my $stateObj = $instance->getInstanceState();
+                            $resultHash->{$instance->getInstanceId()} = {};
+                            my $instanceHash = $resultHash->{$instance->getInstanceId()};
+                             $instanceHash->{state} = $stateObj->getName();
+                               $instanceHash->{image} = $instance->getImageId();
+                            $instanceHash->{prvdns} = ref $instance->getPrivateDnsName() eq ref {} ? "" : $instance->getPrivateDnsName();
+                            $instanceHash->{pubdns} = ref $instance->getPublicDnsName() eq ref {} ? "" : $instance->getPublicDnsName();
+                            $instanceHash->{key} = $instance->getKeyName();
+                            $instanceHash->{type} = $instance->getInstanceType();
+                            $instanceHash->{launch} = $instance->getLaunchTime();
+                            my $placement = $instance->getPlacement();
+                            $instanceHash->{zone} = $placement->getAvailabilityZone();
+                        }
+            }
+        }
+    };
+
+    # dont die on error...
+    if ($@) {
+        require Amazon::EC2::Exception;
+        if ( ref $@ eq "Amazon::EC2::Exception" ) {
+            mesg( 1, "Caught Exception: " . $@->getMessage() . "\n" );
+            mesg( 1, "Response Status Code: " . $@->getStatusCode() . "\n" );
+            mesg( 1, "Error Code: " . $@->getErrorCode() . "\n" );
+            mesg( 1, "Error Type: " . $@->getErrorType() . "\n" );
+            mesg( 1, "Request ID: " . $@->getRequestId() . "\n" );
+            mesg( 1, "XML: " . $@->getXML() . "\n" );
+        }
+        else {
+            mesg( 0, "An error occurred:\n" );
+            mesg( 0, "$@\n" );
+        }
+
+        if(defined $instanceName) {
+            # send back results that it is stopped
+            $resultHash->{$instanceName}{state} = "stopped";
+        }
+    }
+}
+
 sub API_DescribeInstances {
     my ( $opts, $service ) = @_;
 
@@ -1456,80 +1517,26 @@ sub API_DescribeInstances {
     #   stopped
     #
     # answer will be in form $resultHash->{instance} = state;
-    my $resultHash;
+    my $resultHash = {};
 
     # instances can be of 2 forms
     # 1-  a single instance i-1232
     # 2 - a list of instances i-1232;i-4566
-    my $reservation = getRequiredParam( "instances", $opts );
+    my $reservation = getOptionalParam( "instances", $opts );
     my $propResult = getOptionalParam( "propResult", $opts );
 
     @instances = split( /;/, $reservation );
-    mesg( 1,
-        " found " . scalar(@instances) . " in instance list $reservation\n" );
+    mesg( 1, " found " . scalar(@instances) . " in instance list $reservation\n" );
 
-    foreach my $instanceName (@instances) {
-        mesg( 2, " describing $instanceName\n" );
-
-        eval {
-            my $request = new Amazon::EC2::Model::DescribeInstancesRequest(
-                { "InstanceId" => "$instanceName" } );
-            my $response = $service->describeInstances($request);
-            if ( $response->isSetDescribeInstancesResult() ) {
-                my $result  = $response->getDescribeInstancesResult();
-                my $resList = $result->getReservation();
-                foreach (@$resList) {
-                    my $res   = $_;
-                    my $resId = $res->getReservationId();
-                    $instanceList = $res->getRunningInstance();
-                    foreach (@$instanceList) {
-                        my $instance = $_;
-                        my $id       = $instance->getInstanceId();
-                        my $stateObj = $instance->getInstanceState();
-                        $resultHash->{$instanceName}{state} =
-                          $stateObj->getName();
-                        $resultHash->{$instanceName}{image} =
-                          $instance->getImageId();
-                        $resultHash->{$instanceName}{prvdns} =
-                          $instance->getPrivateDnsName();
-                        $resultHash->{$instanceName}{pubdns} =
-                          $instance->getPublicDnsName();
-                        $resultHash->{$instanceName}{key} =
-                          $instance->getKeyName();
-                        $resultHash->{$instanceName}{type} =
-                          $instance->getInstanceType();
-                        $resultHash->{$instanceName}{launch} =
-                          $instance->getLaunchTime();
-                        my $placement = $instance->getPlacement();
-                        $resultHash->{$instanceName}{zone} =
-                          $placement->getAvailabilityZone();
-                    }
-                }
-            }
-        };
-
-        # dont die on error...
-        if ($@) {
-            require Amazon::EC2::Exception;
-            if ( ref $@ eq "Amazon::EC2::Exception" ) {
-                mesg( 1, "Caught Exception: " . $@->getMessage() . "\n" );
-                mesg( 1,
-                    "Response Status Code: " . $@->getStatusCode() . "\n" );
-                mesg( 1, "Error Code: " . $@->getErrorCode() . "\n" );
-                mesg( 1, "Error Type: " . $@->getErrorType() . "\n" );
-                mesg( 1, "Request ID: " . $@->getRequestId() . "\n" );
-                mesg( 1, "XML: " . $@->getXML() . "\n" );
-            }
-            else {
-                mesg( 0, "An error occurred:\n" );
-                mesg( 0, "$@\n" );
-            }
-
-            # send back results that it is stopped
-            $resultHash->{$instanceName}{state} = "stopped";
+    if(scalar(@instances) > 0) {
+        foreach my $instanceName (@instances) {
+            _DescribeInstance($service, $resultHash, $instanceName);
         }
+    } else {
+        _DescribeInstance($service, $resultHash);
     }
-    my $xml = "<DescribeResponse>";
+
+    my $xml = "<DescribeResponse>\n";
     foreach my $i ( keys %{$resultHash} ) {
         $xml .= "  <instance>\n";
         $xml .= "    <id>$i</id>\n";
