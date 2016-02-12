@@ -822,6 +822,14 @@
     <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;DhcpOptions.pm&quot;]/value</xpath>
   </file>
   <file>
+    <path>lib/Amazon/EC2/Model/DescribeAccountAttributesResponse.pm</path>
+    <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;DescribeAccountAttributesResponse.pm&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>lib/Amazon/EC2/Model/DescribeAccountAttributesResult.pm</path>
+    <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;DescribeAccountAttributesResult.pm&quot;]/value</xpath>
+  </file>
+  <file>
     <path>lib/Amazon/EC2/Model/DescribeAddressesResponse.pm</path>
     <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;DescribeAddressesResponse.pm&quot;]/value</xpath>
   </file>
@@ -832,6 +840,10 @@
   <file>
     <path>lib/Amazon/EC2/Model/DescribeVolumesResponse.xslt</path>
     <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;DescribeVolumesResponse.xslt&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>lib/Amazon/EC2/Model/DescribeAccountAttributesResponse.xslt</path>
+    <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;DescribeAccountAttributesResponse.xslt&quot;]/value</xpath>
   </file>
   <file>
     <path>lib/Amazon/EC2/Model/SpotDatafeedSubscription.pm</path>
@@ -916,6 +928,10 @@
   <file>
     <path>lib/Amazon/EC2/Model/Address.pm</path>
     <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;Address.pm&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>lib/Amazon/EC2/Model/AccountAttribute.pm</path>
+    <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;AccountAttribute.pm&quot;]/value</xpath>
   </file>
   <file>
     <path>lib/Amazon/EC2/Model/RunningInstance.pm</path>
@@ -1132,6 +1148,10 @@
   <file>
     <path>lib/Amazon/EC2/Model/CreateSubnetResponse.pm</path>
     <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;CreateSubnetResponse.pm&quot;]/value</xpath>
+  </file>
+  <file>
+    <path>lib/Amazon/EC2/Model/DescribeAccountAttributesRequest.pm</path>
+    <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;DescribeAccountAttributesRequest.pm&quot;]/value</xpath>
   </file>
   <file>
     <path>lib/Amazon/EC2/Model/DescribeAddressesRequest.pm</path>
