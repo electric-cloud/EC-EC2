@@ -1869,6 +1869,7 @@
           <li>Added the ability to create a resource in non-default zone.</li>
           <li>Added validation to the CreateConfiguration procedure for the dynamic environments feature.</li>
           <li>Make 'instances' parameter optional for API_DescribeInstances procedure.</li>
+          <li>Added check for instances and subnet's IP limits before spinning instances in API_RunInstances procedure, minor changes.</li>
       </ul>
 	  
       <h2>@PLUGIN_KEY@ 2.3.3</h2>

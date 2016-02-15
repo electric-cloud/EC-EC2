@@ -727,6 +727,28 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
+    #
+    # Describe Account Attributes
+    # The DescribeAccountAttributes operation lists account attributes
+    # assigned to your account.
+    # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DescribeAccountAttributes.html
+    # Argument either hash reference of parameters for Amazon::EC2::Model::DescribeAccountAttributesRequest request
+    # or Amazon::EC2::Model::DescribeAccountAttributesRequest object itself
+    # See Amazon::EC2::Model::DescribeAccountAttributesRequest for valid arguments
+    # Returns Amazon::EC2::Model::DescribeAccountAttributesResponse
+    #
+    # throws Amazon::EC2::Exception. Use eval to catch it
+    #
+    sub describeAccountAttributes {
+        my ($self, $request) = @_;
+        if (not ref $request eq "Amazon::EC2::Model::DescribeAccountAttributesRequest") {
+            require Amazon::EC2::Model::DescribeAccountAttributesRequest;
+            $request = Amazon::EC2::Model::DescribeAccountAttributesRequest->new($request);
+        }
+        require Amazon::EC2::Model::DescribeAccountAttributesResponse;
+        return Amazon::EC2::Model::DescribeAccountAttributesResponse->fromXML($self->_invokeVer($self->_convertDescribeAccountAttributes($request), "2013-10-15"));
+    }
+
             
     #
     # Describe Availability Zones 
@@ -2782,7 +2804,6 @@ my $SERVICE_VERSION = "2010-06-15";
             my $ec = new ElectricCommander();
 
             my $xsl_file = "/myProject/lib/Amazon/EC2/Model/" . $actionName . "Response.xslt"; #"../Model/".$actionName . "Response.xslt";
-
             my $xpath = $ec->getProperty($xsl_file);
             my $xsl_string = $xpath->findvalue("//value");
 
@@ -3833,6 +3854,22 @@ my $SERVICE_VERSION = "2010-06-15";
         return $parameters;
     }
         
+    #
+    # Convert DescribeAccountAttributesRequest to name value pairs
+    #
+    sub _convertDescribeAccountAttributes() {
+        my ($self, $request) = @_;
+
+        my $parameters = {};
+        $parameters->{"Action"} = "DescribeAccountAttributes";
+        my $describeAccountAttributesRequestList = $request->getAttributeName();
+        for my $describeAccountAttributesRequestIndex (0 .. $#{$describeAccountAttributesRequestList}) {
+            my $describeAccountAttributesRequest = $describeAccountAttributesRequestList->[$describeAccountAttributesRequestIndex];
+            $parameters->{"AttributeName" . "."  . ($describeAccountAttributesRequestIndex + 1)} =  $describeAccountAttributesRequest;
+        }
+
+        return $parameters;
+    }
                                         
     #
     # Convert DescribeAddressesRequest to name value pairs

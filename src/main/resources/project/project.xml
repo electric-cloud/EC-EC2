@@ -982,6 +982,31 @@
                                                 <value></value>
                                             </property>
                                             <property>
+                                                <propertyName>AccountAttribute.pm</propertyName>
+                                                <expandable>0</expandable>
+                                                <value></value>
+                                            </property>
+                                            <property>
+                                                <propertyName>DescribeAccountAttributesRequest.pm</propertyName>
+                                                <expandable>0</expandable>
+                                                <value></value>
+                                            </property>
+                                            <property>
+                                                <propertyName>DescribeAccountAttributesResponse.pm</propertyName>
+                                                <expandable>0</expandable>
+                                                <value></value>
+                                            </property>
+                                            <property>
+                                                <propertyName>DescribeAccountAttributesResponse.xslt</propertyName>
+                                                <expandable>0</expandable>
+                                                <value></value>
+                                            </property>
+                                            <property>
+                                                <propertyName>DescribeAccountAttributesResult.pm</propertyName>
+                                                <expandable>0</expandable>
+                                                <value></value>
+                                            </property>
+                                            <property>
                                                 <propertyName>DescribeAddressesResponse.pm</propertyName>
                                                 <expandable>0</expandable>
                                                 <value></value>

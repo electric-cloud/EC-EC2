@@ -31,6 +31,7 @@ use XML::Simple;
 use Amazon::EC2::Model::CreateTagsRequest;
 use Amazon::EC2::Model::Tag;
 use Amazon::EC2::Model::DescribeVolumesRequest;
+use Amazon::EC2::Model::DescribeSubnetsRequest;
 use Amazon::EC2::Model::AllocateAddressRequest;
 use Amazon::EC2::Model::ReleaseAddressRequest;
 use Amazon::EC2::Model::AttachVolumeRequest;
@@ -50,6 +51,7 @@ use Amazon::EC2::Model::TerminateInstancesRequest;
 use Amazon::EC2::Model::DescribeInstancesRequest;
 use Amazon::EC2::Model::DeregisterImageRequest;
 use Amazon::EC2::Model::CreateImageRequest;
+use Amazon::EC2::Model::DescribeAccountAttributesRequest;
 use Amazon::EC2::Model::RunInstancesRequest;
 use Amazon::EC2::Model::CreateVpcRequest;
 use Amazon::EC2::Model::CreateSubnetRequest;
@@ -262,8 +264,7 @@ sub main {
     $opts->{service_url} = $CfgDB->getCol( "$opts->{config}", "service_url" );
     $opts->{debug}       = $CfgDB->getCol( "$opts->{config}", "debug" );
 
-    $opts->{resourceName} =
-      $CfgDB->getCol( "$opts->{config}", 'resource_pool' );
+    $opts->{resourceName} = $CfgDB->getCol( "$opts->{config}", 'resource_pool' );
     $opts->{workspaceName} = $CfgDB->getCol( "$opts->{config}", 'workspace' );
 
     # if mockdata is non blank, hard coded mock data will be
@@ -285,9 +286,7 @@ sub main {
     $opts->{pdb} = ElectricCommander::PropDB->new( $::CmdrAPI, "" );
     $opts->{ec_instance} = $::CmdrAPI;
     if ( "$opts->{service_url}" eq "" ) {
-        mesg( 0,
-"Error: Configuration $opts->{config} does not specify a service_url\n"
-        );
+        mesg(0, "Error: Configuration $opts->{config} does not specify a service_url\n");
         exit 1;
     }
 
@@ -346,9 +345,7 @@ sub tearDownResource {
     }
     my $instances = getInstancesForTermination( $ec, $resName );
     if ( !@$instances ) {
-        mesg( 0,
-"No resource or resource pool with name '$resName' found for termination. Nothing to do in this case.\n"
-        );
+        mesg( 0, "No resource or resource pool with name '$resName' found for termination. Nothing to do in this case.\n" );
 
 #ECPRESOURCEAMAZON-148:
 #This is considered an acceptable condition when this procedure is called for a cleanup
@@ -395,9 +392,7 @@ sub tearDownResource {
             $opts->{workspaceName} = $CfgDB->getCol( "$config", 'workspace' );
             1;
         } or do {
-            mesg( 0,
-"Can't get information from config provided. Can't terminate $inst->{instance_id}\n"
-            );
+            mesg(0, "Can't get information from config provided. Can't terminate $inst->{instance_id}\n");
             next;
         };
 
@@ -2219,6 +2214,62 @@ sub MOCK_CreateImage {
     exit 0;
 }
 
+sub _getInstancesLimit {
+    my ($service) = @_;
+    my $maxInstances = 50; # Setup reasonable default in case of error
+
+    eval {
+        $request = new Amazon::EC2::Model::DescribeAccountAttributesRequest({ "AttributeName" => "max-instances" });
+        my $response = $service->describeAccountAttributes($request);
+
+        # get instances limit
+        if ( $response->isSetDescribeAccountAttributesResult() ) {
+            my $result = $response->getDescribeAccountAttributesResult();
+            my $attribute = $result->getAccountAttribute()->[0];
+            $maxInstances = $attribute->getAttributeValue()->[0];
+        }
+    };
+
+    # dont die on error, use predefined limit
+    if ($@) {
+        require Amazon::EC2::Exception;
+        if ( ref $@ eq "Amazon::EC2::Exception" ) {
+            mesg( 1, "Caught Exception: " . $@->getMessage() . "\n" );
+            mesg( 1, "Response Status Code: " . $@->getStatusCode() . "\n" );
+            mesg( 1, "Error Code: " . $@->getErrorCode() . "\n" );
+            mesg( 1, "Error Type: " . $@->getErrorType() . "\n" );
+            mesg( 1, "Request ID: " . $@->getRequestId() . "\n" );
+            mesg( 1, "XML: " . $@->getXML() . "\n" );
+        }
+        else {
+            mesg( 0, "An error occurred:\n" );
+            mesg( 0, "$@\n" );
+        }
+    }
+
+	return scalar($maxInstances);
+}
+
+sub _getAvailableIpAddressCount {
+    my ($service, $subnet_id) = @_;
+    my $ipCount = 0;
+
+    eval {
+        $request = new Amazon::EC2::Model::DescribeSubnetsRequest({ "SubnetId" => $subnet_id });
+        my $response = $service->describeSubnets($request);
+
+        # get available IP count
+        if ( $response->isSetDescribeSubnetsResult() ) {
+            my $result = $response->getDescribeSubnetsResult();
+            my $subnet = $result->getSubnet()->[0];
+            $ipCount = $subnet->getAvailableIpAddressCount();
+        }
+    };
+    if ($@) { throwEC2Error($@); }
+
+    return $ipCount;
+}
+
 sub API_RunInstance {
     my ( $opts, $service ) = @_;
     my $request;
@@ -2235,14 +2286,12 @@ sub API_RunInstance {
     my $poolName  = getOptionalParam( "res_poolName", $opts );
     my $privateIp = getOptionalParam( "privateIp",    $opts );
     my $resource_zone = getOptionalParam( "resource_zone", $opts );
-    my $instanceInitiatedShutdownBehavior =
-      getOptionalParam( "instanceInitiatedShutdownBehavior", $opts );
+    my $instanceInitiatedShutdownBehavior = getOptionalParam( "instanceInitiatedShutdownBehavior", $opts );
 
     my $propResult = getPropResultLocationForPool( $opts, $poolName );
 
     my $workspace = getOptionalParam( "res_workspace", $opts );
     my $port      = getOptionalParam( "res_port",      $opts );
-
     my $subnet_id = getOptionalParam( "subnet_id", $opts );
     my $use_private_ip = '';
 
@@ -2260,9 +2309,35 @@ sub API_RunInstance {
         $userData = MIME::Base64::encode_base64("$userData");
     }
 
-    mesg( 1,
-"Running $count instance(s) of $ami in zone $zone as type $instanceType with group $group\n"
-    );
+    # Get instances limit count for EC2 account
+    my $limit = _getInstancesLimit($service);
+
+    # Get running instances count
+    my $instances = {};
+    _DescribeInstance($service, $instances);
+    my $instancesCount = scalar keys %$instances;
+
+    mesg(1, "Running instances count: $instancesCount, max instances: $limit\n");
+
+    $limit -= $instancesCount;
+    if($limit < $count) {
+        mesg(1, "Error: Requested instances count is more than available maximum ($limit), bailing out\n");
+        exit 1;
+    }
+
+    my $ipCount = 0;
+
+    if(length($subnet_id)) {
+        $ipCount = _getAvailableIpAddressCount($service, $subnet_id);
+        mesg(1, "Subnet $subnet_id available IP count: $ipCount\n");
+    }
+
+    if($ipCount != 0 && $ipCount < $count && length($poolName)) {
+        mesg(1, "Error: Requested instances count for pool $poolName is more than available IP count for subnet $subnet_id , bailing out\n");
+        exit 1;
+    }
+
+    mesg(1, "Running $count instance(s) of $ami in zone $zone as type $instanceType with group $group\n");
 
     ## run new instance
     my $reservation = "";
@@ -2276,10 +2351,10 @@ sub API_RunInstance {
         "MaxCount"     => "$count",
         "KeyName"      => "$key",
         "InstanceType" => "$instanceType",
-        "UserData"     => "$userData",
+        "UserData"     => "$userData"
     );
 
-    ## Add optional agruements
+    ## Add optional agruments
     if ($group) {
         $requestParameters{"SecurityGroup"} = "$group";
     }
@@ -2295,9 +2370,7 @@ sub API_RunInstance {
     }
 
     eval {
-
-        $request =
-          new Amazon::EC2::Model::RunInstancesRequest( \%requestParameters );
+        $request = new Amazon::EC2::Model::RunInstancesRequest(\%requestParameters);
         $request->setPlacement($placement);
 
         my $response = $service->runInstances($request);
@@ -2307,7 +2380,7 @@ sub API_RunInstance {
             $result = $response->getRunInstancesResult();
             my $res = $result->getReservation();
             $reservation = $res->getReservationId();
-            mesg( 1, "Run instance returned reservation id $reservation\n" );
+            mesg(1, "Run instance returned reservation id $reservation\n");
         }
     };
     if ($@) { throwEC2Error($@); }
@@ -2414,16 +2487,12 @@ sub API_RunInstance {
 
                     my $placement  = $instance->getPlacement();
                     my $actualZone = $placement->getAvailabilityZone();
-                    mesg( 1,
-"Instance $id: IP=$publicIP  AMI=$image ZONE=$actualZone\n"
-                    );
+                    mesg(1, "Instance $id: IP=$publicIP  AMI=$image ZONE=$actualZone\n");
 
                     my $resource = "";
                     if ( !$ip_for_resource_creation ) {
                         $poolName = '';
-                        mesg( 1,
-"WARNING: Can't create resource because of no public IP was assigned to the created instance\n"
-                        );
+                        mesg(1, "WARNING: Can't create resource because of no public IP was assigned to the created instance\n");
                     }
                     if ( "$poolName" ne "" ) {
                         mesg( 1, "Poolname is not empty, adding resources." );
@@ -2756,15 +2825,14 @@ sub createTag {
     eval {
         $service->createTags($request);
         1;
-    } or do {
-        mesg( 0,
-"Failed to add Tag '$tagName'='$tagValue' to Amazon EC2 resource '$resourceId'\n"
-        );
-        exit 1;
     };
 
-    mesg( 1, "Tag(s) successfully created\n" );
+    if ($@) {
+        mesg(0, "Failed to add Tag '$tagName'='$tagValue' to Amazon EC2 resource '$resourceId'\n");
+        throwEC2Error($@);
+    }
 
+    mesg( 1, "Tag(s) successfully created\n" );
 }
 
 sub getInstancesForTermination {
