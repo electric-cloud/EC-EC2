@@ -14,7 +14,6 @@ buildscript {
 
 	dependencies {
 		classpath group: 'com.electriccloud.plugins', name: 'flow-gradle-plugin', version: '+'
-		classpath 'nl.javadude.gradle.plugins:license-gradle-plugin:0.11.0'
 	}
 }
 
@@ -34,9 +33,11 @@ license {
 
 task wrapper(type: Wrapper) { gradleVersion = '2.10' }
 
-configurations { // Configuration for the jar files we want
-	// to include in the plugin jar
-	includeInPluginJar }
+// Configuration for the jar files we want
+// to include in the plugin jar
+configurations {
+	includeInPluginJar
+}
 
 dependencies {
 	compile localGroovy()
