@@ -2315,13 +2315,14 @@ sub API_RunInstance {
     # Get running instances count
     my $instances = {};
     _DescribeInstance($service, $instances);
-    my $instancesCount = scalar keys %$instances;
+    my @runningInstances = grep { $_->{'state'} eq 'running' } values %$instances;
+    my $instancesCount = scalar @runningInstances;
 
     mesg(1, "Running instances count: $instancesCount, max instances: $limit\n");
 
     $limit -= $instancesCount;
     if($limit < $count) {
-        mesg(1, "Error: Requested instances count is more than available maximum ($limit), bailing out\n");
+        mesg(1, "Error: Requested instances count is more than available ($limit), bailing out\n");
         exit 1;
     }
 
