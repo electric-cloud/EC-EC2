@@ -1870,6 +1870,7 @@
           <li>Added validation to the CreateConfiguration procedure for the dynamic environments feature.</li>
           <li>Make 'instances' parameter optional for API_DescribeInstances procedure.</li>
           <li>Added check for instances and subnet's IP limits before spinning instances in API_RunInstances procedure, minor changes.</li>
+          <li>Make resource_zone parameter optional with default value 'default' in API_RunInstances</li>
       </ul>
 	  
       <h2>@PLUGIN_KEY@ 2.3.3</h2>

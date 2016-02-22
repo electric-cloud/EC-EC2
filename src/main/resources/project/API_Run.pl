@@ -2315,13 +2315,14 @@ sub API_RunInstance {
     # Get running instances count
     my $instances = {};
     _DescribeInstance($service, $instances);
-    my $instancesCount = scalar keys %$instances;
+    my @runningInstances = grep { $_->{'state'} eq 'running' } values %$instances;
+    my $instancesCount = scalar @runningInstances;
 
     mesg(1, "Running instances count: $instancesCount, max instances: $limit\n");
 
     $limit -= $instancesCount;
     if($limit < $count) {
-        mesg(1, "Error: Requested instances count is more than available maximum ($limit), bailing out\n");
+        mesg(1, "Error: Requested instances count is more than available ($limit), bailing out\n");
         exit 1;
     }
 
@@ -2342,7 +2343,7 @@ sub API_RunInstance {
     ## run new instance
     my $reservation = "";
     my $placement   = new Amazon::EC2::Model::Placement();
-    $placement->setAvailabilityZone("$zone");
+    $placement->setAvailabilityZone($zone);
 
     my %requestParameters = (
         "ImageId"      => "$ami",
@@ -2648,18 +2649,14 @@ sub MOCK_API_RunInstance {
     exit 0;
 }
 
-sub makeNewResource() {
+sub makeNewResource {
     my ( $opts, $host, $pool, $workspace, $port, $zone ) = @_;
+    my $ec = $opts->{pdb}->getCmdr();
 
     # host must be present
     if ( "$host" eq "" ) {
         mesg( 1, "No host provided to makeNewResource.\n" );
         return "";
-    }
-
-    if (!$zone) {
-        mesg( 1, "\nError: No resource zone provided to makeNewResource.\n" );
-        exit 1;
     }
 
    # workspace and port can be blank
@@ -2679,22 +2676,23 @@ sub makeNewResource() {
         my $now = time();
         $resName = "$pool" . "-" . $now . "_" . $seq;
 
-        my $cmdrresult = $opts->{pdb}->getCmdr()->createResource(
-            $resName,
-            {
-                description   => "EC2 provisioned resource (dynamic)",
-                workspaceName => "$workspace",
-                port          => "$port",
-                hostName      => "$host",
-                zoneName      => "$zone",
-                #pools         => "$pool"
-            }
-        );
+        my $params = {
+                description => "EC2 provisioned resource (dynamic)",
+                workspaceName => $workspace,
+                port => $port,
+                hostName => $host
+        };
+
+        if($zone) {
+            $params->{zoneName} = $zone;
+        }
+
+        my $cmdrresult = $ec->createResource($resName, $params);
 
         # resource created.
 
         # Check for error return
-        my $errMsg = $opts->{pdb}->getCmdr()->checkAllErrors($cmdrresult);
+        my $errMsg = $ec->checkAllErrors($cmdrresult);
         if ( $errMsg ne "" ) {
             if ( $errMsg =~ /DuplicateResourceName/ ) {
                 mesg( 4, "resource $resName exists\n" );
@@ -2705,15 +2703,14 @@ sub makeNewResource() {
                 return "";
             }
         }
-        mesg( 1, "Resource Name:$resName\n" );
-        $opts->{pdb}->getCmdr()
-          ->addResourcesToPool( $pool, { resourceName => [$resName] } );
+
+        mesg( 1, "Resource Name: $resName\n" );
+        $ec->addResourcesToPool( $pool, { resourceName => [$resName] } );
 
         return $resName;
     }
 
     return "";
-
 }
 
 sub deleteResource() {

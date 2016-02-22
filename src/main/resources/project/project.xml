@@ -6969,7 +6969,7 @@
             <formalParameter>
                 <formalParameterName>zone</formalParameterName>
                 <defaultValue/>
-                <description/>
+                <description>The Availability Zone you want to launch the instance into.</description>
                 <required>1</required>
                 <type>entry</type>
             </formalParameter>
@@ -7003,8 +7003,8 @@
             </formalParameter>
 			<formalParameter>
                 <formalParameterName>resource_zone</formalParameterName>
-                <defaultValue/>
-                <description/>
+                <defaultValue>default</defaultValue>
+                <description>Created resource will belong to the specified zone. Zone 'default' is used by default.</description>
                 <required>0</required>
                 <type>entry</type>
             </formalParameter>
