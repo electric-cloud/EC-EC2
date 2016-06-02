@@ -35,7 +35,7 @@ use base qw (Amazon::EC2::Model);
     #
     # 
     # InstanceId: string
-    #
+    # Filter: Amazon::EC2::Model::Filter
     # 
     # 
     sub new {
@@ -44,6 +44,7 @@ use base qw (Amazon::EC2::Model);
         $self->{_fields} = {
             
             InstanceId => {FieldValue => [], FieldType => ["string"]},
+            Filter => {FieldValue => [], FieldType => ["Amazon::EC2::Model::Filter"]},
         };
 
         bless ($self, $class);
@@ -81,8 +82,31 @@ use base qw (Amazon::EC2::Model);
         return scalar (@{shift->{_fields}->{InstanceId}->{FieldValue}}) > 0;
     }
 
+    sub getFilter {
+        return shift->{_fields}->{Filter}->{FieldValue};
+    }
+
+    sub setFilter {
+        my $self = shift;
+        foreach my $filter (@_) {
+            if (not $self->_isArrayRef($filter)) {
+                $filter =  [$filter];
+            }
+            $self->{_fields}->{Filter}->{FieldValue} = $filter;
+        }
+    }
 
 
+    sub withFilter {
+        my ($self, $filterArgs) = @_;
+        foreach my $filter (@$filterArgs) {
+            $self->{_fields}->{Filter}->{FieldValue} = $filter;
+        }
+        return $self;
+    }
 
 
+    sub isSetFilter {
+        return  scalar (@{shift->{_fields}->{Filter}->{FieldValue}}) > 0;
+    }
 1;

@@ -1438,17 +1438,22 @@ sub MOCK_SnapVolume {
 }
 
 sub _DescribeInstance {
-    my ($service, $resultHash, $instanceName) = @_;
+    my ($service, $resultHash, $instanceName, $filter) = @_;
 
-    my $filter = {};
+    my $instance = {};
 
     if(defined $instanceName) {
         mesg( 2, " describing $instanceName\n" );
-        $filter = { "InstanceId" => $instanceName };
+        $instance = { "InstanceId" => $instanceName };
     }
 
     eval {
-        my $request = new Amazon::EC2::Model::DescribeInstancesRequest($filter);
+        my $request = new Amazon::EC2::Model::DescribeInstancesRequest($instance);
+        if(defined $filter) {
+            my $describeInstancesFilter = new Amazon::EC2::Model::Filter($filter);
+            $request->setFilter($describeInstancesFilter);
+        }
+
         my $response = $service->describeInstances($request);
 
         if ( $response->isSetDescribeInstancesResult() ) {
@@ -2050,8 +2055,9 @@ sub getInstanceList($$) {
 
     # otherwise make a list of each instance in the reservation
     eval {
-        my $request = new Amazon::EC2::Model::DescribeInstancesRequest(
-            { "ReservationId" => "$reservation" } );
+        my $reservationFilter = new Amazon::EC2::Model::Filter({ "Name" => "reservation-id", "Value" => $reservation } );
+        my $request = new Amazon::EC2::Model::DescribeInstancesRequest();
+        $request->setFilter($reservationFilter);
         my $response = $service->describeInstances($request);
 
         if ( $response->isSetDescribeInstancesResult() ) {
@@ -2314,9 +2320,8 @@ sub API_RunInstance {
 
     # Get running instances count
     my $instances = {};
-    _DescribeInstance($service, $instances);
-    my @runningInstances = grep { $_->{'state'} eq 'running' } values %$instances;
-    my $instancesCount = scalar @runningInstances;
+    _DescribeInstance($service, $instances, undef, {'Name' => 'instance-state-name', 'Value' => 'running'});
+    my $instancesCount = scalar values %$instances;
 
     mesg(1, "Running instances count: $instancesCount, max instances: $limit\n");
 
@@ -2392,8 +2397,9 @@ sub API_RunInstance {
         my $running = 0;         # number ready
         my $total   = $count;    # number in reservation
         eval {
-            my $request = new Amazon::EC2::Model::DescribeInstancesRequest(
-                { "ReservationId" => "$reservation" } );
+            my $reservationFilter = new Amazon::EC2::Model::Filter({ "Name" => "reservation-id", "Value" => $reservation } );
+            my $request = new Amazon::EC2::Model::DescribeInstancesRequest();
+            $request->setFilter($reservationFilter);
             my $response = $service->describeInstances($request);
 
             # examine all instances in reservation and
@@ -2447,8 +2453,9 @@ sub API_RunInstance {
 
     # Now describe them one more time to capture the attributes
     eval {
-        my $request = new Amazon::EC2::Model::DescribeInstancesRequest(
-            { "ReservationId" => "$reservation" } );
+        my $reservationFilter = new Amazon::EC2::Model::Filter({ "Name" => "reservation-id", "Value" => $reservation } );
+        my $request = new Amazon::EC2::Model::DescribeInstancesRequest();
+        $request->setFilter($reservationFilter);
         my $response = $service->describeInstances($request);
 
         if ( $response->isSetDescribeInstancesResult() ) {
@@ -2492,11 +2499,9 @@ sub API_RunInstance {
 
                     my $resource = "";
                     if ( !$ip_for_resource_creation ) {
-                        $poolName = '';
                         mesg(1, "WARNING: Can't create resource because of no public IP was assigned to the created instance\n");
-                    }
-                    if ( "$poolName" ne "" ) {
-                        mesg( 1, "Poolname is not empty, adding resources." );
+                    } elsif ($poolName) {
+                        mesg( 1, "Poolname is not empty, adding resources.\n" );
                         $resource =
                           makeNewResource( $opts, $ip_for_resource_creation,
                             $poolName, $workspace, $port, $resource_zone );
@@ -2802,9 +2807,7 @@ sub AssignNameTags {
 sub createTag {
     my ( $resourceId, $tagName, $tagValue, $service ) = @_;
 
-    mesg( 1,
-"Adding Tag '$tagName'='$tagValue' to Amazon EC2 resource '$resourceId'\n"
-    );
+    mesg( 1, "Adding Tag '$tagName'='$tagValue' to Amazon EC2 resource '$resourceId'\n");
 
     my $request = new Amazon::EC2::Model::CreateTagsRequest();
 
