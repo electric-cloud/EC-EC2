@@ -9,3 +9,4 @@ staging
 .settings
 *.iml
 openstack-test.properties
+.groovy

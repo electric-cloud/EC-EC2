@@ -1002,7 +1002,7 @@ my $SERVICE_VERSION = "2010-06-15";
             $request = Amazon::EC2::Model::DescribeInstancesRequest->new($request);
         }
         require Amazon::EC2::Model::DescribeInstancesResponse;
-        return Amazon::EC2::Model::DescribeInstancesResponse->fromXML($self->_invoke($self->_convertDescribeInstances($request)));
+        return Amazon::EC2::Model::DescribeInstancesResponse->fromXML($self->_invokeVer($self->_convertDescribeInstances($request), '2013-10-15'));
     }
 
 
@@ -4022,6 +4022,19 @@ my $SERVICE_VERSION = "2010-06-15";
         for my $instanceIddescribeInstancesRequestIndex (0 .. $#{$instanceIddescribeInstancesRequestList}) {
             my $instanceIddescribeInstancesRequest = $instanceIddescribeInstancesRequestList->[$instanceIddescribeInstancesRequestIndex];
             $parameters->{"InstanceId" . "."  . ($instanceIddescribeInstancesRequestIndex + 1)} =  $instanceIddescribeInstancesRequest;
+        }
+
+        my $filterdescribeInstancesRequestList = $request->getFilter();
+        for my $filterdescribeInstancesRequestIndex (0 .. $#{$filterdescribeInstancesRequestList}) {
+            my $filterdescribeInstancesRequest = $filterdescribeInstancesRequestList->[$filterdescribeInstancesRequestIndex];
+            if ($filterdescribeInstancesRequest->isSetName()) {
+                $parameters->{"Filter" . "."  . ($filterdescribeInstancesRequestIndex + 1) . "." . "Name"} =  $filterdescribeInstancesRequest->getName();
+            }
+            my $valuefilterList = $filterdescribeInstancesRequest->getValue();
+            for my $valuefilterIndex (0 .. $#{$valuefilterList}) {
+                my $valuefilter = $valuefilterList->[$valuefilterIndex];
+                $parameters->{"Filter" . "."  . ($filterdescribeInstancesRequestIndex + 1) . "." . "Value" . "."  . ($valuefilterIndex + 1)} =  $valuefilter;
+            }
         }
 
         return $parameters;

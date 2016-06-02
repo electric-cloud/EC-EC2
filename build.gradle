@@ -31,7 +31,7 @@ license {
 
 }
 
-task wrapper(type: Wrapper) { gradleVersion = '2.10' }
+task wrapper(type: Wrapper) { gradleVersion = '2.13' }
 
 // Configuration for the jar files we want
 // to include in the plugin jar
