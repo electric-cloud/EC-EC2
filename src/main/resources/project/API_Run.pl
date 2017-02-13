@@ -795,7 +795,7 @@ sub API_CreateVPC {
             mesg( 10, "CreateVpcResult\n" );
             my $createVpcResult = $response->getCreateVpcResult();
             if ( $createVpcResult->isSetVpc() ) {
-              
+
                 my $vpc = $createVpcResult->getVpc();
                 if ( $vpc->isSetVpcId() ) {
                     mesg( 10, "VpcId\n" );
@@ -2055,7 +2055,7 @@ sub getInstanceList($$) {
 
     # otherwise make a list of each instance in the reservation
     eval {
-        my $reservationFilter = new Amazon::EC2::Model::Filter({ "Name" => "reservation-id", "Value" => $reservation } );
+        my $reservationFilter = new Amazon::EC2::Model::Filter({ "Name" => "reservation-id", "Value" => $resIn } );
         my $request = new Amazon::EC2::Model::DescribeInstancesRequest();
         $request->setFilter($reservationFilter);
         my $response = $service->describeInstances($request);
