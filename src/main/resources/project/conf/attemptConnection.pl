@@ -21,6 +21,7 @@
 use ElectricCommander;
 use ElectricCommander::PropDB;
 use ElectricCommander::PropMod qw(/myProject/lib);
+use Data::Dumper;
 use Carp qw( carp croak );
 
 use constant {
@@ -46,12 +47,13 @@ require Amazon::EC2::Client;
 my $config = {
                ServiceURL       => "$[service_url]",
                UserAgent        => "Amazon EC2 Perl Library",
-               SignatureVersion => 2,
+               SignatureVersion => 4,
                SignatureMethod  => "HmacSHA256",
                ProxyHost        => undef,
                ProxyPort        => -1,
                MaxErrorRetry    => 3
-             };
+           };
+print "Config: " . Dumper $config;
 my $service = Amazon::EC2::Client->new($AWS_ACCESS_KEY_ID, $AWS_SECRET_ACCESS_KEY, $config);
 
 require Amazon::EC2::Model::DescribeAvailabilityZonesRequest;
@@ -59,6 +61,7 @@ require Amazon::EC2::Model::DescribeAvailabilityZonesRequest;
 my $request = new Amazon::EC2::Model::DescribeAvailabilityZonesRequest();
 
 eval {
+    print "DescribeAvailabilityZones...\n";
     my $response = $service->describeAvailabilityZones($request);
 
     print("Service Response\n");
@@ -74,6 +77,7 @@ eval {
     }
 };
 my $ex = $@;
+print "Error: " . Dumper $@;
 if ($ex) {
     my $errMsg = "Test connection failed.\n";
     $ec->setProperty("/myJob/configError", $errMsg);

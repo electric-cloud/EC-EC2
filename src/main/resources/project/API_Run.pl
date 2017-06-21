@@ -303,7 +303,9 @@ sub main {
     my $config = {
         ServiceURL       => "$opts->{service_url}",
         UserAgent        => "Amazon EC2 Perl Library",
-        SignatureVersion => 2,
+        # SignatureVersion => 2,
+        # SignatureMethod  => "HmacSHA256",
+        SignatureVersion => 4,
         SignatureMethod  => "HmacSHA256",
         ProxyHost        => undef,
         ProxyPort        => -1,
@@ -402,7 +404,9 @@ sub tearDownResource {
         my $config_hash = {
             ServiceURL       => "$opts->{service_url}",
             UserAgent        => "Amazon EC2 Perl Library",
-            SignatureVersion => 2,
+            # SignatureVersion => 2,
+            # SignatureMethod  => "HmacSHA256",
+            SignatureVersion => 4,
             SignatureMethod  => "HmacSHA256",
             ProxyHost        => undef,
             ProxyPort        => -1,

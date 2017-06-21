@@ -26,7 +26,8 @@
 package Amazon::EC2::Client;
 use strict;
 use warnings;
-use Digest::SHA qw (hmac_sha1_base64 hmac_sha256_base64);
+use Data::Dumper;
+use Digest::SHA qw (hmac_sha1_base64 hmac_sha256_base64 hmac_sha256 hmac_sha256_hex);
 use XML::Simple;
 use LWP::UserAgent;
 use URI;
@@ -40,7 +41,8 @@ use XML::XSLT;
 use XML::LibXML;
 use Cwd ();
 use Amazon::EC2::Exception;
-
+use HTTP::Request::Common;
+# use Net::Amazon::Signature::V4;
 my $SERVICE_VERSION = "2010-06-15";
 
 #
@@ -104,6 +106,18 @@ my $SERVICE_VERSION = "2010-06-15";
                             MaxErrorRetry => 3
                           };
         my $self = {};
+        if ($config->{ServiceURL}) {
+            if ($config->{ServiceURL} =~ m/(\w{2}-\w{4,16}-\d{1,3})/s) {
+                $config->{Region} = $1;
+            }
+            if ($config->{ServiceURL} =~ m/(?:\/\/|\.)(.*?)\.(\w{2}-\w{4,16}-\d{1,3})/s) {
+                $config->{ServiceName} = $1;
+                $config->{Region} = $2;
+            }
+        }
+        $config->{Host} = $config->{ServiceURL};
+        $config->{Host} =~ s|https?:\/\/||s;
+
         $self->{_awsAccessKeyId} = $awsAccessKeyId;
         $self->{_awsSecretAccessKey} = $awsSecretAccessKey;
         $self->{_config} = $defaultConfig;
@@ -2891,22 +2905,47 @@ my $SERVICE_VERSION = "2010-06-15";
     # perform http post
     #
     sub _httpPost {
-	my ($self, $parameters) = @_;
-        my $url = $self->{_config}->{ServiceURL};
+        my ($self, $parameters) = @_;
         require LWP::UserAgent;
         my $ua = LWP::UserAgent->new;
-	my $request= HTTP::Request->new("POST", $url);
-	$request->content_type("application/x-www-form-urlencoded; charset=utf-8");
-	my $data = "";
-    	foreach my $parameterName (keys %$parameters) {
-   	    no warnings "uninitialized";
-   	    $data .= $parameterName .  "="  . $self->_urlencode($parameters->{$parameterName}, 0);
-       	    $data .= "&";
-   	}
-    	chop ($data);
-	$request->content($data);
-	my $response = $ua->request($request);
-        return $response;
+
+        if ($parameters->{SignatureVersion} eq '4') {
+            print "Version is 4\n, creating signer";
+            require AWS::Signature4;
+            my $signer = AWS::Signature4->new(-access_key => $self->{_awsAccessKeyId},
+                                              -secret_key => $self->{_awsSecretAccessKey},);
+            my $url = $self->{_config}->{ServiceURL};
+            my %parameters = ();
+
+            for my $key (keys %$parameters) {
+
+                next if $key eq 'AWSAccessKeyId';
+                next if $key eq 'Signature';
+                $parameters{$key} = $parameters->{$key};
+            }
+            my @parameters = %parameters;
+            my $req = POST($url, \@parameters);
+            $signer->sign($req);
+            my $response = $ua->request($req);
+
+            return $response;
+        }
+        else {
+            my $url = $self->{_config}->{ServiceURL};
+
+            my $request= HTTP::Request->new("POST", $url);
+            $request->content_type("application/x-www-form-urlencoded; charset=utf-8");
+            my $data = "";
+            foreach my $parameterName (keys %$parameters) {
+                no warnings "uninitialized";
+                $data .= $parameterName .  "="  . $self->_urlencode($parameters->{$parameterName}, 0);
+                $data .= "&";
+            }
+            chop ($data);
+            $request->content($data);
+            my $response = $ua->request($request);
+            return $response;
+        }
     }
 
     #
@@ -2940,6 +2979,7 @@ my $SERVICE_VERSION = "2010-06-15";
     #
     sub _signParameters {
      	my ($self, $parameters, $key)  = @_;
+
         my $algorithm = "HmacSHA1";
         my $data = "";
         my $signatureVersion = $parameters->{SignatureVersion};
@@ -2951,6 +2991,14 @@ my $SERVICE_VERSION = "2010-06-15";
             $algorithm = $self->{_config}->{SignatureMethod};
             $parameters->{SignatureMethod} = $algorithm;
             $data = $self->_calculateStringToSignV2($parameters);
+        } elsif ("4" eq $signatureVersion) {
+            if (!$self->{_config}->{ServiceName}) {
+                croak "No service name provided for signature version 4.";
+            }
+            if (!$self->{_config}->{Region}) {
+                croak "No region provided for signagure version 4.";
+            }
+            $data = $self->_calculateStringToSignV4($parameters, $key);
         } else {
             Carp::croak ("Invalid Signature Version specified");
         }
@@ -2994,6 +3042,22 @@ my $SERVICE_VERSION = "2010-06-15";
         return $data;
     }
 
+    sub _calculateStringToSignV4 {
+        my ($self, $parameters, $key) = @_;
+
+        # TODO: remove hardcode
+        my $headers = {
+            'host' => $self->{_config}->{Host},
+            'x-amz-date' => '20170621'
+        };
+        my $signatureKey = $self->getV4SignatureKey($key, '20170621', $self->{_config}->{Region}, $self->{_config}->{ServiceName});
+        my $alg = 'AWS4-HMAC-SHA256';
+        my $credential_scope = join('/', ('20170621', $self->{_config}->{Region}, $self->{_config}->{ServiceName}, 'aws4_request'));
+        # my $string_to_sign = join("\n", ($alg, '20170621', $credential_scope, ));
+        return $signatureKey;
+    }
+
+
     sub _urlencode {
 	my ($self, $value, $path) = @_;
 	use URI::Escape qw(uri_escape_utf8);
@@ -3014,12 +3078,27 @@ my $SERVICE_VERSION = "2010-06-15";
            $output  =  hmac_sha1_base64 ($data, $key);
         } elsif ("HmacSHA256" eq $algorithm) {
             $output = hmac_sha256_base64 ($data, $key);
-        } else {
+        } elsif ("HmacSHA256HEX") {
+            $output = hmac_sha256_hex ($data, $key);
+        }
+        else {
          	Carp::croak ("Non-supported signing method specified");
         }
         return $output . "=";
     }
+    sub _sign2 {
+        my ($secretKey, $message) = @_;
+        return hmac_sha256($message, $secretKey);
+    }
+    sub getV4SignatureKey {
+        my ($self, $key, $dateStamp, $regionName, $serviceName) = @_;
 
+        my $kDate = _sign2('AWS4' . $key, $dateStamp);
+        my $kRegion = _sign2($kDate, $regionName);
+        my $kService = _sign2($kRegion, $serviceName);
+        my $kSigning = _sign2($kService, 'aws4_request');
+        return $kSigning;
+    }
     #
     # Formats date as ISO 8601 timestamp
     #
