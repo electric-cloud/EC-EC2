@@ -41,6 +41,7 @@ use XML::LibXML;
 use Cwd ();
 use Amazon::EC2::Exception;
 
+
 my $SERVICE_VERSION = "2010-06-15";
 
 #
@@ -2891,21 +2892,39 @@ my $SERVICE_VERSION = "2010-06-15";
     # perform http post
     #
     sub _httpPost {
-	my ($self, $parameters) = @_;
+        my ($self, $parameters) = @_;
+
         my $url = $self->{_config}->{ServiceURL};
         require LWP::UserAgent;
         my $ua = LWP::UserAgent->new;
-	my $request= HTTP::Request->new("POST", $url);
-	$request->content_type("application/x-www-form-urlencoded; charset=utf-8");
-	my $data = "";
-    	foreach my $parameterName (keys %$parameters) {
-   	    no warnings "uninitialized";
-   	    $data .= $parameterName .  "="  . $self->_urlencode($parameters->{$parameterName}, 0);
-       	    $data .= "&";
-   	}
-    	chop ($data);
-	$request->content($data);
-	my $response = $ua->request($request);
+
+        my ($request, $response);
+        if ($parameters->{SignatureVersion} eq '4') {
+            unless ($self->{_signer}) {
+                croak "No signer for AWS Sign V4 is available.";
+            }
+            require HTTP::Request::Common;
+
+            my %parameters = %$parameters;
+            my @parameters = %parameters;
+            $request = HTTP::Request::Common::POST($url, \@parameters);
+            $self->{_signer}->sign($request);
+            $response = $ua->request($request);
+        }
+        else {
+            $request= HTTP::Request->new("POST", $url);
+            $request->content_type("application/x-www-form-urlencoded; charset=utf-8");
+            my $data = "";
+            foreach my $parameterName (keys %$parameters) {
+                no warnings "uninitialized";
+                $data .= $parameterName .  "="  . $self->_urlencode($parameters->{$parameterName}, 0);
+                $data .= "&";
+            }
+            chop ($data);
+            $request->content($data);
+            $response = $ua->request($request);
+        }
+
         return $response;
     }
 
@@ -2951,6 +2970,13 @@ my $SERVICE_VERSION = "2010-06-15";
             $algorithm = $self->{_config}->{SignatureMethod};
             $parameters->{SignatureMethod} = $algorithm;
             $data = $self->_calculateStringToSignV2($parameters);
+        } elsif ("4" eq $signatureVersion) {
+            # for new AWS regions only 4 signature version should be used.
+            require AWS::Signature4;
+            $self->{_signer} = AWS::Signature4->new(
+                -access_key => $self->{_awsAccessKeyId},
+                -secret_key => $self->{_awsSecretAccessKey}
+            );
         } else {
             Carp::croak ("Invalid Signature Version specified");
         }

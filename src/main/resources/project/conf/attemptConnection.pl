@@ -46,7 +46,7 @@ require Amazon::EC2::Client;
 my $config = {
                ServiceURL       => "$[service_url]",
                UserAgent        => "Amazon EC2 Perl Library",
-               SignatureVersion => 2,
+               SignatureVersion => 4,
                SignatureMethod  => "HmacSHA256",
                ProxyHost        => undef,
                ProxyPort        => -1,

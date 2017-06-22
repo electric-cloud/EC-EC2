@@ -10,3 +10,4 @@ staging
 *.iml
 openstack-test.properties
 .groovy
+.DS_Store

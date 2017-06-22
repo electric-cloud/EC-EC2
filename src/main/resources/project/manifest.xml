@@ -57,6 +57,12 @@
     <path>lib/Amazon/EC2/Model/UnmonitorInstancesResponse.xslt</path>
     <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;UnmonitorInstancesResponse.xslt&quot;]/value</xpath>
   </file>
+
+  <file>
+      <path>lib/AWS/Signature4.pm</path>
+      <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;AWS&quot;]/propertySheet/property[propertyName=&quot;Signature4.pm&quot;]/value</xpath>
+  </file>
+    
   <file>
     <path>lib/Amazon/EC2/Model/RegisterImageRequest.pm</path>
     <xpath>//property[propertyName=&quot;lib&quot;]/propertySheet/property[propertyName=&quot;Amazon&quot;]/propertySheet/property[propertyName=&quot;EC2&quot;]/propertySheet/property[propertyName=&quot;Model&quot;]/propertySheet/property[propertyName=&quot;RegisterImageRequest.pm&quot;]/value</xpath>

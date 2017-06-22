@@ -2218,6 +2218,18 @@
                         </propertySheet>
                     </property>
                     <property>
+                        <propertyName>AWS</propertyName>
+                        <description/>
+                        <propertySheet>
+                            <property>
+                                <propertyName>Signature4.pm</propertyName>
+                                <expandable>0</expandable>
+                                <value></value>
+                            </property>
+                        </propertySheet>
+                    </property>
+                    
+                    <property>
                         <propertyName>XML</propertyName>
                         <description/>
                         <propertySheet>
