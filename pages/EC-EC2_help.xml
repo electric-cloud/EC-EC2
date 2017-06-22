@@ -1863,7 +1863,10 @@
 
 
     <h1 id="rns">Release Notes</h1>
-
+      <h2>@PLUGIN_KEY@ 2.3.5</h2>
+      <ul>
+          <li>Support of AWS Signature Version 4 has been added.</li>
+      </ul>
       <h2>@PLUGIN_KEY@ 2.3.4</h2>
       <ul>
           <li>Added the ability to create a resource in non-default zone.</li>
