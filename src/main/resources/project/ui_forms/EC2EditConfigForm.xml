@@ -83,7 +83,7 @@
         <label>Proxy authorization:</label>
         <property>proxy_credential</property>
         <userNameLabel>Proxy username:</userNameLabel>
-        <passwordLabel>Proxy password</passwordLabel>
+        <passwordLabel>Proxy password:</passwordLabel>
         <retypePasswordLabel>Retype Proxy password:</retypePasswordLabel>
         <required>0</required>
         <documentation>Username and password for proxy.</documentation>
