@@ -304,9 +304,6 @@ sub main {
     if ($opts->{http_proxy}) {
         eval {
             my ($proxy_username, $proxy_password) = getCredential($opts->{config} . '_proxy_credential');
-            print "Proxy username: $proxy_username\n";
-            print "Proxy password: $proxy_password\n";
-
             $ENV{HTTPS_PROXY_USERNAME} = $proxy_username if defined $proxy_username;
             $ENV{HTTPS_PROXY_PASSWORD} = $proxy_password if defined $proxy_password;
         };
@@ -314,7 +311,6 @@ sub main {
     # or do {
     #     print "Error occured during proxy config retrieval: $@\n";
     # };
-    print Dumper \%ENV;
     if ( "$opts->{AWS_ACCESS_KEY_ID}" eq "" ) {
         mesg( 0, "Access key not found in credential $opts->{config}\n" );
         exit 1;
