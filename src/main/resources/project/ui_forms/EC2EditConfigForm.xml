@@ -74,7 +74,7 @@
         <type>entry</type>
         <label>HTTP Proxy:</label>
         <property>http_proxy</property>
-        <value>default</value>
+        <value></value>
         <documentation>A proxy that should be used for connections.</documentation>
         <required>0</required>
     </formElement>
