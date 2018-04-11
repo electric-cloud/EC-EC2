@@ -2280,6 +2280,7 @@ sub API_RunInstance {
     my ( $opts, $service ) = @_;
     my $request;
 
+
     mesg( 1, "--Run Amazon EC2 Instances -------\n" );
 
     my $ami          = getRequiredParam( "image",        $opts );
@@ -2349,6 +2350,7 @@ sub API_RunInstance {
     my $reservation = "";
     my $placement   = new Amazon::EC2::Model::Placement();
     $placement->setAvailabilityZone($zone);
+    $placement->setTenancy('dedicated');
 
     my %requestParameters = (
         "ImageId"      => "$ami",
@@ -2375,11 +2377,18 @@ sub API_RunInstance {
         $requestParameters{"PrivateIpAddress"} = "$privateIp";
     }
 
+
     eval {
         $request = new Amazon::EC2::Model::RunInstancesRequest(\%requestParameters);
         $request->setPlacement($placement);
 
+        print Dumper $request;
+        print Dumper $service;
+
+
         my $response = $service->runInstances($request);
+
+        print Dumper "RESPONSE", $response;
 
         # get reservation
         if ( $response->isSetRunInstancesResult() ) {

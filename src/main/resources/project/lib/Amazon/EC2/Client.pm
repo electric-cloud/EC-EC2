@@ -25,6 +25,7 @@
 
 package Amazon::EC2::Client;
 use strict;
+use Data::Dumper;
 use warnings;
 use Digest::SHA qw (hmac_sha1_base64 hmac_sha256_base64);
 use XML::Simple;
@@ -117,9 +118,9 @@ my $SERVICE_VERSION = "2010-06-15";
     # Public API ------------------------------------------------------------#
 
 
-            
+
     #
-    # Activate License 
+    # Activate License
     # Activates a specific number of licenses for a 90-day period.
     # Activations can be done against a specific license ID.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-ActivateLicense.html
@@ -141,9 +142,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Allocate Address 
+    # Allocate Address
     # The AllocateAddress operation acquires an elastic
     # IP address for use with your account.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-AllocateAddress.html
@@ -165,9 +166,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Associate Address 
+    # Associate Address
     # The AssociateAddress operation associates an
     # elastic IP address with an instance.
     # If the IP address is currently
@@ -194,9 +195,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Attach Volume 
+    # Attach Volume
     # Attach a previously created volume to a running
     # instance.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-AttachVolume.html
@@ -218,9 +219,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Authorize Security Group Ingress 
+    # Authorize Security Group Ingress
     # The AuthorizeSecurityGroupIngress operation adds
     # permissions to a security group.
     # Permissions are specified by the IP
@@ -261,9 +262,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Bundle Instance 
+    # Bundle Instance
     # The BundleInstance operation request that an
     # instance is bundled the next time it boots.
     # The bundling process creates a new image from a running instance and
@@ -288,9 +289,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Cancel Bundle Task 
+    # Cancel Bundle Task
     # CancelBundleTask operation cancels a pending or
     # in-progress bundling task. This is an asynchronous
     # call and it make
@@ -319,9 +320,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Confirm Product Instance 
+    # Confirm Product Instance
     # The ConfirmProductInstance operation returns true
     # if the specified product code
     # is attached to the specified instance.
@@ -352,9 +353,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Image 
+    # Create Image
     # Creates an AMI that uses an Amazon EBS root
     # device from a "running" or "stopped" instance.
     # AMIs that use an Amazon EBS root device boot
@@ -380,9 +381,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Key Pair 
+    # Create Key Pair
     # The CreateKeyPair operation creates a new 2048
     # bit RSA key pair and returns a
     # unique ID that can be used to reference
@@ -408,9 +409,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-        
+
     #
-    # Create Placement Group 
+    # Create Placement Group
     # The CreateKeyPair operation creates a new 2048
     # bit RSA key pair and returns a
     # unique ID that can be used to reference
@@ -436,9 +437,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Security Group 
+    # Create Security Group
     # The CreateSecurityGroup operation creates a new
     # security group.
     # Every instance is launched in a security group. If no security group is
@@ -468,9 +469,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Snapshot 
+    # Create Snapshot
     # Create a snapshot of the volume identified by
     # volume ID. A volume does not have to be detached
     # at the time the snapshot is taken.
@@ -504,9 +505,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Volume 
+    # Create Volume
     # Initializes an empty volume of a given size
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-CreateVolume.html
     # Argument either hash reference of parameters for Amazon::EC2::Model::CreateVolumeRequest request
@@ -527,9 +528,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Deactivate License 
+    # Deactivate License
     # Deactivates a specific number of licenses.
     # Deactivations can be done against a specific license ID
     # after they have persisted for at least a 90-day period.
@@ -552,9 +553,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Key Pair 
+    # Delete Key Pair
     # The DeleteKeyPair operation deletes a key pair.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DeleteKeyPair.html
     # Argument either hash reference of parameters for Amazon::EC2::Model::DeleteKeyPairRequest request
@@ -575,9 +576,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Placement Group 
+    # Delete Placement Group
     # The DeletePlacementGroup operation deletes a placement group.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DeletePlacementGroup.html
     # Argument either hash reference of parameters for Amazon::EC2::Model::DeletePlacementGroupRequest request
@@ -598,9 +599,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Security Group 
+    # Delete Security Group
     # The DeleteSecurityGroup operation deletes a
     # security group.
     # Note:
@@ -631,9 +632,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Snapshot 
+    # Delete Snapshot
     # Deletes the snapshot identitied by snapshotId.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DeleteSnapshot.html
     # Argument either hash reference of parameters for Amazon::EC2::Model::DeleteSnapshotRequest request
@@ -654,9 +655,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Volume 
+    # Delete Volume
     # Deletes a previously created volume. Once
     # successfully deleted, a new
     # volume can be created with the same name.
@@ -679,9 +680,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Deregister Image 
+    # Deregister Image
     # The DeregisterImage operation deregisters an AMI.
     # Once deregistered, instances
     # of the AMI can no longer be launched.
@@ -704,9 +705,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Addresses 
+    # Describe Addresses
     # The DescribeAddresses operation lists elastic IP
     # addresses assigned to your account.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DescribeAddresses.html
@@ -750,9 +751,9 @@ my $SERVICE_VERSION = "2010-06-15";
         return Amazon::EC2::Model::DescribeAccountAttributesResponse->fromXML($self->_invokeVer($self->_convertDescribeAccountAttributes($request), "2013-10-15"));
     }
 
-            
+
     #
-    # Describe Availability Zones 
+    # Describe Availability Zones
     # The DescribeAvailabilityZones operation describes
     # availability zones that are
     # currently available to the account and
@@ -782,9 +783,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Bundle Tasks 
+    # Describe Bundle Tasks
     # The DescribeBundleTasks operation describes in-progress
     # and recent bundle tasks. Complete and failed tasks are
     # removed from the list a short time after completion.
@@ -808,9 +809,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Licenses 
+    # Describe Licenses
     # Provides details of a user's registered licenses. Zero or more IDs
     # may be specified on the call. When one or more license IDs are
     # specified, only data for the specified IDs are returned.
@@ -833,9 +834,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Placement Groups 
+    # Describe Placement Groups
     # Returns information about one or more PlacementGroup instances in a
     # user's account.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DescribePlacementGroups.html
@@ -857,9 +858,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Snapshot Attribute 
+    # Describe Snapshot Attribute
     # Returns information about an attribute of a snapshot.
     # Only one attribute can be specified per call.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DescribeSnapshotAttribute.html
@@ -881,9 +882,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Image Attribute 
+    # Describe Image Attribute
     # The DescribeImageAttribute operation returns
     # information about an attribute of
     # an AMI. Only one attribute can be
@@ -907,9 +908,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Images 
+    # Describe Images
     # The DescribeImages operation returns information
     # about AMIs, AKIs, and ARIs
     # available to the user. Information returned
@@ -974,9 +975,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Instances 
+    # Describe Instances
     # The DescribeInstances operation returns
     # information about instances that you own.
     # If you specify one or more instance IDs, Amazon EC2 returns
@@ -1007,9 +1008,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Regions 
+    # Describe Regions
     # The DescribeRegions operation describes regions
     # zones that are
     # currently available to the account.
@@ -1032,9 +1033,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Reserved Instances 
+    # Describe Reserved Instances
     # The DescribeReservedInstances operation describes
     # Reserved Instances
     # that were purchased for use with your account.
@@ -1057,9 +1058,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Reserved Instances Offerings 
+    # Describe Reserved Instances Offerings
     # The DescribeReservedInstancesOfferings operation
     # describes Reserved
     # Instance offerings that are available for
@@ -1089,9 +1090,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Key Pairs 
+    # Describe Key Pairs
     # The DescribeKeyPairs operation returns information about key pairs
     # available to you. If you specify key pairs, information about
     # those key pairs is returned. Otherwise,
@@ -1115,9 +1116,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Security Groups 
+    # Describe Security Groups
     # The DescribeSecurityGroups operation returns
     # information about security groups
     # that you own.
@@ -1143,9 +1144,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Snapshots 
+    # Describe Snapshots
     # Describes the indicated snapshots, or in lieu of
     # that, all snapshots owned by the caller.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DescribeSnapshots.html
@@ -1167,9 +1168,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Volumes 
+    # Describe Volumes
     # Describes the status of the indicated or, in lieu
     # of any specified, all
     # volumes belonging to the caller.
@@ -1194,9 +1195,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Detach Volume 
+    # Detach Volume
     # Detach a previously attached volume from a
     # running instance.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DetachVolume.html
@@ -1218,9 +1219,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Disassociate Address 
+    # Disassociate Address
     # The DisassociateAddress operation disassociates
     # the specified elastic IP
     # address from the instance to which it is
@@ -1247,9 +1248,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Get Password Data 
+    # Get Password Data
     # Retrieves the encrypted administrator password
     # for the instances running
     # Windows.
@@ -1272,9 +1273,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Get Console Output 
+    # Get Console Output
     # The GetConsoleOutput operation retrieves console
     # output for the specified instance.
     # Instance console output is buffered
@@ -1301,9 +1302,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Modify Snapshot Attribute 
+    # Modify Snapshot Attribute
     # Adds or remove permission settings for the
     # specified snapshot.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-ModifySnapshotAttribute.html
@@ -1325,9 +1326,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Modify Image Attribute 
+    # Modify Image Attribute
     # The ModifyImageAttribute operation modifies an
     # attribute of an AMI.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-ModifyImageAttribute.html
@@ -1349,9 +1350,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Purchase Reserved Instances Offering 
+    # Purchase Reserved Instances Offering
     # The PurchaseReservedInstancesOffering operation
     # purchases a Reserved Instance for use with your account.
     # With Amazon EC2 Reserved Instances, you purchase the
@@ -1377,9 +1378,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Reboot Instances 
+    # Reboot Instances
     # The RebootInstances operation requests a reboot
     # of one or more instances. This
     # operation is asynchronous; it only
@@ -1407,9 +1408,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Register Image 
+    # Register Image
     # The RegisterImage operation registers an AMI with
     # Amazon EC2. Images must be
     # registered before they can be launched. For
@@ -1445,9 +1446,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Release Address 
+    # Release Address
     # The ReleaseAddress operation releases an elastic
     # IP address associated with your account.
     # Note:
@@ -1484,9 +1485,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Reset Snapshot Attribute 
+    # Reset Snapshot Attribute
     # Resets permission settings for the specified
     # snapshot.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-ResetSnapshotAttribute.html
@@ -1508,9 +1509,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Reset Image Attribute 
+    # Reset Image Attribute
     # The ResetImageAttribute operation resets an
     # attribute of an AMI to its default value.
     # Note:
@@ -1535,9 +1536,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Revoke Security Group Ingress 
+    # Revoke Security Group Ingress
     # The RevokeSecurityGroupIngress operation revokes
     # permissions from a security
     # group. The permissions used to revoke must
@@ -1578,9 +1579,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Run Instances 
+    # Run Instances
     # The RunInstances operation launches a specified
     # number of instances.
     # If Amazon EC2 cannot launch the minimum number
@@ -1644,9 +1645,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Stop Instances 
+    # Stop Instances
     # Stops an instance that uses an Amazon EBS volume
     # as its root device. Instances that use Amazon EBS volumes as their
     # root devices can be quickly stopped and started.
@@ -1675,9 +1676,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Start Instances 
+    # Start Instances
     # Starts an instance that uses an Amazon EBS volume as its root device.
     # Instances that use Amazon EBS volumes as their root devices can be
     # quickly stopped and started. When an instance is
@@ -1705,9 +1706,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Modify Instance Attribute 
+    # Modify Instance Attribute
     # Modifies an attribute of an instance.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-ModifyInstanceAttribute.html
     # Argument either hash reference of parameters for Amazon::EC2::Model::ModifyInstanceAttributeRequest request
@@ -1728,9 +1729,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Reset Instance Attribute 
+    # Reset Instance Attribute
     # Resets an attribute of an instance to its default
     # value.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-ResetInstanceAttribute.html
@@ -1752,9 +1753,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Instance Attribute 
+    # Describe Instance Attribute
     # Returns information about an attribute of an
     # instance. Only one attribute
     # can be specified per call.
@@ -1777,9 +1778,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Terminate Instances 
+    # Terminate Instances
     # The TerminateInstances operation shuts down one
     # or more instances. This
     # operation is idempotent; if you terminate an
@@ -1807,9 +1808,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Monitor Instances 
+    # Monitor Instances
     # Enables monitoring for a running instance.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-MonitorInstances.html
     # Argument either hash reference of parameters for Amazon::EC2::Model::MonitorInstancesRequest request
@@ -1830,9 +1831,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Unmonitor Instances 
+    # Unmonitor Instances
     # Disables monitoring for a running instance.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-UnmonitorInstances.html
     # Argument either hash reference of parameters for Amazon::EC2::Model::UnmonitorInstancesRequest request
@@ -1853,9 +1854,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Vpn Connections 
+    # Describe Vpn Connections
     # Gives you information about your VPN connections.
     # Important -
     # We strongly recommend you use HTTPS when calling this operation because the
@@ -1888,9 +1889,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Subnets 
+    # Describe Subnets
     # Gives you information about your subnets. You can filter the results to
     # return information only about subnets that match criteria you specify.
     # For example, you could ask to get information about a particular subnet
@@ -1919,9 +1920,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Detach Vpn Gateway 
+    # Detach Vpn Gateway
     # Detaches a VPN gateway from a VPC. You do this if you're planning to
     # turn off the VPC and not use it anymore. You can confirm a VPN gateway
     # has been completely detached from a VPC by describing the VPN gateway
@@ -1947,9 +1948,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Vpcs 
+    # Describe Vpcs
     # Gives you information about your VPCs. You can filter the results to return
     # information only about VPCs that match criteria you specify. For example,
     # you could ask to get information about a particular VPC or VPCs (or all your VPCs)
@@ -1977,9 +1978,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Customer Gateway 
+    # Delete Customer Gateway
     # Deletes a customer gateway. You must delete the VPN connection before
     # deleting the customer gateway.
     # AWS might delete any customer gateway if you leave it inactive for an extended
@@ -2004,9 +2005,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Attach Vpn Gateway 
+    # Attach Vpn Gateway
     # Attaches a VPN gateway to a VPC. This is the last step required to get your
     # VPC fully connected to your data center before launching instances in it.
     # For more information, go to Process for Using Amazon VPC in the Amazon Virtual
@@ -2030,9 +2031,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Dhcp Options 
+    # Delete Dhcp Options
     # Deletes a set of DHCP options that you specify. Amazon VPC returns an error if the
     # set of options you specify is currently associated with a VPC. You can disassociate
     # the set of options by associating either a new set of options or the default options with the VPC.
@@ -2055,9 +2056,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Subnet 
+    # Delete Subnet
     # Deletes a subnet from a VPC. You must terminate all running instances in the
     # subnet before deleting it, otherwise Amazon VPC returns an error.
     # AWS might delete any subnet if you leave it inactive for an extended period
@@ -2081,9 +2082,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Vpc 
+    # Create Vpc
     # Creates a VPC with the CIDR block you specify. The smallest VPC you can create
     # uses a /28 netmask (16 IP addresses), and the largest uses a /18 netmask
     # (16,384 IP addresses). To help you decide how big to make your VPC, go
@@ -2114,9 +2115,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Customer Gateway 
+    # Create Customer Gateway
     # Provides information to AWS about your customer gateway device.
     # The customer gateway is the appliance at your end of the VPN connection
     # (compared to the VPN gateway, which is the device at the AWS side of the VPN
@@ -2150,9 +2151,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Vpn Gateway 
+    # Create Vpn Gateway
     # Creates a new VPN gateway. A VPN gateway is the VPC-side endpoint for
     # your VPN connection. You can create a VPN gateway before creating the VPC
     # itself. AWS might delete any VPN gateway that you create with this operation
@@ -2177,9 +2178,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Vpc 
+    # Delete Vpc
     # Deletes a VPC. You must terminate all running instances and delete all
     # subnets before deleting the VPC, otherwise Amazon VPC returns an error.
     # AWS might delete any VPC if you leave it inactive for an extended period of time
@@ -2203,9 +2204,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Associate Dhcp Options 
+    # Associate Dhcp Options
     # Associates a set of DHCP options (that you've previously created) with the specified VPC.
     # Or, associates the default DHCP options with the VPC. The default set consists of the standard
     # EC2 host name, no domain name, no DNS server, no NTP server, and no NetBIOS server or node type.
@@ -2232,9 +2233,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Vpn Gateways 
+    # Describe Vpn Gateways
     # Gives you information about your VPN gateways. You can filter the results to return
     # information only about VPN gateways that match criteria you specify. For example,
     # you could ask to get information about a particular VPN gateway (or all) only if the
@@ -2262,9 +2263,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Subnet 
+    # Create Subnet
     # Creates a subnet in an existing VPC. You can create up to 20 subnets in a VPC.
     # If you add more than one subnet to a VPC, they're set up in a star topology with
     # a logical router in the middle. If you feel you need more than 20 subnets, you can
@@ -2301,9 +2302,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Vpn Connection 
+    # Delete Vpn Connection
     # Deletes a VPN connection. Use this if you want to delete a VPC and
     # all its associated components. Another reason to use this operation
     # is if you believe the tunnel credentials for your VPN connection have
@@ -2334,9 +2335,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Vpn Gateway 
+    # Delete Vpn Gateway
     # Deletes a VPN gateway. Use this when you want to delete a VPC and all
     # its associated components because you no longer need them. We recommend
     # that before you delete a VPN gateway, you detach it from the VPC and
@@ -2364,9 +2365,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Customer Gateways 
+    # Describe Customer Gateways
     # Gives you information about your customer gateways. You can filter the results to return
     # information only about customer gateways that match criteria you specify. For example,
     # you could ask to get information about a particular customer gateway (or all) only if
@@ -2394,9 +2395,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Vpn Connection 
+    # Create Vpn Connection
     # Creates a new VPN connection between an existing VPN gateway and customer
     # gateway. The only supported connection type is ipsec.1.
     # The response includes information that you need to configure your customer gateway,
@@ -2430,9 +2431,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Dhcp Options 
+    # Describe Dhcp Options
     # Gives you information about one or more sets of DHCP options. You can specify
     # one or more DHCP options set IDs, or no IDs (to describe all your sets of DHCP options).
     # The returned information consists of:
@@ -2457,9 +2458,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Dhcp Options 
+    # Create Dhcp Options
     # Creates a set of DHCP options that you can then associate with one or more VPCs,
     # causing all existing and new instances that you launch in those VPCs to use the
     # set of DHCP options. The following table lists the individual DHCP options you can
@@ -2483,9 +2484,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Request Spot Instances 
+    # Request Spot Instances
     # Creates a Spot Instance request. Spot Instances are instances that automatically launch when your
     # request price exceeds the Spot Price that Amazon EC2 periodically calculates.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-RequestSpotInstances.html
@@ -2507,9 +2508,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Spot Instance Requests 
+    # Describe Spot Instance Requests
     # Describes Spot Instance requests. Spot Instances are instances that automatically launch when your
     # request price exceeds the Spot Price that Amazon EC2 periodically calculates.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DescribeSpotInstanceRequests.html
@@ -2531,9 +2532,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Cancel Spot Instance Requests 
+    # Cancel Spot Instance Requests
     # Cancels Spot Instance requests. Spot Instances are instances that automatically launch when your
     # request price exceeds the Spot Price that Amazon EC2 periodically calculates.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-CancelSpotInstanceRequests.html
@@ -2555,9 +2556,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Spot Price History 
+    # Describe Spot Price History
     # Describes historical pricing for Spot Instances. Spot Instances are instances that automatically launch
     # when your request price exceeds the Spot Price that Amazon EC2 periodically calculates.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DescribeSpotPriceHistory.html
@@ -2579,9 +2580,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Create Spot Datafeed Subscription 
+    # Create Spot Datafeed Subscription
     # Creates the data feed for Spot Instances, enabling you to view Spot Instance usage logs. You can
     # create one data feed per account.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-CreateSpotDatafeedSubscription.html
@@ -2603,9 +2604,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Describe Spot Datafeed Subscription 
+    # Describe Spot Datafeed Subscription
     # Describes the data feed for Spot Instances.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DescribeSpotDatafeedSubscription.html
     # Argument either hash reference of parameters for Amazon::EC2::Model::DescribeSpotDatafeedSubscriptionRequest request
@@ -2626,9 +2627,9 @@ my $SERVICE_VERSION = "2010-06-15";
     }
 
 
-            
+
     #
-    # Delete Spot Datafeed Subscription 
+    # Delete Spot Datafeed Subscription
     # Deletes the data feed for Spot Instances.
     # See http://docs.amazonwebservices.com/AWSEC2/2010-06-15/DeveloperGuide/ApiReference-Query-DeleteSpotDatafeedSubscription.html
     # Argument either hash reference of parameters for Amazon::EC2::Model::DeleteSpotDatafeedSubscriptionRequest request
@@ -2675,11 +2676,17 @@ my $SERVICE_VERSION = "2010-06-15";
         my $retries = 0;
         my $shouldRetry = 1;
 
+        $shouldRetry = 0;
+
+        print __PACKAGE__ . "::" . __LINE__;
+        print Dumper $parameters;
         eval {
             do {
                 # Submit the request and read response body #
                 eval {
                     $response = $self->_httpPost($parameters);
+                    print "RESPONSE";
+                    print Dumper $response;
                     if ($response->is_success) {
                         $shouldRetry = 0;
                     } else {
@@ -2731,7 +2738,7 @@ my $SERVICE_VERSION = "2010-06-15";
         if ($@) {
             Carp::croak $@;
         }
-        
+
         #my $xml = $self->{_xml_parser}->parse_string($response->content);
         #my $template = $self->{_xml_parser}->parse_file($path . "Model/" . $actionName . "Response.xslt");
         #my $transformer = $self->{_xslt_parser}->parse_stylesheet($template);
@@ -2900,15 +2907,24 @@ my $SERVICE_VERSION = "2010-06-15";
 
         my ($request, $response);
         if ($parameters->{SignatureVersion} eq '4') {
+
+
             unless ($self->{_signer}) {
                 croak "No signer for AWS Sign V4 is available.";
             }
             require HTTP::Request::Common;
 
+
+            print Dumper $parameters->{Action};
+
             my %parameters = %$parameters;
             my @parameters = %parameters;
             $request = HTTP::Request::Common::POST($url, \@parameters);
+
+
+            # die;
             $self->{_signer}->sign($request);
+            print Dumper $request;
             $response = $ua->request($request);
         }
         else {
@@ -2922,6 +2938,9 @@ my $SERVICE_VERSION = "2010-06-15";
             }
             chop ($data);
             $request->content($data);
+            print "Request";
+            print Dumper  $request;
+            die __LINE__;
             $response = $ua->request($request);
         }
 
@@ -2935,7 +2954,14 @@ my $SERVICE_VERSION = "2010-06-15";
    	my ($self,  $parameters) = @_;
         $parameters->{AWSAccessKeyId} = $self->{_awsAccessKeyId};
         $parameters->{Timestamp} = $self->_getFormattedTimestamp();
-        $parameters->{Version} = $SERVICE_VERSION;
+
+        unless ($parameters->{'Placement.Tenancy'}) {
+            $parameters->{Version} = $SERVICE_VERSION;
+        }
+        else {
+            $parameters->{Version} = '2016-11-15';
+        }
+
         $parameters->{SignatureVersion} = $self->{_config}->{SignatureVersion} || "1";
         $parameters->{Signature} = $self->_signParameters($parameters, $self->{_awsSecretAccessKey});
 
@@ -3060,13 +3086,13 @@ my $SERVICE_VERSION = "2010-06-15";
            }->(gmtime(time)));
     }
 
-                        
+
     #
     # Convert ActivateLicenseRequest to name value pairs
     #
     sub _convertActivateLicense() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "ActivateLicense";
         if ($request->isSetLicenseId()) {
@@ -3078,27 +3104,27 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert AllocateAddressRequest to name value pairs
     #
     sub _convertAllocateAddress() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "AllocateAddress";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert AttachVpnGatewayRequest to name value pairs
     #
     sub _convertAttachVpnGateway() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "AttachVpnGateway";
         if ($request->isSetVpnGatewayId()) {
@@ -3110,14 +3136,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert AssociateDhcpOptionsRequest to name value pairs
     #
     sub _convertAssociateDhcpOptions() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "AssociateDhcpOptions";
         if ($request->isSetDhcpOptionsId()) {
@@ -3129,14 +3155,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert AssociateAddressRequest to name value pairs
     #
     sub _convertAssociateAddress() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "AssociateAddress";
         if ($request->isSetInstanceId()) {
@@ -3148,14 +3174,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert AuthorizeSecurityGroupIngressRequest to name value pairs
     #
     sub _convertAuthorizeSecurityGroupIngress() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "AuthorizeSecurityGroupIngress";
         if ($request->isSetUserId()) {
@@ -3185,14 +3211,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert BundleInstanceRequest to name value pairs
     #
     sub _convertBundleInstance() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "BundleInstance";
         if ($request->isSetInstanceId()) {
@@ -3222,14 +3248,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CancelBundleTaskRequest to name value pairs
     #
     sub _convertCancelBundleTask() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CancelBundleTask";
         if ($request->isSetBundleId()) {
@@ -3238,14 +3264,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert ConfirmProductInstanceRequest to name value pairs
     #
     sub _convertConfirmProductInstance() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "ConfirmProductInstance";
         if ($request->isSetProductCode()) {
@@ -3257,14 +3283,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreatePlacementGroupRequest to name value pairs
     #
     sub _convertCreatePlacementGroup() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreatePlacementGroup";
         if ($request->isSetGroupName()) {
@@ -3276,14 +3302,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateImageRequest to name value pairs
     #
     sub _convertCreateImage() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateImage";
         if ($request->isSetInstanceId()) {
@@ -3301,14 +3327,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateKeyPairRequest to name value pairs
     #
     sub _convertCreateKeyPair() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateKeyPair";
         if ($request->isSetKeyName()) {
@@ -3317,14 +3343,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateSubnetRequest to name value pairs
     #
     sub _convertCreateSubnet() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateSubnet";
         if ($request->isSetVpcId()) {
@@ -3339,14 +3365,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateVpnConnectionRequest to name value pairs
     #
     sub _convertCreateVpnConnection() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateVpnConnection";
         if ($request->isSetType()) {
@@ -3361,14 +3387,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateVpnGatewayRequest to name value pairs
     #
     sub _convertCreateVpnGateway() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateVpnGateway";
         if ($request->isSetType()) {
@@ -3380,14 +3406,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateDhcpOptionsRequest to name value pairs
     #
     sub _convertCreateDhcpOptions() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateDhcpOptions";
         my $dhcpConfigurationcreateDhcpOptionsRequestList = $request->getDhcpConfiguration();
@@ -3406,14 +3432,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                
+
+
     #
     # Convert CreateVpcRequest to name value pairs
     #
     sub _convertCreateVpc() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateVpc";
         if ($request->isSetCidrBlock()) {
@@ -3422,14 +3448,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateCustomerGatewayRequest to name value pairs
     #
     sub _convertCreateCustomerGateway() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateCustomerGateway";
         if ($request->isSetType()) {
@@ -3444,14 +3470,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateSecurityGroupRequest to name value pairs
     #
     sub _convertCreateSecurityGroup() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateSecurityGroup";
         if ($request->isSetGroupName()) {
@@ -3463,14 +3489,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeactivateLicenseRequest to name value pairs
     #
     sub _convertDeactivateLicense() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeactivateLicense";
         if ($request->isSetLicenseId()) {
@@ -3482,14 +3508,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteKeyPairRequest to name value pairs
     #
     sub _convertDeleteKeyPair() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteKeyPair";
         if ($request->isSetKeyName()) {
@@ -3498,14 +3524,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeletePlacementGroupRequest to name value pairs
     #
     sub _convertDeletePlacementGroup() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeletePlacementGroup";
         if ($request->isSetGroupName()) {
@@ -3514,14 +3540,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteVpcRequest to name value pairs
     #
     sub _convertDeleteVpc() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteVpc";
         if ($request->isSetVpcId()) {
@@ -3530,14 +3556,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteVpnGatewayRequest to name value pairs
     #
     sub _convertDeleteVpnGateway() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteVpnGateway";
         if ($request->isSetVpnGatewayId()) {
@@ -3546,14 +3572,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteVpnConnectionRequest to name value pairs
     #
     sub _convertDeleteVpnConnection() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteVpnConnection";
         if ($request->isSetVpnConnectionId()) {
@@ -3562,14 +3588,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteDhcpOptionsRequest to name value pairs
     #
     sub _convertDeleteDhcpOptions() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteDhcpOptions";
         if ($request->isSetDhcpOptionsId()) {
@@ -3578,14 +3604,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteCustomerGatewayRequest to name value pairs
     #
     sub _convertDeleteCustomerGateway() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteCustomerGateway";
         if ($request->isSetCustomerGatewayId()) {
@@ -3594,14 +3620,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteSecurityGroupRequest to name value pairs
     #
     sub _convertDeleteSecurityGroup() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteSecurityGroup";
         if ($request->isSetGroupName()) {
@@ -3610,14 +3636,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteSubnetRequest to name value pairs
     #
     sub _convertDeleteSubnet() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteSubnet";
         if ($request->isSetSubnetId()) {
@@ -3626,14 +3652,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeVpcsRequest to name value pairs
     #
     sub _convertDescribeVpcs() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeVpcs";
         my $vpcIddescribeVpcsRequestList = $request->getVpcId();
@@ -3657,14 +3683,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                
+
+
     #
     # Convert DescribeVpnGatewaysRequest to name value pairs
     #
     sub _convertDescribeVpnGateways() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeVpnGateways";
         my $vpnGatewayIddescribeVpnGatewaysRequestList = $request->getVpnGatewayId();
@@ -3688,14 +3714,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeDhcpOptionsRequest to name value pairs
     #
     sub _convertDescribeDhcpOptions() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeDhcpOptions";
         my $dhcpOptionsIddescribeDhcpOptionsRequestList = $request->getDhcpOptionsId();
@@ -3706,14 +3732,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeVpnConnectionsRequest to name value pairs
     #
     sub _convertDescribeVpnConnections() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeVpnConnections";
         my $vpnConnectionIddescribeVpnConnectionsRequestList = $request->getVpnConnectionId();
@@ -3737,14 +3763,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeCustomerGatewaysRequest to name value pairs
     #
     sub _convertDescribeCustomerGateways() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeCustomerGateways";
         my $customerGatewayIddescribeCustomerGatewaysRequestList = $request->getCustomerGatewayId();
@@ -3768,14 +3794,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeReservedInstancesOfferingsRequest to name value pairs
     #
     sub _convertDescribeReservedInstancesOfferings() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeReservedInstancesOfferings";
         my $reservedInstancesIddescribeReservedInstancesOfferingsRequestList = $request->getReservedInstancesId();
@@ -3795,14 +3821,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeReservedInstancesRequest to name value pairs
     #
     sub _convertDescribeReservedInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeReservedInstances";
         my $reservedInstancesIddescribeReservedInstancesRequestList = $request->getReservedInstancesId();
@@ -3813,14 +3839,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeSubnetsRequest to name value pairs
     #
     sub _convertDescribeSubnets() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeSubnets";
         my $subnetIddescribeSubnetsRequestList = $request->getSubnetId();
@@ -3844,14 +3870,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert PurchaseReservedInstancesOfferingRequest to name value pairs
     #
     sub _convertPurchaseReservedInstancesOffering() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "PurchaseReservedInstancesOffering";
         if ($request->isSetReservedInstancesOfferingId()) {
@@ -3863,14 +3889,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeregisterImageRequest to name value pairs
     #
     sub _convertDeregisterImage() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeregisterImage";
         if ($request->isSetImageId()) {
@@ -3879,7 +3905,7 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
+
     #
     # Convert DescribeAccountAttributesRequest to name value pairs
     #
@@ -3896,13 +3922,13 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-                                        
+
     #
     # Convert DescribeAddressesRequest to name value pairs
     #
     sub _convertDescribeAddresses() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeAddresses";
         my $publicIpdescribeAddressesRequestList = $request->getPublicIp();
@@ -3913,14 +3939,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeAvailabilityZonesRequest to name value pairs
     #
     sub _convertDescribeAvailabilityZones() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeAvailabilityZones";
         my $zoneNamedescribeAvailabilityZonesRequestList = $request->getZoneName();
@@ -3931,14 +3957,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeBundleTasksRequest to name value pairs
     #
     sub _convertDescribeBundleTasks() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeBundleTasks";
         my $bundleIddescribeBundleTasksRequestList = $request->getBundleId();
@@ -3949,14 +3975,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeImageAttributeRequest to name value pairs
     #
     sub _convertDescribeImageAttribute() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeImageAttribute";
         if ($request->isSetImageId()) {
@@ -3968,14 +3994,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeInstanceAttributeRequest to name value pairs
     #
     sub _convertDescribeInstanceAttribute() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeInstanceAttribute";
         if ($request->isSetInstanceId()) {
@@ -3987,14 +4013,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeSnapshotAttributeRequest to name value pairs
     #
     sub _convertDescribeSnapshotAttribute() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeSnapshotAttribute";
         if ($request->isSetSnapshotId()) {
@@ -4006,14 +4032,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeImagesRequest to name value pairs
     #
     sub _convertDescribeImages() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeImages";
         my $imageIddescribeImagesRequestList = $request->getImageId();
@@ -4034,14 +4060,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeInstancesRequest to name value pairs
     #
     sub _convertDescribeInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeInstances";
         my $instanceIddescribeInstancesRequestList = $request->getInstanceId();
@@ -4065,14 +4091,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeKeyPairsRequest to name value pairs
     #
     sub _convertDescribeKeyPairs() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeKeyPairs";
         my $keyNamedescribeKeyPairsRequestList = $request->getKeyName();
@@ -4083,14 +4109,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeLicensesRequest to name value pairs
     #
     sub _convertDescribeLicenses() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeLicenses";
         my $licenseIddescribeLicensesRequestList = $request->getLicenseId();
@@ -4101,14 +4127,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                                
+
+
     #
     # Convert DescribePlacementGroupsRequest to name value pairs
     #
     sub _convertDescribePlacementGroups() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribePlacementGroups";
         my $groupNamedescribePlacementGroupsRequestList = $request->getGroupName();
@@ -4119,14 +4145,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                        
+
+
     #
     # Convert DescribeSecurityGroupsRequest to name value pairs
     #
     sub _convertDescribeSecurityGroups() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeSecurityGroups";
         my $groupNamedescribeSecurityGroupsRequestList = $request->getGroupName();
@@ -4137,14 +4163,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DisassociateAddressRequest to name value pairs
     #
     sub _convertDisassociateAddress() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DisassociateAddress";
         if ($request->isSetPublicIp()) {
@@ -4153,14 +4179,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert GetConsoleOutputRequest to name value pairs
     #
     sub _convertGetConsoleOutput() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "GetConsoleOutput";
         if ($request->isSetInstanceId()) {
@@ -4169,14 +4195,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert GetPasswordDataRequest to name value pairs
     #
     sub _convertGetPasswordData() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "GetPasswordData";
         if ($request->isSetInstanceId()) {
@@ -4185,14 +4211,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert ModifyImageAttributeRequest to name value pairs
     #
     sub _convertModifyImageAttribute() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "ModifyImageAttribute";
         if ($request->isSetImageId()) {
@@ -4225,14 +4251,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert ModifyInstanceAttributeRequest to name value pairs
     #
     sub _convertModifyInstanceAttribute() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "ModifyInstanceAttribute";
         if ($request->isSetInstanceId()) {
@@ -4270,14 +4296,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert ModifySnapshotAttributeRequest to name value pairs
     #
     sub _convertModifySnapshotAttribute() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "ModifySnapshotAttribute";
         if ($request->isSetSnapshotId()) {
@@ -4302,14 +4328,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert MonitorInstancesRequest to name value pairs
     #
     sub _convertMonitorInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "MonitorInstances";
         my $instanceIdmonitorInstancesRequestList = $request->getInstanceId();
@@ -4320,14 +4346,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert UnmonitorInstancesRequest to name value pairs
     #
     sub _convertUnmonitorInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "UnmonitorInstances";
         my $instanceIdunmonitorInstancesRequestList = $request->getInstanceId();
@@ -4338,14 +4364,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert RebootInstancesRequest to name value pairs
     #
     sub _convertRebootInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "RebootInstances";
         my $instanceIdrebootInstancesRequestList = $request->getInstanceId();
@@ -4356,14 +4382,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert RegisterImageRequest to name value pairs
     #
     sub _convertRegisterImage() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "RegisterImage";
         if ($request->isSetImageLocation()) {
@@ -4416,14 +4442,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert ReleaseAddressRequest to name value pairs
     #
     sub _convertReleaseAddress() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "ReleaseAddress";
         if ($request->isSetPublicIp()) {
@@ -4432,14 +4458,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert ResetImageAttributeRequest to name value pairs
     #
     sub _convertResetImageAttribute() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "ResetImageAttribute";
         if ($request->isSetImageId()) {
@@ -4451,14 +4477,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert ResetInstanceAttributeRequest to name value pairs
     #
     sub _convertResetInstanceAttribute() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "ResetInstanceAttribute";
         if ($request->isSetInstanceId()) {
@@ -4470,14 +4496,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert ResetSnapshotAttributeRequest to name value pairs
     #
     sub _convertResetSnapshotAttribute() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "ResetSnapshotAttribute";
         if ($request->isSetSnapshotId()) {
@@ -4489,14 +4515,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert RevokeSecurityGroupIngressRequest to name value pairs
     #
     sub _convertRevokeSecurityGroupIngress() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "RevokeSecurityGroupIngress";
         if ($request->isSetUserId()) {
@@ -4526,14 +4552,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert RunInstancesRequest to name value pairs
     #
     sub _convertRunInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "RunInstances";
         if ($request->isSetImageId()) {
@@ -4566,6 +4592,9 @@ my $SERVICE_VERSION = "2010-06-15";
             }
             if ($placementrunInstancesRequest->isSetGroupName()) {
                 $parameters->{"Placement" . "." . "GroupName"} =  $placementrunInstancesRequest->getGroupName();
+            }
+            if ($placementrunInstancesRequest->isSetTenancy()) {
+                $parameters->{"Placement" . "." . "Tenancy"} = $placementrunInstancesRequest->getTenancy();
             }
         }
         if ($request->isSetKernelId()) {
@@ -4630,14 +4659,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert StopInstancesRequest to name value pairs
     #
     sub _convertStopInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "StopInstances";
         my $instanceIdstopInstancesRequestList = $request->getInstanceId();
@@ -4651,14 +4680,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert StartInstancesRequest to name value pairs
     #
     sub _convertStartInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "StartInstances";
         my $instanceIdstartInstancesRequestList = $request->getInstanceId();
@@ -4669,14 +4698,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert TerminateInstancesRequest to name value pairs
     #
     sub _convertTerminateInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "TerminateInstances";
         my $instanceIdterminateInstancesRequestList = $request->getInstanceId();
@@ -4687,14 +4716,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteVolumeRequest to name value pairs
     #
     sub _convertDeleteVolume() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteVolume";
         if ($request->isSetVolumeId()) {
@@ -4703,14 +4732,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateVolumeRequest to name value pairs
     #
     sub _convertCreateVolume() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateVolume";
         if ($request->isSetSize()) {
@@ -4725,14 +4754,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeVolumesRequest to name value pairs
     #
     sub _convertDescribeVolumes() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeVolumes";
         my $volumeIddescribeVolumesRequestList = $request->getVolumeId();
@@ -4743,14 +4772,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DetachVolumeRequest to name value pairs
     #
     sub _convertDetachVolume() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DetachVolume";
         if ($request->isSetVolumeId()) {
@@ -4768,14 +4797,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DetachVpnGatewayRequest to name value pairs
     #
     sub _convertDetachVpnGateway() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DetachVpnGateway";
         if ($request->isSetVpnGatewayId()) {
@@ -4787,14 +4816,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DescribeSnapshotsRequest to name value pairs
     #
     sub _convertDescribeSnapshots() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeSnapshots";
         my $snapshotIddescribeSnapshotsRequestList = $request->getSnapshotId();
@@ -4811,14 +4840,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert DeleteSnapshotRequest to name value pairs
     #
     sub _convertDeleteSnapshot() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteSnapshot";
         if ($request->isSetSnapshotId()) {
@@ -4827,14 +4856,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert CreateSnapshotRequest to name value pairs
     #
     sub _convertCreateSnapshot() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateSnapshot";
         if ($request->isSetVolumeId()) {
@@ -4846,14 +4875,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                        
+
+
     #
     # Convert AttachVolumeRequest to name value pairs
     #
     sub _convertAttachVolume() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "AttachVolume";
         if ($request->isSetVolumeId()) {
@@ -4868,14 +4897,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                                                                                                                                                                                                                                                                                                                                                
+
+
     #
     # Convert DescribeRegionsRequest to name value pairs
     #
     sub _convertDescribeRegions() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeRegions";
         my $regionNamedescribeRegionsRequestList = $request->getRegionName();
@@ -4886,14 +4915,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                        
+
+
     #
     # Convert RequestSpotInstancesRequest to name value pairs
     #
     sub _convertRequestSpotInstances() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "RequestSpotInstances";
         if ($request->isSetSpotPrice()) {
@@ -4993,14 +5022,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                                                
+
+
     #
     # Convert DescribeSpotInstanceRequestsRequest to name value pairs
     #
     sub _convertDescribeSpotInstanceRequests() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeSpotInstanceRequests";
         my $spotInstanceRequestIddescribeSpotInstanceRequestsRequestList = $request->getSpotInstanceRequestId();
@@ -5011,14 +5040,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                
+
+
     #
     # Convert CancelSpotInstanceRequestsRequest to name value pairs
     #
     sub _convertCancelSpotInstanceRequests() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CancelSpotInstanceRequests";
         my $spotInstanceRequestIdcancelSpotInstanceRequestsRequestList = $request->getSpotInstanceRequestId();
@@ -5029,14 +5058,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                        
+
+
     #
     # Convert DescribeSpotPriceHistoryRequest to name value pairs
     #
     sub _convertDescribeSpotPriceHistory() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeSpotPriceHistory";
         if ($request->isSetStartTime()) {
@@ -5058,14 +5087,14 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                        
+
+
     #
     # Convert CreateSpotDatafeedSubscriptionRequest to name value pairs
     #
     sub _convertCreateSpotDatafeedSubscription() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "CreateSpotDatafeedSubscription";
         if ($request->isSetBucket()) {
@@ -5077,27 +5106,27 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-        
-                                                        
+
+
     #
     # Convert DescribeSpotDatafeedSubscriptionRequest to name value pairs
     #
     sub _convertDescribeSpotDatafeedSubscription() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DescribeSpotDatafeedSubscription";
 
         return $parameters;
     }
-        
-                                                
+
+
     #
     # Convert DeleteSpotDatafeedSubscriptionRequest to name value pairs
     #
     sub _convertDeleteSpotDatafeedSubscription() {
         my ($self, $request) = @_;
-        
+
         my $parameters = {};
         $parameters->{"Action"} = "DeleteSpotDatafeedSubscription";
 
@@ -5127,6 +5156,6 @@ my $SERVICE_VERSION = "2010-06-15";
 
         return $parameters;
     }
-                                                        
+
 1;
 
