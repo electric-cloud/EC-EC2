@@ -2316,6 +2316,8 @@ sub API_RunInstance {
         $userData = MIME::Base64::encode_base64("$userData");
     }
 
+    my $tenancy = getOptionalParam("tenancy", $opts);
+
     # Get instances limit count for EC2 account
     my $limit = _getInstancesLimit($service);
 
@@ -2350,7 +2352,9 @@ sub API_RunInstance {
     my $reservation = "";
     my $placement   = new Amazon::EC2::Model::Placement();
     $placement->setAvailabilityZone($zone);
-    $placement->setTenancy('dedicated');
+    if ($tenancy) {
+        $placement->setTenancy($tenancy);
+    }
 
     my %requestParameters = (
         "ImageId"      => "$ami",
@@ -2382,13 +2386,7 @@ sub API_RunInstance {
         $request = new Amazon::EC2::Model::RunInstancesRequest(\%requestParameters);
         $request->setPlacement($placement);
 
-        print Dumper $request;
-        print Dumper $service;
-
-
         my $response = $service->runInstances($request);
-
-        print Dumper "RESPONSE", $response;
 
         # get reservation
         if ( $response->isSetRunInstancesResult() ) {

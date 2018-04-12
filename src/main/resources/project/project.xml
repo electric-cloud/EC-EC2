@@ -2228,7 +2228,7 @@
                             </property>
                         </propertySheet>
                     </property>
-                    
+
                     <property>
                         <propertyName>XML</propertyName>
                         <description/>
@@ -6345,17 +6345,17 @@
                 <parallel>0</parallel>
                 <postProcessor>postp --loadProperty "/myProject/postpExtension"</postProcessor>
                 <releaseExclusive>0</releaseExclusive>
-		
-                
-		
+
+
+
                 <retries>0</retries>
                 <shell>ec-perl</shell>
                 <timeLimit>45</timeLimit>
                 <timeLimitUnits>minutes</timeLimitUnits>
                 <workingDirectory/>
-		
-                
-		
+
+
+
                 <propertySheet>
                     <property>
                         <propertyName>ec_customEditorData</propertyName>
@@ -6599,6 +6599,16 @@
                                     </propertySheet>
                                 </property>
                                 <property>
+                                    <propertyName>tenancy</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+                                <property>
                                     <propertyName>instanceType</propertyName>
                                     <propertySheet>
                                         <property>
@@ -6817,7 +6827,7 @@
                                             <value>standard</value>
                                         </property>
                                     </propertySheet>
-                                </property>	
+                                </property>
                             </propertySheet>
                         </property>
                     </propertySheet>
@@ -7013,8 +7023,15 @@
               <required>0</required>
               <type>checkbox</type>
             </formalParameter>
-			<formalParameter>
+            <formalParameter>
                 <formalParameterName>resource_zone</formalParameterName>
+                <defaultValue>default</defaultValue>
+                <description>Created resource will belong to the specified zone. Zone 'default' is used by default.</description>
+                <required>0</required>
+                <type>entry</type>
+            </formalParameter>
+			<formalParameter>
+                <formalParameterName>tenancy</formalParameterName>
                 <defaultValue>default</defaultValue>
                 <description>Created resource will belong to the specified zone. Zone 'default' is used by default.</description>
                 <required>0</required>
@@ -8408,7 +8425,7 @@
             </step>
           </procedure>
 
-	  
+
         <procedure>
             <procedureName>CreateConfiguration</procedureName>
             <description>Create an EC2 configuration</description>

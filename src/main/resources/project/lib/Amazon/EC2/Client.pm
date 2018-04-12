@@ -2678,15 +2678,11 @@ my $SERVICE_VERSION = "2010-06-15";
 
         $shouldRetry = 0;
 
-        print __PACKAGE__ . "::" . __LINE__;
-        print Dumper $parameters;
         eval {
             do {
                 # Submit the request and read response body #
                 eval {
                     $response = $self->_httpPost($parameters);
-                    print "RESPONSE";
-                    print Dumper $response;
                     if ($response->is_success) {
                         $shouldRetry = 0;
                     } else {
@@ -2914,17 +2910,12 @@ my $SERVICE_VERSION = "2010-06-15";
             }
             require HTTP::Request::Common;
 
-
-            print Dumper $parameters->{Action};
-
             my %parameters = %$parameters;
             my @parameters = %parameters;
             $request = HTTP::Request::Common::POST($url, \@parameters);
 
 
-            # die;
             $self->{_signer}->sign($request);
-            print Dumper $request;
             $response = $ua->request($request);
         }
         else {
@@ -2938,9 +2929,6 @@ my $SERVICE_VERSION = "2010-06-15";
             }
             chop ($data);
             $request->content($data);
-            print "Request";
-            print Dumper  $request;
-            die __LINE__;
             $response = $ua->request($request);
         }
 
