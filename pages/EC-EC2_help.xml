@@ -20,13 +20,13 @@
 
     <h1>Elastic Compute Cloud (EC2)</h1>
     <p>Plugin Version @PLUGIN_VERSION@</p>
-    <hr style="margin-left: -10px; margin-top: 10px; height: 1px; width: 100%; color: #5981BD;" 
+    <hr style="margin-left: -10px; margin-top: 10px; height: 1px; width: 100%; color: #5981BD;"
             noshade="noshade" />
-		
+
 		<p>Revised on June 9, 2015</p>
-				
+
 				<h1>Contents</h1>
-				
+
 				<ul>
 				<li><p><a href="#overview">Overview</a></p></li>
 				<li><p><a href="#setupconfig">Setting Up the Plugin Configuration</a></p></li>
@@ -64,8 +64,8 @@
 				<li><p><a href="#example">Examples and Use Cases</a></p></li>
 				<li><p><a href="#rns">Release Notes</a></p></li>
 				</ul>
-					
-		<h1 id="overview">Overview</h1>           
+
+		<h1 id="overview">Overview</h1>
 
     <h2>Amazon Elastic Compute Cloud (Amazon EC2)</h2>
 
@@ -75,17 +75,17 @@
         documentation for ideas, examples, etc. It's OK to copy word-for-word only if appropriate, such as FOSS - but not commercial software.
        -->
 
-    <p>Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides resizable compute capacity in the cloud. It is designed 
-		to make web-scale computing easier for developers. EC2 allows users to rent virtual computers on which to run their computer 
+    <p>Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides resizable compute capacity in the cloud. It is designed
+		to make web-scale computing easier for developers. EC2 allows users to rent virtual computers on which to run their computer
 		applications.</p>
 
-    <p>It provides you with complete control of your computing resources and lets you run on the proven Amazon computing environment. Amazon EC2 
-		reduces the time required to obtain and boot new server instances to minutes, allowing you to quickly scale capacity, both up and down, 
+    <p>It provides you with complete control of your computing resources and lets you run on the proven Amazon computing environment. Amazon EC2
+		reduces the time required to obtain and boot new server instances to minutes, allowing you to quickly scale capacity, both up and down,
 		as your computing requirements change. You can create, launch, and terminate server instances as needed, paying by the hour for active
     servers. EC2 provides developers the tools to build failure resilient applications and isolate thems from common failure scenarios.</p>
 
-    <p>Amazon EC2 presents a true virtual computing environment, allowing you to use web service interfaces to launch instances with a 
-		variety of operating systems, load them with your custom application environment, manage your network access permissions, and run 
+    <p>Amazon EC2 presents a true virtual computing environment, allowing you to use web service interfaces to launch instances with a
+		variety of operating systems, load them with your custom application environment, manage your network access permissions, and run
 		your image using as many or few systems as you want.</p>
 
     <p>For more information about Amazon EC2, go to the <a href="http://aws.amazon.com/ec2/">Amazon Web Services website</a>.</p>
@@ -93,8 +93,8 @@
 
    <h2>ElectricFlow Integration to EC2 Implementations</h2>
 
-    <p>This plugin uses the Amazon EC2 application programming interface (API) that lets developers choose where their applications physically run and 
-		that provides access to infrastructure resources. Using this secure API, your application is automatically scaled up and down as needed. This integration 
+    <p>This plugin uses the Amazon EC2 application programming interface (API) that lets developers choose where their applications physically run and
+		that provides access to infrastructure resources. Using this secure API, your application is automatically scaled up and down as needed. This integration
 		allows ElectricFlow to manage EC2 resources.</p>
 
    <p>The plugin interacts with EC2 data by using PERL to perform the following tasks:</p>
@@ -107,33 +107,33 @@
       <li>Create ElectricFlow resources.</li>
     </ul>
 
-    <p>The integration has two types of procedures to accomplish a specific task:</p> 
+    <p>The integration has two types of procedures to accomplish a specific task:</p>
 		<ul>
 		<li>API procedures named <i>API_xxx</i> that directly wrap an EC2 API call</li>
 		<li>Higher-level procedures named <i>EC2_xxx</i> that combine many API calls</li>
 		</ul>
-    
+
 		<p>The procedure that you select determines which fields are available.</p>
 
     <p>This plugin was developed and tested against Amazon Elastic Compute Cloud (Amazon EC2).</p>
-		
-	  <div id="CreateConfiguration"> <a name='CreateConfiguration' id="CreateConfiguration"></a> 
+
+	  <div id="CreateConfiguration"> <a name='CreateConfiguration' id="CreateConfiguration"></a>
 
     <h1 id="setupconfig">Setting Up the Plugin Configuration</h1>
 
-    <p>Plugin configurations are sets of parameters that apply across some or all of the plugin procedures. 
-		They reduce repetition of common values, create predefined sets of parameters for end users, and store 
-		credentials securely. Each configuration has a unique name that is automatically entered in designated 
+    <p>Plugin configurations are sets of parameters that apply across some or all of the plugin procedures.
+		They reduce repetition of common values, create predefined sets of parameters for end users, and store
+		credentials securely. Each configuration has a unique name that is automatically entered in designated
 		parameters in the procedures.</p>
-						
+
 		<h2>Input</h2>
-  
+
     <ol>
 		  <li>Go to <b>Administration</b> > <b>Plugins</b> to open the Plugin Manager.</li>
 		  <li>Find the EC-EC2 row.</li>
-		  <li>Click <b>Configure</b> to open the EC2 Configurations page.</li> 	
+		  <li>Click <b>Configure</b> to open the EC2 Configurations page.</li>
 		  <li>Click <b>Create Configuration</b>.</li>
-		  <li>To create a EC2 configuration, enter the following information and click <b>OK</b>. 
+		  <li>To create a EC2 configuration, enter the following information and click <b>OK</b>.
 			<br /> Remember that you may need to create additional configurations later.</li>
 
       <table class="grid">
@@ -175,7 +175,7 @@
         </tr>
         <tr>
           <td class='required'>Debug Level</td>
-          <td>The debug level for the output (Required): 
+          <td>The debug level for the output (Required):
 					<ul>
              <li><b>0</b> for errors only</li>
 						 <li><b>1</b> for normal headers and responses</li>
@@ -185,27 +185,27 @@
         </tr>
       </tbody>
     </table>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/configuration_panel.png" />
 
 		</ol>
-						
-	  <h2>Output</h2>	 
-		
+
+	  <h2>Output</h2>
+
 		<p>The EC2 Configurations page now shows the new configuration.</p>
-						
-		</div>		
-				
+
+		</div>
+
 		<h1 id="procedures">Plugin Procedures</h1>
-		
+
     <div id="API_AllocateIP"><a name='API_AllocateIP' id="API_AllocateIP"></a>
 
     <h2>API_AllocateIP</h2>
-						
+
 		<p>This procedure allocates a public IP address using the Amazon EC2 API. You run this procedure to get an Elastic IP address to use with your EC2 account.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_AllocateIP procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -227,31 +227,31 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		 <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_AllocateIP_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_AllocateIP</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_AllocateIP</b> step,
 		click the Log button to see the diagnostic information.</p>
-		
+
 		</div>
 
 		<div id="API_AssociateIP"><a name='API_AssociateIP' id="API_AssociateIP"></a>
 
     <h2>API_AssociateIP</h2>
 
-    <p>This procedure attaches a previously allocated IP address to an instance. This procedure associates an Elastic IP address with the instance. 
+    <p>This procedure attaches a previously allocated IP address to an instance. This procedure associates an Elastic IP address with the instance.
 		If the IP address is currently assigned to another instance, it is re-assigned to the instance.</p>
-		 
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_AssociateIP procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -277,18 +277,18 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_AssociateIP_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_AllocateIP</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_AllocateIP</b> step,
 		click the Log button to see the diagnostic information.</p>
 
     </div>
@@ -297,11 +297,11 @@
 
     <h2>API_AttachVolumes</h2>
 
-    <p>This procedure attaches a list of volumes to a list of instances, using the order of both lists to match volumes to instances. It attaches 
+    <p>This procedure attaches a list of volumes to a list of instances, using the order of both lists to match volumes to instances. It attaches
 		each Amazon EBS volume to a running instance and exposes it as the specified device.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_AttachVolumes procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -331,20 +331,20 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_AttachVolumes_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_AttachVolumes</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_AttachVolumes</b> step,
 		click the Log button to see the diagnostic information.</p>
-		
+
 		</div>
 
     <div id="API_CreateImage"><a name='API_CreateImage' id="API_CreateImage"></a>
@@ -352,9 +352,9 @@
     <h2>API_CreateImage</h2>
 
     <p>This procedure converts a running instance into a new image. It creates an Amazon EBS-backed AMI from an Amazon EBS-backed instance.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_CreateImage procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -384,8 +384,8 @@
         </tr>
         <tr>
           <td class='required'>No Reboot</td>
-          <td>By default, this parameter is set to <b>False</b>. Amazon EC2 tries to shut down the instance cleanly before the new image is created. Amazon EC2 then restarts 
-					the new instance with the new image.  When the parameter is set to <b>True</b>, Amazon EC2 does not shut down the instance before creating the image, and the file 
+          <td>By default, this parameter is set to <b>False</b>. Amazon EC2 tries to shut down the instance cleanly before the new image is created. Amazon EC2 then restarts
+					the new instance with the new image.  When the parameter is set to <b>True</b>, Amazon EC2 does not shut down the instance before creating the image, and the file
 					system integrity on the new image cannot be guaranteed. (Required)</td>
         </tr>
         <tr>
@@ -394,20 +394,20 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_CreateImage_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_CreateImage</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_CreateImage</b> step,
 		click the Log button to see the diagnostic information.</p>
-				
+
 		</div>
 
     <div id="API_CreateKey"><a name='API_CreateKey' id="API_CreateKey"></a>
@@ -420,9 +420,9 @@
         <br/><b>Important:</b> You should retrieve the private key file from the job workspace and save it in a secure place.
         You will need the private key file in order to connect (using SSH or Windows Remote Desktop) to any EC2 instance that was launched using
         the key pair name.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_CreateKey procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -448,20 +448,20 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_CreateKey_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_CreateKey</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_CreateKey</b> step,
 		click the Log button to see the diagnostic information.</p>
-				
+
 		</div>
 
       <div id="API_CreateSubnet"><a name='API_CreateSubnet' id="API_CreateSubnet"></a>
@@ -524,15 +524,15 @@
               click the Log button to see the diagnostic information.</p>
 
       </div>
-		
+
 		 <div id="API_CreateTags"><a name='API_CreateTags' id="API_CreateTags"></a>
 
     <h2>API_CreateTags</h2>
 
     <p>This procedure adds or overwrites one or more tags for the specified Amazon EC2 resources.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_CreateTags procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -558,20 +558,20 @@
         </tr>
 				</tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_CreateTags_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_CreateTags</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_CreateTags</b> step,
 		click the Log button to see the diagnostic information.</p>
-				
+
 		</div>
 
       <div id="API_CreateVPC"><a name='API_CreateVPC' id="API_CreateVPC"></a>
@@ -633,9 +633,9 @@
     <h2>API_DeleteKey</h2>
 
     <p>This procedure deletes the specified key pair by removing the public key from Amazon EC2. You must own the key pair.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_DeleteKey procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -657,20 +657,20 @@
         </tr>
 			</tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_DeleteKey_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_DeleteKey</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_DeleteKey</b> step,
 		click the Log button to see the diagnostic information.</p>
-		
+
 		</div>
 
     <div id="API_DeleteVolume"><a name='API_DeleteVolume' id="API_DeleteVolume"></a>
@@ -678,9 +678,9 @@
     <h2>API_DeleteVolume</h2>
 
     <p>This procedure deletes an EBS volume. It is usually used to delete a volume created for a specific instance.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_DeleteVolume procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -706,20 +706,20 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_DeleteVolume_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_DeleteVolume</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_DeleteVolume</b> step,
 		click the Log button to see the diagnostic information.</p>
-			
+
 		</div>
 
       <div id="API_DeleteVPC"><a name='API_DeleteVPC' id="API_DeleteVPC"></a>
@@ -770,15 +770,15 @@
               click the Log button to see the diagnostic information.</p>
 
       </div>
-		
+
 		<div id="API_DescribeInstances"><a name='API_DescribeInstances' id="API_DescribeInstances"></a>
 
     <h2>API_DescribeInstances</h2>
 
     <p>This procedure adds descriptions to one or more instances.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_DescribeInstances procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -804,20 +804,20 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_DescribeInstances_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_DescribeInstances</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_DescribeInstances</b> step,
 		click the Log button to see the diagnostic information.</p>
-				
+
 		</div>
 
     <div id="API_ReleaseIP"><a name='API_ReleaseIP' id="API_ReleaseIP"></a>
@@ -825,9 +825,9 @@
     <h2>API_ReleaseIP</h2>
 
     <p>This procedure releases a public IP address allocated to your account.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_ReleaseIP procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -849,31 +849,31 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_ReleaseIP_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_ReleaseIP</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_ReleaseIP</b> step,
 		click the Log button to see the diagnostic information.</p>
-				
+
 		</div>
-		
+
 		<div id="API_Run"><a name='API_Run' id="API_Run"></a>
 
     <h2>API_Run</h2>
 
-    <p>This procedure runs the specified API method (procedure). Individual API procedures collect parameter values and call this procedure. 
+    <p>This procedure runs the specified API method (procedure). Individual API procedures collect parameter values and call this procedure.
 		Credentials should be attached to this procedure.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_Run procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -895,25 +895,25 @@
         </tr>
 				</tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_Run_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_Run</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_Run</b> step,
 		click the Log button to see the diagnostic information.</p>
-				
+
 		</div>
 
     <div id="API_RunInstances"><a name='API_RunInstances' id=  "API_RunInstances"></a>
     <h3>API_RunInstances</h3>
-    <p>This procedure allows the user to start one or more instances from a machine image (AMI/EMI). The instances are part of one 
+    <p>This procedure allows the user to start one or more instances from a machine image (AMI/EMI). The instances are part of one
 		reservation and can be terminated later as a group or individually.</p>
 
     <table class="grid">
@@ -992,9 +992,20 @@
           <td>Instance Initiated Shutdown Behavior</td>
           <td>Specify the instance behaviour when an OS-level shutdown is performed. The instance can be either terminated or shut down.</td>
       </tr>
+      <tr>
+        <td>
+          Tenancy
+        </td>
+        <td>
+            Each instance that you launch into a VPC has a tenancy attribute. This attribute has the following values:<br/>
+            default - Your instance runs on shared hardware.<br/>
+            dedicated - Your instance runs on single-tenant hardware.<br/>
+            host - Your instance runs on a Dedicated Host, which is an isolated server with configurations that you can control.
+        </td>
+      </tr>
         <tr>
           <td>Resource Pool</td>
-          <td>If you would like to add ElectricFlow resources for each instance created, enter the ElectricFlow pool name for the new resource. 
+          <td>If you would like to add ElectricFlow resources for each instance created, enter the ElectricFlow pool name for the new resource.
 					If left blank no resource will be	created.</td>
         </tr>
         <tr>
@@ -1008,19 +1019,19 @@
 
       </tbody>
     </table>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_RunInstances_panel.png" />
-		
+
 		</div>
 
     <div id="API_StartInstance"><a name='API_StartInstance' id="API_StartInstance"></a>
 
     <h2>API_StartInstance</h2>
-		
+
 		<p>This procedure deploys an Amazon EBS-backed instance.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_StartInstance procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1042,30 +1053,30 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_StartInstance_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_StartInstance</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_StartInstance</b> step,
 		click the Log button to see the diagnostic information.</p>
-				
+
 		</div>
 
     <div id="API_StopInstance"><a name='API_StopInstance' id="API_StopInstance"></a>
 
     <h3>API_StopInstance</h3>
-		
+
 		<p>This procedure stops an Amazon EBS-backed instance. Data is not be lost when the instance stops.</p>.
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_StartInstance procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1087,30 +1098,30 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_StopInstance_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_StopInstance</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_StopInstance</b> step,
 		click the Log button to see the diagnostic information.</p>
-		
+
 		</div>
 
     <div id="API_TearDownResource"><a name='API_TearDownResource' id="API_TearDownResource"></a>
 
     <h2>API_TearDownResource</h2>
-		
+
 		<p>This procedure terminate one instance. When the procedure terminates, any data added to the disk or any changes made to the disk will be lost.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_TearDownResource procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1132,30 +1143,30 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_TearDownResource_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_TearDownResource</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_TearDownResource</b> step,
 		click the Log button to see the diagnostic information.</p>
-	
+
 		</div>
-		
+
 		<div id="API_Terminate"><a name='API_Terminate' id="API_Terminate"></a>
 
     <h2>API_Terminate</h2>
-		
+
 		<p>This procedure terminate one or more instances. When the procedures terminates any data added to the disk or any changes made to the disk will be lost.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the API_Terminate procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1181,20 +1192,20 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_Terminate_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_Terminate</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>API_Terminate</b> step,
 		click the Log button to see the diagnostic information.</p>
-	
+
 		</div>
 
 		<div id="CloudManagerGrow"><a name='CloudManagerGrow' id="CloudManagerGrow"></a>
@@ -1204,7 +1215,7 @@
     <p>This procedure allows this plugin to work with CloudManager plugin. CloudManager runs this procedure to add servers and calls the <i>EC2 Auto Deploy</i> procedure.</p>
 
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the CloudManagerGrow procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1273,30 +1284,30 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/CloudManagerGrow_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>CloudManagerGrow</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>CloudManagerGrow</b> step,
 		click the Log button to see the diagnostic information.</p>
-		
+
 		</div>
-		
+
 		<div id="CloudManagerShrink"><a name='CloudManagerShrink' id="CloudManagerShrink"></a>
-		
+
 		<h2>CloudManagerShrink</h2>
 
     <p>This procedure allows the plugin to work with CloudManager plugin. CloudManager runs this procedure to remove servers and calls the EC2 Auto Cleanup procedure.</p>
 
     <h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the CloudManagerShrink procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1318,30 +1329,30 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-						
+
 		<br />
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/CloudManagerShrink_panel.png" />
 		<br />
 
-		</ol>   
-						
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>CloudManagerShrink</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>CloudManagerShrink</b> step,
 		click the Log button to see the diagnostic information.</p>
-		
+
 		</div>
-		
+
 				<div id="CloudManagerSync"><a name='CloudManagerSync' id="CloudManagerSync"></a>
-		
+
 		<h2>CloudManagerSync</h2>
 
     <p>This procedure allows the plugin to work with CloudManager plugin. CloudManager runs this procedure to synchronize the servers.</p>
 
     <h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the CloudManagerSync procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1363,16 +1374,16 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-		
-		</ol>   
-						
+
+		</ol>
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>CloudManagerSync</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>CloudManagerSync</b> step,
 		click the Log button to see the diagnostic information.</p>
-		
+
 		</div>
 
     <div id="EC2 Auto Cleanup"><a name='EC2 Auto Cleanup' id="EC2 Auto Cleanup"></a>
@@ -1381,9 +1392,9 @@
 
     <p>This procedure cleans up the instances created with the "EC2 Auto Deploy" procedure. It uses the API_DeleteKey, API_Terminate, and API_DeleteVolume procedures to
 		delete the key pair, storage, Elastic IP, and security settings.</p>
-		
+
 	 <h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the EC2 Auto Cleanup procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1417,16 +1428,16 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-		
-		</ol>   
-					
+
+		</ol>
+
     <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/EC2_Auto_Cleanup_panel.png" />
-						
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Auto Cleanup</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Auto Cleanup</b> step,
 		click the Log button to see the diagnostic information.</p>
 
  	</div>
@@ -1435,11 +1446,11 @@
 
     <h2>EC2 Auto Deploy</h2>
 
-    <p>This procedure depoy new EC2 instances. It calls the API_CreateKey, API_RunInstances, ProcessVolumes, and API_AttachVolumes procedures to automatically create and 
+    <p>This procedure depoy new EC2 instances. It calls the API_CreateKey, API_RunInstances, ProcessVolumes, and API_AttachVolumes procedures to automatically create and
 		associate the key pair, storage, Elastic IP, and security settings.</p>
-		
+
 		 <h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the EC2 Auto Deploy procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1524,28 +1535,28 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-		
-		</ol>   
-					
+
+		</ol>
+
    <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/EC2_Auto_Deploy_panel.png" />
-						
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Auto Deploy</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Auto Deploy</b> step,
 		click the Log button to see the diagnostic information.</p>
-		
+
 		</div>
 
     <div id="EC2 Auto Pause"><a name='EC2 Auto Pause' id="EC2 Auto Pause"></a>
     <h2>EC2 Auto Pause</h2>
 
-    <p>This procedure pauses a instance store-backed AMI. It disconnects the volumes, saves them, and terminates the instance. It works with the EC2 Auto Resume procedure, 
+    <p>This procedure pauses a instance store-backed AMI. It disconnects the volumes, saves them, and terminates the instance. It works with the EC2 Auto Resume procedure,
 		which starts a new instance and re-attaches the volumes.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the EC2 Auto Pause procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1571,16 +1582,16 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-		
-		</ol>   
-					
+
+		</ol>
+
    <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/EC2_Auto_Pause_panel.png" />
-						
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Auto Pause</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Auto Pause</b> step,
 		click the Log button to see the diagnostic information.</p>
 
     </div>
@@ -1588,11 +1599,11 @@
     <div id="EC2 Auto Resume"><a name='EC2 Auto Resume' id="EC2 Auto Resume"></a>
 
     <h2>EC2 Auto Resume</h2>
-		
+
 		   <p>This procedure restarts an instance. After the EC2 Auto Pause procedure runs, it starts a new istance and re-attaches the saved volumes.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the EC2 Auto Resume procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1606,7 +1617,7 @@
       <tbody>
         <tr>
           <td class='required'>Cleanup tag</td>
-          <td>A key used to match a cleanup step to the corresponding provision step. This allows recursive, multiple, or both recursive and multiple calls within 
+          <td>A key used to match a cleanup step to the corresponding provision step. This allows recursive, multiple, or both recursive and multiple calls within
 					a procedure. The default is <i>tag</i>. (Required)</td>
         </tr>
         <tr>
@@ -1666,28 +1677,28 @@
         </tr>
       </tbody>
     </table>
-		
+
 		</li>
-		
-		</ol>   
-					
+
+		</ol>
+
    <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/EC2_Auto_Resume_panel.png" />
-						
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Auto Resume</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Auto Resume</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
-		
+
 		 <div id="EC2 Auto Resume"><a name='EC2 Auto Resume' id="EC2 Auto Resume"></a>
 
     <h2>EC2 Set Name</h2>
-		
+
 		   <p>This procedure sets an instance name.</p>
-		
+
 		<h3>Input</h3>
-						
+
 			<ol>
 			<li>Go to the EC2 Set Name procedure.</li>
 			<li>Enter the following parameters:<br />
@@ -1713,24 +1724,24 @@
         </tr>
         </tbody>
     </table>
-		
+
 		</li>
-		
-		</ol>   
-					
+
+		</ol>
+
    <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/EC2_Set_Name_panel.png" />
-						
+
 		<h3>Output</h3>
-						
-		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Set Name</b> step, 
+
+		<p>After the job runs, you can view the results on the Job Details page in ElectricFlow. In the <b>EC2 Set Name</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
-		
+
 		<div id="Snap Attached Volume"><a name='Snap Attached Volume' id="Snap Attached Volume"></a>
 
     <h2>Snap Attached Volume</h2>
-		
+
     <p>This procedure creates a new snapshot from a volume attached to an instance. It only creates a snapshot from the first volume found.</p>
 
     <table class="grid">
@@ -1759,12 +1770,12 @@
         </tr>
       </tbody>
     </table>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/Snap_Attached_Volume_panel.png" />
-		
+
 		</div>
 
-       
+
 
     <h1 id="example">Use Cases and Examples</h1>
 
@@ -1776,7 +1787,7 @@
 
     <h2>Use Case 1: Deploy, Consume, and Clean up the Job</h2>
 
-    <p>The most common use for this plugin is to create an instance, create a resource in ElectricFlow that is assigned to this instance, run some operations using the resoruce, 
+    <p>The most common use for this plugin is to create an instance, create a resource in ElectricFlow that is assigned to this instance, run some operations using the resoruce,
 		and then delete the resource and the instance. To do this, you must:</p>
 
     <ol>
@@ -1796,7 +1807,7 @@
 
     <h4>Create a Plugin Configuration</h4>
 
-    <p>In ElectricFlow, go to <b>Administration</b> > <b>Plugins</b> to open the Plugin Manager. Then click <b>Configure</b> and enter the values 
+    <p>In ElectricFlow, go to <b>Administration</b> > <b>Plugins</b> to open the Plugin Manager. Then click <b>Configure</b> and enter the values
 		for the parameters in the EC2 Configuration page.</p>
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/create_config.png" />
     <p>After the configuration is created, you can see it in "EC2 Configurations".</p>
@@ -1810,59 +1821,63 @@
     <h4>Use the Resource</h4>
 
     <p>Create a new command step for the resource. In this example,  get a resource from the resource pool and add an ec-perl <b>sleep</b> command for 30 seconds</p>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/consume_parameters.png" />
 
     <h4>Clean Up the Instance</h4>
-		
+
     <p>After the resource is used, create a step using the EC2 Auto Cleanup procedure and enter the parameters:</p>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/cleanup_parameters.png" />
-		
+
     <p>This procedure calls the API_DeleteKey, API_Terminate and API_DeleteVolume procedures to clean up the instance.</p>
 
 		<h4>View the Results and Output</h4>
-		
+
     <p>After the job runs, you can see properties in the results location that you specified.<br />
 
     <img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/job.png" /></p>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/results.png" />
 
     <p>The following output appears during the Deploy procedures:</p>
 
     <h5>CreateKeyPair</h5>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/create_keypair_log.png" />
 
     <h5>RunInstances</h5>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/run_instances_log.png" />
 
     <h5>ProcessVolumes</h5>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/process_volumes_log.png" />
 
     <h5>AttachVolume</h5>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/attach_volumes_log.png" />
 
     <p>The following output appears during the Cleanup procedures:</p>
 
     <h5>DeleteKeyPair</h5>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/delete_keypair_log.png" />
 
     <h5>Terminate</h5>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/terminate_log.png" />
 
     <h5>DeleteVolumes</h5>
-		
+
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/delete_volumes_log.png" />
 
 
     <h1 id="rns">Release Notes</h1>
+      <h2>@PLUGIN_KEY@ 2.4.0</h2>
+      <ul>
+          <li>"Tenancy" parameter has been added to "RunInstances" procedure.</li>
+      </ul>
       <h2>@PLUGIN_KEY@ 2.3.5</h2>
       <ul>
           <li>Support of AWS Signature Version 4 has been added.</li>
@@ -1875,7 +1890,7 @@
           <li>Added check for instances and subnet's IP limits before spinning instances in API_RunInstances procedure, minor changes.</li>
           <li>Make resource_zone parameter optional with default value 'default' in API_RunInstances</li>
       </ul>
-	  
+
       <h2>@PLUGIN_KEY@ 2.3.3</h2>
       <ul>
           <li>Fixed issue with configurations being cached for IE.</li>
@@ -1905,7 +1920,7 @@
     <h2>@PLUGIN_KEY@ 2.2.0</h2>
 
 	      <ul>
-		        
+
 	      </ul>
 
     <h2>@PLUGIN_KEY@ 2.2.0</h2>
@@ -1949,7 +1964,7 @@
        </ul>
 
     <h2>@PLUGIN_KEY@ 2.0.3</h2>
-		
+
        <ul>
            <li>Improved the error handling.</li>
        </ul>
@@ -1978,13 +1993,13 @@
        </ul>
 
     <h2>@PLUGIN_KEY@ 1.2.1</h2>
-		
+
 		<ul>
 		<li>Updated the Help page.</li>
 		</ul>
-		
+
 		</div>
-		
+
 </body>
 
 </html>
