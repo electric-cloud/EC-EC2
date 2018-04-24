@@ -96,8 +96,26 @@ boolean canValidate(args) {
 			args.parameters[SERVICE_URL]
 }
 
+def getAWSCredential(args) {
+	def credential
+	if (args.credential.size() > 0) {
+		credential = args.credential.find { it.credentialName == 'credential'}
+	}
+	credential
+}
+
+def getProxyCredential(args) {
+	def credential
+	if (args.credential.size() > 0) {
+		credential = args.credential.find { it.credentialName == 'proxy_credential'}
+	}
+	credential
+}
+
 def doValidations(args) {
-	def credential = args.credential[0]
+	def credential = getAWSCredential(args)
+	def proxyCredential = getProxyCredential(args)
+
 	def parameters = args.parameters
 	def result
 
@@ -125,6 +143,11 @@ def doValidations(args) {
 			result = buildErrorResponse("${credential[CREDENTIAL_NAME]}.$USER_NAME", "Invalid Access Key ID").
 					error("${credential[CREDENTIAL_NAME]}.$PASSWORD", "Invalid Access Key")
 		}
+
+		//TODO: Example for returning validation error against the 'proxy_credential' parameter
+		//if (proxyCredential) {
+		//	result.error("proxy_credential.userName", "Invalid Proxy User '${proxyCredential.userName}' or password '${proxyCredential.password}'")
+		//}
 	}
 
 	result

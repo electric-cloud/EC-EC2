@@ -94,6 +94,7 @@
         <value></value>
         <documentation>A proxy that should be used for connections.</documentation>
         <required>0</required>
+        <serverValidation>1</serverValidation>
     </formElement>
     <formElement>
         <type>credential</type>
@@ -104,6 +105,7 @@
         <retypePasswordLabel>Retype Proxy password:</retypePasswordLabel>
         <required>0</required>
         <documentation>Username and password for proxy.</documentation>
+        <serverValidation>1</serverValidation>
     </formElement>
 </editor>
 
