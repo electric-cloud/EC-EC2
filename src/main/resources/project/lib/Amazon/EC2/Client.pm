@@ -25,7 +25,6 @@
 
 package Amazon::EC2::Client;
 use strict;
-use Data::Dumper;
 use warnings;
 use Digest::SHA qw (hmac_sha1_base64 hmac_sha256_base64);
 use XML::Simple;
