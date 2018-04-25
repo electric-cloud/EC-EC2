@@ -2280,6 +2280,7 @@ sub API_RunInstance {
     my ( $opts, $service ) = @_;
     my $request;
 
+
     mesg( 1, "--Run Amazon EC2 Instances -------\n" );
 
     my $ami          = getRequiredParam( "image",        $opts );
@@ -2315,6 +2316,8 @@ sub API_RunInstance {
         $userData = MIME::Base64::encode_base64("$userData");
     }
 
+    my $tenancy = getOptionalParam("tenancy", $opts);
+
     # Get instances limit count for EC2 account
     my $limit = _getInstancesLimit($service);
 
@@ -2349,6 +2352,9 @@ sub API_RunInstance {
     my $reservation = "";
     my $placement   = new Amazon::EC2::Model::Placement();
     $placement->setAvailabilityZone($zone);
+    if ($tenancy) {
+        $placement->setTenancy($tenancy);
+    }
 
     my %requestParameters = (
         "ImageId"      => "$ami",
@@ -2374,6 +2380,7 @@ sub API_RunInstance {
     if ($privateIp) {
         $requestParameters{"PrivateIpAddress"} = "$privateIp";
     }
+
 
     eval {
         $request = new Amazon::EC2::Model::RunInstancesRequest(\%requestParameters);
