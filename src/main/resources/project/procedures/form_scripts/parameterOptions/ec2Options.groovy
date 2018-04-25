@@ -76,8 +76,17 @@ Logger.getLogger("com.amazonaws").setLevel(Level.OFF);
 def result = new FormalParameterOptionsResult()
 
 if (canGetOptions(args)) {
-
+    print "EC2OPTIONS_OPTIONS"
+    print args.credential
 	def ec2 = loginEC2(args.credential[0], args.configurationParameters[SERVICE_URL])
+    if (args.credential[0]) {
+        print("COMMANDERCREDENTIAL");
+        print(args.credential[0]);
+    }
+    if (args.credential[1]) {
+        print("PROXYCREDENTIAL");
+        print(args.credential[1]);
+    }
 	def list = []
 
 	switch (args.formalParameterName) {

@@ -71,6 +71,8 @@ import com.electriccloud.domain.FormalParameterValidationResult
 		final String CREDENTIAL = "credential"
 @Field
 		final String SERVICE_URL = "service_url"
+@Field
+        final String PROXY_URL = "http_proxy"
 
 // Disable Amazon SDK logging
 Logger.getLogger("com.amazonaws").setLevel(Level.OFF);
@@ -87,6 +89,7 @@ if (canValidate(args)) {
 
 //--------------------Helper functions-----------------------------//
 
+// TODO: Switch validation from credential[0] to getAWSCredential
 boolean canValidate(args) {
 	args?.parameters &&
 			args.credential &&
@@ -112,11 +115,28 @@ def getProxyCredential(args) {
 	credential
 }
 
-def doValidations(args) {
-	def credential = getAWSCredential(args)
-	def proxyCredential = getProxyCredential(args)
+def parseProxy(String proxyUrl) {
+    def vals = (proxyUrl =~ /^https?:\/\/(.*):(\d+)\/*/);
+    def rv = [:];
+    if (vals[0][1] && vals[0][1]) {
+        rv.host = vals[0][1];
+        rv.port = vals[0][2] as int;
+    }
+    return rv;
+}
 
-	def parameters = args.parameters
+def doValidations(args) {
+    print "DOVALIDATIONS"
+    print args.credential
+	def credential = getAWSCredential(args)
+	def proxyCredential;
+    def parameters = args.parameters
+    def proxyUrl = parameters[PROXY_URL];
+    if (proxyUrl) {
+        proxyCredential = getProxyCredential(args)
+    }
+
+
 	def result
 
 	// Disable HTTPS certificate verification
@@ -126,15 +146,21 @@ def doValidations(args) {
 		def awsCreds = new BasicAWSCredentials(credential[USER_NAME], credential[PASSWORD])
 		def clientConfig = new ClientConfiguration()
 
+        if (proxyUrl) {
+            proxyInfo = parseProxy(proxyUrl)
+            clientConfig.setProxyHost(proxyInfo.host);
+            clientConfig.setProxyPort(proxyInfo.port);
+            if (proxyCredential) {
+                clientConfig.setProxyUsername(proxyCredential[USER_NAME]);
+                clientConfig.setProxyPassword(proxyCredential[PASSWORD]);
+            }
+        }
 		clientConfig.setConnectionTimeout(5 * 1000)
 		clientConfig.setMaxErrorRetry(1)
-
 		def ec2 = new AmazonEC2Client(awsCreds, clientConfig)
 		ec2.setEndpoint(parameters[SERVICE_URL])
-
 		// Test Amazon EC2 connection with credentials passed by user
 		ec2.describeAvailabilityZones()
-
 		result = FormalParameterValidationResult.SUCCESS
 	} catch(Throwable e) {
 		if(e.cause && e.cause instanceof IOException) {
@@ -150,7 +176,7 @@ def doValidations(args) {
 		//}
 	}
 
-	result
+	return result
 }
 
 /**
