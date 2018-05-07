@@ -69,6 +69,8 @@ import com.electriccloud.domain.FormalParameterOptionsResult
 		final String AVAILABILITY_ZONE = "zone"
 @Field
 		final String SUBNET_ID = "subnet_id"
+@Field
+        final String PROXY_URL = "http_proxy"
 
 // Disable Amazon SDK logging
 Logger.getLogger("com.amazonaws").setLevel(Level.OFF);
@@ -78,15 +80,9 @@ def result = new FormalParameterOptionsResult()
 if (canGetOptions(args)) {
     print "EC2OPTIONS_OPTIONS"
     print args.credential
-	def ec2 = loginEC2(args.credential[0], args.configurationParameters[SERVICE_URL])
-    if (args.credential[0]) {
-        print("COMMANDERCREDENTIAL");
-        print(args.credential[0]);
-    }
-    if (args.credential[1]) {
-        print("PROXYCREDENTIAL");
-        print(args.credential[1]);
-    }
+	// def ec2 = loginEC2(args.credential[0], args.configurationParameters[SERVICE_URL])
+    def ec2 = loginEC2(args, args.configurationParameters[SERVICE_URL])
+
 	def list = []
 
 	switch (args.formalParameterName) {
@@ -118,7 +114,8 @@ if (canGetOptions(args)) {
 
 result
 
-def loginEC2(credential, serviceURL) {
+def loginEC2(args, serviceURL) {
+    def credential = getAWSCredential(args)
 	// Disable HTTPS certificate verification
 	System.setProperty("com.amazonaws.sdk.disableCertChecking", "true")
 
@@ -127,7 +124,7 @@ def loginEC2(credential, serviceURL) {
 
 	clientConfig.setConnectionTimeout(5 * 1000)
 	clientConfig.setMaxErrorRetry(1)
-
+    clientConfig = augmentClientConfigWithProxy(clientConfig, args);
 	def ec2 = new AmazonEC2Client(awsCreds, clientConfig)
 	ec2.setEndpoint(serviceURL)
 
@@ -135,13 +132,10 @@ def loginEC2(credential, serviceURL) {
 }
 
 boolean canGetOptions(args) {
-	args?.parameters &&
-			args.credential &&
-			args.credential.size() > 0 &&
-			args.credential[0][USER_NAME] &&
-			args.credential[0][PASSWORD] &&
-			args.configurationParameters[SERVICE_URL] &&
-			canGetOptionsForParameter(args, args.formalParameterName)
+    print "CANGETOPTIONS";
+    print args.credential
+    def awsCredential = getAWSCredential(args);
+	args?.parameters && awsCredential && awsCredential[USER_NAME] && awsCredential[PASSWORD] && args.configurationParameters[SERVICE_URL] && canGetOptionsForParameter(args, args.formalParameterName)
 }
 
 boolean canGetOptionsForParameter(args, formalParameterName) {
@@ -237,4 +231,62 @@ def getAvailabilityZones(AmazonEC2Client ec2) {
 	}
 
 	list
+}
+
+def getAWSCredential(args) {
+	def credential
+	if (args.credential && args.credential.size() > 0) {
+		credential = args.credential.find { it.credentialName == 'credential'}
+	}
+	// If not found as credential, check if the credential parameters were passed
+	// in through configuration parameters
+	if (!credential) {
+		if (args.configurationParameters['credential.userName'] && args.configurationParameters['credential.password']) {
+			credential = [
+                credentialName: 'credential',
+                userName: args.configurationParameters['credential.userName'],
+                password: args.configurationParameters['credential.password']
+            ]
+		}
+	}
+	credential
+}
+
+def getProxyCredential(args) {
+	def credential
+	if (args.credential.size() > 0) {
+		credential = args.credential.find { it.credentialName == 'proxy_credential'}
+	}
+	credential
+}
+
+def parseProxy(String proxyUrl) {
+    def vals = (proxyUrl =~ /^https?:\/\/(.*):(\d+)\/*/);
+    def rv = [:];
+    if (vals[0][1] && vals[0][1]) {
+        rv.host = vals[0][1];
+        rv.port = vals[0][2] as int;
+    }
+    return rv;
+}
+
+def augmentClientConfigWithProxy(def clientConfig, def args) {
+    if (!args.configurationParameters[PROXY_URL]) {
+        print "NOAUGMENT";
+        return clientConfig;
+    }
+    print "AUGMENT";
+    def proxyInfo = parseProxy(args.configurationParameters[PROXY_URL]);
+    if (proxyInfo.host && proxyInfo.port) {
+        print "EC2OPTIONS_PROXY_SET";
+        clientConfig.setProxyHost(proxyInfo.host);
+        clientConfig.setProxyPort(proxyInfo.port);
+        def proxyCredential = getProxyCredential(args);
+        if (proxyCredential) {
+            print "EC2OPTIONS_PROXY_CREDENTIAL_SET";
+            clientConfig.setProxyUsername(proxyCredential[USER_NAME]);
+            clientConfig.setProxyPassword(proxyCredential[PASSWORD]);
+        }
+    }
+    return clientConfig;
 }

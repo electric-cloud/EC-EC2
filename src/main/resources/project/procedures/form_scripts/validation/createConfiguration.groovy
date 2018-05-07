@@ -91,6 +91,10 @@ if (canValidate(args)) {
 
 // TODO: Switch validation from credential[0] to getAWSCredential
 boolean canValidate(args) {
+    print "CANVALIDATE2";
+    print "\n";
+    print args;
+    print "\n";
 	args?.parameters &&
 			args.credential &&
 			args.credential.size() > 0 &&
@@ -101,15 +105,26 @@ boolean canValidate(args) {
 
 def getAWSCredential(args) {
 	def credential
-	if (args.credential.size() > 0) {
+	if (args.credential && args.credential.size() > 0) {
 		credential = args.credential.find { it.credentialName == 'credential'}
+	}
+	// If not found as credential, check if the credential parameters were passed
+	// in through configuration parameters
+	if (!credential) {
+		if (args.configurationParameters['credential.userName'] && args.configurationParameters['credential.password']) {
+			credential = [
+                credentialName: 'credential',
+                userName: args.configurationParameters['credential.userName'],
+                password: args.configurationParameters['credential.password']
+            ]
+		}
 	}
 	credential
 }
 
 def getProxyCredential(args) {
 	def credential
-	if (args.credential.size() > 0) {
+	if (args.credential && args.credential.size() > 0) {
 		credential = args.credential.find { it.credentialName == 'proxy_credential'}
 	}
 	credential

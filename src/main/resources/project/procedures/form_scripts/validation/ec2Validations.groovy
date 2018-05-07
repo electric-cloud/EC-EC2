@@ -39,8 +39,6 @@ import com.electriccloud.domain.FormalParameterValidationResult
 		final String CREDENTIAL = "credential"
 @Field
 		final String SERVICE_URL = "service_url"
-@Field
-        final String PROXY_URL = "http_proxy"
 
 @Field
 		final String SUBNET_ID = "subnet_id"
@@ -73,59 +71,16 @@ boolean canValidate(args) {
 			args.parameters[PRIVATE_IP]
 }
 
-def getAWSCredential(args) {
-	def credential
-	if (args.credential.size() > 0) {
-		credential = args.credential.find { it.credentialName == 'credential'}
-	}
-	credential
-}
-
-def getProxyCredential(args) {
-	def credential
-	if (args.credential.size() > 0) {
-		credential = args.credential.find { it.credentialName == 'proxy_credential'}
-	}
-	credential
-}
-
-def parseProxy(String proxyUrl) {
-    def vals = (proxyUrl =~ /^https?:\/\/(.*):(\d+)\/*/);
-    def rv = [:];
-    if (vals[0][1] && vals[0][1]) {
-        rv.host = vals[0][1];
-        rv.port = vals[0][2] as int;
-    }
-    return rv;
-}
-
-
 def doValidations(args) {
-    print "EC2VALIDATIONS_VALIDATION";
-    print args
-	// def credential = args.credential[0]
-    def credential = getAWSCredential(args)
-    def proxyCredential;
+	def credential = args.credential[0]
 	def parameters = args.parameters
-    def proxyUrl = parameters[PROXY_URL];
-    if (proxyUrl) {
-        proxyCredential = getProxyCredential(args)
-    }
 	def result = FormalParameterValidationResult.SUCCESS
 
 	// Disable HTTPS certificate verification
 	System.setProperty("com.amazonaws.sdk.disableCertChecking", "true")
 
 	try {
-        def proxyInfo = [:];
-        if (proxyUrl) {
-            proxyInfo = parseProxy(proxyUrl);
-            if (proxyCredential) {
-                proxyInfo.userName = proxyCredential[USER_NAME];
-                proxyInfo.password = proxyCredential[PASSWORD];
-            }
-        }
-		def ec2 = loginEC2(credential, proxyInfo, args.configurationParameters[SERVICE_URL])
+		def ec2 = loginEC2(credential, args.configurationParameters[SERVICE_URL])
 		def privateIp = parameters[PRIVATE_IP]
 		def subnetId = parameters[SUBNET_ID]
 
@@ -139,19 +94,11 @@ def doValidations(args) {
 	result
 }
 
-def loginEC2(credential, proxyInfo, serviceURL) {
+def loginEC2(credential, serviceURL) {
 	// Disable HTTPS certificate verification
 	System.setProperty("com.amazonaws.sdk.disableCertChecking", "true")
 
 	def awsCreds = new BasicAWSCredentials(credential[USER_NAME], credential[PASSWORD])
-    if (proxyInfo.host) {
-        clientConfig.setProxyHost(proxyInfo.host);
-        clientConfig.setProxyPort(proxyInfo.port);
-        if (proxyInfo.userName && proxyInfo.password) {
-            clientConfig.setProxyUsername(proxyInfo.userName);
-            clientConfig.setProxyPassword(proxyInfo.password);
-        }
-    }
 	def clientConfig = new ClientConfiguration()
 
 	clientConfig.setConnectionTimeout(5 * 1000)
