@@ -1876,7 +1876,7 @@
     <h1 id="rns">Release Notes</h1>
       <h2>@PLUGIN_KEY@ 2.4.1</h2>
       <ul>
-          <li>Default value for Tenancy field has been removed.</li>
+          <li>Default value for Tenancy field has been removed (this fixes a problem with uncompatible subnetId and groupName).</li>
       </ul>
       <h2>@PLUGIN_KEY@ 2.4.0</h2>
       <ul>
