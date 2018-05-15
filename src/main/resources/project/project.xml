@@ -7032,7 +7032,7 @@
             </formalParameter>
 			<formalParameter>
                 <formalParameterName>tenancy</formalParameterName>
-                <defaultValue>default</defaultValue>
+                <defaultValue/>
                 <description>Created resource will belong to the specified zone. Zone 'default' is used by default.</description>
                 <required>0</required>
                 <type>entry</type>
