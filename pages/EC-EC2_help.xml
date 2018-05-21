@@ -1875,7 +1875,15 @@
     <h1 id="rns">Release Notes</h1>
       <h2>@PLUGIN_KEY@ 2.4.1</h2>
       <ul>
-          <li>Default value for Tenancy field has been removed (this fixes a problem with uncompatible subnetId and groupName).</li>
+          <li>Default value for Tenancy field has been removed (this fixes a problem with uncompatible subnetId and groupName).
+          <br/>
+          In 2.4.0 (which is part of the 8.3 Release of Electric Flow) the Tenancy field was introduced by implementing the latest version of the AWS API. However this version of the plugin can error if both Security Group and Subnet ID are both chosen in the plugin procedures, as AWS does not allow specifying both of them in their newer version. The current version fixes this issue. The following is the behavior of the plugin based on the value chosen for the "Tenancy" field in conjunction with Subnet ID and Security Group:<br/>
+
+          no value chosen: Subnet ID and Security Group can be both chosen.<br/>
+          default: Security Group and Subnet ID are both optional. If they are used only one of them can be specified.<br/>
+          dedicated: Subnet ID is mandatory. Security Group is optional. Only one of them can be specified.<br/>
+          host: Subnet ID is mandatory. Security Group is optional. Only one of them can be specified.<br/>
+          </li>
       </ul>
       <h2>@PLUGIN_KEY@ 2.4.0</h2>
       <ul>
