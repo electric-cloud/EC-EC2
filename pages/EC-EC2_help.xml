@@ -1872,8 +1872,12 @@
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/delete_volumes_log.png" />
 
 
-    <h1 id="rns">Release Notes</h1>
-      <h2>@PLUGIN_KEY@ 2.4.1</h2>
+        <h1 id="rns">Release Notes</h1>
+        <h2>@PLUGIN_KEY@ 2.4.2</h2>
+        <ul>
+            <li>Configured the plugin to allow the ElectricFlow UI to create configs inline of procedure form.</li>
+        </ul>
+        <h2>@PLUGIN_KEY@ 2.4.1</h2>
       <ul>
           <li>Default value for Tenancy field has been removed (this fixes a problem with uncompatible subnetId and groupName).
           <br/>
