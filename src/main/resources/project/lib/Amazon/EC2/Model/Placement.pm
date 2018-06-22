@@ -26,37 +26,38 @@ package Amazon::EC2::Model::Placement;
 
 use base qw (Amazon::EC2::Model);
 
-    
+
 
     #
     # Amazon::EC2::Model::Placement
-    # 
+    #
     # Properties:
     #
-    # 
+    #
     # AvailabilityZone: string
     # GroupName: string
     #
-    # 
-    # 
+    #
+    #
     sub new {
         my ($class, $data) = @_;
         my $self = {};
         $self->{_fields} = {
-            
+
             AvailabilityZone => { FieldValue => undef, FieldType => "string"},
             GroupName => { FieldValue => undef, FieldType => "string"},
+            Tenancy => {FieldValue => undef, FieldType => "string"},
         };
 
         bless ($self, $class);
         if (defined $data) {
-           $self->_fromHashRef($data); 
+           $self->_fromHashRef($data);
         }
-        
+
         return $self;
     }
 
-    
+
     sub getAvailabilityZone {
         return shift->{_fields}->{AvailabilityZone}->{FieldValue};
     }
@@ -79,6 +80,30 @@ use base qw (Amazon::EC2::Model);
 
     sub isSetAvailabilityZone {
         return defined (shift->{_fields}->{AvailabilityZone}->{FieldValue});
+    }
+
+
+    sub getTenancy {
+        return shift->{_fields}->{Tenancy}->{FieldValue};
+    }
+
+
+    sub setTenancy {
+        my ($self, $value) = @_;
+
+        $self->{_fields}->{Tenancy}->{FieldValue} = $value;
+        return $self;
+    }
+
+
+    sub withTenancy {
+        my ($self, $value) = @_;
+        $self->setTenancy($value);
+        return $self;
+    }
+
+    sub isSetTenancy {
+        return defined (shift->{_fields}->{Tenancy}->{FieldValue});
     }
 
 

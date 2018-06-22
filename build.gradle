@@ -19,7 +19,8 @@ buildscript {
 
 group = "com.electriccloud"
 description = "Plugins : EC-EC2"
-version = "2.3.6"
+
+version = "2.4.2"
 
 apply plugin: 'groovy'
 apply plugin: 'flow-gradle-plugin'
@@ -28,7 +29,6 @@ apply plugin: 'license'
 license {
 	header = file ('shortHeader.txt')
 	exclude "**/project.xml"
-
 }
 
 task wrapper(type: Wrapper) { gradleVersion = '2.13' }

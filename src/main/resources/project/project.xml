@@ -11,6 +11,61 @@
         <description>A project to hold integrations with EC2 clouds</description>
         <workspaceName/>
         <propertySheet>
+            <!-- CEV-18771 improvements -->
+            <!-- EC-EC2 doesn't have custom GWT logic. Setting it for plugin context -->
+            <property>
+                <propertyName>ec_formXmlCompliant</propertyName>
+                <value>true</value>
+            </property>
+            <property>
+                <propertyName>ec_config</propertyName>
+                <description/>
+                <propertySheet>
+                    <property>
+                        <propertyName>configLocation</propertyName>
+                        <expandable>0</expandable>
+                        <value>ec2_cfgs</value>
+                    </property>
+                    <property>
+                        <propertyName>form</propertyName>
+                        <expandable>1</expandable>
+                        <value>$[/projects/@PLUGIN_KEY@-@PLUGIN_VERSION@/ui_forms/EC2CreateConfigForm]</value>
+                    </property>
+                    <property>
+                        <propertyName>fields</propertyName>
+                        <description/>
+                        <propertySheet>
+                            <property>
+                                <propertyName>config</propertyName>
+                                <propertySheet>
+                                    <property>
+                                        <propertyName>label</propertyName>
+                                        <value>Configuration Name</value>
+                                    </property>
+                                    <property>
+                                        <propertyName>order</propertyName>
+                                        <value>1</value>
+                                    </property>
+                                </propertySheet>
+                            </property>
+                            <property>
+                                <propertyName>service_url</propertyName>
+                                <propertySheet>
+                                    <property>
+                                        <propertyName>label</propertyName>
+                                        <value>Service URL</value>
+                                    </property>
+                                    <property>
+                                        <propertyName>order</propertyName>
+                                        <value>2</value>
+                                    </property>
+                                </propertySheet>
+                            </property>
+                        </propertySheet>
+                    </property>
+                </propertySheet>
+            </property>
+            <!-- End of CEV-18771 improvements -->
             <property>
                 <propertyName>ec_cloudprovisioning_plugin</propertyName>
                 <description></description>
@@ -2228,7 +2283,7 @@
                             </property>
                         </propertySheet>
                     </property>
-                    
+
                     <property>
                         <propertyName>XML</propertyName>
                         <description/>
@@ -6345,17 +6400,17 @@
                 <parallel>0</parallel>
                 <postProcessor>postp --loadProperty "/myProject/postpExtension"</postProcessor>
                 <releaseExclusive>0</releaseExclusive>
-		
-                
-		
+
+
+
                 <retries>0</retries>
                 <shell>ec-perl</shell>
                 <timeLimit>45</timeLimit>
                 <timeLimitUnits>minutes</timeLimitUnits>
                 <workingDirectory/>
-		
-                
-		
+
+
+
                 <propertySheet>
                     <property>
                         <propertyName>ec_customEditorData</propertyName>
@@ -6599,6 +6654,16 @@
                                     </propertySheet>
                                 </property>
                                 <property>
+                                    <propertyName>tenancy</propertyName>
+                                    <propertySheet>
+                                        <property>
+                                            <propertyName>formType</propertyName>
+                                            <expandable>1</expandable>
+                                            <value>standard</value>
+                                        </property>
+                                    </propertySheet>
+                                </property>
+                                <property>
                                     <propertyName>instanceType</propertyName>
                                     <propertySheet>
                                         <property>
@@ -6817,7 +6882,7 @@
                                             <value>standard</value>
                                         </property>
                                     </propertySheet>
-                                </property>	
+                                </property>
                             </propertySheet>
                         </property>
                     </propertySheet>
@@ -7013,9 +7078,16 @@
               <required>0</required>
               <type>checkbox</type>
             </formalParameter>
-			<formalParameter>
+            <formalParameter>
                 <formalParameterName>resource_zone</formalParameterName>
                 <defaultValue>default</defaultValue>
+                <description>Created resource will belong to the specified zone. Zone 'default' is used by default.</description>
+                <required>0</required>
+                <type>entry</type>
+            </formalParameter>
+			<formalParameter>
+                <formalParameterName>tenancy</formalParameterName>
+                <defaultValue/>
                 <description>Created resource will belong to the specified zone. Zone 'default' is used by default.</description>
                 <required>0</required>
                 <type>entry</type>
@@ -8408,7 +8480,7 @@
             </step>
         </procedure>
 
-	  
+
         <procedure>
             <procedureName>CreateConfiguration</procedureName>
             <description>Create an EC2 configuration</description>

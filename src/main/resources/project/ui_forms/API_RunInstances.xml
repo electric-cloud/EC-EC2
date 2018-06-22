@@ -20,6 +20,9 @@
     <formElement>
         <type>entry</type>
         <label>Configuration:</label>
+        <!-- Improvements for CEV-18687 -->
+        <configuration>1</configuration>
+        <!-- End of improvements for CEV-18687 -->
         <property>config</property>
         <required>1</required>
         <documentation>The name of the config which holds all the connection information. This must reference a valid existing configuration.</documentation>
@@ -50,7 +53,7 @@
         <serverOptions>1</serverOptions>
         <dependsOn>config</dependsOn>
         <documentation>The name of the EC2 image that you would like to deploy.</documentation>
-    </formElement>      
+    </formElement>
     <formElement>
         <type>select</type>
         <label>Instance Type:</label>
@@ -58,7 +61,7 @@
         <property>instanceType</property>
         <required>1</required>
         <serverOptions>1</serverOptions>
-        <dependsOn>config</dependsOn>        
+        <dependsOn>config</dependsOn>
         <documentation>The instance type.</documentation>
         <option>
             <name>Small(m1.small)</name>
@@ -206,6 +209,36 @@
         <option>
             <name>Stop</name>
             <value>stop</value>
+        </option>
+    </formElement>
+    <formElement>
+        <type>select</type>
+        <label>Tenancy:</label>
+        <property>tenancy</property>
+        <required>0</required>
+        <htmlDocumentation>
+            Each instance that you launch into a VPC has a tenancy attribute. This attribute has the following values:<br/>
+            <b>default</b> - Your instance runs on shared hardware.<br/>
+            <b>dedicated</b> - Your instance runs on single-tenant hardware.<br/>
+            <b>host</b> - Your instance runs on a Dedicated Host, which is an isolated server with configurations that you can control.
+        </htmlDocumentation>
+        <documentation>
+            Each instance that you launch into a VPC has a tenancy attribute. This attribute has the following values:
+            default - Your instance runs on shared hardware,
+            dedicated - Your instance runs on single-tenant hardware,
+            host - Your instance runs on a Dedicated Host, which is an isolated server with configurations that you can control.
+        </documentation>
+        <option>
+            <name>default</name>
+            <value>default</value>
+        </option>
+        <option>
+            <name>dedicated</name>
+            <value>dedicated</value>
+        </option>
+        <option>
+            <name>host</name>
+            <value>host</value>
         </option>
     </formElement>
     <formElement>
