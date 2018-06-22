@@ -115,6 +115,7 @@ if (canGetOptions(args)) {
 result
 
 def loginEC2(args, serviceURL) {
+    print "TESTLOGIN123"
     def credential = getAWSCredential(args)
 	// Disable HTTPS certificate verification
 	System.setProperty("com.amazonaws.sdk.disableCertChecking", "true")
