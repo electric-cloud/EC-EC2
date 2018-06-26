@@ -10,7 +10,7 @@ class TestHelper extends PluginSpockTestSupport {
 
     static EC2Helper getHelperInstance() {
         if (!helper) {
-            helper = new EC2Helper()
+            helper = new EC2Helper(regionName: getRegionName())
         }
         return helper
     }
@@ -34,7 +34,7 @@ class TestHelper extends PluginSpockTestSupport {
     }
 
     static def getRegionName() {
-        def regionName = System.getenv('AWS_REGION_NAME') ?: "us-west-1"
+        def regionName = System.getenv('AWS_REGION_NAME') ?: "us-east-2"
         return regionName
     }
 

@@ -3,10 +3,11 @@ package com.electriccloud.plugin.spec
 import software.amazon.awssdk.auth.credentials.DefaultCredentialsProvider
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.ec2.EC2Client
-import software.amazon.awssdk.services.ec2.model.DescribeInstancesResponse
+import software.amazon.awssdk.services.ec2.model.*
 
 class EC2Helper {
-    String regionName
+    @Lazy(soft=true)
+    String regionName = {return System.getenv('AWS_REGION_NAME')}()
 
     @Lazy
     EC2Client ec2Client = {
@@ -19,10 +20,12 @@ class EC2Helper {
         return client
     }()
 
-
-    def testConnection() {
-        DescribeInstancesResponse response = ec2Client.describeInstances()
-        assert response.reservations().size() > 0
+    Instance getInstance(String instanceId) {
+        DescribeInstancesRequest request = DescribeInstancesRequest.builder().instanceIds(instanceId).build()
+        DescribeInstancesResponse response = ec2Client.describeInstances(request)
+        assert response.reservations().size() == 1
+        Reservation reservation = response.reservations().first()
+        Instance instance = reservation.instances().first()
+        return instance
     }
-
 }
