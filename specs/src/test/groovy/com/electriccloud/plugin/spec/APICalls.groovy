@@ -28,8 +28,10 @@ class APICalls extends TestHelper {
 	static final String httpProxyPass	= System.getenv('HTTP_PROXY_PASS') ?: ''
 	static final Boolean skipElasticIp	= System.getenv('SKIP_ELASTIC_IP') != null
 	static final Boolean skipVolume		= System.getenv('SKIP_VOLUME') != null
-	static final Boolean skipInstance	= System.getenv('SKIP_INSTANCE') != null
 	static final Boolean skipImage		= System.getenv('SKIP_IMAGE') != null
+	static final Boolean skipKey		= System.getenv('SKIP_KEY') != null
+	static final Boolean skipInstance	= skipKey || (System.getenv('SKIP_INSTANCE') != null)
+	static final Boolean skipVPC		= System.getenv('SKIP_VPC') != null
 	@Shared projectName
 	@Shared vpcId
 	@Shared allocatedIp
@@ -90,6 +92,7 @@ class APICalls extends TestHelper {
 		then: 'Job status is OK'
 			result.outcome == 'success'
 	}
+	@IgnoreIf({ skipVPC })
   	def 'API_CreateVPC'() {
 		when: 'API_CreateVPC procedure is ran'
 			def result = runProcedure(
@@ -107,6 +110,7 @@ class APICalls extends TestHelper {
 		and: 'VPC ID saved correctly'
 			vpcId ==~ /^vpc-[\da-f]+$/
 	}
+	@IgnoreIf({ skipVPC })
 	def 'API_CreateSubnet'() {
 		when: 'API_CreateVPC procedure is ran'
 			def result = runProcedure(
@@ -121,6 +125,7 @@ class APICalls extends TestHelper {
   		then: 'Job status is OK'
 			result.outcome == 'success'
 	}
+	@IgnoreIf({ skipKey })
 	def 'API_CreateKey'() {
 		when: 'API_CreateKey procedure is ran'
 			def result = runProcedure(
@@ -149,6 +154,7 @@ class APICalls extends TestHelper {
 		and: 'IP address looks roughy like one'
 			allocatedIp ==~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/
 	}
+	@IgnoreIf({ skipInstance })
 	def 'API_RunInstances'() {
 		when: 'API_RunInstances procedure is ran'
 			def result = runProcedure(
@@ -169,6 +175,7 @@ class APICalls extends TestHelper {
 		and: 'Instance ID address looks roughy like one'
 			instanceId ==~ /^i-[\da-f]+$/
 	}
+	@IgnoreIf({ skipInstance })
 	def 'API_DescribeInstances'() {
 		when: 'API_DescribeInstances procedure is ran'
 			def result = runProcedure(
@@ -213,6 +220,7 @@ class APICalls extends TestHelper {
   		then: 'Job status is OK'
 			result.outcome == 'success'
 	}
+	@IgnoreIf({ skipInstance })
 	def 'API_StopInstance'() {
 		when: 'API_StopInstance procedure is ran'
 			def result = runProcedure(
@@ -232,6 +240,7 @@ class APICalls extends TestHelper {
 			result.outcome == 'success'
 		and: 'instance is actually stopped'
 	}
+	@IgnoreIf({ skipInstance })
 	def 'API_StartInstance'() {
 		when: 'API_StartInstance procedure is ran'
 			def result = runProcedure(
@@ -248,6 +257,7 @@ class APICalls extends TestHelper {
   		then: 'Job status is OK'
 			result.outcome == 'success'
 	}
+	@IgnoreIf({ skipImage || skipInstance })
 	def 'API_CreateImage'() {
 		when: 'API_CreateImage procedure is ran'
 			def result = runProcedure(
@@ -332,6 +342,7 @@ class APICalls extends TestHelper {
   		then: 'Job status is OK'
 			result.outcome == 'success'
 	}
+	@IgnoreIf({ skipInstance })
 	def 'API_Terminate'() {
 		when: 'API_Terminate procedure is ran'
 			def result = runProcedure(
@@ -344,6 +355,7 @@ class APICalls extends TestHelper {
   		then: 'Job status is OK'
 			result.outcome == 'success'
 	}
+	@IgnoreIf({ skipKey })
 	def 'API_DeleteKey'() {
 		when: 'API_DeleteKey procedure is ran'
 			def result = runProcedure(
@@ -356,6 +368,7 @@ class APICalls extends TestHelper {
   		then: 'Job status is OK'
 			result.outcome == 'success'
 	}
+	@IgnoreIf({ skipVPC })
 	def 'API_DeleteVPC'() {
 		when: 'API_DeleteVPC procedure is ran'
 			def result = runProcedure(projectName, 'API_DeleteVPC', [ config : commonName, vpcId : vpcId ])
@@ -391,7 +404,9 @@ class APICalls extends TestHelper {
 			DeregisterImageRequest request = DeregisterImageRequest.builder().imageId(imageId).build()
 			ec2.ec2Client.deregisterImage(request)
 		}
-		runProcedure(projectName, 'API_DeleteKey', [ config : commonName, keyname : commonName ])
+		if (!skipKey) {
+			runProcedure(projectName, 'API_DeleteKey', [ config : commonName, keyname : commonName ])
+		}
 		// THIS ONE SHOULD BE LAST
 		runProcedure(projectName, 'DeleteConfiguration', [ config : commonName ])
 	}
