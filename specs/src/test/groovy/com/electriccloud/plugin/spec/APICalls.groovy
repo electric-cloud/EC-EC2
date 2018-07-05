@@ -102,12 +102,23 @@ class APICalls extends TestHelper {
 					cidrBlock		: '10.102.102.0/16',
 					config			: commonName,
 					vpcName			: commonName,
-					propResult		: '/myProject/EC-EC2-Test'
+					propResult		: '/myJob/EC-EC2-Test'
 				])
-			vpcId = dsl("getProperty(propertyName: '/myProject/EC-EC2-Test/VpcId', pluginName: '${pluginName}')").property.value
   		then: 'Job status is OK'
 			result.outcome == 'success'
-		and: 'VPC ID saved correctly'
+
+		when: 'jobId is retrieved'
+			def jobId = result.jobId
+		then: 'Job contains jobId'
+			jobId != null
+
+		when: 'vpcId is retrieved'
+			def prop = dsl("getProperty(propertyName: '/myJob/EC-EC2-Test/VpcId', jobId: '${jobId}')")
+			vpcId = prop?.property?.value
+		then: 'Job has corresponidng prorerties set'
+			prop != null
+			vpcId != null
+		and: 'VPC ID looks like one'
 			vpcId ==~ /^vpc-[\da-f]+$/
 	}
 	@IgnoreIf({ skipVPC })
@@ -146,11 +157,22 @@ class APICalls extends TestHelper {
 				'API_AllocateIP',
 				[
 					config			: commonName,
-					propResult		: '/myProject/EC-EC2-Test'
+					propResult		: '/myJob/EC-EC2-Test'
 				])
-			allocatedIp = dsl("getProperty(propertyName: '/myProject/EC-EC2-Test/ip', pluginName: '${pluginName}')").property.value
   		then: 'Job status is OK'
 			result.outcome == 'success'
+
+		when: 'jobId is retrieved'
+			def jobId = result.jobId
+		then: 'Job contains jobId'
+			jobId != null
+
+		when: 'IP is retrieved'
+			def prop = dsl("getProperty(propertyName: '/myJob/EC-EC2-Test/ip', jobId: '${jobId}')")
+			allocatedIp = prop?.property?.value
+		then: 'Job has corresponidng prorerties set'
+			prop != null
+			allocatedIp != null
 		and: 'IP address looks roughy like one'
 			allocatedIp ==~ /\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}/
 	}
@@ -162,17 +184,28 @@ class APICalls extends TestHelper {
 				'API_RunInstances',
 				[
 					config			: commonName,
-					propResult		: '/myProject/EC-EC2-Test',
+					propResult		: '/myJob/EC-EC2-Test',
 					image			: amiToRun,
 					keyname			: commonName,
 					zone			: "${getRegionName()}c",
 					count			: 1,
 					instanceType	: "t2.nano",
 				])
-			instanceId = dsl("getProperty(propertyName: '/myProject/EC-EC2-Test/InstanceList', pluginName: '${pluginName}')").property.value
   		then: 'Job status is OK'
 			result.outcome == 'success'
-		and: 'Instance ID address looks roughy like one'
+
+		when: 'jobId is retrieved'
+			def jobId = result.jobId
+		then: 'Job contains jobId'
+			jobId != null
+
+		when: 'instanceId is retrieved'
+			def prop = dsl("getProperty(propertyName: '/myJob/EC-EC2-Test/InstanceList', jobId: '${jobId}')")
+			instanceId = prop?.property?.value
+		then: 'Job has corresponidng prorerties set'
+			prop != null
+			instanceId != null
+		and: 'Instance ID looks like one'
 			instanceId ==~ /^i-[\da-f]+$/
 	}
 	@IgnoreIf({ skipInstance })
@@ -183,14 +216,27 @@ class APICalls extends TestHelper {
 				'API_DescribeInstances',
 				[
 					config			: commonName,
-					propResult		: '/myProject/EC-EC2-Test',
+					propResult		: '/myJob/EC-EC2-Test',
 					instances		: instanceId
 				])
-			def describeXml = dsl("getProperty(propertyName: '/myProject/EC-EC2-Test/describe', pluginName: '${pluginName}')").property.value
-			def list = new XmlParser().parseText(describeXml)
   		then: 'Job status is OK'
 			result.outcome == 'success'
-		and: 'describe yielded a valid xml document'
+
+		when: 'jobId is retrieved'
+			def jobId = result.jobId
+		then: 'Job contains jobId'
+			jobId != null
+
+		when: 'describe XML exists'
+			def prop = dsl("getProperty(propertyName: '/myJob/EC-EC2-Test/describe', jobId: '${jobId}')")
+			def describeXml = prop?.property?.value
+		then: 'Job has corresponidng prorerties set'
+			prop != null
+			describeXml != null
+
+		when: 'Attempt to parse XML is made'
+			def list = new XmlParser().parseText(describeXml)
+		then: 'describe yielded a valid xml document'
 			notThrown(SAXParseException)
 	}
 	@IgnoreIf({ skipElasticIp || skipInstance })
@@ -265,16 +311,27 @@ class APICalls extends TestHelper {
 				'API_CreateImage',
 				[
 					config			: commonName,
-					propResult		: '/myProject/EC-EC2-Test',
+					propResult		: '/myJob/EC-EC2-Test',
 					instance		: instanceId,
 					desc			: "EC-EC2 testing process",
 					name			: commonName,
 					noreboot		: 1
 				], [], null, 300)
-			imageId = dsl("getProperty(propertyName: '/myProject/EC-EC2-Test/NewAMI', pluginName: '${pluginName}')").property.value
   		then: 'Job status is OK'
 			result.outcome == 'success'
-		and: 'Image ID address looks roughy like one'
+
+		when: 'jobId is retrieved'
+			def jobId = result.jobId
+		then: 'Job contains jobId'
+			jobId != null
+
+		when: 'imageId is retrieved'
+			def prop = dsl("getProperty(propertyName: '/myJob/EC-EC2-Test/NewAMI', jobId: '${jobId}')")
+			imageId = prop?.property?.value
+		then: 'Job has corresponidng prorerties set'
+			prop != null
+			imageId != null
+		and: 'Image ID looks like one'
 			imageId ==~ /^ami-[\da-f]+$/
 	}
 	@Ignore
