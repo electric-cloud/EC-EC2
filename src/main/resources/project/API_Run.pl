@@ -266,6 +266,14 @@ sub main {
 
     $opts->{resourceName} = $CfgDB->getCol( "$opts->{config}", 'resource_pool' );
     $opts->{workspaceName} = $CfgDB->getCol( "$opts->{config}", 'workspace' );
+    eval {
+        $opts->{http_proxy} = $CfgDB->getCol("$opts->{config}", 'http_proxy');
+        if ($opts->{http_proxy}) {
+            $ENV{HTTP_PROXY} = $opts->{http_proxy};
+            $ENV{HTTPS_PROXY} = $opts->{http_proxy};
+            $ENV{FTP_PROXY} = $opts->{http_proxy};
+        }
+    };
 
     # if mockdata is non blank, hard coded mock data will be
     # used and no actual calls to EC2 will be made
@@ -292,8 +300,17 @@ sub main {
 
     # credential uses the same name as the configuration
     ( $opts->{AWS_ACCESS_KEY_ID}, $opts->{AWS_SECRET_ACCESS_KEY} ) =
-      getCredential("$opts->{config}");
-
+        getCredential("$opts->{config}");
+    if ($opts->{http_proxy}) {
+        eval {
+            my ($proxy_username, $proxy_password) = getCredential($opts->{config} . '_proxy_credential');
+            $ENV{HTTPS_PROXY_USERNAME} = $proxy_username if defined $proxy_username;
+            $ENV{HTTPS_PROXY_PASSWORD} = $proxy_password if defined $proxy_password;
+        };
+    }
+    # or do {
+    #     print "Error occured during proxy config retrieval: $@\n";
+    # };
     if ( "$opts->{AWS_ACCESS_KEY_ID}" eq "" ) {
         mesg( 0, "Access key not found in credential $opts->{config}\n" );
         exit 1;
