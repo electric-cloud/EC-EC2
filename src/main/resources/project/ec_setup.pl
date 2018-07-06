@@ -394,6 +394,9 @@ my $serverVersion = $xpath->findvalue('//version')->string_value();
 
 if (compareMinor($serverVersion, '8.4') <= 0) {
     print "Lesser version that 8.3\n";
+#    Fallback for second credential
+#    Basically we are removing the part of the functionality in order to make it work prior 8.4 fix
+#    Due to wrong UI calls, second credential is not getting processed here
     my $pluginToPatch = $pluginName;
     print $pluginToPatch;
     $commander->abortOnError(1);

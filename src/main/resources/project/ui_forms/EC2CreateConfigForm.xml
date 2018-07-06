@@ -75,7 +75,7 @@
         <property>attempt</property>
         <checkedValue>1</checkedValue>
         <uncheckedValue>0</uncheckedValue>
-        <initiallyChecked>1</initiallyChecked>        
+        <initiallyChecked>1</initiallyChecked>
         <documentation>Attempt a connection to check credentials.</documentation>
         <required>1</required>
     </formElement>
@@ -88,6 +88,7 @@
         <required>1</required>
     </formElement>
     <formElement>
+        <!-- will be removed prior 8.4 during setup -->
         <type>entry</type>
         <label>HTTP Proxy:</label>
         <property>http_proxy</property>
@@ -97,6 +98,7 @@
         <serverValidation>1</serverValidation>
     </formElement>
     <formElement>
+        <!-- will be removed prior 8.4 during setup -->
         <type>credential</type>
         <label>Proxy authorization:</label>
         <property>proxy_credential</property>
