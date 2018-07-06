@@ -372,7 +372,7 @@ if ($upgradeAction eq 'upgrade') {
                                         stepName      => 'RunInstances'
                                      }
                                     );
-                                    
+
             $batch->attachCredential(
                                      "\$[/plugins/$pluginName/project]",
                                      $cred,
@@ -391,6 +391,29 @@ if ($upgradeAction eq 'upgrade') {
 # older versions of EF server.
 my $xpath = $commander->getVersions();
 my $serverVersion = $xpath->findvalue('//version')->string_value();
+
+if (compareMinor($serverVersion, '8.4') <= 0) {
+    print "Lesser version that 8.3\n";
+    my $pluginToPatch = $pluginName;
+    print $pluginToPatch;
+    $commander->abortOnError(1);
+    my $fallback = $commander->getProperty("/projects/$pluginToPatch/ui_forms/EC2CreateConfigFallbackForm")->findvalue('//value')->string_value;
+    $commander->setProperty("/projects/$pluginToPatch/procedures/CreateConfiguration/ec_parameterForm", $fallback);
+    print "Replaced form.xml\n";
+    for my $name (qw/http_proxy proxy_credential/) {
+        $commander->deleteFormalParameter({
+            formalParameterName => $name,
+            projectName => $pluginToPatch,
+            procedureName => 'CreateConfiguration'
+        });
+
+        print "Deleted formal parameter $name\n";
+        $commander->deleteProperty("/projects/$pluginToPatch/procedures/CreateConfiguration/ec_customEditorData/parameters/$name");
+        print "Removed custom editor property\n";
+    }
+    $commander->setProperty("/projects/$pluginToPatch/ec_cloudprovisioning_plugin/operations/createConfiguration/ui_formRefs/parameterForm", 'ui_forms/EC2CreateConfigFallbackForm');
+    $commander->abortOnError(0);
+}
 
 if (compareMinor($serverVersion, '6.1') >= 0) {
   # Flag the property sheet as being protected by credentials
@@ -434,5 +457,5 @@ if (compareMinor($serverVersion, '6.1') >= 0) {
   }
 
 }
-	
-	
+
+

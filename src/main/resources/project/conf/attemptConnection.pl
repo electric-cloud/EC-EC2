@@ -42,7 +42,7 @@ my $AWS_SECRET_ACCESS_KEY = $xpath->findvalue("//password");
 
 my ($proxy_user, $proxy_pass, $http_proxy);
 eval {
-    my $http_proxy = '$[http_proxy]';
+    my $http_proxy = $ec->getProperty('http_proxy')->findvalue('//value')->string_value;
     if ($http_proxy) {
         $ENV{HTTP_PROXY} = $http_proxy;
         $ENV{HTTPS_PROXY} = $http_proxy;
@@ -100,7 +100,7 @@ if ($ex) {
     my $errMsg = "Test connection failed.\n";
     $ec->setProperty("/myJob/configError", $errMsg);
     print $errMsg;
-    
+
     $ec->deleteProperty("/projects/$projName/ec2_cfgs/$credName");
     $ec->deleteCredential($projName, $credName);
     require Amazon::EC2::Exception;
