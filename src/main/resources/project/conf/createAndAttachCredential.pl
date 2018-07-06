@@ -97,6 +97,11 @@ $xpath = $ec->attachCredential($projName, $credName,
      stepName => "DeleteVPC"});
 $errors .= $ec->checkAllErrors($xpath);
 
+$xpath = $ec->attachCredential($projName, $credName,
+    {procedureName => "API_UpdateInstance",
+     stepName => "UpdateInstance"});
+$errors .= $ec->checkAllErrors($xpath);
+
 if ("$errors" ne "") {
     # Cleanup the partially created configuration we just created
     $ec->deleteProperty($configPath);
