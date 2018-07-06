@@ -1,0 +1,5 @@
+spec-report/
+.*
+logs/
+out/
+build/

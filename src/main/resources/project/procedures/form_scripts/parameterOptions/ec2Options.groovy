@@ -71,7 +71,7 @@ import com.electriccloud.domain.FormalParameterOptionsResult
 		final String SUBNET_ID = "subnet_id"
 @Field
         final String PROXY_URL = "http_proxy"
-        
+
 // Disable Amazon SDK logging
 Logger.getLogger("com.amazonaws").setLevel(Level.OFF);
 
@@ -108,7 +108,6 @@ if (canGetOptions(args)) {
 	}
 
 }
-print result
 return result
 
 def loginEC2Old(credential, serviceURL) {
@@ -149,10 +148,6 @@ def loginEC2(args, serviceURL) {
 }
 
 boolean canGetOptions(args) {
-
-    // println "SPARTA"
-    // def awsCredential = getAWSCredential(args);
-    // print awsCredential;
 	args?.parameters &&
 			args.credential &&
 			args.credential.size() > 0 &&
@@ -277,8 +272,8 @@ def getAWSCredential(def args) {
     }
     return null;
 }
-// def getAWSCredential
-boolean isCollectionOrArray(object) {    
+
+boolean isCollectionOrArray(object) {
     [Collection, Object[]].any { it.isAssignableFrom(object.getClass()) }
 }
 

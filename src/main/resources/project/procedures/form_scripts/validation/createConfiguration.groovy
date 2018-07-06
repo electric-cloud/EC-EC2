@@ -91,10 +91,6 @@ if (canValidate(args)) {
 
 // TODO: Switch validation from credential[0] to getAWSCredential
 boolean canValidate(args) {
-    print "CANVALIDATE2";
-    print "\n";
-    print args;
-    print "\n";
 	args?.parameters &&
 			args.credential &&
 			args.credential.size() > 0 &&
@@ -141,8 +137,6 @@ def parseProxy(String proxyUrl) {
 }
 
 def doValidations(args) {
-    print "DOVALIDATIONS"
-    print args.credential
 	def credential = getAWSCredential(args)
 	def proxyCredential;
     def parameters = args.parameters
