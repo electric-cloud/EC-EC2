@@ -279,7 +279,6 @@ class APICalls extends TestHelper {
 			def poll = new PollingConditions(timeout: 120, initialDelay: 10, delay: 10, factor: 2)
 			poll.eventually {
 				def instance = ec2.getInstance(instanceId)
-				print "${instance.state().name()}\n"
 				instance.state().name() == "stopped";
 			}
   		then: 'Job status is OK'
@@ -350,7 +349,6 @@ class APICalls extends TestHelper {
 			def poll = new PollingConditions(timeout: 1200, initialDelay: 10, delay: 10, factor: 2)
 			poll.eventually {
 				def volume = ec2.ec2Client.describeVolumes(DescribeVolumesRequest.builder().volumeIds(volumeId).build()).volumes.get(0)
-				print volume.stateAsString()
 				volume.stateAsString() == "available"
 			}
 		then: 'Volume ID looks roughly like one'
