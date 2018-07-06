@@ -69,6 +69,8 @@ import com.electriccloud.domain.FormalParameterOptionsResult
 		final String AVAILABILITY_ZONE = "zone"
 @Field
 		final String SUBNET_ID = "subnet_id"
+@Field
+        final String PROXY_URL = "http_proxy"
 
 // Disable Amazon SDK logging
 Logger.getLogger("com.amazonaws").setLevel(Level.OFF);
@@ -76,8 +78,8 @@ Logger.getLogger("com.amazonaws").setLevel(Level.OFF);
 def result = new FormalParameterOptionsResult()
 
 if (canGetOptions(args)) {
-
-	def ec2 = loginEC2(args.credential[0], args.configurationParameters[SERVICE_URL])
+	def ec2 = loginEC2(args, args.configurationParameters[SERVICE_URL])
+    //def ec2 = loginEC2Old(args.credential[0], args.configurationParameters[SERVICE_URL])
 	def list = []
 
 	switch (args.formalParameterName) {
@@ -106,10 +108,9 @@ if (canGetOptions(args)) {
 	}
 
 }
+return result
 
-result
-
-def loginEC2(credential, serviceURL) {
+def loginEC2Old(credential, serviceURL) {
 	// Disable HTTPS certificate verification
 	System.setProperty("com.amazonaws.sdk.disableCertChecking", "true")
 
@@ -125,11 +126,32 @@ def loginEC2(credential, serviceURL) {
 	ec2
 }
 
+def loginEC2(args, serviceURL) {
+    def awsCredentials = getAWSCredential(args);
+    def proxyCredentials = getProxyCredential(args);
+	// Disable HTTPS certificate verification
+	System.setProperty("com.amazonaws.sdk.disableCertChecking", "true")
+
+	def awsCreds = new BasicAWSCredentials(awsCredentials[USER_NAME], awsCredentials[PASSWORD])
+    def clientConfig = new ClientConfiguration();
+    if (args.configurationParameters[PROXY_URL]) {
+        def proxyInfo = parseProxy(args.configurationParameters[PROXY_URL], proxyCredentials);
+        clientConfig = applyProxyToClientConfig(clientConfig, proxyInfo);
+    }
+	clientConfig.setConnectionTimeout(5 * 1000)
+	clientConfig.setMaxErrorRetry(1)
+
+	def ec2 = new AmazonEC2Client(awsCreds, clientConfig)
+	ec2.setEndpoint(serviceURL)
+
+	ec2
+}
+
 boolean canGetOptions(args) {
 	args?.parameters &&
 			args.credential &&
 			args.credential.size() > 0 &&
-			args.credential[0][USER_NAME] &&
+            args.credential[0][USER_NAME] &&
 			args.credential[0][PASSWORD] &&
 			args.configurationParameters[SERVICE_URL] &&
 			canGetOptionsForParameter(args, args.formalParameterName)
@@ -228,4 +250,53 @@ def getAvailabilityZones(AmazonEC2Client ec2) {
 	}
 
 	list
+}
+
+def getProxyCredential(def args) {
+    if (args.credential && isCollectionOrArray(args.credential) && args.credential.size() > 0) {
+        for (c in args.credential) {
+            if (c.credentialName =~ '_proxy_credential$') {
+                return c;
+            }
+        }
+    }
+    return null;
+}
+def getAWSCredential(def args) {
+    if (args.credential && isCollectionOrArray(args.credential) && args.credential.size() > 0) {
+        for (c in args.credential) {
+            if (!(c.credentialName =~ '_proxy_credential$')) {
+                return c;
+            }
+        }
+    }
+    return null;
+}
+
+boolean isCollectionOrArray(object) {
+    [Collection, Object[]].any { it.isAssignableFrom(object.getClass()) }
+}
+
+def parseProxy(String proxyUrl, def proxyCreds) {
+    def vals = (proxyUrl =~ /^https?:\/\/(.*):(\d+)\/*/);
+    def rv = [:];
+    if (vals[0][1] && vals[0][1]) {
+        rv.host = vals[0][1];
+        rv.port = vals[0][2] as int;
+    }
+    if (proxyCreds) {
+        rv.userName = proxyCreds.userName;
+        rv.password = proxyCreds.password;
+    }
+    return rv;
+}
+
+def applyProxyToClientConfig(def clientConfig, def proxyInfo) {
+    clientConfig.setProxyHost(proxyInfo.host);
+    clientConfig.setProxyPort(proxyInfo.port);
+    if (proxyInfo.userName && proxyInfo.password) {
+        clientConfig.setProxyUsername(proxyInfo.userName);
+        clientConfig.setProxyPassword(proxyInfo.password);
+    }
+    return clientConfig;
 }

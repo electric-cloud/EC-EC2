@@ -70,4 +70,22 @@
         <documentation>Provide the debug level for the output: 0=errors only, 1=normal headers and responses, 2+=debugging information included.</documentation>
         <required>1</required>
     </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>HTTP Proxy:</label>
+        <property>http_proxy</property>
+        <value></value>
+        <documentation>A proxy that should be used for connections.</documentation>
+        <required>0</required>
+    </formElement>
+    <formElement>
+        <type>credential</type>
+        <label>Proxy authorization:</label>
+        <property>proxy_credential</property>
+        <userNameLabel>Proxy username:</userNameLabel>
+        <passwordLabel>Proxy password:</passwordLabel>
+        <retypePasswordLabel>Retype Proxy password:</retypePasswordLabel>
+        <required>0</required>
+        <documentation>Username and password for proxy.</documentation>
+    </formElement>
 </editor>

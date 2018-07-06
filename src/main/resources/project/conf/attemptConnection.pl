@@ -39,6 +39,28 @@ my $errors   = $ec->checkAllErrors($xpath);
 my $AWS_ACCESS_KEY_ID = $xpath->findvalue("//userName");
 my $AWS_SECRET_ACCESS_KEY = $xpath->findvalue("//password");
 
+
+my ($proxy_user, $proxy_pass, $http_proxy);
+eval {
+    my $http_proxy = '$[http_proxy]';
+    if ($http_proxy) {
+        $ENV{HTTP_PROXY} = $http_proxy;
+        $ENV{HTTPS_PROXY} = $http_proxy;
+        $ENV{FTP_PROXY} = $http_proxy;
+    }
+    my $proxy_xpath = $ec->getFullCredential("proxy_credential");
+    my $proxy_user = $proxy_xpath->findvalue("//userName");
+    my $proxy_pass = $proxy_xpath->findvalue("//userName");
+    if ($proxy_user) {
+        $ENV{HTTPS_PROXY_USERNAME} = $proxy_user;
+    }
+    if ($proxy_pass) {
+        $ENV{HTTPS_PROXY_PASSWORD} = $proxy_pass;
+    }
+
+};
+
+
 my $projName = "$[/myProject/projectName]";
 print "Attempting connection with user server\n";
 
