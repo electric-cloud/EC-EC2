@@ -372,7 +372,7 @@ if ($upgradeAction eq 'upgrade') {
                                         stepName      => 'RunInstances'
                                      }
                                     );
-                                    
+
             $batch->attachCredential(
                                      "\$[/plugins/$pluginName/project]",
                                      $cred,
@@ -391,6 +391,36 @@ if ($upgradeAction eq 'upgrade') {
 # older versions of EF server.
 my $xpath = $commander->getVersions();
 my $serverVersion = $xpath->findvalue('//version')->string_value();
+
+if (compareMinor($serverVersion, '8.4') < 0 && !$ENV{DANGER_EF_DO_NOT_REMOVE_PROXY}) {
+#    Fallback for second credential
+#    Basically we are removing the part of the functionality in order to make it work prior 8.4 fix
+#    Due to wrong UI calls, second credential is not getting processed here
+    print "EF Version is below 8.4, proxy support is removed\n";
+    my $pluginToPatch = $pluginName;
+    $commander->abortOnError(1);
+    eval {
+        my $fallbackCreateConfig = $commander->getProperty("/projects/$pluginToPatch/ui_forms/EC2CreateConfigFallbackForm")->findvalue('//value')->string_value;
+        my $fallbackEditConfig = $commander->getProperty("/projects/$pluginToPatch/ui_forms/EC2EditConfigFallbackForm")->findvalue('//value')->string_value;
+
+        $commander->setProperty("/projects/$pluginToPatch/procedures/CreateConfiguration/ec_parameterForm", $fallbackCreateConfig);
+        $commander->setProperty("/projects/$pluginToPatch/ui_forms/EC2CreateConfigForm", $fallbackCreateConfig);
+        $commander->setProperty("/projects/$pluginToPatch/ui_forms/EC2EditConfigForm", $fallbackEditConfig);
+
+        for my $name (qw/http_proxy proxy_credential/) {
+            $xpath = $commander->deleteFormalParameter({
+                formalParameterName => $name,
+                projectName         => $pluginToPatch,
+                procedureName       => 'CreateConfiguration'
+            });
+            $commander->deleteProperty("/projects/$pluginToPatch/procedures/CreateConfiguration/ec_customEditorData/parameters/$name");
+        }
+        1;
+    } or do {
+        print "Error has occured while removing proxy support: $@";
+    };
+    $commander->abortOnError(0);
+}
 
 if (compareMinor($serverVersion, '6.1') >= 0) {
   # Flag the property sheet as being protected by credentials
@@ -434,5 +464,5 @@ if (compareMinor($serverVersion, '6.1') >= 0) {
   }
 
 }
-	
-	
+
+

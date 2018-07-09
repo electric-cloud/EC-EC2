@@ -1,8 +1,13 @@
 package com.electriccloud.plugin.spec
 
 import com.electriccloud.spec.PluginSpockTestSupport
+import com.jayway.restassured.http.ContentType
+import com.jayway.restassured.response.Response
+import groovy.json.JsonSlurper
 import spock.util.concurrent.PollingConditions
 import sun.reflect.generics.reflectiveObjects.NotImplementedException
+
+import static com.jayway.restassured.RestAssured.given
 
 class TestHelper extends PluginSpockTestSupport {
     static EC2Helper helper
@@ -13,6 +18,38 @@ class TestHelper extends PluginSpockTestSupport {
             helper = new EC2Helper(regionName: getRegionName())
         }
         return helper
+    }
+
+    def commanderVersion() {
+        def request
+        retryOnConnectionError{
+            request = given().get('/server/versions').then()
+        }
+        Response response = request.contentType(ContentType.JSON)
+           .extract()
+           .response()
+        String json = response.asString()
+        def slurper = new JsonSlurper()
+        def version = slurper.parseText(json)
+        return version?.serverVersion?.version
+    }
+
+    def compareVersion(desiredVersion) {
+        def actualVersion = commanderVersion()
+
+        def splitVersion = { version ->
+            def parts = version.split(/\./)
+            return [major: parts.getAt(0), minor: parts.getAt(1)]
+        }
+
+        def desired = splitVersion(desiredVersion)
+        def actual = splitVersion(actualVersion)
+
+        int result = actual.major <=> desired.major
+        if (!result) {
+            result = actual.minor <=> desired.minor
+        }
+        return result
     }
 
     static def getClientId() {
@@ -46,9 +83,19 @@ class TestHelper extends PluginSpockTestSupport {
         deleteConfiguration(pluginName, getConfigName())
     }
 
-    def createConfig(withProxy = false) {
-        if (withProxy) {
-            throw new NotImplementedException()
+    static def getHttpProxy() {
+        return System.getenv('HTTP_PROXY') ?: 0
+    }
+
+    def createConfig(configName = null) {
+        if (!configName) {
+            configName = getConfigName()
+        }
+        def withProxy = getHttpProxy()
+        def compare = compareVersion('8.4')
+        println "Version comparison: $compare"
+        if (withProxy && compare >= 0) {
+            return createConfigWithProxy()
         }
         def pluginConfig = [
             service_url: getEndpoint(),
@@ -57,14 +104,12 @@ class TestHelper extends PluginSpockTestSupport {
             desc: 'Spec config',
             resource_pool: 'spec resource pool',
             workspace: 'default',
-            http_proxy: '0'
         ]
         def props = [confPath: 'ec2_cfgs']
 
         if (System.getenv('RECREATE_CONFIG')) {
             props.recreate = true
         }
-        def configName = getConfigName()
         createPluginConfiguration(
             pluginName,
             configName,
@@ -72,6 +117,40 @@ class TestHelper extends PluginSpockTestSupport {
             getClientId(),
             getClientSecret(),
             props
+        )
+    }
+
+    def createConfigWithProxy(configName) {
+
+        String httpProxy		= System.getenv('HTTP_PROXY') ?: 0
+        String httpProxyUser	= System.getenv('HTTP_PROXY_USER') ?: ''
+        String httpProxyPass	= System.getenv('HTTP_PROXY_PASS') ?: ''
+
+        def result = runProcedure(
+            '/plugins/EC-EC2/project',
+            'CreateConfiguration',
+            [
+                attempt			: 1,
+                config			: configName,
+                debug			: 10,
+                desc			: 'Spec 2 config',
+                resource_pool 	: 'spec 2 resource pool',
+                service_url		: getEndpoint(),
+                workspace		: 'default',
+                http_proxy		: httpProxy,
+                credential		: configName,
+                proxy_credential: "${configName}_proxy_credential"
+
+            ], [ [
+                     credentialName	: configName,
+                     userName		: getClientId(),
+                     password		: getClientSecret()
+                 ], [
+                     credentialName	: "${configName}_proxy_credential",
+                     userName		: httpProxyUser,
+                     password		: httpProxyPass
+                 ]
+            ]
         )
     }
 

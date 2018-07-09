@@ -2363,6 +2363,16 @@
                         <expandable>1</expandable>
                         <value/>
                     </property>
+                    <property>
+                        <propertyName>EC2CreateConfigFallbackForm</propertyName>
+                        <expandable>1</expandable>
+                        <value/>
+                    </property>
+                    <property>
+                        <propertyName>EC2EditConfigFallbackForm</propertyName>
+                        <expandable>1</expandable>
+                        <value/>
+                    </property>
                 </propertySheet>
             </property>
             <property>
@@ -8902,7 +8912,6 @@
                     <formalParameterName>proxy_credential</formalParameterName>
                 </attachedParameters>
             </step>
-
         </procedure>
         <procedure>
             <procedureName>DeleteConfiguration</procedureName>

@@ -1872,6 +1872,10 @@
 
 
         <h1 id="rns">Release Notes</h1>
+        <h2>@PLUGIN_KEY@ 2.5.0</h2>
+        <ul>
+            <li>Proxy support was enabled for the plugin. <b>Attention</b>: ElectricFlow version 8.4 is needed for proxy support.</li>
+        </ul>
         <h2>@PLUGIN_KEY@ 2.4.2</h2>
         <ul>
             <li>Configured the plugin to allow the ElectricFlow UI to create configs inline of procedure form.</li>

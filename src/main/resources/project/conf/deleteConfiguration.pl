@@ -22,4 +22,10 @@ my $projName = "@PLUGIN_NAME@";
 
 $ec->deleteProperty("/projects/$projName/ec2_cfgs/$[config]");
 $ec->deleteCredential($projName, "$[config]");
+eval {
+    $ec->deleteCredential($projName, "$[config]_proxy_credential");
+    1;
+} or do {
+    print "Cannot delete proxy credential\n";
+};
 exit 0;
