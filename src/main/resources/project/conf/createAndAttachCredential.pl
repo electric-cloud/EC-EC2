@@ -45,13 +45,11 @@ my %credentials = (
 my $xpath = $ec->getVersions();
 my $serverVersion = $xpath->findvalue('//version')->string_value();
 
-if (compareMinor($serverVersion, '8.4') < 0) {
-    %credentials = ($ec2Credential => 'credential');
-}
 
 for my $credName (keys %credentials) {
     print "CredName: $credName\n";
     my $xpath;
+    $ec->abortOnError(1);
     eval {
         $xpath = $ec->getFullCredential($credentials{$credName});
         1;
@@ -59,6 +57,7 @@ for my $credName (keys %credentials) {
         print "Failed to get credential $credentials{$credName}, next.\n";
         next;
     };
+    $ec->abortOnError(0);
     my $userName = $xpath->findvalue("//userName");
     my $password = $xpath->findvalue("//password");
 
