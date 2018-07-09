@@ -913,7 +913,8 @@
     <h3>API_RunInstances</h3>
     <p>This procedure allows the user to start one or more instances from a machine image (AMI/EMI). The instances are part of one
 		reservation and can be terminated later as a group or individually.</p>
-
+	<p><b>Caveat:</b> when using VPC, make sure it has "enableDnsHostnames" attribute set to true, otherwise instance's external IP address will be detected incorrectly.
+	</p>
     <table class="grid">
       <thead>
         <tr>
@@ -932,7 +933,7 @@
         </tr>
         <tr>
           <td>Security Group</td>
-          <td>The security group to use (default is 'default').</td>
+          <td>The security group to use, either name or ID (default is 'default').</td>
         </tr>
         <tr>
           <td class='required'>Image</td>
@@ -1231,7 +1232,7 @@
         </tr>
         <tr>
           <td class='required'>Security Group</td>
-          <td>The EC2 security group for the new instances. The default is <i>default</i>. (Required)</td>
+          <td>The EC2 security group for the new instances, either name or ID. The default is <i>default</i>. (Required)</td>
         </tr>
         <tr>
           <td class='required'>Image Name</td>
@@ -1478,7 +1479,7 @@
         </tr>
         <tr>
           <td class='required'>Group</td>
-          <td>The security group to use. The default is <i>defaul</i>. (Required)</td>
+          <td>The security group to use, either name or ID. The default is <i>defaul</i>. (Required)</td>
         </tr>
         <tr>
           <td class='required'>Instance Type</td>
@@ -1632,7 +1633,7 @@
         </tr>
         <tr>
           <td class='required'>Group</td>
-          <td>The security group to use. The default is <i>default</i>. (Required)</td>
+          <td>The security group to use, either name or ID. The default is <i>default</i>. (Required)</td>
         </tr>
         <tr>
           <td class='required'>Instance Type</td>
