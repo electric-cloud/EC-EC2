@@ -15,7 +15,6 @@ import software.amazon.awssdk.services.ec2.model.VolumeState
 
 import spock.util.concurrent.PollingConditions
 
-@Stepwise
 class APICalls extends TestHelper {
 //	TODO get vars from environment or whatever
 	static final String pluginName		= 'EC-EC2'
@@ -59,39 +58,9 @@ class APICalls extends TestHelper {
 
  	def doSetupSpec() {
 		projectName = dsl("getPlugin(pluginName: '${pluginName}')").plugin.projectName
+		createConfig(commonName)
  	}
-	def 'CreateConfiguration'() {
-		when: 'CreateConfiguration procedure is ran'
-			def result = runProcedure(
-				'/plugins/EC-EC2/project',
-				'CreateConfiguration',
-				[
-					attempt			: 1,
-					config			: commonName,
-					debug			: 10,
-					desc			: 'Spec 2 config',
-					resource_pool 	: 'spec 2 resource pool',
-					service_url		: getEndpoint(),
-					workspace		: 'default',
-					http_proxy		: httpProxy,
-					credential		: commonName,
-					proxy_credential: "${commonName}_proxy_credential"
 
-				], [ [
-					credentialName	: commonName,
-					userName		: getClientId(),
-					password		: getClientSecret()
-					], [
-					credentialName	: "${commonName}_proxy_credential",
-					userName		: httpProxyUser,
-					password		: httpProxyPass
-					]
-				]
-				)
-			logger.info(objectToJson(result));
-		then: 'Job status is OK'
-			result.outcome == 'success'
-	}
 	@IgnoreIf({ skipVPC })
   	def 'API_CreateVPC'() {
 		when: 'API_CreateVPC procedure is ran'
@@ -369,8 +338,9 @@ class APICalls extends TestHelper {
   		then: 'Job status is OK'
 			result.outcome == 'success'
 	}
+
 	@IgnoreIf ({ skipVolume || skipInstance })
-	def 'API_DeleteVolume'() {   // >>> detachOnly == 1 <<<
+	def 'API_DeleteVolume detachOnly = #detachOnly'() {
 		when: 'API_DeleteVolume procedure is ran with detachOnly = 1'
 			def result = runProcedure(
 				'/plugins/EC-EC2/project',
@@ -378,25 +348,14 @@ class APICalls extends TestHelper {
 				[
 					config			: commonName,
 					volumes			: volumeId,
-					detachOnly		: 1
+					detachOnly		: detachOnly
 				], [], null, 300)
   		then: 'Job status is OK'
 			result.outcome == 'success'
+		where:
+		detachOnly << [1, 0]
 	}
-	@IgnoreIf ({ skipVolume })
-	def 'API_DeleteVolume'() {
-		when: 'API_DeleteVolume procedure is ran with detachOnly = 0'
-			def result = runProcedure(
-				'/plugins/EC-EC2/project',
-				'API_DeleteVolume',
-				[
-					config			: commonName,
-					volumes			: volumeId,
-					detachOnly		: 0
-				])
-  		then: 'Job status is OK'
-			result.outcome == 'success'
-	}
+
 	@IgnoreIf({ skipInstance })
 	def 'API_Terminate'() {
 		when: 'API_Terminate procedure is ran'
@@ -410,6 +369,7 @@ class APICalls extends TestHelper {
   		then: 'Job status is OK'
 			result.outcome == 'success'
 	}
+
 	@IgnoreIf({ skipKey })
 	def 'API_DeleteKey'() {
 		when: 'API_DeleteKey procedure is ran'
