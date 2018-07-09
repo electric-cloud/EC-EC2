@@ -392,29 +392,33 @@ if ($upgradeAction eq 'upgrade') {
 my $xpath = $commander->getVersions();
 my $serverVersion = $xpath->findvalue('//version')->string_value();
 
-if (compareMinor($serverVersion, '8.4') <= 0) {
-    print "Lesser version that 8.3\n";
+if (compareMinor($serverVersion, '8.4') < 0 && !$ENV{DANGER_EF_DO_NOT_REMOVE_PROXY}) {
 #    Fallback for second credential
 #    Basically we are removing the part of the functionality in order to make it work prior 8.4 fix
 #    Due to wrong UI calls, second credential is not getting processed here
+    print "EF Version is below 8.4, proxy support is removed\n";
     my $pluginToPatch = $pluginName;
-    print $pluginToPatch;
     $commander->abortOnError(1);
-    my $fallback = $commander->getProperty("/projects/$pluginToPatch/ui_forms/EC2CreateConfigFallbackForm")->findvalue('//value')->string_value;
-    $commander->setProperty("/projects/$pluginToPatch/procedures/CreateConfiguration/ec_parameterForm", $fallback);
-    print "Replaced form.xml\n";
-    for my $name (qw/http_proxy proxy_credential/) {
-        $commander->deleteFormalParameter({
-            formalParameterName => $name,
-            projectName => $pluginToPatch,
-            procedureName => 'CreateConfiguration'
-        });
+    eval {
+        my $fallbackCreateConfig = $commander->getProperty("/projects/$pluginToPatch/ui_forms/EC2CreateConfigFallbackForm")->findvalue('//value')->string_value;
+        my $fallbackEditConfig = $commander->getProperty("/projects/$pluginToPatch/ui_forms/EC2EditConfigFallbackForm")->findvalue('//value')->string_value;
 
-        print "Deleted formal parameter $name\n";
-        $commander->deleteProperty("/projects/$pluginToPatch/procedures/CreateConfiguration/ec_customEditorData/parameters/$name");
-        print "Removed custom editor property\n";
-    }
-    $commander->setProperty("/projects/$pluginToPatch/ec_cloudprovisioning_plugin/operations/createConfiguration/ui_formRefs/parameterForm", 'ui_forms/EC2CreateConfigFallbackForm');
+        $commander->setProperty("/projects/$pluginToPatch/procedures/CreateConfiguration/ec_parameterForm", $fallbackCreateConfig);
+        $commander->setProperty("/projects/$pluginToPatch/ui_forms/EC2CreateConfigForm", $fallbackCreateConfig);
+        $commander->setProperty("/projects/$pluginToPatch/ui_forms/EC2EditConfigForm", $fallbackEditConfig);
+
+        for my $name (qw/http_proxy proxy_credential/) {
+            $xpath = $commander->deleteFormalParameter({
+                formalParameterName => $name,
+                projectName         => $pluginToPatch,
+                procedureName       => 'CreateConfiguration'
+            });
+            $commander->deleteProperty("/projects/$pluginToPatch/procedures/CreateConfiguration/ec_customEditorData/parameters/$name");
+        }
+        1;
+    } or do {
+        print "Error has occured while removing proxy support: $@";
+    };
     $commander->abortOnError(0);
 }
 

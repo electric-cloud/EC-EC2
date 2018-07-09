@@ -17,19 +17,31 @@
 -->
 <editor>
     <formElement>
-        <type>entry</type>
-        <label>Configuration Name:</label>
-        <property>config</property>
-        <value></value>
-        <required>1</required>
-        <documentation>Provide a unique name for the connection, keeping in mind that you may need to create additional connections over time.</documentation>
-    </formElement>
-    <formElement>
         <type>textarea</type>
         <label>Description:</label>
         <property>desc</property>
-        <value>EC2 integration</value>
         <documentation>A description for this configuration.</documentation>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Service URL:</label>
+        <property>service_url</property>
+        <documentation>The service URL for the EC2 service. For the Amazon public EC2, this should be https://ec2.amazonaws.com. For Eucalyptus EC2, this is the internal address, such as http://ip/services/Eucalyptus</documentation>
+        <required>1</required>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Resource:</label>
+        <property>resource_pool</property>
+        <documentation>The resource (or pool) on which the integration steps can run.</documentation>
+        <required>1</required>
+    </formElement>
+    <formElement>
+        <type>entry</type>
+        <label>Workspace:</label>
+        <property>workspace</property>
+        <documentation>The workspace to use for resources dynamically created by this configuration.</documentation>
+        <required>1</required>
     </formElement>
     <formElement>
         <type>credential</type>
@@ -40,34 +52,6 @@
         <retypePasswordLabel>Retype Secret Access Key:</retypePasswordLabel>
         <required>1</required>
         <documentation>The Access Key ID and Access Key that are required for communicating with EC2 (Access Key ID and Secret Access Key).</documentation>
-        <serverValidation>1</serverValidation>
-    </formElement>
-    <formElement>
-        <type>entry</type>
-        <label>Service URL:</label>
-        <property>service_url</property>
-        <value>https://ec2.amazonaws.com</value>
-        <documentation>The service URL for the EC2 service. For the Amazon public EC2, this should be https://ec2.amazonaws.com. For Eucalyptus EC2, this is the internal address, such as http://ip/services/Eucalyptus</documentation>
-        <required>1</required>
-        <serverValidation>1</serverValidation>
-    </formElement>
-    <formElement>
-        <type>entry</type>
-        <label>Resource:</label>
-        <property>resource_pool</property>
-        <value>local</value>
-        <documentation>The resource (or pool) on which the integration steps can run (default is 'local')</documentation>
-        <required>1</required>
-        <serverOptions>1</serverOptions>
-    </formElement>
-    <formElement>
-        <type>entry</type>
-        <label>Workspace:</label>
-        <property>workspace</property>
-        <value>default</value>
-        <documentation>The workspace to use for resources dynamically created by this configuration.</documentation>
-        <required>1</required>
-        <serverOptions>1</serverOptions>
     </formElement>
     <formElement>
         <type>checkbox</type>
@@ -83,34 +67,7 @@
         <type>entry</type>
         <label>Debug Level:</label>
         <property>debug</property>
-        <value>1</value>
         <documentation>Provide the debug level for the output: 0=errors only, 1=normal headers and responses, 2+=debugging information included.</documentation>
         <required>1</required>
     </formElement>
-    <formElement>
-        <!-- will be removed prior 8.4 during setup -->
-        <!--See CreateConfigFallbackForm-->
-        <type>entry</type>
-        <label>HTTP Proxy:</label>
-        <property>http_proxy</property>
-        <value></value>
-        <documentation>A proxy that should be used for connections.</documentation>
-        <required>0</required>
-        <serverValidation>1</serverValidation>
-    </formElement>
-    <formElement>
-        <!-- will be removed prior 8.4 during setup -->
-        <type>credential</type>
-        <label>Proxy authorization:</label>
-        <property>proxy_credential</property>
-        <userNameLabel>Proxy username:</userNameLabel>
-        <passwordLabel>Proxy password:</passwordLabel>
-        <retypePasswordLabel>Retype Proxy password:</retypePasswordLabel>
-        <required>0</required>
-        <documentation>Username and password for proxy.</documentation>
-        <serverValidation>1</serverValidation>
-    </formElement>
 </editor>
-
-
-
