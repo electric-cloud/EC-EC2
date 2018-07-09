@@ -19,6 +19,7 @@
 ##########################
 
 use ElectricCommander;
+use ElectricCommander::Util;
 use strict;
 use warnings;
 
@@ -40,6 +41,14 @@ my %credentials = (
     $ec2Credential => 'credential',
     $ec2ProxyCredential => 'proxy_credential'
 );
+
+my $xpath = $ec->getVersions();
+my $serverVersion = $xpath->findvalue('//version')->string_value();
+
+if (compareMinor($serverVersion, '8.4') < 0) {
+    %credentials = ($ec2Credential => 'credential');
+}
+
 for my $credName (keys %credentials) {
     print "CredName: $credName\n";
     my $xpath;
