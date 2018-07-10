@@ -2359,6 +2359,11 @@
                         <value/>
                     </property>
                     <property>
+                        <propertyName>EC2CreateConfigFallbackForm</propertyName>
+                        <expandable>1</expandable>
+                        <value/>
+                    </property>
+                    <property>
                         <propertyName>EC2EditConfigForm</propertyName>
                         <expandable>1</expandable>
                         <value/>
@@ -8735,7 +8740,7 @@
             </formalParameter>
             <formalParameter>
                 <formalParameterName>http_proxy</formalParameterName>
-                <defaultValue>1</defaultValue>
+                <defaultValue/>
                 <description/>
                 <required>0</required>
                 <type>entry</type>

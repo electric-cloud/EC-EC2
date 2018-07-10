@@ -100,7 +100,7 @@ if ($ex) {
     my $errMsg = "Test connection failed.\n";
     $ec->setProperty("/myJob/configError", $errMsg);
     print $errMsg;
-    
+
     $ec->deleteProperty("/projects/$projName/ec2_cfgs/$credName");
     $ec->deleteCredential($projName, $credName);
     require Amazon::EC2::Exception;
