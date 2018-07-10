@@ -174,12 +174,12 @@
         <tr>
           <td class='required'>Debug Level</td>
           <td>The debug level for the output (Required):
-					<ul>
+          <ul>
              <li><b>0</b> for errors only</li>
-						 <li><b>1</b> for normal headers and responses</li>
-						 <li><b>2+</b> for debugging information included</li>
+             <li><b>1</b> for normal headers and responses</li>
+             <li><b>2+</b> for debugging information included</li>
           </ul>
-					The default is <b>1</b>.</td>
+          The default is <b>1</b>.</td>
         </tr>
       </tbody>
     </table>
@@ -1872,6 +1872,13 @@
 
 
         <h1 id="rns">Release Notes</h1>
+        <h2>@PLUGIN_KEY@ 2.5.0</h2>
+        <ul>
+            <li>HTTP Proxy support was added to the plugin. <b>Using Proxy in Resource Templates</b>: only ElectricFlow version 8.4 and later support proxy in Resource Templates. The older versions do not allow to create a Resource Template through UI using plugin configuration with proxy. Plugin configurations without proxy work in both Resource Templates and Platform.<br/>
+            In order to use Resource Template on older versions of EF and run requests through proxy one can use DSL.<br/>
+            Platform use-cases are working in both older versions of ElectricFlow and new.
+          </li>
+        </ul>
         <h2>@PLUGIN_KEY@ 2.4.2</h2>
         <ul>
             <li>Configured the plugin to allow the ElectricFlow UI to create configs inline of procedure form.</li>
