@@ -178,9 +178,9 @@ my %deleteVPC = (
     category    => "Resource Management"
 );
 my %updateInstance = (
-    label       => "EC2 - Update Instance",
-    procedure   => "API_UpdateInstance",
-    description => "Updates an existing EC2 instance.",
+    label       => "EC2 - Update Instances",
+    procedure   => "API_UpdateInstances",
+    description => "Updates existing EC2 instances.",
     category    => "Resource Management"
 );
 
@@ -261,7 +261,7 @@ $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Test");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Tear Down Resource");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Create VPC");
 $batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Create Subnet");
-$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Update Instance");
+$batch->deleteProperty("/server/ec_customEditors/pickerStep/EC2 - Update Instances");
 
 @::createStepPickerSteps = (\%allocateip, \%associateip, \%attachvolumes, \%createimage, \%createkey, \%deletekey, \%deletevolume, \%releaseip, \%runinstances, \%startinstance, \%stopinstance, \%terminate, \%autocleanup, \%autodeploy, \%autopause, \%autoresume, \%snapattachedvolume, \%test, \%teardownresource, \%createTags, \%createVPC, \%createSubnet, \%deleteVPC, \%updateInstance);
 
@@ -392,8 +392,8 @@ if ($upgradeAction eq 'upgrade') {
                                      "\$[/plugins/$pluginName/project]",
                                      $cred,
                                      {
-                                        procedureName => 'API_UpdateInstance',
-                                        stepName      => 'UpdateInstance'
+                                        procedureName => 'API_UpdateInstances',
+                                        stepName      => 'UpdateInstances'
                                      }
                                     );
         }

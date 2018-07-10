@@ -61,25 +61,48 @@ public class EC2Wrapper {
 
 
     def stepUpdateInstance(Map parameters) {
-        String instanceId = parameters.instanceId
-        if (!instanceId) {
-            throw new PluginException("Instance ID must be provided")
+        String instanceIds = parameters.instanceIds
+        if (!instanceIds) {
+            throw new PluginException("At least one instance ID must be provided")
         }
-        if (parameters.securityGroupId) {
-            logger.debug("Changing security group to ${parameters.securityGroupId}")
+        List<Instance> instances = instanceIds?.split(/\s*,\s*/).collect {
+            fetchInstance(it)
+        }
+
+        instances.each { Instance instance ->
+            updateInstance(instance, parameters)
+        }
+//
+//        if (parameters.securityGroupId) {
+//            logger.debug("Changing security group to ${parameters.securityGroupId}")
+//            ModifyInstanceAttributeRequest request = new ModifyInstanceAttributeRequest()
+//                .withInstanceId(instanceId)
+//                .withGroups(parameters.securityGroupId)
+//            ec2Client.modifyInstanceAttribute(request)
+//        }
+//        if (parameters.instanceType) {
+//            logger.debug("Setting instance type to ${parameters.instanceType}")
+//            ModifyInstanceAttributeRequest request = new ModifyInstanceAttributeRequest()
+//                .withInstanceId(instanceId)
+//                .withInstanceType(parameters.instanceType)
+//            ec2Client.modifyInstanceAttribute(request)
+//        }
+//        displayInstance(instanceId)
+    }
+
+    def updateInstance(Instance instance, Map parameters) {
+        logger.debug("Updating instance ${instance.instanceId}")
+        String oldSecurityGroups = instance.securityGroups.collect { it.groupName }.join(', ')
+        if (parameters.securityGroupId && oldSecurityGroups != parameters.securityGroupId) {
+            logger.debug("Going to update security group: old ${oldSecurityGroups}, new ${parameters.securityGroupId}")
             ModifyInstanceAttributeRequest request = new ModifyInstanceAttributeRequest()
-                .withInstanceId(instanceId)
+                .withInstanceId(instance.instanceId)
                 .withGroups(parameters.securityGroupId)
             ec2Client.modifyInstanceAttribute(request)
+            logger.info("Set security group to ${parameters.securityGroupId}")
         }
-        if (parameters.instanceType) {
-            logger.debug("Setting instance type to ${parameters.instanceType}")
-            ModifyInstanceAttributeRequest request = new ModifyInstanceAttributeRequest()
-                .withInstanceId(instanceId)
-                .withInstanceType(parameters.instanceType)
-            ec2Client.modifyInstanceAttribute(request)
-        }
-        displayInstance(instanceId)
+
+//        User Data requires instance to be stopped
     }
 
 

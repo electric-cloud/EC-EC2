@@ -1764,8 +1764,8 @@
     <xpath>//procedure[procedureName=&quot;Snap Attached Volume&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
   <file>
-    <path>ui_forms/API_UpdateInstance.xml</path>
-    <xpath>//procedure[procedureName=&quot;API_UpdateInstance&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
+    <path>ui_forms/API_UpdateInstances.xml</path>
+    <xpath>//procedure[procedureName=&quot;API_UpdateInstances&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
   <file>
     <path>ui_forms/Test.xml</path>
@@ -1820,8 +1820,8 @@
     <xpath>//property[propertyName=&quot;ec_setup&quot;]/value</xpath>
   </file>
   <file>
-    <path>groovy_lib/steps/UpdateInstance.groovy</path>
-    <xpath>//procedure[procedureName=&quot;API_UpdateInstance&quot;]/step[stepName=&quot;UpdateInstance&quot;]/command</xpath>
+    <path>groovy_lib/steps/UpdateInstances.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_UpdateInstances&quot;]/step[stepName=&quot;UpdateInstances&quot;]/command</xpath>
   </file>
   <file>
     <path>groovy_lib/preamble.groovy</path>

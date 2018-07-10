@@ -1281,12 +1281,12 @@ procedures:
   - description: ''
     formalParameters: []
     jobNameTemplate: ''
-    procedureName: API_UpdateInstance
+    procedureName: API_UpdateInstances
     projectName: ''
     properties:
       ec_parameterForm:
         expandable: 1
-        value: 'Path: ui_forms/API_UpdateInstance.xml'
+        value: 'Path: ui_forms/API_UpdateInstances.xml'
 
     steps:
       - alwaysRun: 0
@@ -1313,7 +1313,7 @@ procedures:
         subproject: '/plugins/EC-EC2/project'
       - alwaysRun: 0
         broadcast: 0
-        command: 'Path: groovy_lib/steps/UpdateInstance.groovy'
+        command: 'Path: groovy_lib/steps/UpdateInstances.groovy'
         condition: ''
         description: ''
         errorHandling: failProcedure
@@ -1326,7 +1326,7 @@ procedures:
         resourceName: ''
         retries: 0
         shell: ec-groovy
-        stepName: UpdateInstance
+        stepName: UpdateInstances
         timeLimit: ''
         timeLimitUnits: minutes
         workingDirectory: ''
