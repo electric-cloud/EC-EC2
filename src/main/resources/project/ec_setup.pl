@@ -372,7 +372,7 @@ if ($upgradeAction eq 'upgrade') {
                                         stepName      => 'RunInstances'
                                      }
                                     );
-                                    
+
             $batch->attachCredential(
                                      "\$[/plugins/$pluginName/project]",
                                      $cred,
@@ -391,6 +391,10 @@ if ($upgradeAction eq 'upgrade') {
 # older versions of EF server.
 my $xpath = $commander->getVersions();
 my $serverVersion = $xpath->findvalue('//version')->string_value();
+
+if (compareMinor($serverVersion, '8.4') < 0) {
+    $commander->setProperty("/projects/$pluginName/ec_cloudprovisioning_plugin/operations/createConfiguration/ui_formRefs/parameterForm", 'ui_forms/EC2CreateConfigFallbackForm');
+}
 
 if (compareMinor($serverVersion, '6.1') >= 0) {
   # Flag the property sheet as being protected by credentials
@@ -434,5 +438,5 @@ if (compareMinor($serverVersion, '6.1') >= 0) {
   }
 
 }
-	
-	
+
+
