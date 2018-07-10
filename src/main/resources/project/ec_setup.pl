@@ -407,6 +407,10 @@ if ($upgradeAction eq 'upgrade') {
 my $xpath = $commander->getVersions();
 my $serverVersion = $xpath->findvalue('//version')->string_value();
 
+if (compareMinor($serverVersion, '8.4') < 0) {
+    $commander->setProperty("/projects/$pluginName/ec_cloudprovisioning_plugin/operations/createConfiguration/ui_formRefs/parameterForm", 'ui_forms/EC2CreateConfigFallbackForm');
+}
+
 if (compareMinor($serverVersion, '6.1') >= 0) {
   # Flag the property sheet as being protected by credentials
   # attached to the enclosing procedure's steps.
@@ -485,6 +489,7 @@ sub new {
 
     return bless $self, $class;
 }
+
 
 sub commander { shift->{commander} }
 sub promoteAction { shift->{promoteAction} }
@@ -577,6 +582,5 @@ sub publishArtifact {
 
     return $logfile;
 }
-
 
 

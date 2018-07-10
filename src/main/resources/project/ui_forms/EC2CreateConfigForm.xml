@@ -75,7 +75,7 @@
         <property>attempt</property>
         <checkedValue>1</checkedValue>
         <uncheckedValue>0</uncheckedValue>
-        <initiallyChecked>1</initiallyChecked>        
+        <initiallyChecked>1</initiallyChecked>
         <documentation>Attempt a connection to check credentials.</documentation>
         <required>1</required>
     </formElement>

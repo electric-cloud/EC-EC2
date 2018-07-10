@@ -22,6 +22,10 @@
     <xpath>//property[propertyName=&quot;ui_forms&quot;]/propertySheet/property[propertyName=&quot;EC2CreateConfigForm&quot;]/value</xpath>
   </file>
   <file>
+    <path>ui_forms/EC2CreateConfigFallbackForm.xml</path>
+    <xpath>//property[propertyName=&quot;ui_forms&quot;]/propertySheet/property[propertyName=&quot;EC2CreateConfigFallbackForm&quot;]/value</xpath>
+  </file>
+  <file>
     <path>procedures/form_scripts/parameterOptions/resources.groovy</path>
     <xpath>//procedure[procedureName=&quot;CreateConfiguration&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;resource_pool&quot;]/value</xpath>
   </file>

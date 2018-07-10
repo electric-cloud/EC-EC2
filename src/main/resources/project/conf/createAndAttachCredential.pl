@@ -41,6 +41,7 @@ my %credentials = (
     $ec2ProxyCredential => 'proxy_credential'
 );
 for my $credName (keys %credentials) {
+    $ec->abortOnError(1);
     print "CredName: $credName\n";
     my $xpath;
     eval {
@@ -50,6 +51,7 @@ for my $credName (keys %credentials) {
         print "Failed to get credential $credentials{$credName}, next.\n";
         next;
     };
+    $ec->abortOnError(0);
     my $userName = $xpath->findvalue("//userName");
     my $password = $xpath->findvalue("//password");
 
