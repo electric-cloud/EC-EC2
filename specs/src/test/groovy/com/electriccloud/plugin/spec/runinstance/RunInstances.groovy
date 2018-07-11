@@ -60,8 +60,9 @@ class RunInstances extends TestHelper {
         Instance instance = helper.getInstance(instanceId)
         println instance
         logger.debug(objectToJson(instance))
-        cleanup:
-        tearDownEnvironment(projectName, environmentName)
+        and:
+        result = tearDownEnvironment(projectName, environmentName)
+        assert result.outcome == 'success'
         where:
         group            |    ami           | zone            | type
         'default'        | 'ami-23e8c646'   | 'us-east-2c'    | 't2.micro'
