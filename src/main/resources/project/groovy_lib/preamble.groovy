@@ -78,11 +78,16 @@ public class EC2Wrapper {
             fetchInstance(it)
         }
 
+        int updatedInstances = 0
         instances.each { Instance instance ->
-            updateInstance(instance, parameters)
-            logger.info("Updated instance")
+            boolean updated = updateInstance(instance, parameters)
+            logger.info("Finished updating instance")
             displayInstance(instance.instanceId)
+            if (updated) {
+                updatedInstances ++
+            }
         }
+        return updatedInstances
     }
 
     def updateInstance(Instance instance, Map parameters) {
@@ -116,7 +121,7 @@ public class EC2Wrapper {
         InstanceState oldState = instance.state
         if (!oldState.name in [InstanceStateName.Running.toString(), InstanceStateName.Stopped.toString()]) {
             logger.warning("Instance is in wrong state: ${oldState.name}, other attributes won't be updated")
-            return
+            return false
         }
 //        User Data
         response = ec2Client.describeInstanceAttribute(
@@ -152,6 +157,7 @@ public class EC2Wrapper {
                 startInstance(instance.instanceId, 120)
             }
         }
+        return true
     }
 
 
@@ -314,6 +320,11 @@ public class EFClient extends BaseClient {
             jobStepId: jobStepId
         ]
         doHttpPost("properties", /* request body */ null, /* fail on error*/ true, query)
+    }
+
+    def setSummary(String summary) {
+        def jobStepId = System.getenv('COMMANDER_JOBSTEPID')
+        setProperty(jobStepId, "/myJobStep/summary", summary)
     }
 
     def getConfigValues(def configPropertySheet, def config, def pluginProjectName) {

@@ -5,7 +5,8 @@ Map parameters = efClient.readParameters('config', 'instanceIDs', 'group', 'inst
 
 try {
     def ec2Wrapper = EC2Wrapper.build(parameters.config, efClient)
-    ec2Wrapper.stepUpdateInstance(parameters)
+    int updatedInstances = ec2Wrapper.stepUpdateInstance(parameters)
+    efClient.setSummary("Updated instances: $updatedInstances")
 } catch (PluginException e) {
     efClient.handleError(e.message)
 }
