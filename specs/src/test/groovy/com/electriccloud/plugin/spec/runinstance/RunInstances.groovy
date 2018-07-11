@@ -21,18 +21,6 @@ class RunInstances extends TestHelper {
     @Shared
     EC2Helper helper
 
-//    @Shared
-//    def defaultTemplateConfig = [
-//        config: getConfigName(),
-//        count: '1',
-//        group: 'default',
-//        image: getAmi('default'),
-//        instanceType: 'm1.small',
-//        keyname: keyname,
-//        resource_zone: 'default',
-//        zone: getZone('default'),
-//        propResult: propResult
-//    ]
 
     def doSetupSpec() {
         createConfig()
