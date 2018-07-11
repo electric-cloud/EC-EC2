@@ -1,6 +1,8 @@
+import com.amazonaws.ClientConfiguration
 @Grapes([
     @Grab(group = 'com.amazonaws', module = 'aws-java-sdk-ec2', version = '1.11.360'),
     @Grab('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1' ),
+    @GrabExclude('net.sf.json-lib:json-lib'),
 ])
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.auth.AWSStaticCredentialsProvider
@@ -13,7 +15,6 @@ import groovy.json.JsonOutput
 import groovyx.net.http.HTTPBuilder
 import groovyx.net.http.Method
 import groovy.transform.InheritConstructors
-
 
 import static groovyx.net.http.ContentType.JSON
 import static groovyx.net.http.ContentType.URLENC
@@ -42,6 +43,15 @@ public class EC2Wrapper {
         def group = serviceUrl =~ /ec2\.([\w-]+)\.amazonaws.com/
         def regionName = group.getAt(0)?.getAt(1) ?: 'us-east-1'
         def region = Regions.fromName(regionName)
+
+//        TODO place proxy in here
+//
+//        ClientConfiguration configuration = new ClientConfiguration()
+//            .withProxyHost("10.200.1.180")
+//            .withProxyUsername('user2')
+//            .withProxyPassword('user2')
+//            .withProxyPort(3128)
+
         int debugLevel
         try {
             debugLevel = Integer.parseInt(config.debug)
@@ -59,9 +69,8 @@ public class EC2Wrapper {
         return new EC2Wrapper(efClient: efClient, config: config, ec2Client: ec2, logger: logger)
     }
 
-
     def stepUpdateInstance(Map parameters) {
-        String instanceIds = parameters.instanceIds
+        String instanceIds = parameters.instanceIDs
         if (!instanceIds) {
             throw new PluginException("At least one instance ID must be provided")
         }
@@ -71,38 +80,78 @@ public class EC2Wrapper {
 
         instances.each { Instance instance ->
             updateInstance(instance, parameters)
+            logger.info("Updated instance")
+            displayInstance(instance.instanceId)
         }
-//
-//        if (parameters.securityGroupId) {
-//            logger.debug("Changing security group to ${parameters.securityGroupId}")
-//            ModifyInstanceAttributeRequest request = new ModifyInstanceAttributeRequest()
-//                .withInstanceId(instanceId)
-//                .withGroups(parameters.securityGroupId)
-//            ec2Client.modifyInstanceAttribute(request)
-//        }
-//        if (parameters.instanceType) {
-//            logger.debug("Setting instance type to ${parameters.instanceType}")
-//            ModifyInstanceAttributeRequest request = new ModifyInstanceAttributeRequest()
-//                .withInstanceId(instanceId)
-//                .withInstanceType(parameters.instanceType)
-//            ec2Client.modifyInstanceAttribute(request)
-//        }
-//        displayInstance(instanceId)
     }
 
     def updateInstance(Instance instance, Map parameters) {
-        logger.debug("Updating instance ${instance.instanceId}")
-        String oldSecurityGroups = instance.securityGroups.collect { it.groupName }.join(', ')
-        if (parameters.securityGroupId && oldSecurityGroups != parameters.securityGroupId) {
-            logger.debug("Going to update security group: old ${oldSecurityGroups}, new ${parameters.securityGroupId}")
+        logger.info("Updating instance ${instance.instanceId}")
+//        Security Group
+        String oldSecurityGroups = instance.securityGroups.collect { it.groupId }.join(', ')
+        if (parameters.group && oldSecurityGroups != parameters.group) {
+            logger.debug("Going to update security group: old ${oldSecurityGroups}, new ${parameters.group}")
             ModifyInstanceAttributeRequest request = new ModifyInstanceAttributeRequest()
                 .withInstanceId(instance.instanceId)
-                .withGroups(parameters.securityGroupId)
+                .withGroups(parameters.group)
             ec2Client.modifyInstanceAttribute(request)
-            logger.info("Set security group to ${parameters.securityGroupId}")
+            logger.info("Set security group to ${parameters.group}")
         }
 
-//        User Data requires instance to be stopped
+//        Shutdown Behaviour
+        DescribeInstanceAttributeResult response = ec2Client.describeInstanceAttribute(
+            new DescribeInstanceAttributeRequest(instance.instanceId, "instanceInitiatedShutdownBehavior")
+        )
+        if (parameters.instanceInitiatedShutdownBehavior &&
+            response.instanceAttribute.instanceInitiatedShutdownBehavior != parameters.instanceInitiatedShutdownBehavior) {
+            logger.debug("Going to update Instance Initiated Shutdown Behaviour")
+            ec2Client.modifyInstanceAttribute(
+                new ModifyInstanceAttributeRequest()
+                    .withInstanceId(instance.instanceId)
+                    .withInstanceInitiatedShutdownBehavior(parameters.instanceInitiatedShutdownBehavior)
+                )
+            logger.info("Set Initiated Shutdown Behaviour to ${parameters.instanceInitiatedShutdownBehavior}")
+        }
+
+        InstanceState oldState = instance.state
+        if (!oldState.name in [InstanceStateName.Running.toString(), InstanceStateName.Stopped.toString()]) {
+            logger.warning("Instance is in wrong state: ${oldState.name}, other attributes won't be updated")
+            return
+        }
+//        User Data
+        response = ec2Client.describeInstanceAttribute(
+            new DescribeInstanceAttributeRequest(instance.instanceId, "userData")
+        )
+
+        String userData = parameters.userData ?: ''
+        String encodedUserData = userData.bytes.encodeBase64()
+        if (parameters.userData && response.instanceAttribute.userData != encodedUserData) {
+            logger.info("Instance must be stopped in order to change User Data")
+            stopInstance(instance.instanceId)
+            ec2Client.modifyInstanceAttribute(new ModifyInstanceAttributeRequest()
+                .withInstanceId(instance.instanceId)
+                .withUserData(encodedUserData)
+            )
+            logger.info("Set User Data to ${parameters.userData}")
+        }
+
+//        Instance Type
+        if (parameters.instanceType && instance.instanceType != parameters.instanceType) {
+            logger.info("Instance must be stopped in order to change Instance Type")
+            stopInstance(instance.instanceId)
+            ec2Client.modifyInstanceAttribute(new ModifyInstanceAttributeRequest()
+                .withInstanceId(instance.instanceId)
+                .withInstanceType(parameters.instanceType)
+            )
+            logger.info("Changed Instance Type to ${parameters.instanceType}")
+        }
+
+        instance = fetchInstance(instance.instanceId)
+        if (instance.state.name != oldState.name) {
+            if (oldState.name == InstanceStateName.Running.toString()) {
+                startInstance(instance.instanceId, 120)
+            }
+        }
     }
 
 
@@ -110,7 +159,6 @@ public class EC2Wrapper {
         DescribeInstancesRequest request = new DescribeInstancesRequest().withInstanceIds(instanceId)
         DescribeInstancesResult result = ec2Client.describeInstances(request)
         Instance instance = result.reservations?.getAt(0)?.instances?.getAt(0)
-        logger.debug(instance)
         return instance
     }
 
@@ -132,9 +180,79 @@ public class EC2Wrapper {
         if (groupNames) {
             logger.info("Security Groups: ${groupNames.join(', ')}")
         }
+        DescribeInstanceAttributeResult userData = ec2Client.describeInstanceAttribute(
+            new DescribeInstanceAttributeRequest(instanceId, "userData")
+        )
+        logger.info("User Data: ${new String(userData.instanceAttribute.userData.decodeBase64())}")
+        DescribeInstanceAttributeResult shutdownBehaviour = ec2Client.describeInstanceAttribute(
+            new DescribeInstanceAttributeRequest(instanceId, "instanceInitiatedShutdownBehavior")
+        )
+        logger.info("Shutdown Behaviour: ${shutdownBehaviour.instanceAttribute.instanceInitiatedShutdownBehavior}")
     }
+
+
+    def stopInstance(String instanceId, timeout = 0) {
+        Instance instance = fetchInstance(instanceId)
+        if (instance.state.name == InstanceStateName.Stopped.toString()) {
+            logger.debug("Instance $instanceId is already stopped")
+            return
+        }
+        logger.info("Stopping instance $instanceId")
+        ec2Client.stopInstances(new StopInstancesRequest().withInstanceIds(instanceId))
+        Poll poll = new Poll(timeout: timeout)
+        poll.poll {
+            instance = fetchInstance(instanceId)
+            instance.state.name == InstanceStateName.Stopped.toString()
+        }
+        logger.info("Instance $instanceId has been stopped")
+    }
+
+    def startInstance(String instanceId, timeout = 0) {
+        Instance instance = fetchInstance(instanceId)
+        if (instance.state.name == InstanceStateName.Running.toString()) {
+            logger.debug("Instance $instanceId is already running")
+            return
+        }
+        logger.info("Starting instance $instanceId")
+        ec2Client.startInstances(new StartInstancesRequest().withInstanceIds(instanceId))
+        Poll poll = new Poll(timeout: timeout)
+        poll.poll {
+            instance = fetchInstance(instanceId)
+            instance.state.name == InstanceStateName.Running.toString()
+        }
+        logger.info("Instance $instanceId has been started")
+    }
+
 }
 
+
+public class Poll {
+    int timeout = 120
+    def initialDelay = 0
+    def factor = 1.5
+
+    def poll(Closure closure) {
+        if (initialDelay) {
+            sleep(initialDelay * 1000)
+        }
+        int elapsed = 0
+        boolean finished = false
+        def delay = 2
+        while(!finished && (elapsed < timeout || timeout == 0)) {
+            try {
+                finished = closure.call()
+            } catch (Throwable e) {
+                finished = false
+            }
+            elapsed += delay
+            sleep((long) delay * 1000)
+            delay *= factor
+        }
+        if (!finished) {
+            throw new PluginException("The condition was not satisfied in the provided timeout $timeout")
+        }
+    }
+}
 
 public class EFClient extends BaseClient {
 
@@ -173,6 +291,21 @@ public class EFClient extends BaseClient {
         doHttpRequest(PUT, getServerUrl(), uriPrefix + requestUri, ['Cookie': "sessionId=$sessionId"], failOnErrorCode, requestBody, query)
     }
 
+    def readParameters(String ... names) {
+//        TODO expansion
+        Map params = names.sort().collectEntries {name ->
+            String value = getEFProperty(name)
+            println "Got parameter $name with value \"$value\""
+            [(name): value]
+        }
+        return params
+    }
+
+
+    def getEFProperty(String propertyName) {
+        def jobStepId = System.getenv('COMMANDER_JOBSTEPID')
+        doHttpGet("properties/${propertyName}", true, [jobStepId: jobStepId])?.data?.property?.value
+    }
 
     def setProperty( String jobStepId, String propertyName, String value) {
         def query = [

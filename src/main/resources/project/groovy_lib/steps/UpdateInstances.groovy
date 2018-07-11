@@ -1,22 +1,11 @@
 $[/myProject/preamble.groovy]
 
-def configName = '$[config]'
-def instanceIds = '$[instanceIDs]'
-def securityGroupId = '$[group]'
-def instanceType = '$[instanceType]'
-def userData = '''$[userData]'''
-def instanceShutdownBehaviour = '$[instanceInitiatedShutdownBehavior]'
-
 def efClient = new EFClient()
+Map parameters = efClient.readParameters('config', 'instanceIDs', 'group', 'instanceType', 'userData', 'instanceInitiatedShutdownBehavior')
 
 try {
-    def ec2Wrapper = EC2Wrapper.build(configName, efClient)
-    ec2Wrapper.stepUpdateInstance(instanceIds: instanceIds,
-        securityGroupId: securityGroupId,
-        instanceType: instanceType,
-        userData: userData,
-        instanceShutdownBehaviour: instanceShutdownBehaviour
-    )
+    def ec2Wrapper = EC2Wrapper.build(parameters.config, efClient)
+    ec2Wrapper.stepUpdateInstance(parameters)
 } catch (PluginException e) {
     efClient.handleError(e.message)
 }
