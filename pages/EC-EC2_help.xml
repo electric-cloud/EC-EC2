@@ -157,7 +157,7 @@
         </tr>
         <tr>
             <td class='required'>Resource Pool to use</td>
-            <td>The name of the pool of resources on which the plugin procedure steps can run. The default is <i>default</i> (Required)</td>
+            <td>The name of the pool of resources on which the plugin procedure steps can run. The default is <i>local</i> (Required)</td>
         </tr>
         <tr>
           <td class='required'>Workspace</td>
@@ -180,6 +180,14 @@
 						 <li><b>2+</b> for debugging information included</li>
           </ul>
 					The default is <b>1</b>.</td>
+        </tr>
+        <tr>
+          <td>HTTP Proxy</td>
+		  <td>A proxy that should be used for connections, formatted as http(s?)://ip_address_or_hostname:port</td>
+        </tr>
+        <tr>
+          <td>Proxy authorization (Credential Parameters)</td>
+		  <td>HTTP proxy login and password, if authentication is needed. The configuration stores these as a credential.</td>
         </tr>
       </tbody>
     </table>
@@ -1479,7 +1487,7 @@
         </tr>
         <tr>
           <td class='required'>Group</td>
-          <td>The security group to use, either name or ID. The default is <i>defaul</i>. (Required)</td>
+          <td>The security group to use, either name or ID. The default is <i>default</i>. (Required)</td>
         </tr>
         <tr>
           <td class='required'>Instance Type</td>
