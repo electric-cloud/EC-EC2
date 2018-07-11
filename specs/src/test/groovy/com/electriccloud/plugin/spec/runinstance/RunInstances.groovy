@@ -63,6 +63,7 @@ class RunInstances extends TestHelper {
         then:
         def tearDownResult = tearDownEnvironment(projectName, environmentName)
         assert tearDownResult.outcome == 'success'
+        assert tearDownResult.logs =~ /terminated/
         where:
         group            |    ami           | zone            | type
         'default'        | 'ami-23e8c646'   | 'us-east-2c'    | 't2.micro'
