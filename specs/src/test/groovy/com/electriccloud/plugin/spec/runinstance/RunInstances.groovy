@@ -21,18 +21,6 @@ class RunInstances extends TestHelper {
     @Shared
     EC2Helper helper
 
-//    @Shared
-//    def defaultTemplateConfig = [
-//        config: getConfigName(),
-//        count: '1',
-//        group: 'default',
-//        image: getAmi('default'),
-//        instanceType: 'm1.small',
-//        keyname: keyname,
-//        resource_zone: 'default',
-//        zone: getZone('default'),
-//        propResult: propResult
-//    ]
 
     def doSetupSpec() {
         createConfig()
@@ -72,8 +60,10 @@ class RunInstances extends TestHelper {
         Instance instance = helper.getInstance(instanceId)
         println instance
         logger.debug(objectToJson(instance))
-        cleanup:
-        tearDownEnvironment(projectName, environmentName)
+        then:
+        def tearDownResult = tearDownEnvironment(projectName, environmentName)
+        assert tearDownResult.outcome == 'success'
+        assert tearDownResult.logs =~ /terminated/
         where:
         group            |    ami           | zone            | type
         'default'        | 'ami-23e8c646'   | 'us-east-2c'    | 't2.micro'
