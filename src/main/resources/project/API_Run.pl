@@ -413,6 +413,22 @@ sub tearDownResource {
             next;
         };
 
+        eval {
+            $opts->{http_proxy} = $CfgDB->getCol("$config", 'http_proxy');
+            if ($opts->{http_proxy}) {
+                $ENV{HTTP_PROXY} = $opts->{http_proxy};
+                $ENV{HTTPS_PROXY} = $opts->{http_proxy};
+                $ENV{FTP_PROXY} = $opts->{http_proxy};
+            }
+        };
+        if ($opts->{http_proxy}) {
+            eval {
+                my ($proxy_username, $proxy_password) = getCredential($config . '_proxy_credential');
+                $ENV{HTTPS_PROXY_USERNAME} = $proxy_username if defined $proxy_username;
+                $ENV{HTTPS_PROXY_PASSWORD} = $proxy_password if defined $proxy_password;
+            };
+        }
+
         $::gDebug = $opts->{debug};
         $opts->{ec_instance} = $ec;
         $opts->{pdb} = ElectricCommander::PropDB->new( $ec, "" );
