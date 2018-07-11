@@ -40,17 +40,21 @@ public class EC2Wrapper {
         def credential = new BasicAWSCredentials(clientId, clientSecret)
         def credentialProvider = new AWSStaticCredentialsProvider(credential)
         def serviceUrl = config.service_url
+
         def group = serviceUrl =~ /ec2\.([\w-]+)\.amazonaws.com/
         def regionName = group.getAt(0)?.getAt(1) ?: 'us-east-1'
         def region = Regions.fromName(regionName)
 
-//        TODO place proxy in here
-//
-//        ClientConfiguration configuration = new ClientConfiguration()
-//            .withProxyHost("10.200.1.180")
-//            .withProxyUsername('user2')
-//            .withProxyPassword('user2')
-//            .withProxyPort(3128)
+        ClientConfiguration configuration = new ClientConfiguration()
+        if (config.http_proxy) {
+            URL url = new URL(config.http_proxy)
+            configuration.withProxyPort(url.port).withProxyHost(url.host)
+            String proxyUsername = config?.proxy_credential?.userName
+            String proxyPassword = config?.proxy_credential?.password
+            if (proxyUsername) {
+                configuration.withProxyUsername(proxyUsername).withProxyPassword(proxyPassword)
+            }
+        }
 
         int debugLevel
         try {
@@ -63,6 +67,7 @@ public class EC2Wrapper {
         def ec2 = AmazonEC2ClientBuilder
             .standard()
             .withRegion(region)
+            .withClientConfiguration(configuration)
             .withCredentials(credentialProvider)
             .build()
 
@@ -353,10 +358,15 @@ public class EFClient extends BaseClient {
             [(it.propertyName): it.value]
         }
 
+
         logger(1, "Config values: " + values)
 
-        def cred = getCredentials(config)
-        values << [credential: [userName: cred.userName, password: cred.password]]
+        values.each { k, v ->
+            if (k =~ /credential/) {
+                def cred = getCredentials(v)
+                values << [(k): [userName: cred.userName, password: cred.password]]
+            }
+        }
 
         logger(1, "After Config values: " + values ) // TODO DANGER!! CREDENTIALS!!!
 
