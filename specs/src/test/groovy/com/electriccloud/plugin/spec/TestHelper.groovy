@@ -46,10 +46,11 @@ class TestHelper extends PluginSpockTestSupport {
         deleteConfiguration(pluginName, getConfigName())
     }
 
-    def createConfig(withProxy = false) {
-        if (withProxy) {
-            throw new NotImplementedException()
-        }
+    def createConfig() {
+        String httpProxy		= System.getenv('HTTP_PROXY') ?: ''
+        String httpProxyUser	= System.getenv('HTTP_PROXY_USER') ?: ''
+        String httpProxyPass	= System.getenv('HTTP_PROXY_PASS') ?: ''
+
         def pluginConfig = [
             service_url: getEndpoint(),
             debug: '10',
@@ -57,22 +58,32 @@ class TestHelper extends PluginSpockTestSupport {
             desc: 'Spec config',
             resource_pool: 'spec resource pool',
             workspace: 'default',
-            http_proxy: '0'
+            http_proxy: httpProxy,
+            credential: configName,
+            config: configName,
         ]
-        def props = [confPath: 'ec2_cfgs']
 
-        if (System.getenv('RECREATE_CONFIG')) {
-            props.recreate = true
+        def credentials = [[credentialName: configName, userName: clientId, password: clientSecret]]
+        if (httpProxy) {
+            pluginConfig.proxy_credential = "${configName}_proxy_credential"
+            credentials << [credentialName: configName + "_proxy_credential", userName: httpProxyUser, password: httpProxyPass]
         }
-        def configName = getConfigName()
-        createPluginConfiguration(
-            pluginName,
-            configName,
-            pluginConfig,
-            getClientId(),
-            getClientSecret(),
-            props
-        )
+
+        def confPath = 'ec2_cfgs'
+        def pluginName = 'EC-EC2'
+        if (doesConfExist("/plugins/$pluginName/project/$confPath", configName)) {
+//            TODO env
+            if (System.getenv('RECREATE_CONFIG')) {
+                deleteConfiguration(pluginName, configName)
+            }
+            else {
+                println "Configuration $configName exists"
+                return
+            }
+        }
+
+        def result = runProcedure('/plugins/EC-EC2/project', 'CreateConfiguration', pluginConfig, credentials)
+        assert result.outcome == 'success'
     }
 
     def provisionEnvironment(projectName, templateName, environmentName) {
