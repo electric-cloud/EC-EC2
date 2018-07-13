@@ -39,7 +39,7 @@ class TestHelper extends PluginSpockTestSupport {
     }
 
     static def getConfigName() {
-        return "${getRegionName()}-config"
+        return System.getenv('EC2_TEST_CONFIG_NAME') ?: "${getRegionName()}-config"
     }
 
     def deleteConfig() {

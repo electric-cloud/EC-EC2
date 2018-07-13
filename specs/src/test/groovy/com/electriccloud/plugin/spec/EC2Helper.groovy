@@ -28,4 +28,23 @@ class EC2Helper {
         Instance instance = reservation.instances().first()
         return instance
     }
+
+	String getInstanceAttribute(String instanceId, String attribute) {
+		DescribeInstanceAttributeRequest request = DescribeInstanceAttributeRequest.builder().instanceId(instanceId).attribute(attribute).build()
+        DescribeInstanceAttributeResponse response = ec2Client.describeInstanceAttribute(request)
+		InstanceAttribute attr = response.instanceAttribute()
+		assert attr
+		switch (InstanceAttributeName.fromValue(attribute)) {
+			case InstanceAttributeName.INSTANCE_INITIATED_SHUTDOWN_BEHAVIOR:
+				return attr.instanceInitiatedShutdownBehavior()
+			case InstanceAttributeName.USER_DATA:
+				return new String(attr.userData().decodeBase64())
+			default:
+				throw new IllegalArgumentException("Unsupported attribute: " + attribute)
+		}
+	}
+
+	Boolean instanceInSecurityGroup(Instance instance, String securityGroup) {
+		instance.securityGroups.grep({ it.groupId == securityGroup }).size > 0
+	}
 }
