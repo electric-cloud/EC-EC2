@@ -362,7 +362,7 @@ public class EFClient extends BaseClient {
         logger(1, "Config values: " + values)
 
         values.each { k, v ->
-            if (k =~ /credential/) {
+            if (k =~ /credential/ && v) {
                 def cred = getCredentials(v)
                 values << [(k): [userName: cred.userName, password: cred.password]]
             }
@@ -436,6 +436,7 @@ public class EFClient extends BaseClient {
 
 
     def getCredentials(def credentialName) {
+        assert credentialName
         def jobStepId = '$[/myJobStep/jobStepId]'
         def result = doHttpGet("jobsSteps/$jobStepId/credentials/$credentialName")
         logger(1, result)
@@ -461,7 +462,7 @@ public class BaseClient {
 
         logger(1, "requestUrl: $requestUrl")
         logger(1, "URI: $requestUri")
-        logger(1, "QUery: $queryArgs")
+        logger(1, "Query: $queryArgs")
         if (requestBody) logger(1, "Payload: $requestBody")
 
         def http = new HTTPBuilder(requestUrl)
@@ -480,6 +481,8 @@ public class BaseClient {
             }
 
             response.failure = { resp, reader ->
+                println "Request $requestUri"
+                println "Query: $queryArgs"
                 println "request failed $resp.statusLine Error details:\n$reader"
                 if ( failOnErrorCode ) {
                     handleError("Request failed with $resp.statusLine")
