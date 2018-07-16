@@ -33,7 +33,6 @@
         <value></value>
         <property>instanceIDs</property>
         <required>1</required>
-        <serverOptions>1</serverOptions>
         <dependsOn>config</dependsOn>
         <documentation>Comma-separated instance IDs.</documentation>
     </formElement>
@@ -43,91 +42,18 @@
         <value></value>
         <property>group</property>
         <required>0</required>
-        <serverOptions>1</serverOptions>
         <dependsOn>config</dependsOn>
         <documentation>New security group to use for updated instances.</documentation>
     </formElement>
     <formElement>
-        <type>select</type>
+        <type>entry</type>
         <label>Instance Type:</label>
         <value></value>
         <property>instanceType</property>
         <required>0</required>
-        <serverOptions>1</serverOptions>
         <dependsOn>config</dependsOn>
+        <propertyReference>/plugins/@PLUGIN_NAME@/project/ec_dropdowns/instanceTypes</propertyReference>
         <documentation>New instance type. Note: to update instance type, the instance must be stopped and started again.</documentation>
-        <option>
-            <name>Small(m1.small)</name>
-            <value>m1.small</value>
-        </option>
-        <option>
-            <name>Large(m1.large)</name>
-            <value>m1.large</value>
-        </option>
-        <option>
-            <name>Extra Large(m1.xlarge)</name>
-            <value>m1.xlarge</value>
-        </option>
-        <option>
-            <name>Micro(t1.micro)</name>
-            <value>t1.micro</value>
-        </option>
-        <option>
-            <name>High-Memory Extra Large(m2.xlarge)</name>
-            <value>m2.xlarge</value>
-        </option>
-        <option>
-            <name>High-Memory Double Extra Large(m2.2xlarge)</name>
-            <value>m2.2xlarge</value>
-        </option>
-        <option>
-            <name>High-Memory Quadruple Extra Large(m2.4xlarge)</name>
-            <value>m2.4xlarge</value>
-        </option>
-        <option>
-            <name>High-Memory Medium(m3.medium)</name>
-            <value>m3.medium</value>
-        </option>
-        <option>
-            <name>High-Memory Large(m3.large)</name>
-            <value>m3.large</value>
-        </option>
-        <option>
-            <name>High-Memory Extra Large(m3.xlarge)</name>
-            <value>m3.xlarge</value>
-        </option>
-        <option>
-            <name>High-Memory Double Extra Large(m3.2xlarge)</name>
-            <value>m3.2xlarge</value>
-        </option>
-        <option>
-            <name>General-Purpose Micro(t2.micro)</name>
-            <value>t2.micro</value>
-        </option>
-        <option>
-            <name>General-Purpose Small(t2.small)</name>
-            <value>t2.small</value>
-        </option>
-        <option>
-            <name>General-Purpose Medium(t2.medium)</name>
-            <value>t2.medium</value>
-        </option>
-        <option>
-            <name>High-CPU Medium(c1.medium)</name>
-            <value>c1.medium</value>
-        </option>
-        <option>
-            <name>High-CPU Extra Large(c1.xlarge)</name>
-            <value>c1.xlarge</value>
-        </option>
-        <option>
-            <name>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</name>
-            <value>cc1.4xlarge</value>
-        </option>
-        <option>
-            <name>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</name>
-            <value>cg1.4xlarge</value>
-        </option>
     </formElement>
     <formElement>
         <type>textarea</type>
