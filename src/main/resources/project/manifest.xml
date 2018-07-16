@@ -1764,6 +1764,10 @@
     <xpath>//procedure[procedureName=&quot;Snap Attached Volume&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
   <file>
+    <path>ui_forms/API_UpdateInstances.xml</path>
+    <xpath>//procedure[procedureName=&quot;API_UpdateInstances&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
+  </file>
+  <file>
     <path>ui_forms/Test.xml</path>
     <xpath>//procedure[procedureName=&quot;Test&quot;]/propertySheet/property[propertyName=&quot;ec_parameterForm&quot;]/value</xpath>
   </file>
@@ -1778,6 +1782,10 @@
   <file>
     <path>conf/createcfg.pl</path>
     <xpath>//procedure[procedureName=&quot;CreateConfiguration&quot;]/step[stepName=&quot;CreateConfiguration&quot;]/command</xpath>
+  </file>
+  <file>
+    <path>conf/retrieveGrapeDependencies.pl</path>
+    <xpath>//procedure[procedureName=&quot;Setup&quot;]/step[stepName=&quot;setup&quot;]/command</xpath>
   </file>
   <file>
     <path>conf/createAndAttachCredential.pl</path>
@@ -1812,8 +1820,16 @@
     <xpath>//property[propertyName=&quot;ec_setup&quot;]/value</xpath>
   </file>
   <file>
+    <path>groovy_lib/steps/UpdateInstances.groovy</path>
+    <xpath>//procedure[procedureName=&quot;API_UpdateInstances&quot;]/step[stepName=&quot;UpdateInstances&quot;]/command</xpath>
+  </file>
+  <file>
+    <path>groovy_lib/preamble.groovy</path>
+    <xpath>//property[propertyName="preamble.groovy"]/value</xpath>
+  </file>
+  <file>
     <path>procedures/form_scripts/parameterOptions/resourceZones.groovy</path>
-    <xpath>//procedure[procedureName=&quot;API_RunInstances&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;resource_zone&quot;]/value</xpath>
+    <xpath>//procedure[procedureName=&quot;API_UpdateInstance&quot;]/propertySheet/property[propertyName=&quot;ec_form&quot;]/propertySheet/property[propertyName=&quot;parameterOptions&quot;]/propertySheet/property[propertyName=&quot;ec_&quot;]/value</xpath>
   </file>
   <file>
     <path>procedures/form_scripts/parameterOptions/workspaces.groovy</path>

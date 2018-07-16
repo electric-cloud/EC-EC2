@@ -1,0 +1,2672 @@
+---
+procedures:
+  - description: Hook for CloudManager to remove servers
+    formalParameters: []
+    jobNameTemplate: 'ec2-CloudManagerShrink-$[jobId]'
+    procedureName: CloudManagerShrink
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/CloudManagerShrink.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: step.shrink.pl'
+        condition: ''
+        description: Shrink the cloud
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: '$[/myProject/ec2_cfgs/$[ec2_config]/resource_pool]'
+        retries: 0
+        shell: ec-perl
+        stepName: shrink
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Hook for CloudManager to sync servers
+    formalParameters: []
+    jobNameTemplate: 'ec2-CloudManagerSync-$[jobId]'
+    procedureName: CloudManagerSync
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: ''
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: step.sync.pl'
+        condition: ''
+        description: Sync the cloud
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: '$[/myProject/ec2_cfgs/$[ec2_config]/resource_pool]'
+        retries: 0
+        shell: ec-perl
+        stepName: sync
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Hook for CloudManager to add servers
+    formalParameters: []
+    jobNameTemplate: 'ec2-CloudManagerGrow-$[jobId]'
+    procedureName: CloudManagerGrow
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/CloudManagerGrow.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: step.grow.pl'
+        condition: ''
+        description: Grow the cloud
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: '$[/myProject/ec2_cfgs/$[ec2_config]/resource_pool]'
+        retries: 0
+        shell: ec-perl
+        stepName: grow
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Allocate an Elastic IP
+    formalParameters: []
+    jobNameTemplate: 'EC2-allocateIP-$[jobId]'
+    procedureName: API_AllocateIP
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_AllocateIP.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: AllocateIP
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Describe one or more instances
+    formalParameters: []
+    jobNameTemplate: 'EC2-describe-$[jobId]'
+    procedureName: API_DescribeInstances
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_DescribeInstances.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Describe
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Associate an Elastic IP to an instance
+    formalParameters: []
+    jobNameTemplate: 'EC2-associateIP-$[jobId]'
+    procedureName: API_AssociateIP
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_AssociateIP.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: AssociateIP
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Attach a list of volumes to a list of instances
+    formalParameters: []
+    jobNameTemplate: 'EC2-attach-$[jobId]'
+    procedureName: API_AttachVolumes
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_AttachVolumes.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: AttachVolume
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Make a copy of an EBS instance
+    formalParameters: []
+    jobNameTemplate: 'EC2-createImage-$[jobId]'
+    procedureName: API_CreateImage
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_CreateImage.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: CreateImage
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Creates a key pair using Amazon EC2.
+    formalParameters: []
+    jobNameTemplate: 'EC2-createKey-$[jobId]'
+    procedureName: API_CreateKey
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_CreateKey.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: CreateKeyPair
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Create a new Virtual Private Network.
+    formalParameters: []
+    jobNameTemplate: 'EC2-createVPC-$[jobId]'
+    procedureName: API_CreateVPC
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_CreateVPC.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: CreateVPC
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Create a new subnet
+    formalParameters: []
+    jobNameTemplate: 'EC2-createSubnet-$[jobId]'
+    procedureName: API_CreateSubnet
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_CreateSubnet.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: CreateSubnet
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Delete existing Virtual Private Cloud
+    formalParameters: []
+    jobNameTemplate: 'EC2-DeleteVPC-$[jobId]'
+    procedureName: API_DeleteVPC
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_DeleteVPC.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: DeleteVPC
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Delete security Key pair
+    formalParameters: []
+    jobNameTemplate: 'EC2-deleteKey-$[jobId]'
+    procedureName: API_DeleteKey
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_DeleteKey.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: DeleteKeyPair
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Delete volume
+    formalParameters: []
+    jobNameTemplate: 'EC2-deleteVolume-$[jobId]'
+    procedureName: API_DeleteVolume
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_DeleteVolume.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: DeleteVolumes
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Release an Elastic IP address
+    formalParameters: []
+    jobNameTemplate: 'EC2-releaseIP-$[jobId]'
+    procedureName: API_ReleaseIP
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_ReleaseIP.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: ReleaseIP
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Run the API. Individual API procedures collect parameters and call this procedure. Credentials should be attached here.
+    formalParameters: []
+    jobNameTemplate: 'ec2-runapi-$[jobId]'
+    procedureName: API_Run
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_Run.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: API_Run.pl'
+        condition: ''
+        description: Run an EC2 api call using the Amazon Perl API
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ec-perl
+        stepName: run
+        timeLimit: 45
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Run instances
+    formalParameters: []
+    jobNameTemplate: 'EC2-runInstances-$[jobId]'
+    procedureName: API_RunInstances
+    projectName: ''
+    properties:
+      ec_form:
+        configurationParameterRef:
+          expandable: 1
+          value: config
+        parameterOptions:
+          group:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/ec2Options.groovy'
+          image:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/ec2Options.groovy'
+          instanceType:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/ec2Options.groovy'
+          keyname:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/ec2Options.groovy'
+          res_workspace:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/workspaces.groovy'
+          resource_zone:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/resourceZones.groovy'
+          subnet_id:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/ec2Options.groovy'
+          zone:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/ec2Options.groovy'
+        usesConfigurationNameAsCredential:
+          expandable: 1
+          value: 1
+        validation:
+          script:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/validation/ec2Validations.groovy'
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_RunInstances.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: abortProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: RunInstances
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: AssignNameTags
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Start instance
+    formalParameters: []
+    jobNameTemplate: 'EC2-start-$[jobId]'
+    procedureName: API_StartInstance
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_StartInstance.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: StartEBSInstance
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Stop instance
+    formalParameters: []
+    jobNameTemplate: 'EC2-stop-$[jobId]'
+    procedureName: API_StopInstance
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_StopInstance.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: StopEBSinstances
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Terminate an instances
+    formalParameters: []
+    jobNameTemplate: 'EC2-terminate-$[jobId]'
+    procedureName: API_Terminate
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_Terminate.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Terminate
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Terminate an instances
+    formalParameters: []
+    jobNameTemplate: 'EC2-terminate-$[jobId]'
+    procedureName: API_TearDownResource
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_TearDownResource.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: TearDownResource
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Create an EC2 configuration
+    formalParameters: []
+    jobNameTemplate: ''
+    procedureName: CreateConfiguration
+    projectName: ''
+    properties:
+      ec_form:
+        parameterOptions:
+          resource_pool:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/resources.groovy'
+          workspace:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/parameterOptions/workspaces.groovy'
+        validation:
+          script:
+            expandable: 1
+            value: 'Path: procedures/form_scripts/validation/createConfiguration.groovy'
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/EC2CreateConfigForm.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: conf/createcfg.pl'
+        condition: ''
+        description: Create an EC2 configuration
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: CreateConfiguration
+        projectName: '@PLUGIN_KEY@-@PLUGIN_VERSION@'
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ec-perl
+        stepName: CreateConfiguration
+        timeLimit: 5
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: conf/createAndAttachCredential.pl'
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: CreateConfiguration
+        projectName: '@PLUGIN_KEY@-@PLUGIN_VERSION@'
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ec-perl
+        stepName: CreateAndAttachCredential
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: conf/attemptConnection.pl'
+        condition: '$[attempt]'
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: CreateConfiguration
+        projectName: '@PLUGIN_KEY@-@PLUGIN_VERSION@'
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ec-perl
+        stepName: AttemptConnection
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Delete a configuration
+    formalParameters: []
+    jobNameTemplate: 'ec2-$[jobId]'
+    procedureName: DeleteConfiguration
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/DeleteConfiguration.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: conf/deleteConfiguration.pl'
+        condition: ''
+        description: Delete a configuration
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ec-perl
+        stepName: delete
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: |-
+      Cleanup an auto deployed EC2 instance.
+
+      The keypair, storage, elastic IP, and security settings will all be deleted.
+    formalParameters: []
+    jobNameTemplate: 'EC2-AutoCleanupDeploy-$[jobId]'
+    procedureName: EC2 Auto Cleanup
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/EC2_Auto_Cleanup.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Delete Key
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Terminate
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: DeleteVolume
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: |-
+      A procedure to deploy an EC2 instance.
+
+      The keypair, storage, elastic IP, and security settings will all be automatically created and associated
+    formalParameters: []
+    jobNameTemplate: 'EC2-AutoDeploy-$[jobId]'
+    procedureName: EC2 Auto Deploy
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/EC2_Auto_Deploy.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Create Key
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: RunInstances
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: ProcessVolumes
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: '$[snapshot]'
+        description: Attach volumes to the instances
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Attach Volumes
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: createNames.pl'
+        condition: ''
+        description: Set names of new instances
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ec-perl
+        stepName: SetNames
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: |-
+      Pause a deployed instance-store backed instance
+      This disconnects volumes and saves them, it then terminates the instance.
+      Auto Resume will start a new instance and re-attach the volumes
+    formalParameters: []
+    jobNameTemplate: 'EC2-pause-$[jobId]'
+    procedureName: EC2 Auto Pause
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/EC2_Auto_Pause.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: DetachVolumes
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Terminate
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: |-
+      Resume a paused instance-store backed instance
+      A new instance is started and the saved volumes are re-attached
+    formalParameters: []
+    jobNameTemplate: 'EC2-resume-$[jobId]'
+    procedureName: EC2 Auto Resume
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/EC2_Auto_Resume.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: RunInstance
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Attach Volumes
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: |-
+      create a new snapshot from volume attached to instance
+      Note, only snaps first volume found
+    formalParameters: []
+    jobNameTemplate: 'EC2-win-snap-volume-$[jobId]'
+    procedureName: Snap Attached Volume
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/Snap_Attached_Volume.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: SnapVolume
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Deploy instances with volumes attached and clean up afterwards
+    formalParameters: []
+    jobNameTemplate: 'euca-test-$[jobId]'
+    procedureName: Test
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/Test.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Deploy
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 0
+        broadcast: 0
+        command: sleep 50;
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ec-perl
+        stepName: Wait copy
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+      - alwaysRun: 1
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: Cleanup
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Adds or overwrites one or more tags for the specified Amazon EC2 resource or resources
+    formalParameters: []
+    jobNameTemplate: 'EC2-CreateTags-$[jobId]'
+    procedureName: API_CreateTags
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_CreateTags.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: CreateTags
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Set instance name.
+    formalParameters: []
+    jobNameTemplate: 'EC2-SetName-$[jobId]'
+    procedureName: EC2 Set Name
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/EC2_Set_Name.xml'
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: CreateNameTag
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: Manages grape dependencies
+    formalParameters: []
+    jobNameTemplate: ''
+    procedureName: Setup
+    projectName: ''
+    properties: {}
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: conf/retrieveGrapeDependencies.pl'
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ec-perl
+        stepName: setup
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+  - description: ''
+    formalParameters: []
+    jobNameTemplate: ''
+    procedureName: API_UpdateInstances
+    projectName: ''
+    properties:
+      ec_parameterForm:
+        expandable: 1
+        value: 'Path: ui_forms/API_UpdateInstances.xml'
+
+    steps:
+      - alwaysRun: 0
+        broadcast: 0
+        command: ''
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ''
+        stepName: setup
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+        subprocedure: Setup
+        subproject: '/plugins/EC-EC2/project'
+      - alwaysRun: 0
+        broadcast: 0
+        command: 'Path: groovy_lib/steps/UpdateInstances.groovy'
+        condition: ''
+        description: ''
+        errorHandling: failProcedure
+        exclusive: 0
+        logFileName: ''
+        parallel: 0
+        procedureName: ''
+        projectName: ''
+        releaseExclusive: 0
+        resourceName: ''
+        retries: 0
+        shell: ec-groovy
+        stepName: UpdateInstances
+        timeLimit: ''
+        timeLimitUnits: minutes
+        workingDirectory: ''
+        workspaceName: ''
+properties:
+  ec_cloudprovisioning_plugin:
+    configurationLocation:
+      expandable: 1
+      value: ec2_cfgs
+    displayName:
+      expandable: 1
+      value: Amazon
+    hasConfiguration:
+      expandable: 1
+      value: 1
+    operations:
+      createConfiguration:
+        parameterRefs:
+          configuration:
+            expandable: 1
+            value: config
+        procedureName:
+          expandable: 1
+          value: CreateConfiguration
+        ui_formRefs:
+          parameterForm:
+            expandable: 1
+            value: ui_forms/EC2CreateConfigForm
+      deleteConfiguration:
+        parameterRefs:
+          configuration:
+            expandable: 1
+            value: config
+        procedureName:
+          expandable: 1
+          value: DeleteConfiguration
+        ui_formRefs:
+          expandable: ''
+          value: ''
+      provision:
+        parameterRefs:
+          configuration:
+            expandable: 1
+            value: config
+          count:
+            expandable: 1
+            value: count
+          resourcePool:
+            expandable: 1
+            value: res_poolName
+        procedureName:
+          expandable: 1
+          value: API_RunInstances
+        ui_formRefs:
+          parameterForm:
+            expandable: 1
+            value: ec_parameterForm
+      retireResource:
+        parameterRefs:
+          resourceName:
+            expandable: 1
+            value: resName
+        procedureName:
+          expandable: 1
+          value: API_TearDownResource
+        ui_formRefs:
+          expandable: ''
+          value: ''
+      retireResourcePool:
+        parameterRefs:
+          resourcePoolName:
+            expandable: 1
+            value: resName
+        procedureName:
+          expandable: 1
+          value: API_TearDownResource
+        ui_formRefs:
+          expandable: ''
+          value: ''
+  ec_config:
+    configLocation:
+      expandable: 0
+      value: ec2_cfgs
+    fields:
+      config:
+        label:
+          expandable: ''
+          value: Configuration Name
+        order:
+          expandable: ''
+          value: 1
+      service_url:
+        label:
+          expandable: ''
+          value: Service URL
+        order:
+          expandable: ''
+          value: 2
+    form:
+      expandable: 1
+      value: '$[/projects/@PLUGIN_KEY@-@PLUGIN_VERSION@/ui_forms/EC2CreateConfigForm]'
+  ec_configurations:
+    expandable: 1
+    value: ec2_cfgs
+  ec_disable_dynamic_operations:
+    expandable: ''
+    value: 0
+  ec_dsl_libraries_path:
+    expandable: 1
+    value: libs
+  ec_formXmlCompliant:
+    expandable: ''
+    value: true
+  ec_setup:
+    expandable: 0
+    value: 'Path: ec_setup.pl'
+  ec_visibility:
+    expandable: 1
+    value: pickListOnly
+  lib:
+    AWS:
+      Signature4.pm:
+        expandable: 0
+        value: 'Path: lib/AWS/Signature4.pm'
+    Amazon:
+      EC2:
+        Client.pm:
+          expandable: 0
+          value: 'Path: lib/Amazon/EC2/Client.pm'
+        Exception.pm:
+          expandable: 0
+          value: 'Path: lib/Amazon/EC2/Exception.pm'
+        Model:
+          AccountAttribute.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AccountAttribute.pm'
+          ActivateLicenseRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ActivateLicenseRequest.pm'
+          ActivateLicenseResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ActivateLicenseResponse.pm'
+          ActivateLicenseResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ActivateLicenseResponse.xslt'
+          Address.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Address.pm'
+          AllocateAddressRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AllocateAddressRequest.pm'
+          AllocateAddressResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AllocateAddressResponse.pm'
+          AllocateAddressResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AllocateAddressResponse.xslt'
+          AllocateAddressResponse2.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AllocateAddressResponse2.xslt'
+          AllocateAddressResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AllocateAddressResult.pm'
+          AssociateAddressRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AssociateAddressRequest.pm'
+          AssociateAddressResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AssociateAddressResponse.pm'
+          AssociateAddressResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AssociateAddressResponse.xslt'
+          AssociateDhcpOptionsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AssociateDhcpOptionsRequest.pm'
+          AssociateDhcpOptionsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AssociateDhcpOptionsResponse.pm'
+          AssociateDhcpOptionsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AssociateDhcpOptionsResponse.xslt'
+          AttachVolumeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AttachVolumeRequest.pm'
+          AttachVolumeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AttachVolumeResponse.pm'
+          AttachVolumeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AttachVolumeResponse.xslt'
+          AttachVolumeResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AttachVolumeResult.pm'
+          AttachVpnGatewayRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AttachVpnGatewayRequest.pm'
+          AttachVpnGatewayResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AttachVpnGatewayResponse.pm'
+          AttachVpnGatewayResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AttachVpnGatewayResponse.xslt'
+          AttachVpnGatewayResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AttachVpnGatewayResult.pm'
+          Attachment.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Attachment.pm'
+          AuthorizeSecurityGroupIngressRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AuthorizeSecurityGroupIngressRequest.pm'
+          AuthorizeSecurityGroupIngressResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AuthorizeSecurityGroupIngressResponse.pm'
+          AuthorizeSecurityGroupIngressResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AuthorizeSecurityGroupIngressResponse.xslt'
+          AvailabilityZone.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/AvailabilityZone.pm'
+          BlockDeviceMapping.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/BlockDeviceMapping.pm'
+          BundleInstanceRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/BundleInstanceRequest.pm'
+          BundleInstanceResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/BundleInstanceResponse.pm'
+          BundleInstanceResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/BundleInstanceResponse.xslt'
+          BundleInstanceResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/BundleInstanceResult.pm'
+          BundleTask.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/BundleTask.pm'
+          BundleTaskError.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/BundleTaskError.pm'
+          CancelBundleTaskRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CancelBundleTaskRequest.pm'
+          CancelBundleTaskResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CancelBundleTaskResponse.pm'
+          CancelBundleTaskResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CancelBundleTaskResponse.xslt'
+          CancelBundleTaskResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CancelBundleTaskResult.pm'
+          CancelSpotInstanceRequestsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CancelSpotInstanceRequestsRequest.pm'
+          CancelSpotInstanceRequestsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CancelSpotInstanceRequestsResponse.pm'
+          CancelSpotInstanceRequestsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CancelSpotInstanceRequestsResponse.xslt'
+          CancelSpotInstanceRequestsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CancelSpotInstanceRequestsResult.pm'
+          CancelledSpotInstanceRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CancelledSpotInstanceRequest.pm'
+          ConfirmProductInstanceRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ConfirmProductInstanceRequest.pm'
+          ConfirmProductInstanceResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ConfirmProductInstanceResponse.pm'
+          ConfirmProductInstanceResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ConfirmProductInstanceResponse.xslt'
+          ConfirmProductInstanceResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ConfirmProductInstanceResult.pm'
+          ConsoleOutput.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ConsoleOutput.pm'
+          CreateCustomerGatewayRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateCustomerGatewayRequest.pm'
+          CreateCustomerGatewayResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateCustomerGatewayResponse.pm'
+          CreateCustomerGatewayResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateCustomerGatewayResponse.xslt'
+          CreateCustomerGatewayResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateCustomerGatewayResult.pm'
+          CreateDhcpOptionsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateDhcpOptionsRequest.pm'
+          CreateDhcpOptionsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateDhcpOptionsResponse.pm'
+          CreateDhcpOptionsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateDhcpOptionsResponse.xslt'
+          CreateDhcpOptionsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateDhcpOptionsResult.pm'
+          CreateImageRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateImageRequest.pm'
+          CreateImageResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateImageResponse.pm'
+          CreateImageResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateImageResponse.xslt'
+          CreateImageResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateImageResult.pm'
+          CreateKeyPairRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateKeyPairRequest.pm'
+          CreateKeyPairResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateKeyPairResponse.pm'
+          CreateKeyPairResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateKeyPairResponse.xslt'
+          CreateKeyPairResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateKeyPairResult.pm'
+          CreatePlacementGroupRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreatePlacementGroupRequest.pm'
+          CreatePlacementGroupResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreatePlacementGroupResponse.pm'
+          CreatePlacementGroupResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreatePlacementGroupResponse.xslt'
+          CreateSecurityGroupRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSecurityGroupRequest.pm'
+          CreateSecurityGroupResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSecurityGroupResponse.pm'
+          CreateSecurityGroupResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSecurityGroupResponse.xslt'
+          CreateSnapshotRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSnapshotRequest.pm'
+          CreateSnapshotResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSnapshotResponse.pm'
+          CreateSnapshotResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSnapshotResponse.xslt'
+          CreateSnapshotResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSnapshotResult.pm'
+          CreateSpotDatafeedSubscriptionRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSpotDatafeedSubscriptionRequest.pm'
+          CreateSpotDatafeedSubscriptionResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSpotDatafeedSubscriptionResponse.pm'
+          CreateSpotDatafeedSubscriptionResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSpotDatafeedSubscriptionResponse.xslt'
+          CreateSpotDatafeedSubscriptionResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSpotDatafeedSubscriptionResult.pm'
+          CreateSubnetRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSubnetRequest.pm'
+          CreateSubnetResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSubnetResponse.pm'
+          CreateSubnetResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSubnetResponse.xslt'
+          CreateSubnetResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateSubnetResult.pm'
+          CreateTagsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateTagsRequest.pm'
+          CreateTagsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateTagsResponse.pm'
+          CreateTagsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateTagsResponse.xslt'
+          CreateVolumePermission.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVolumePermission.pm'
+          CreateVolumeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVolumeRequest.pm'
+          CreateVolumeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVolumeResponse.pm'
+          CreateVolumeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVolumeResponse.xslt'
+          CreateVolumeResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVolumeResult.pm'
+          CreateVpcRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpcRequest.pm'
+          CreateVpcResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpcResponse.pm'
+          CreateVpcResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpcResponse.xslt'
+          CreateVpcResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpcResult.pm'
+          CreateVpnConnectionRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpnConnectionRequest.pm'
+          CreateVpnConnectionResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpnConnectionResponse.pm'
+          CreateVpnConnectionResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpnConnectionResponse.xslt'
+          CreateVpnConnectionResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpnConnectionResult.pm'
+          CreateVpnGatewayRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpnGatewayRequest.pm'
+          CreateVpnGatewayResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpnGatewayResponse.pm'
+          CreateVpnGatewayResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpnGatewayResponse.xslt'
+          CreateVpnGatewayResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CreateVpnGatewayResult.pm'
+          CustomerGateway.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/CustomerGateway.pm'
+          DeactivateLicenseRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeactivateLicenseRequest.pm'
+          DeactivateLicenseResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeactivateLicenseResponse.pm'
+          DeactivateLicenseResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeactivateLicenseResponse.xslt'
+          DeleteCustomerGatewayRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteCustomerGatewayRequest.pm'
+          DeleteCustomerGatewayResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteCustomerGatewayResponse.pm'
+          DeleteCustomerGatewayResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteCustomerGatewayResponse.xslt'
+          DeleteDhcpOptionsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteDhcpOptionsRequest.pm'
+          DeleteDhcpOptionsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteDhcpOptionsResponse.pm'
+          DeleteDhcpOptionsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteDhcpOptionsResponse.xslt'
+          DeleteKeyPairRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteKeyPairRequest.pm'
+          DeleteKeyPairResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteKeyPairResponse.pm'
+          DeleteKeyPairResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteKeyPairResponse.xslt'
+          DeletePlacementGroupRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeletePlacementGroupRequest.pm'
+          DeletePlacementGroupResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeletePlacementGroupResponse.pm'
+          DeletePlacementGroupResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeletePlacementGroupResponse.xslt'
+          DeleteSecurityGroupRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSecurityGroupRequest.pm'
+          DeleteSecurityGroupResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSecurityGroupResponse.pm'
+          DeleteSecurityGroupResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSecurityGroupResponse.xslt'
+          DeleteSnapshotRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSnapshotRequest.pm'
+          DeleteSnapshotResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSnapshotResponse.pm'
+          DeleteSnapshotResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSnapshotResponse.xslt'
+          DeleteSpotDatafeedSubscriptionRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSpotDatafeedSubscriptionRequest.pm'
+          DeleteSpotDatafeedSubscriptionResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSpotDatafeedSubscriptionResponse.pm'
+          DeleteSpotDatafeedSubscriptionResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSpotDatafeedSubscriptionResponse.xslt'
+          DeleteSubnetRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSubnetRequest.pm'
+          DeleteSubnetResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSubnetResponse.pm'
+          DeleteSubnetResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteSubnetResponse.xslt'
+          DeleteVolumeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVolumeRequest.pm'
+          DeleteVolumeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVolumeResponse.pm'
+          DeleteVolumeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVolumeResponse.xslt'
+          DeleteVpcRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVpcRequest.pm'
+          DeleteVpcResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVpcResponse.pm'
+          DeleteVpcResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVpcResponse.xslt'
+          DeleteVpnConnectionRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVpnConnectionRequest.pm'
+          DeleteVpnConnectionResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVpnConnectionResponse.pm'
+          DeleteVpnConnectionResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVpnConnectionResponse.xslt'
+          DeleteVpnGatewayRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVpnGatewayRequest.pm'
+          DeleteVpnGatewayResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVpnGatewayResponse.pm'
+          DeleteVpnGatewayResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeleteVpnGatewayResponse.xslt'
+          DeregisterImageRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeregisterImageRequest.pm'
+          DeregisterImageResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeregisterImageResponse.pm'
+          DeregisterImageResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DeregisterImageResponse.xslt'
+          DescribeAccountAttributesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAccountAttributesRequest.pm'
+          DescribeAccountAttributesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAccountAttributesResponse.pm'
+          DescribeAccountAttributesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAccountAttributesResponse.xslt'
+          DescribeAccountAttributesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAccountAttributesResult.pm'
+          DescribeAddressesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAddressesRequest.pm'
+          DescribeAddressesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAddressesResponse.pm'
+          DescribeAddressesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAddressesResponse.xslt'
+          DescribeAddressesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAddressesResult.pm'
+          DescribeAvailabilityZonesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAvailabilityZonesRequest.pm'
+          DescribeAvailabilityZonesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAvailabilityZonesResponse.pm'
+          DescribeAvailabilityZonesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAvailabilityZonesResponse.xslt'
+          DescribeAvailabilityZonesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeAvailabilityZonesResult.pm'
+          DescribeBundleTasksRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeBundleTasksRequest.pm'
+          DescribeBundleTasksResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeBundleTasksResponse.pm'
+          DescribeBundleTasksResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeBundleTasksResponse.xslt'
+          DescribeBundleTasksResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeBundleTasksResult.pm'
+          DescribeCustomerGatewaysRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeCustomerGatewaysRequest.pm'
+          DescribeCustomerGatewaysResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeCustomerGatewaysResponse.pm'
+          DescribeCustomerGatewaysResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeCustomerGatewaysResponse.xslt'
+          DescribeCustomerGatewaysResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeCustomerGatewaysResult.pm'
+          DescribeDhcpOptionsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeDhcpOptionsRequest.pm'
+          DescribeDhcpOptionsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeDhcpOptionsResponse.pm'
+          DescribeDhcpOptionsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeDhcpOptionsResponse.xslt'
+          DescribeDhcpOptionsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeDhcpOptionsResult.pm'
+          DescribeImageAttributeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeImageAttributeRequest.pm'
+          DescribeImageAttributeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeImageAttributeResponse.pm'
+          DescribeImageAttributeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeImageAttributeResponse.xslt'
+          DescribeImageAttributeResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeImageAttributeResult.pm'
+          DescribeImagesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeImagesRequest.pm'
+          DescribeImagesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeImagesResponse.pm'
+          DescribeImagesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeImagesResponse.xslt'
+          DescribeImagesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeImagesResult.pm'
+          DescribeInstanceAttributeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeInstanceAttributeRequest.pm'
+          DescribeInstanceAttributeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeInstanceAttributeResponse.pm'
+          DescribeInstanceAttributeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeInstanceAttributeResponse.xslt'
+          DescribeInstanceAttributeResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeInstanceAttributeResult.pm'
+          DescribeInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeInstancesRequest.pm'
+          DescribeInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeInstancesResponse.pm'
+          DescribeInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeInstancesResponse.xslt'
+          DescribeInstancesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeInstancesResult.pm'
+          DescribeKeyPairsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeKeyPairsRequest.pm'
+          DescribeKeyPairsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeKeyPairsResponse.pm'
+          DescribeKeyPairsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeKeyPairsResponse.xslt'
+          DescribeKeyPairsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeKeyPairsResult.pm'
+          DescribeLicensesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeLicensesRequest.pm'
+          DescribeLicensesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeLicensesResponse.pm'
+          DescribeLicensesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeLicensesResponse.xslt'
+          DescribeLicensesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeLicensesResult.pm'
+          DescribePlacementGroupsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribePlacementGroupsRequest.pm'
+          DescribePlacementGroupsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribePlacementGroupsResponse.pm'
+          DescribePlacementGroupsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribePlacementGroupsResponse.xslt'
+          DescribePlacementGroupsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribePlacementGroupsResult.pm'
+          DescribeRegionsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeRegionsRequest.pm'
+          DescribeRegionsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeRegionsResponse.pm'
+          DescribeRegionsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeRegionsResponse.xslt'
+          DescribeRegionsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeRegionsResult.pm'
+          DescribeReservedInstancesOfferingsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeReservedInstancesOfferingsRequest.pm'
+          DescribeReservedInstancesOfferingsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeReservedInstancesOfferingsResponse.pm'
+          DescribeReservedInstancesOfferingsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeReservedInstancesOfferingsResponse.xslt'
+          DescribeReservedInstancesOfferingsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeReservedInstancesOfferingsResult.pm'
+          DescribeReservedInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeReservedInstancesRequest.pm'
+          DescribeReservedInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeReservedInstancesResponse.pm'
+          DescribeReservedInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeReservedInstancesResponse.xslt'
+          DescribeReservedInstancesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeReservedInstancesResult.pm'
+          DescribeSecurityGroupsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSecurityGroupsRequest.pm'
+          DescribeSecurityGroupsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSecurityGroupsResponse.pm'
+          DescribeSecurityGroupsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSecurityGroupsResponse.xslt'
+          DescribeSecurityGroupsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSecurityGroupsResult.pm'
+          DescribeSnapshotAttributeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSnapshotAttributeRequest.pm'
+          DescribeSnapshotAttributeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSnapshotAttributeResponse.pm'
+          DescribeSnapshotAttributeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSnapshotAttributeResponse.xslt'
+          DescribeSnapshotAttributeResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSnapshotAttributeResult.pm'
+          DescribeSnapshotsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSnapshotsRequest.pm'
+          DescribeSnapshotsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSnapshotsResponse.pm'
+          DescribeSnapshotsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSnapshotsResponse.xslt'
+          DescribeSnapshotsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSnapshotsResult.pm'
+          DescribeSpotDatafeedSubscriptionRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotDatafeedSubscriptionRequest.pm'
+          DescribeSpotDatafeedSubscriptionResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotDatafeedSubscriptionResponse.pm'
+          DescribeSpotDatafeedSubscriptionResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotDatafeedSubscriptionResponse.xslt'
+          DescribeSpotDatafeedSubscriptionResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotDatafeedSubscriptionResult.pm'
+          DescribeSpotInstanceRequestsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotInstanceRequestsRequest.pm'
+          DescribeSpotInstanceRequestsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotInstanceRequestsResponse.pm'
+          DescribeSpotInstanceRequestsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotInstanceRequestsResponse.xslt'
+          DescribeSpotInstanceRequestsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotInstanceRequestsResult.pm'
+          DescribeSpotPriceHistoryRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotPriceHistoryRequest.pm'
+          DescribeSpotPriceHistoryResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotPriceHistoryResponse.pm'
+          DescribeSpotPriceHistoryResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotPriceHistoryResponse.xslt'
+          DescribeSpotPriceHistoryResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSpotPriceHistoryResult.pm'
+          DescribeSubnetsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSubnetsRequest.pm'
+          DescribeSubnetsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSubnetsResponse.pm'
+          DescribeSubnetsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSubnetsResponse.xslt'
+          DescribeSubnetsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeSubnetsResult.pm'
+          DescribeVolumesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVolumesRequest.pm'
+          DescribeVolumesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVolumesResponse.pm'
+          DescribeVolumesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVolumesResponse.xslt'
+          DescribeVolumesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVolumesResult.pm'
+          DescribeVpcsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpcsRequest.pm'
+          DescribeVpcsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpcsResponse.pm'
+          DescribeVpcsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpcsResponse.xslt'
+          DescribeVpcsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpcsResult.pm'
+          DescribeVpnConnectionsRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpnConnectionsRequest.pm'
+          DescribeVpnConnectionsResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpnConnectionsResponse.pm'
+          DescribeVpnConnectionsResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpnConnectionsResponse.xslt'
+          DescribeVpnConnectionsResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpnConnectionsResult.pm'
+          DescribeVpnGatewaysRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpnGatewaysRequest.pm'
+          DescribeVpnGatewaysResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpnGatewaysResponse.pm'
+          DescribeVpnGatewaysResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpnGatewaysResponse.xslt'
+          DescribeVpnGatewaysResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DescribeVpnGatewaysResult.pm'
+          DetachVolumeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DetachVolumeRequest.pm'
+          DetachVolumeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DetachVolumeResponse.pm'
+          DetachVolumeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DetachVolumeResponse.xslt'
+          DetachVolumeResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DetachVolumeResult.pm'
+          DetachVpnGatewayRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DetachVpnGatewayRequest.pm'
+          DetachVpnGatewayResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DetachVpnGatewayResponse.pm'
+          DetachVpnGatewayResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DetachVpnGatewayResponse.xslt'
+          DhcpConfiguration.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DhcpConfiguration.pm'
+          DhcpOptions.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DhcpOptions.pm'
+          DisassociateAddressRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DisassociateAddressRequest.pm'
+          DisassociateAddressResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DisassociateAddressResponse.pm'
+          DisassociateAddressResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/DisassociateAddressResponse.xslt'
+          EbsBlockDevice.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/EbsBlockDevice.pm'
+          Error.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Error.pm'
+          ErrorResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ErrorResponse.pm'
+          Filter.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Filter.pm'
+          GetConsoleOutputRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/GetConsoleOutputRequest.pm'
+          GetConsoleOutputResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/GetConsoleOutputResponse.pm'
+          GetConsoleOutputResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/GetConsoleOutputResponse.xslt'
+          GetConsoleOutputResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/GetConsoleOutputResult.pm'
+          GetPasswordDataRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/GetPasswordDataRequest.pm'
+          GetPasswordDataResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/GetPasswordDataResponse.pm'
+          GetPasswordDataResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/GetPasswordDataResponse.xslt'
+          GetPasswordDataResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/GetPasswordDataResult.pm'
+          Image.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Image.pm'
+          ImageAttribute.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ImageAttribute.pm'
+          InstanceAttribute.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceAttribute.pm'
+          InstanceBlockDeviceMapping.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceBlockDeviceMapping.pm'
+          InstanceBlockDeviceMappingParameter.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceBlockDeviceMappingParameter.pm'
+          InstanceEbsBlockDevice.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceEbsBlockDevice.pm'
+          InstanceEbsBlockDeviceParameter.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceEbsBlockDeviceParameter.pm'
+          InstanceLicense.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceLicense.pm'
+          InstanceLicenseSpecification.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceLicenseSpecification.pm'
+          InstanceMonitoring.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceMonitoring.pm'
+          InstanceState.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceState.pm'
+          InstanceStateChange.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/InstanceStateChange.pm'
+          IpPermission.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/IpPermission.pm'
+          KeyPair.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/KeyPair.pm'
+          LaunchPermission.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/LaunchPermission.pm'
+          LaunchSpecification.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/LaunchSpecification.pm'
+          License.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/License.pm'
+          LicenseCapacity.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/LicenseCapacity.pm'
+          ModifyImageAttributeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ModifyImageAttributeRequest.pm'
+          ModifyImageAttributeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ModifyImageAttributeResponse.pm'
+          ModifyImageAttributeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ModifyImageAttributeResponse.xslt'
+          ModifyInstanceAttributeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ModifyInstanceAttributeRequest.pm'
+          ModifyInstanceAttributeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ModifyInstanceAttributeResponse.pm'
+          ModifyInstanceAttributeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ModifyInstanceAttributeResponse.xslt'
+          ModifySnapshotAttributeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ModifySnapshotAttributeRequest.pm'
+          ModifySnapshotAttributeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ModifySnapshotAttributeResponse.pm'
+          ModifySnapshotAttributeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ModifySnapshotAttributeResponse.xslt'
+          MonitorInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/MonitorInstancesRequest.pm'
+          MonitorInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/MonitorInstancesResponse.pm'
+          MonitorInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/MonitorInstancesResponse.xslt'
+          MonitorInstancesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/MonitorInstancesResult.pm'
+          Monitoring.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Monitoring.pm'
+          MonitoringSpecification.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/MonitoringSpecification.pm'
+          PasswordData.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/PasswordData.pm'
+          Placement.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Placement.pm'
+          PlacementGroupInfo.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/PlacementGroupInfo.pm'
+          PurchaseReservedInstancesOfferingRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/PurchaseReservedInstancesOfferingRequest.pm'
+          PurchaseReservedInstancesOfferingResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/PurchaseReservedInstancesOfferingResponse.pm'
+          PurchaseReservedInstancesOfferingResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/PurchaseReservedInstancesOfferingResponse.xslt'
+          PurchaseReservedInstancesOfferingResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/PurchaseReservedInstancesOfferingResult.pm'
+          RebootInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RebootInstancesRequest.pm'
+          RebootInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RebootInstancesResponse.pm'
+          RebootInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RebootInstancesResponse.xslt'
+          Region.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Region.pm'
+          RegisterImageRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RegisterImageRequest.pm'
+          RegisterImageResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RegisterImageResponse.pm'
+          RegisterImageResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RegisterImageResponse.xslt'
+          RegisterImageResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RegisterImageResult.pm'
+          ReleaseAddressRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ReleaseAddressRequest.pm'
+          ReleaseAddressResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ReleaseAddressResponse.pm'
+          ReleaseAddressResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ReleaseAddressResponse.xslt'
+          RequestSpotInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RequestSpotInstancesRequest.pm'
+          RequestSpotInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RequestSpotInstancesResponse.pm'
+          RequestSpotInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RequestSpotInstancesResponse.xslt'
+          RequestSpotInstancesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RequestSpotInstancesResult.pm'
+          Reservation.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Reservation.pm'
+          ReservedInstances.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ReservedInstances.pm'
+          ReservedInstancesOffering.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ReservedInstancesOffering.pm'
+          ResetImageAttributeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResetImageAttributeRequest.pm'
+          ResetImageAttributeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResetImageAttributeResponse.pm'
+          ResetImageAttributeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResetImageAttributeResponse.xslt'
+          ResetInstanceAttributeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResetInstanceAttributeRequest.pm'
+          ResetInstanceAttributeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResetInstanceAttributeResponse.pm'
+          ResetInstanceAttributeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResetInstanceAttributeResponse.xslt'
+          ResetSnapshotAttributeRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResetSnapshotAttributeRequest.pm'
+          ResetSnapshotAttributeResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResetSnapshotAttributeResponse.pm'
+          ResetSnapshotAttributeResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResetSnapshotAttributeResponse.xslt'
+          ResponseMetadata.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/ResponseMetadata.pm'
+          RevokeSecurityGroupIngressRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RevokeSecurityGroupIngressRequest.pm'
+          RevokeSecurityGroupIngressResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RevokeSecurityGroupIngressResponse.pm'
+          RevokeSecurityGroupIngressResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RevokeSecurityGroupIngressResponse.xslt'
+          RunInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RunInstancesRequest.pm'
+          RunInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RunInstancesResponse.pm'
+          RunInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RunInstancesResponse.xslt'
+          RunInstancesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RunInstancesResult.pm'
+          RunningInstance.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/RunningInstance.pm'
+          S3Storage.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/S3Storage.pm'
+          SecurityGroup.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/SecurityGroup.pm'
+          Snapshot.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Snapshot.pm'
+          SnapshotAttribute.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/SnapshotAttribute.pm'
+          SpotDatafeedSubscription.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/SpotDatafeedSubscription.pm'
+          SpotInstanceRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/SpotInstanceRequest.pm'
+          SpotInstanceStateFault.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/SpotInstanceStateFault.pm'
+          SpotPriceHistory.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/SpotPriceHistory.pm'
+          StartInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/StartInstancesRequest.pm'
+          StartInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/StartInstancesResponse.pm'
+          StartInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/StartInstancesResponse.xslt'
+          StartInstancesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/StartInstancesResult.pm'
+          StateReason.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/StateReason.pm'
+          StopInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/StopInstancesRequest.pm'
+          StopInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/StopInstancesResponse.pm'
+          StopInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/StopInstancesResponse.xslt'
+          StopInstancesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/StopInstancesResult.pm'
+          Storage.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Storage.pm'
+          Subnet.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Subnet.pm'
+          Tag.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Tag.pm'
+          TerminateInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/TerminateInstancesRequest.pm'
+          TerminateInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/TerminateInstancesResponse.pm'
+          TerminateInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/TerminateInstancesResponse.xslt'
+          TerminateInstancesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/TerminateInstancesResult.pm'
+          UnmonitorInstancesRequest.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/UnmonitorInstancesRequest.pm'
+          UnmonitorInstancesResponse.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/UnmonitorInstancesResponse.pm'
+          UnmonitorInstancesResponse.xslt:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/UnmonitorInstancesResponse.xslt'
+          UnmonitorInstancesResult.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/UnmonitorInstancesResult.pm'
+          UserIdGroupPair.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/UserIdGroupPair.pm'
+          Volume.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Volume.pm'
+          Vpc.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/Vpc.pm'
+          VpcAttachment.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/VpcAttachment.pm'
+          VpnConnection.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/VpnConnection.pm'
+          VpnGateway.pm:
+            expandable: 0
+            value: 'Path: lib/Amazon/EC2/Model/VpnGateway.pm'
+        Model.pm:
+          expandable: 0
+          value: 'Path: lib/Amazon/EC2/Model.pm'
+    XML:
+      DOM:
+        DOMException.pm:
+          expandable: 0
+          value: 'Path: lib/XML/DOM/DOMException.pm'
+        NamedNodeMap.pm:
+          expandable: 0
+          value: 'Path: lib/XML/DOM/NamedNodeMap.pm'
+        NodeList.pm:
+          expandable: 0
+          value: 'Path: lib/XML/DOM/NodeList.pm'
+        PerlSAX.pm:
+          expandable: 0
+          value: 'Path: lib/XML/DOM/PerlSAX.pm'
+      DOM.pm:
+        expandable: 0
+        value: 'Path: lib/XML/DOM.pm'
+      Handler:
+        BuildDOM.pm:
+          expandable: 0
+          value: 'Path: lib/XML/Handler/BuildDOM.pm'
+      RegExp.pm:
+        expandable: 0
+        value: 'Path: lib/XML/RegExp.pm'
+      XSLT.pm:
+        expandable: 0
+        value: 'Path: lib/XML/XSLT.pm'
+  postpExtension:
+    expandable: 1
+    value: 'Path: postpExtension.pl'
+  preamble.groovy:
+    expandable: ''
+    value: 'Path: groovy_lib/preamble.groovy'
+  ui_forms:
+    EC2CreateConfigForm:
+      expandable: 1
+      value: 'Path: ui_forms/EC2CreateConfigForm.xml'
+    EC2EditConfigForm:
+      expandable: 1
+      value: 'Path: ui_forms/EC2EditConfigForm.xml'
