@@ -44,7 +44,7 @@ public class EC2Wrapper {
         def group = serviceUrl =~ /ec2\.([\w-]+)\.amazonaws.com/
         def regionName
         try {
-            regionName = group?.getAt(0)?.getAt(1)
+            regionName = group?.getAt(0)?.getAt(1) ?: 'us-east-1'
         }
         catch (IndexOutOfBoundsException e) {
             regionName = 'us-east-1'
