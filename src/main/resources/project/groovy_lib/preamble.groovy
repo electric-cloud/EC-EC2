@@ -42,7 +42,13 @@ public class EC2Wrapper {
         def serviceUrl = config.service_url
 
         def group = serviceUrl =~ /ec2\.([\w-]+)\.amazonaws.com/
-        def regionName = group.getAt(0)?.getAt(1) ?: 'us-east-1'
+        def regionName
+        try {
+            regionName = group?.getAt(0)?.getAt(1)
+        }
+        catch (IndexOutOfBoundsException e) {
+            regionName = 'us-east-1'
+        }
         def region = Regions.fromName(regionName)
 
         ClientConfiguration configuration = new ClientConfiguration()
