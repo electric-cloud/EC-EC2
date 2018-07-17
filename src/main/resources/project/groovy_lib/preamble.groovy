@@ -1,8 +1,8 @@
 import com.amazonaws.ClientConfiguration
 @Grapes([
-    @Grab(group = 'com.amazonaws', module = 'aws-java-sdk-ec2', version = '1.11.360'),
+    @Grab(group='net.sf.json-lib', module='json-lib', version='2.3', classifier ='jdk15'),
     @Grab('org.codehaus.groovy.modules.http-builder:http-builder:0.7.1' ),
-    @GrabExclude('net.sf.json-lib:json-lib'),
+    @Grab(group = 'com.amazonaws', module = 'aws-java-sdk-ec2', version = '1.11.360'),
 ])
 import com.amazonaws.auth.BasicAWSCredentials
 import com.amazonaws.auth.AWSStaticCredentialsProvider
