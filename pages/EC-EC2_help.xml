@@ -21,7 +21,7 @@
     <p>Plugin Version @PLUGIN_VERSION@</p>
     <hr style="margin-left: -10px; margin-top: 10px; height: 1px; width: 100%; color: #5981BD;" noshade="noshade" />
 
-    <p>Revised on June 29, 2018</p>
+    <p>Revised on July 18, 2018</p>
 
 				<h1>Contents</h1>
 
@@ -44,7 +44,8 @@
 				<li><a href="#API_DescribeInstances">API_DescribeInstances</a></li>
 				<li><a href="#API_ReleaseIP">API_ReleaseIP</a></li>
 				<li><a href="#API_Run">API_Run</a></li>
-				<li><a href="#API_RunInstances">API_RunInstances</a></li>
+        <li><a href="#API_RunInstances">API_RunInstances</a></li>
+				<li><a href="#API_UpdateInstances">API_UpdateInstances</a></li>
 				<li><a href="#API_StartInstance">API_StartInstance</a></li>
 				<li><a href="#API_StopInstance">API_StopInstance</a></li>
 				<li><a href="#API_TearDownResource">API_TearDownResource</a></li>
@@ -59,7 +60,8 @@
 				<li><a href="#EC2 EC2 Set Name">EC2 Set Name</a></li>
 				<li><a href="#Snap Attached Volume">Snap Attached Volume</a></li>
 				</ul>
-				<li><p><a href="#example">Examples and Use Cases</a></p></li>
+        <li><p><a href="#example">Examples and Use Cases</a></p></li>
+				<li><p><a href="#knownIssues">Known Issues</a></p></li>
 				<li><p><a href="#rns">Release Notes</a></p></li>
 				</ul>
 
@@ -912,7 +914,7 @@
     <div id="API_RunInstances"><a name='API_RunInstances' id=  "API_RunInstances"></a>
     <h3>API_RunInstances</h3>
     <p>This procedure allows the user to start one or more instances from a machine image (AMI/EMI). The instances are part of one
-		reservation and can be terminated later as a group or individually.</p>
+    reservation and can be terminated later as a group or individually.</p>
 
     <table class="grid">
       <thead>
@@ -1004,7 +1006,7 @@
         <tr>
           <td>Resource Pool</td>
           <td>If you would like to add ElectricFlow resources for each instance created, enter the ElectricFlow pool name for the new resource.
-					If left blank no resource will be	created.</td>
+          If left blank no resource will be created.</td>
         </tr>
         <tr>
           <td>ElectricFlow Workspace</td>
@@ -1018,7 +1020,50 @@
       </tbody>
     </table>
 
-		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_RunInstances_panel.png" />
+    <img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_RunInstances_panel.png" />
+
+    </div>
+
+    <div id="API_UpdateInstances"><a name='API_UpdateInstances' id=  "API_UpdateInstances"></a>
+    <h3>API_UpdateInstances</h3>
+    <p>Updates one or more attribute values of an Instance. Where required the procedure can be used to update attribute values of multiple instances.</p>
+
+    <table class="grid">
+      <thead>
+        <tr>
+          <th>Parameter</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class='required'>Configuration</td>
+          <td>The name of the config which holds all the connection information. This must reference a valid existing configuration. (Required)</td>
+        </tr>
+        <tr>
+          <td class='required'>Instance IDs</td>
+          <td>Comma-separated list of Instance IDs to update, e.g. i-00901da83f8647e57.</td>
+        </tr>
+        <tr>
+          <td>Security Group Id</td>
+          <td>New security group to use for updated instances, e.g. sg-79894433. If this field is left empty, the security group will not be updated.</td>
+        </tr>
+        <tr>
+          <td>Instance Type</td>
+          <td>New instance type. <b>Note</b>: to update instance type, the instance must be stopped and started again.</td>
+        </tr>
+        <tr>
+          <td>User Data</td>
+          <td>Extra user data to pass to runInstance. Note: to update User Data, the instance will be stopped and started again.</td>
+        </tr>
+        <tr>
+          <td>Instance Initiated Shutdown Behavior</td>
+          <td>Specify the instance behaviour when an OS-level shutdown is performed. Instance can be either terminated or shut down.</td>
+        </tr>
+      </tbody>
+    </table>
+
+		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/API_UpdateInstances.png" />
 
 		</div>
 
@@ -1870,13 +1915,40 @@
 
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/delete_volumes_log.png" />
 
+    <h1 id="knownIssues">Known Issues</h1>
+    <div>
+        HTTP Proxy functionality introduced in 2.5.0 will have the following UI limitations for customers who want to use this functionality:
+        <ul>
+        <li>On Electric Flow version 8.3, Proxy credentials will not appear in Resource Template UI and hence cannot be used to overrride what is defined already in Configuration. Other than this minor limitation, HTTP proxy will be completely functional.</li>
+        <li>On Electric Flow versions 8.2 and prior, Resource Template UI cannot be used to specify HTTP Proxy information and hence cannot create working Resource templates using this UI. However the workaround for this use case would be to use DSL to create the Resource Templates.</li>
+        </ul>
+        Starting version 2.5.0 this plugin will work only for Electric Flow versions that support ec-groovy.
+    </div>
 
         <h1 id="rns">Release Notes</h1>
         <h2>@PLUGIN_KEY@ 2.5.0</h2>
         <ul>
-            <li>HTTP Proxy support was added to the plugin. <b>Using Proxy in Resource Templates</b>: only ElectricFlow version 8.4 and later support proxy in Resource Templates. The older versions do not allow to create a Resource Template through UI using plugin configuration with proxy. Plugin configurations without proxy work in both Resource Templates and Platform.<br/>
-            In order to use Resource Template on older versions of EF and run requests through proxy one can use DSL.<br/>
-            Platform use-cases are working in both older versions of ElectricFlow and new.
+          <li>
+            Support for HTTP Proxy has been provided. Customers who use HTTP proxy can specify Proxy Information (Host, Port and Credentials at the configuration level) and all procedures will use the Proxy as second credentials for authentication. Proxy support will address both use cases of Procedure Invocation:
+            <ul>
+              <li>Direct Invocation and</li>
+              <li>Invocation through Resource Templates.</li>
+            </ul>
+            For versions prior to 8.4 there are certain limitations with Proxy support for Resource Templates, using the Resource Template UI. Please refer to the Known Issues Section for details.
+          </li>
+          <li>
+            A new procedure called API_UpdateInstances has been introduced, that can be used to perform the following:
+            <ul>
+              <li>Update one or more attribute values of an Instance.</li>
+              <li>Optionally the procedure can be used to update attribute values of multiple instances.</li>
+            </ul>
+
+            Note that the plugin has been packaged with new dependencies in order to address the API_UpdateInstances functionality. In order to promote the plugin the following steps need to be taken.
+
+            <ul>
+              <li>Configure the Flow Repository Server and have it up and running.</li>
+              <li>If plugin is promoted using ectool (i.e., not from the platformm UI) make sure that the flow repository server is visible to the instance from which ectool is invoked.</li>
+            </ul>
           </li>
         </ul>
         <h2>@PLUGIN_KEY@ 2.4.2</h2>
