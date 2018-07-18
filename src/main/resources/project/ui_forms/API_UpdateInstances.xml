@@ -16,7 +16,7 @@
 
 -->
 <editor>
-    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#API_UpdateInstance</help>
+    <help>/commander/pages/@PLUGIN_NAME@/@PLUGIN_KEY@_help?s=Administration&amp;ss=Plugins#API_UpdateInstances</help>
     <formElement>
         <type>entry</type>
         <label>Configuration:</label>
@@ -34,16 +34,16 @@
         <property>instanceIDs</property>
         <required>1</required>
         <dependsOn>config</dependsOn>
-        <documentation>Comma-separated instance IDs.</documentation>
+        <documentation>Comma-separated instance IDs, e.g. i-00901da83f8647e57.</documentation>
     </formElement>
     <formElement>
         <type>entry</type>
-        <label>Security Group:</label>
+        <label>Security Group ID:</label>
         <value></value>
         <property>group</property>
         <required>0</required>
         <dependsOn>config</dependsOn>
-        <documentation>New security group to use for updated instances.</documentation>
+        <documentation>New security group to use for updated instances, e.g. sg-79894433.</documentation>
     </formElement>
     <formElement>
         <type>entry</type>
