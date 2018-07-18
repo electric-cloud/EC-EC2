@@ -183,10 +183,22 @@
           </ul>
           The default is <b>1</b>.</td>
         </tr>
+        <tr>
+          <td>HTTP Proxy</td>
+          <td>
+            A HTTP proxy that should be used for connections.
+          </td>
+        </tr>
+        <tr>
+          <td>Proxy Authorization</td>
+          <td>
+            Username and password used to connect to HTTP proxy.
+          </td>
+        </tr>
       </tbody>
     </table>
 
-		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/configuration_panel.png" />
+		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/parameters/Configuration.png" />
 
 		</ol>
 
