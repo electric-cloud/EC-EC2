@@ -42,6 +42,14 @@ class TestHelper extends PluginSpockTestSupport {
         return System.getenv('EC2_TEST_CONFIG_NAME') ?: "${getRegionName()}-config"
     }
 
+    static def getAmi() {
+        return System.getenv('EC2_AMI') ?: "ami-da4873bf"
+    }
+
+    static def getInstanceType() {
+        return System.getenv('EC2_INSTANCE_TYPE') ?: "t2.nano"
+    }
+
     def deleteConfig() {
         deleteConfiguration(pluginName, getConfigName())
     }
@@ -109,5 +117,60 @@ class TestHelper extends PluginSpockTestSupport {
         def outcome = jobStatus(result.jobId).outcome
         def logs = readJobLogs(result.jobId)
         return [jobId: result.jobId, logs: logs, outcome: outcome]
+    }
+
+    def grantPrivilegesOnResourceZone (projectName, zoneName) {
+        def result = dsl """
+            getAclEntry(
+                principalType   : 'user',
+                principalName   : 'project: ${projectName}',
+                zoneName        : '${zoneName}'
+            )""", null, [ ignoreStatusCode : true ]
+
+        if (result.error) {
+            result = dsl """
+                createAclEntry(
+                    principalType   : 'user',
+                    principalName   : 'project: ${projectName}',
+                    zoneName        : '${zoneName}',
+                    readPrivilege   : 'allow',
+                    modifyPrivilege : 'allow',
+                    executePrivilege: 'allow'
+                )"""
+        } else {
+            result = dsl """
+                modifyAclEntry(
+                    principalType   : 'user',
+                    principalName   : 'project: ${projectName}',
+                    zoneName        : '${zoneName}',
+                    readPrivilege   : 'allow',
+                    modifyPrivilege : 'allow',
+                    executePrivilege: 'allow'
+                )"""
+        }
+        return result
+    }
+
+    def createWrapperProject (procedureName, argNames) {
+        def result = dsl '''
+            def argNames = args.argNames
+            def procedureName = args.procedureName
+
+            project "EC Spec Test - ${procedureName}", {
+                procedure "${procedureName}", {
+                    argNames.each { argName ->
+                        formalParameter "${argName}"
+                    }
+                    step "${procedureName}", {
+                        subproject = '/plugins/EC-EC2/project'
+                        subprocedure = "${procedureName}"
+                        argNames.each { argName ->
+                            actualParameter "${argName}", { value = "\\$[${argName}]" }
+                        }
+                    }
+                }
+            }
+            ''', [ procedureName : procedureName, argNames: argNames ]
+        return result
     }
 }

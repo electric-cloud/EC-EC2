@@ -10,20 +10,8 @@ import spock.lang.Stepwise
 import spock.lang.Ignore
 
 class UpdateInstances extends TestHelper {
-    @Shared
-    def projectName = 'EC2 Update Instances Spec'
 
-    @Shared
-    def resourceTemplateName = 'EC2 Spec Template'
-
-    @Shared
-    def propResult = '/myJob/propResult'
-
-    @Shared
-    def keyname = 'ec2_specs'
-
-    @Shared
-    EC2Helper helper
+	@Shared EC2Helper helper
 
 	@Shared instances = []
 

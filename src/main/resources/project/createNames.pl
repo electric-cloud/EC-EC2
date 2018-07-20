@@ -29,23 +29,23 @@ sub main()
 
          my $inum = $ec->incrementProperty("/myProject/instanceCounter")->findvalue("//value")->value();
          my $name = "EC-EC2Instance-" . $inum;
-     
+
          my $xpath = $ec->runProcedure( '$[/myProject/projectName]',
                                 {
                                 procedureName => "API_CreateTags",
                                 pollInterval    => '1',
                                 timeout         => 600,
-                                actualParameter => [ { actualParameterName => 'config', value => $[config] },
+                                actualParameter => [ { actualParameterName => 'config', value => "$[config]" },
                                                      { actualParameterName => 'resourceId', value => $instances[$num] },
                                                      { actualParameterName => 'tagsMap', value => "Name => $name" },
                                                     ]
                             }
                           );
 
-        my $out = $xpath->findvalue("//outcome");      
+        my $out = $xpath->findvalue("//outcome");
 
-        if($out eq "success") { 
-        
+        if($out eq "success") {
+
             print "Assign name $name to instance $instances[$num]\n";
         }
         else {
