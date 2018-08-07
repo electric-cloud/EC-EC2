@@ -65,50 +65,7 @@
         <property>instanceType</property>
         <required>1</required>
         <documentation>The instance type.</documentation>
-        <option>
-            <name>Small(m1.small)</name>
-            <value>m1.small</value>
-        </option>
-        <option>
-            <name>Large(m1.large)</name>
-            <value>m1.large</value>
-        </option>
-        <option>
-            <name>Extra Large(m1.xlarge)</name>
-            <value>m1.xlarge</value>
-        </option>
-        <option>
-            <name>Micro(t1.micro)</name>
-            <value>t1.micro</value>
-        </option>
-        <option>
-            <name>High-Memory Extra Large(m2.xlarge)</name>
-            <value>m2.xlarge</value>
-        </option>
-        <option>
-            <name>High-Memory Double Extra Large(m2.2xlarge)</name>
-            <value>m2.2xlarge</value>
-        </option>
-        <option>
-            <name>High-Memory Quadruple Extra Large(m2.4xlarge)</name>
-            <value>m2.4xlarge</value>
-        </option>
-        <option>
-            <name>High-CPU Medium(c1.medium)</name>
-            <value>c1.medium</value>
-        </option>
-        <option>
-            <name>High-CPU Extra Large(c1.xlarge)</name>
-            <value>c1.xlarge</value>
-        </option>
-        <option>
-            <name>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</name>
-            <value>cc1.4xlarge</value>
-        </option>
-        <option>
-            <name>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</name>
-            <value>cg1.4xlarge</value>
-        </option>
+        <propertyReference>/plugins/@PLUGIN_NAME@/project/ec_dropdowns/instanceTypes</propertyReference>
     </formElement>  
     <formElement>
         <type>entry</type>
