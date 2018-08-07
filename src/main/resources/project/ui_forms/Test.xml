@@ -59,7 +59,7 @@
         <documentation>Snapshot id to be snapped into a volume and attached to the new instances&#10;If no snapshot id is given, no volumes will be attached.</documentation>
     </formElement>
     <formElement>
-        <type>select</type>
+        <type>entry</type>
         <label>Instance Type:</label>
         <value>m1.large</value>
         <property>type</property>

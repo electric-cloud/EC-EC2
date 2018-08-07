@@ -51,7 +51,7 @@
         <documentation>The OS device that the optional snapshot should be connected to.</documentation>
     </formElement>
     <formElement>
-        <type>select</type>
+        <type>entry</type>
         <label>Instance Type:</label>
         <value>m1.small</value>
         <property>ec2_instance_type</property>

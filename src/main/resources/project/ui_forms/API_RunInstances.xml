@@ -55,7 +55,7 @@
         <documentation>The name of the EC2 image that you would like to deploy.</documentation>
     </formElement>
     <formElement>
-        <type>select</type>
+        <type>entry</type>
         <label>Instance Type:</label>
         <value>m1.small</value>
         <property>instanceType</property>

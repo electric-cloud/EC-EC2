@@ -58,7 +58,7 @@
         <documentation>The security group to use.</documentation>
     </formElement>
     <formElement>
-        <type>select</type>
+        <type>entry</type>
         <label>Instance Type:</label>
         <value>m1.large</value>
         <property>instanceType</property>
