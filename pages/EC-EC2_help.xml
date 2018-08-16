@@ -21,7 +21,7 @@
     <p>Plugin Version @PLUGIN_VERSION@</p>
     <hr style="margin-left: -10px; margin-top: 10px; height: 1px; width: 100%; color: #5981BD;" noshade="noshade" />
 
-    <p>Revised on July 18, 2018</p>
+    <p>Revised on August 9, 2018</p>
 
 				<h1>Contents</h1>
 
@@ -958,17 +958,148 @@
             <ul>
               <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">
               Options:</li>
-              <li>Small(m1.small)</li>
-              <li>Large(m1.large)</li>
-              <li>Extra Large(m1.xlarge)</li>
-              <li>Micro(t1.micro)</li>
-              <li>High-Memory Extra Large(m2.xlarge)</li>
-              <li>High-Memory Double Extra Large(m2.2xlarge)</li>
-              <li>High-Memory Quadruple Extra Large(m2.4xlarge)</li>
-              <li>High-CPU Medium(c1.medium)</li>
-              <li>High-CPU Extra Large(c1.xlarge)</li>
-              <li>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</li>
-              <li>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</li>
+                <li>C1 High-CPU Medium (c1.medium)</li>
+                <li>C1 High-CPU Extra Large (c1.xlarge)</li>
+                <li>C3 High-CPU Double Extra Large (c3.2xlarge)</li>
+                <li>C3 High-CPU Quadruple Extra Large (c3.4xlarge)</li>
+                <li>C3 High-CPU Eight Extra Large (c3.8xlarge)</li>
+                <li>C3 High-CPU Large (c3.large)</li>
+                <li>C3 High-CPU Extra Large (c3.xlarge)</li>
+                <li>C4 High-CPU Double Extra Large (c4.2xlarge)</li>
+                <li>C4 High-CPU Quadruple Extra Large (c4.4xlarge)</li>
+                <li>C4 High-CPU Eight Extra Large (c4.8xlarge)</li>
+                <li>C4 High-CPU Large (c4.large)</li>
+                <li>C4 High-CPU Extra Large (c4.xlarge)</li>
+                <li>C5 High-CPU 18xlarge (c5.18xlarge)</li>
+                <li>C5 High-CPU Double Extra Large (c5.2xlarge)</li>
+                <li>C5 High-CPU Quadruple Extra Large (c5.4xlarge)</li>
+                <li>C5 High-CPU 9xlarge (c5.9xlarge)</li>
+                <li>C5 High-CPU Large (c5.large)</li>
+                <li>C5 High-CPU Extra Large (c5.xlarge)</li>
+                <li>C5 High-CPU 18xlarge (c5d.18xlarge)</li>
+                <li>C5 High-CPU Double Extra Large (c5d.2xlarge)</li>
+                <li>C5 High-CPU Quadruple Extra Large (c5d.4xlarge)</li>
+                <li>C5 High-CPU 9xlarge (c5d.9xlarge)</li>
+                <li>C5 High-CPU Large (c5d.large)</li>
+                <li>C5 High-CPU Extra Large (c5d.xlarge)</li>
+                <li>Cluster Compute Quadruple Extra Large (cc1.4xlarge)</li>
+                <li>Cluster Compute Eight Extra Large (cc2.8xlarge)</li>
+                <li>Cluster GPU Quadruple Extra Large (cg1.4xlarge)</li>
+                <li>High Memory Cluster Eight Extra Large (cr1.8xlarge)</li>
+                <li>D2 Double Extra Large (d2.2xlarge)</li>
+                <li>D2 Quadruple Extra Large (d2.4xlarge)</li>
+                <li>D2 Eight Extra Large (d2.8xlarge)</li>
+                <li>D2 Extra Large (d2.xlarge)</li>
+                <li>F1 16xlarge (f1.16xlarge)</li>
+                <li>F1 Double Extra Large (f1.2xlarge)</li>
+                <li>G2 Double Extra Large (g2.2xlarge)</li>
+                <li>G2 Eight Extra Large (g2.8xlarge)</li>
+                <li>G3 16xlarge (g3.16xlarge)</li>
+                <li>G3 Quadruple Extra Large (g3.4xlarge)</li>
+                <li>G3 Eight Extra Large (g3.8xlarge)</li>
+                <li>H1 16xlarge (h1.16xlarge)</li>
+                <li>H1 Double Extra Large (h1.2xlarge)</li>
+                <li>H1 Quadruple Extra Large (h1.4xlarge)</li>
+                <li>H1 Eight Extra Large (h1.8xlarge)</li>
+                <li>High I/O Quadruple Extra Large (hi1.4xlarge)</li>
+                <li>High Storage Eight Extra Large (hs1.8xlarge)</li>
+                <li>I2 Double Extra Large (i2.2xlarge)</li>
+                <li>I2 Quadruple Extra Large (i2.4xlarge)</li>
+                <li>I2 Eight Extra Large (i2.8xlarge)</li>
+                <li>I2 Extra Large (i2.xlarge)</li>
+                <li>I3 High I/O 16xlarge (i3.16xlarge)</li>
+                <li>I3 High I/O Double Extra Large (i3.2xlarge)</li>
+                <li>I3 High I/O Quadruple Extra Large (i3.4xlarge)</li>
+                <li>I3 High I/O Eight Extra Large (i3.8xlarge)</li>
+                <li>I3 High I/O Large (i3.large)</li>
+                <li>I3 High I/O Metal (i3.metal)</li>
+                <li>I3 High I/O Extra Large (i3.xlarge)</li>
+                <li>M1 General Purpose Large (m1.large)</li>
+                <li>M1 General Purpose Medium (m1.medium)</li>
+                <li>M1 General Purpose Small (m1.small)</li>
+                <li>M1 General Purpose Extra Large (m1.xlarge)</li>
+                <li>M2 High Memory Double Extra Large (m2.2xlarge)</li>
+                <li>M2 High Memory Quadruple Extra Large (m2.4xlarge)</li>
+                <li>M2 High Memory Extra Large (m2.xlarge)</li>
+                <li>M3 General Purpose Double Extra Large (m3.2xlarge)</li>
+                <li>M3 General Purpose Large (m3.large)</li>
+                <li>M3 General Purpose Medium (m3.medium)</li>
+                <li>M3 General Purpose Extra Large (m3.xlarge)</li>
+                <li>M4 General Purpose Deca Extra Large (m4.10xlarge)</li>
+                <li>M4 General Purpose 16xlarge (m4.16xlarge)</li>
+                <li>M4 General Purpose Double Extra Large (m4.2xlarge)</li>
+                <li>M4 General Purpose Quadruple Extra Large (m4.4xlarge)</li>
+                <li>M4 General Purpose Large (m4.large)</li>
+                <li>M4 General Purpose Extra Large (m4.xlarge)</li>
+                <li>M5 General Purpose 12xlarge (m5.12xlarge)</li>
+                <li>M5 General Purpose 24xlarge (m5.24xlarge)</li>
+                <li>M5 General Purpose Double Extra Large (m5.2xlarge)</li>
+                <li>M5 General Purpose Quadruple Extra Large (m5.4xlarge)</li>
+                <li>M5 General Purpose Large (m5.large)</li>
+                <li>M5 General Purpose Extra Large (m5.xlarge)</li>
+                <li>M5 General Purpose 12xlarge (m5d.12xlarge)</li>
+                <li>M5 General Purpose 24xlarge (m5d.24xlarge)</li>
+                <li>M5 General Purpose Double Extra Large (m5d.2xlarge)</li>
+                <li>M5 General Purpose Quadruple Extra Large (m5d.4xlarge)</li>
+                <li>M5 General Purpose Large (m5d.large)</li>
+                <li>M5 General Purpose Extra Large (m5d.xlarge)</li>
+                <li>General Purpose GPU 16xlarge (p2.16xlarge)</li>
+                <li>General Purpose GPU Eight Extra Large (p2.8xlarge)</li>
+                <li>General Purpose GPU Extra Large (p2.xlarge)</li>
+                <li>P3 16xlarge (p3.16xlarge)</li>
+                <li>P3 Double Extra Large (p3.2xlarge)</li>
+                <li>P3 Eight Extra Large (p3.8xlarge)</li>
+                <li>R3 High-Memory Double Extra Large (r3.2xlarge)</li>
+                <li>R3 High-Memory Quadruple Extra Large (r3.4xlarge)</li>
+                <li>R3 High-Memory Eight Extra Large (r3.8xlarge)</li>
+                <li>R3 High-Memory Large (r3.large)</li>
+                <li>R3 High-Memory Extra Large (r3.xlarge)</li>
+                <li>R4 High-Memory 16xlarge (r4.16xlarge)</li>
+                <li>R4 High-Memory Double Extra Large (r4.2xlarge)</li>
+                <li>R4 High-Memory Quadruple Extra Large (r4.4xlarge)</li>
+                <li>R4 High-Memory Eight Extra Large (r4.8xlarge)</li>
+                <li>R4 High-Memory Large (r4.large)</li>
+                <li>R4 High-Memory Extra Large (r4.xlarge)</li>
+                <li>R5 12xlarge (r5.12xlarge)</li>
+                <li>R5 16xlarge (r5.16xlarge)</li>
+                <li>R5 24xlarge (r5.24xlarge)</li>
+                <li>R5 Double Extra Large (r5.2xlarge)</li>
+                <li>R5 Quadruple Extra Large (r5.4xlarge)</li>
+                <li>R5 Eight Extra Large (r5.8xlarge)</li>
+                <li>R5 Large (r5.large)</li>
+                <li>R5 Metal (r5.metal)</li>
+                <li>R5 Extra Large (r5.xlarge)</li>
+                <li>R5D 12xlarge (r5d.12xlarge)</li>
+                <li>R5D 16xlarge (r5d.16xlarge)</li>
+                <li>R5D 24xlarge (r5d.24xlarge)</li>
+                <li>R5D Double Extra Large (r5d.2xlarge)</li>
+                <li>R5D Quadruple Extra Large (r5d.4xlarge)</li>
+                <li>R5D Eight Extra Large (r5d.8xlarge)</li>
+                <li>R5D Large (r5d.large)</li>
+                <li>R5D Metal (r5d.metal)</li>
+                <li>R5D Extra Large (r5d.xlarge)</li>
+                <li>T1 Micro (t1.micro)</li>
+                <li>T2 Double Extra Large (t2.2xlarge)</li>
+                <li>T2 Large (t2.large)</li>
+                <li>T2 Medium (t2.medium)</li>
+                <li>T2 Micro (t2.micro)</li>
+                <li>T2 Nano (t2.nano)</li>
+                <li>T2 Small (t2.small)</li>
+                <li>T2 Extra Large (t2.xlarge)</li>
+                <li>X1 Extra High-Memory 16xlarge (x1.16xlarge)</li>
+                <li>X1 Extra High-Memory 32xlarge (x1.32xlarge)</li>
+                <li>X1E 16xlarge (x1e.16xlarge)</li>
+                <li>X1E Double Extra Large (x1e.2xlarge)</li>
+                <li>X1E 32xlarge (x1e.32xlarge)</li>
+                <li>X1E Quadruple Extra Large (x1e.4xlarge)</li>
+                <li>X1E Eight Extra Large (x1e.8xlarge)</li>
+                <li>X1E Extra Large (x1e.xlarge)</li>
+                <li>Z1D 12xlarge (z1d.12xlarge)</li>
+                <li>Z1D Double Extra Large (z1d.2xlarge)</li>
+                <li>Z1D 3xlarge (z1d.3xlarge)</li>
+                <li>Z1D 6xlarge (z1d.6xlarge)</li>
+                <li>Z1D Large (z1d.large)</li>
+                <li>Z1D Extra Large (z1d.xlarge)</li>
             </ul>
           </td>
         </tr>
@@ -1303,17 +1434,149 @@
           <td>The EC2 instance type to create. The default is <i>Small(m1.small)</i>. (Required)
             <ul>
               <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">Options:</li>
-              <li>Small(m1.small)</li>
-              <li>Large(m1.large)</li>
-              <li>Extra Large(m1.xlarge)</li>
-              <li>Micro(t1.micro)</li>
-              <li>High-Memory Extra Large(m2.xlarge)</li>
-              <li>High-Memory Double Extra Large(m2.2xlarge)</li>
-              <li>High-Memory Quadruple Extra Large(m2.4xlarge)</li>
-              <li>High-CPU Medium(c1.medium)</li>
-              <li>High-CPU Extra Large(c1.xlarge)</li>
-              <li>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</li>
-              <li>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</li>
+                <li>C1 High-CPU Medium (c1.medium)</li>
+                <li>C1 High-CPU Extra Large (c1.xlarge)</li>
+                <li>C3 High-CPU Double Extra Large (c3.2xlarge)</li>
+                <li>C3 High-CPU Quadruple Extra Large (c3.4xlarge)</li>
+                <li>C3 High-CPU Eight Extra Large (c3.8xlarge)</li>
+                <li>C3 High-CPU Large (c3.large)</li>
+                <li>C3 High-CPU Extra Large (c3.xlarge)</li>
+                <li>C4 High-CPU Double Extra Large (c4.2xlarge)</li>
+                <li>C4 High-CPU Quadruple Extra Large (c4.4xlarge)</li>
+                <li>C4 High-CPU Eight Extra Large (c4.8xlarge)</li>
+                <li>C4 High-CPU Large (c4.large)</li>
+                <li>C4 High-CPU Extra Large (c4.xlarge)</li>
+                <li>C5 High-CPU 18xlarge (c5.18xlarge)</li>
+                <li>C5 High-CPU Double Extra Large (c5.2xlarge)</li>
+                <li>C5 High-CPU Quadruple Extra Large (c5.4xlarge)</li>
+                <li>C5 High-CPU 9xlarge (c5.9xlarge)</li>
+                <li>C5 High-CPU Large (c5.large)</li>
+                <li>C5 High-CPU Extra Large (c5.xlarge)</li>
+                <li>C5 High-CPU 18xlarge (c5d.18xlarge)</li>
+                <li>C5 High-CPU Double Extra Large (c5d.2xlarge)</li>
+                <li>C5 High-CPU Quadruple Extra Large (c5d.4xlarge)</li>
+                <li>C5 High-CPU 9xlarge (c5d.9xlarge)</li>
+                <li>C5 High-CPU Large (c5d.large)</li>
+                <li>C5 High-CPU Extra Large (c5d.xlarge)</li>
+                <li>Cluster Compute Quadruple Extra Large (cc1.4xlarge)</li>
+                <li>Cluster Compute Eight Extra Large (cc2.8xlarge)</li>
+                <li>Cluster GPU Quadruple Extra Large (cg1.4xlarge)</li>
+                <li>High Memory Cluster Eight Extra Large (cr1.8xlarge)</li>
+                <li>D2 Double Extra Large (d2.2xlarge)</li>
+                <li>D2 Quadruple Extra Large (d2.4xlarge)</li>
+                <li>D2 Eight Extra Large (d2.8xlarge)</li>
+                <li>D2 Extra Large (d2.xlarge)</li>
+                <li>F1 16xlarge (f1.16xlarge)</li>
+                <li>F1 Double Extra Large (f1.2xlarge)</li>
+                <li>G2 Double Extra Large (g2.2xlarge)</li>
+                <li>G2 Eight Extra Large (g2.8xlarge)</li>
+                <li>G3 16xlarge (g3.16xlarge)</li>
+                <li>G3 Quadruple Extra Large (g3.4xlarge)</li>
+                <li>G3 Eight Extra Large (g3.8xlarge)</li>
+                <li>H1 16xlarge (h1.16xlarge)</li>
+                <li>H1 Double Extra Large (h1.2xlarge)</li>
+                <li>H1 Quadruple Extra Large (h1.4xlarge)</li>
+                <li>H1 Eight Extra Large (h1.8xlarge)</li>
+                <li>High I/O Quadruple Extra Large (hi1.4xlarge)</li>
+                <li>High Storage Eight Extra Large (hs1.8xlarge)</li>
+                <li>I2 Double Extra Large (i2.2xlarge)</li>
+                <li>I2 Quadruple Extra Large (i2.4xlarge)</li>
+                <li>I2 Eight Extra Large (i2.8xlarge)</li>
+                <li>I2 Extra Large (i2.xlarge)</li>
+                <li>I3 High I/O 16xlarge (i3.16xlarge)</li>
+                <li>I3 High I/O Double Extra Large (i3.2xlarge)</li>
+                <li>I3 High I/O Quadruple Extra Large (i3.4xlarge)</li>
+                <li>I3 High I/O Eight Extra Large (i3.8xlarge)</li>
+                <li>I3 High I/O Large (i3.large)</li>
+                <li>I3 High I/O Metal (i3.metal)</li>
+                <li>I3 High I/O Extra Large (i3.xlarge)</li>
+                <li>M1 General Purpose Large (m1.large)</li>
+                <li>M1 General Purpose Medium (m1.medium)</li>
+                <li>M1 General Purpose Small (m1.small)</li>
+                <li>M1 General Purpose Extra Large (m1.xlarge)</li>
+                <li>M2 High Memory Double Extra Large (m2.2xlarge)</li>
+                <li>M2 High Memory Quadruple Extra Large (m2.4xlarge)</li>
+                <li>M2 High Memory Extra Large (m2.xlarge)</li>
+                <li>M3 General Purpose Double Extra Large (m3.2xlarge)</li>
+                <li>M3 General Purpose Large (m3.large)</li>
+                <li>M3 General Purpose Medium (m3.medium)</li>
+                <li>M3 General Purpose Extra Large (m3.xlarge)</li>
+                <li>M4 General Purpose Deca Extra Large (m4.10xlarge)</li>
+                <li>M4 General Purpose 16xlarge (m4.16xlarge)</li>
+                <li>M4 General Purpose Double Extra Large (m4.2xlarge)</li>
+                <li>M4 General Purpose Quadruple Extra Large (m4.4xlarge)</li>
+                <li>M4 General Purpose Large (m4.large)</li>
+                <li>M4 General Purpose Extra Large (m4.xlarge)</li>
+                <li>M5 General Purpose 12xlarge (m5.12xlarge)</li>
+                <li>M5 General Purpose 24xlarge (m5.24xlarge)</li>
+                <li>M5 General Purpose Double Extra Large (m5.2xlarge)</li>
+                <li>M5 General Purpose Quadruple Extra Large (m5.4xlarge)</li>
+                <li>M5 General Purpose Large (m5.large)</li>
+                <li>M5 General Purpose Extra Large (m5.xlarge)</li>
+                <li>M5 General Purpose 12xlarge (m5d.12xlarge)</li>
+                <li>M5 General Purpose 24xlarge (m5d.24xlarge)</li>
+                <li>M5 General Purpose Double Extra Large (m5d.2xlarge)</li>
+                <li>M5 General Purpose Quadruple Extra Large (m5d.4xlarge)</li>
+                <li>M5 General Purpose Large (m5d.large)</li>
+                <li>M5 General Purpose Extra Large (m5d.xlarge)</li>
+                <li>General Purpose GPU 16xlarge (p2.16xlarge)</li>
+                <li>General Purpose GPU Eight Extra Large (p2.8xlarge)</li>
+                <li>General Purpose GPU Extra Large (p2.xlarge)</li>
+                <li>P3 16xlarge (p3.16xlarge)</li>
+                <li>P3 Double Extra Large (p3.2xlarge)</li>
+                <li>P3 Eight Extra Large (p3.8xlarge)</li>
+                <li>R3 High-Memory Double Extra Large (r3.2xlarge)</li>
+                <li>R3 High-Memory Quadruple Extra Large (r3.4xlarge)</li>
+                <li>R3 High-Memory Eight Extra Large (r3.8xlarge)</li>
+                <li>R3 High-Memory Large (r3.large)</li>
+                <li>R3 High-Memory Extra Large (r3.xlarge)</li>
+                <li>R4 High-Memory 16xlarge (r4.16xlarge)</li>
+                <li>R4 High-Memory Double Extra Large (r4.2xlarge)</li>
+                <li>R4 High-Memory Quadruple Extra Large (r4.4xlarge)</li>
+                <li>R4 High-Memory Eight Extra Large (r4.8xlarge)</li>
+                <li>R4 High-Memory Large (r4.large)</li>
+                <li>R4 High-Memory Extra Large (r4.xlarge)</li>
+                <li>R5 12xlarge (r5.12xlarge)</li>
+                <li>R5 16xlarge (r5.16xlarge)</li>
+                <li>R5 24xlarge (r5.24xlarge)</li>
+                <li>R5 Double Extra Large (r5.2xlarge)</li>
+                <li>R5 Quadruple Extra Large (r5.4xlarge)</li>
+                <li>R5 Eight Extra Large (r5.8xlarge)</li>
+                <li>R5 Large (r5.large)</li>
+                <li>R5 Metal (r5.metal)</li>
+                <li>R5 Extra Large (r5.xlarge)</li>
+                <li>R5D 12xlarge (r5d.12xlarge)</li>
+                <li>R5D 16xlarge (r5d.16xlarge)</li>
+                <li>R5D 24xlarge (r5d.24xlarge)</li>
+                <li>R5D Double Extra Large (r5d.2xlarge)</li>
+                <li>R5D Quadruple Extra Large (r5d.4xlarge)</li>
+                <li>R5D Eight Extra Large (r5d.8xlarge)</li>
+                <li>R5D Large (r5d.large)</li>
+                <li>R5D Metal (r5d.metal)</li>
+                <li>R5D Extra Large (r5d.xlarge)</li>
+                <li>T1 Micro (t1.micro)</li>
+                <li>T2 Double Extra Large (t2.2xlarge)</li>
+                <li>T2 Large (t2.large)</li>
+                <li>T2 Medium (t2.medium)</li>
+                <li>T2 Micro (t2.micro)</li>
+                <li>T2 Nano (t2.nano)</li>
+                <li>T2 Small (t2.small)</li>
+                <li>T2 Extra Large (t2.xlarge)</li>
+                <li>X1 Extra High-Memory 16xlarge (x1.16xlarge)</li>
+                <li>X1 Extra High-Memory 32xlarge (x1.32xlarge)</li>
+                <li>X1E 16xlarge (x1e.16xlarge)</li>
+                <li>X1E Double Extra Large (x1e.2xlarge)</li>
+                <li>X1E 32xlarge (x1e.32xlarge)</li>
+                <li>X1E Quadruple Extra Large (x1e.4xlarge)</li>
+                <li>X1E Eight Extra Large (x1e.8xlarge)</li>
+                <li>X1E Extra Large (x1e.xlarge)</li>
+                <li>Z1D 12xlarge (z1d.12xlarge)</li>
+                <li>Z1D Double Extra Large (z1d.2xlarge)</li>
+                <li>Z1D 3xlarge (z1d.3xlarge)</li>
+                <li>Z1D 6xlarge (z1d.6xlarge)</li>
+                <li>Z1D Large (z1d.large)</li>
+                <li>Z1D Extra Large (z1d.xlarge)</li>
+
             </ul>
          </td>
         </tr>
@@ -1542,18 +1805,149 @@
           <td>  The instance type. The default is <i>Large(m1.large)</i>. (Required)
               <ul>
               <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">Options:</li>
-              <li>Small(m1.small)</li>
-              <li>Large(m1.large)</li>
-              <li>Extra Large(m1.xlarge)</li>
-              <li>Micro(t1.micro)</li>
-              <li>High-Memory Extra Large(m2.xlarge)</li>
-              <li>High-Memory Double Extra Large(m2.2xlarge)</li>
-              <li>High-Memory Quadruple Extra Large(m2.4xlarge)</li>
-              <li>High-CPU Medium(c1.medium)</li>
-              <li>High-CPU Extra Large(c1.xlarge)</li>
-              <li>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</li>
-              <li>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</li>
-            </ul>
+                  <li>C1 High-CPU Medium (c1.medium)</li>
+                  <li>C1 High-CPU Extra Large (c1.xlarge)</li>
+                  <li>C3 High-CPU Double Extra Large (c3.2xlarge)</li>
+                  <li>C3 High-CPU Quadruple Extra Large (c3.4xlarge)</li>
+                  <li>C3 High-CPU Eight Extra Large (c3.8xlarge)</li>
+                  <li>C3 High-CPU Large (c3.large)</li>
+                  <li>C3 High-CPU Extra Large (c3.xlarge)</li>
+                  <li>C4 High-CPU Double Extra Large (c4.2xlarge)</li>
+                  <li>C4 High-CPU Quadruple Extra Large (c4.4xlarge)</li>
+                  <li>C4 High-CPU Eight Extra Large (c4.8xlarge)</li>
+                  <li>C4 High-CPU Large (c4.large)</li>
+                  <li>C4 High-CPU Extra Large (c4.xlarge)</li>
+                  <li>C5 High-CPU 18xlarge (c5.18xlarge)</li>
+                  <li>C5 High-CPU Double Extra Large (c5.2xlarge)</li>
+                  <li>C5 High-CPU Quadruple Extra Large (c5.4xlarge)</li>
+                  <li>C5 High-CPU 9xlarge (c5.9xlarge)</li>
+                  <li>C5 High-CPU Large (c5.large)</li>
+                  <li>C5 High-CPU Extra Large (c5.xlarge)</li>
+                  <li>C5 High-CPU 18xlarge (c5d.18xlarge)</li>
+                  <li>C5 High-CPU Double Extra Large (c5d.2xlarge)</li>
+                  <li>C5 High-CPU Quadruple Extra Large (c5d.4xlarge)</li>
+                  <li>C5 High-CPU 9xlarge (c5d.9xlarge)</li>
+                  <li>C5 High-CPU Large (c5d.large)</li>
+                  <li>C5 High-CPU Extra Large (c5d.xlarge)</li>
+                  <li>Cluster Compute Quadruple Extra Large (cc1.4xlarge)</li>
+                  <li>Cluster Compute Eight Extra Large (cc2.8xlarge)</li>
+                  <li>Cluster GPU Quadruple Extra Large (cg1.4xlarge)</li>
+                  <li>High Memory Cluster Eight Extra Large (cr1.8xlarge)</li>
+                  <li>D2 Double Extra Large (d2.2xlarge)</li>
+                  <li>D2 Quadruple Extra Large (d2.4xlarge)</li>
+                  <li>D2 Eight Extra Large (d2.8xlarge)</li>
+                  <li>D2 Extra Large (d2.xlarge)</li>
+                  <li>F1 16xlarge (f1.16xlarge)</li>
+                  <li>F1 Double Extra Large (f1.2xlarge)</li>
+                  <li>G2 Double Extra Large (g2.2xlarge)</li>
+                  <li>G2 Eight Extra Large (g2.8xlarge)</li>
+                  <li>G3 16xlarge (g3.16xlarge)</li>
+                  <li>G3 Quadruple Extra Large (g3.4xlarge)</li>
+                  <li>G3 Eight Extra Large (g3.8xlarge)</li>
+                  <li>H1 16xlarge (h1.16xlarge)</li>
+                  <li>H1 Double Extra Large (h1.2xlarge)</li>
+                  <li>H1 Quadruple Extra Large (h1.4xlarge)</li>
+                  <li>H1 Eight Extra Large (h1.8xlarge)</li>
+                  <li>High I/O Quadruple Extra Large (hi1.4xlarge)</li>
+                  <li>High Storage Eight Extra Large (hs1.8xlarge)</li>
+                  <li>I2 Double Extra Large (i2.2xlarge)</li>
+                  <li>I2 Quadruple Extra Large (i2.4xlarge)</li>
+                  <li>I2 Eight Extra Large (i2.8xlarge)</li>
+                  <li>I2 Extra Large (i2.xlarge)</li>
+                  <li>I3 High I/O 16xlarge (i3.16xlarge)</li>
+                  <li>I3 High I/O Double Extra Large (i3.2xlarge)</li>
+                  <li>I3 High I/O Quadruple Extra Large (i3.4xlarge)</li>
+                  <li>I3 High I/O Eight Extra Large (i3.8xlarge)</li>
+                  <li>I3 High I/O Large (i3.large)</li>
+                  <li>I3 High I/O Metal (i3.metal)</li>
+                  <li>I3 High I/O Extra Large (i3.xlarge)</li>
+                  <li>M1 General Purpose Large (m1.large)</li>
+                  <li>M1 General Purpose Medium (m1.medium)</li>
+                  <li>M1 General Purpose Small (m1.small)</li>
+                  <li>M1 General Purpose Extra Large (m1.xlarge)</li>
+                  <li>M2 High Memory Double Extra Large (m2.2xlarge)</li>
+                  <li>M2 High Memory Quadruple Extra Large (m2.4xlarge)</li>
+                  <li>M2 High Memory Extra Large (m2.xlarge)</li>
+                  <li>M3 General Purpose Double Extra Large (m3.2xlarge)</li>
+                  <li>M3 General Purpose Large (m3.large)</li>
+                  <li>M3 General Purpose Medium (m3.medium)</li>
+                  <li>M3 General Purpose Extra Large (m3.xlarge)</li>
+                  <li>M4 General Purpose Deca Extra Large (m4.10xlarge)</li>
+                  <li>M4 General Purpose 16xlarge (m4.16xlarge)</li>
+                  <li>M4 General Purpose Double Extra Large (m4.2xlarge)</li>
+                  <li>M4 General Purpose Quadruple Extra Large (m4.4xlarge)</li>
+                  <li>M4 General Purpose Large (m4.large)</li>
+                  <li>M4 General Purpose Extra Large (m4.xlarge)</li>
+                  <li>M5 General Purpose 12xlarge (m5.12xlarge)</li>
+                  <li>M5 General Purpose 24xlarge (m5.24xlarge)</li>
+                  <li>M5 General Purpose Double Extra Large (m5.2xlarge)</li>
+                  <li>M5 General Purpose Quadruple Extra Large (m5.4xlarge)</li>
+                  <li>M5 General Purpose Large (m5.large)</li>
+                  <li>M5 General Purpose Extra Large (m5.xlarge)</li>
+                  <li>M5 General Purpose 12xlarge (m5d.12xlarge)</li>
+                  <li>M5 General Purpose 24xlarge (m5d.24xlarge)</li>
+                  <li>M5 General Purpose Double Extra Large (m5d.2xlarge)</li>
+                  <li>M5 General Purpose Quadruple Extra Large (m5d.4xlarge)</li>
+                  <li>M5 General Purpose Large (m5d.large)</li>
+                  <li>M5 General Purpose Extra Large (m5d.xlarge)</li>
+                  <li>General Purpose GPU 16xlarge (p2.16xlarge)</li>
+                  <li>General Purpose GPU Eight Extra Large (p2.8xlarge)</li>
+                  <li>General Purpose GPU Extra Large (p2.xlarge)</li>
+                  <li>P3 16xlarge (p3.16xlarge)</li>
+                  <li>P3 Double Extra Large (p3.2xlarge)</li>
+                  <li>P3 Eight Extra Large (p3.8xlarge)</li>
+                  <li>R3 High-Memory Double Extra Large (r3.2xlarge)</li>
+                  <li>R3 High-Memory Quadruple Extra Large (r3.4xlarge)</li>
+                  <li>R3 High-Memory Eight Extra Large (r3.8xlarge)</li>
+                  <li>R3 High-Memory Large (r3.large)</li>
+                  <li>R3 High-Memory Extra Large (r3.xlarge)</li>
+                  <li>R4 High-Memory 16xlarge (r4.16xlarge)</li>
+                  <li>R4 High-Memory Double Extra Large (r4.2xlarge)</li>
+                  <li>R4 High-Memory Quadruple Extra Large (r4.4xlarge)</li>
+                  <li>R4 High-Memory Eight Extra Large (r4.8xlarge)</li>
+                  <li>R4 High-Memory Large (r4.large)</li>
+                  <li>R4 High-Memory Extra Large (r4.xlarge)</li>
+                  <li>R5 12xlarge (r5.12xlarge)</li>
+                  <li>R5 16xlarge (r5.16xlarge)</li>
+                  <li>R5 24xlarge (r5.24xlarge)</li>
+                  <li>R5 Double Extra Large (r5.2xlarge)</li>
+                  <li>R5 Quadruple Extra Large (r5.4xlarge)</li>
+                  <li>R5 Eight Extra Large (r5.8xlarge)</li>
+                  <li>R5 Large (r5.large)</li>
+                  <li>R5 Metal (r5.metal)</li>
+                  <li>R5 Extra Large (r5.xlarge)</li>
+                  <li>R5D 12xlarge (r5d.12xlarge)</li>
+                  <li>R5D 16xlarge (r5d.16xlarge)</li>
+                  <li>R5D 24xlarge (r5d.24xlarge)</li>
+                  <li>R5D Double Extra Large (r5d.2xlarge)</li>
+                  <li>R5D Quadruple Extra Large (r5d.4xlarge)</li>
+                  <li>R5D Eight Extra Large (r5d.8xlarge)</li>
+                  <li>R5D Large (r5d.large)</li>
+                  <li>R5D Metal (r5d.metal)</li>
+                  <li>R5D Extra Large (r5d.xlarge)</li>
+                  <li>T1 Micro (t1.micro)</li>
+                  <li>T2 Double Extra Large (t2.2xlarge)</li>
+                  <li>T2 Large (t2.large)</li>
+                  <li>T2 Medium (t2.medium)</li>
+                  <li>T2 Micro (t2.micro)</li>
+                  <li>T2 Nano (t2.nano)</li>
+                  <li>T2 Small (t2.small)</li>
+                  <li>T2 Extra Large (t2.xlarge)</li>
+                  <li>X1 Extra High-Memory 16xlarge (x1.16xlarge)</li>
+                  <li>X1 Extra High-Memory 32xlarge (x1.32xlarge)</li>
+                  <li>X1E 16xlarge (x1e.16xlarge)</li>
+                  <li>X1E Double Extra Large (x1e.2xlarge)</li>
+                  <li>X1E 32xlarge (x1e.32xlarge)</li>
+                  <li>X1E Quadruple Extra Large (x1e.4xlarge)</li>
+                  <li>X1E Eight Extra Large (x1e.8xlarge)</li>
+                  <li>X1E Extra Large (x1e.xlarge)</li>
+                  <li>Z1D 12xlarge (z1d.12xlarge)</li>
+                  <li>Z1D Double Extra Large (z1d.2xlarge)</li>
+                  <li>Z1D 3xlarge (z1d.3xlarge)</li>
+                  <li>Z1D 6xlarge (z1d.6xlarge)</li>
+                  <li>Z1D Large (z1d.large)</li>
+                  <li>Z1D Extra Large (z1d.xlarge)</li>
+              </ul>
           </td>
         </tr>
         <tr>
@@ -1696,17 +2090,148 @@
           <td>The instance type. The default is  <i>Large(m1.large)</i>. (Required)
             <ul>
               <li style="list-style-type: none; list-style-image: none; list-style-position: outside;">Options:</li>
-              <li>Small(m1.small)</li>
-              <li>Large(m1.large)</li>
-              <li>Extra Large(m1.xlarge)</li>
-              <li>Micro(t1.micro)</li>
-              <li>High-Memory Extra Large(m2.xlarge)</li>
-              <li>High-Memory Double Extra Large(m2.2xlarge)</li>
-              <li>High-Memory Quadruple Extra Large(m2.4xlarge)</li>
-              <li>High-CPU Medium(c1.medium)</li>
-              <li>High-CPU Extra Large(c1.xlarge)</li>
-              <li>Cluster Compute Quadruple Extra Large(cc1.4xlarge)</li>
-              <li>Cluster GPU Quadruple Extra Large(cg1.4xlarge)</li>
+                <li>C1 High-CPU Medium (c1.medium)</li>
+                <li>C1 High-CPU Extra Large (c1.xlarge)</li>
+                <li>C3 High-CPU Double Extra Large (c3.2xlarge)</li>
+                <li>C3 High-CPU Quadruple Extra Large (c3.4xlarge)</li>
+                <li>C3 High-CPU Eight Extra Large (c3.8xlarge)</li>
+                <li>C3 High-CPU Large (c3.large)</li>
+                <li>C3 High-CPU Extra Large (c3.xlarge)</li>
+                <li>C4 High-CPU Double Extra Large (c4.2xlarge)</li>
+                <li>C4 High-CPU Quadruple Extra Large (c4.4xlarge)</li>
+                <li>C4 High-CPU Eight Extra Large (c4.8xlarge)</li>
+                <li>C4 High-CPU Large (c4.large)</li>
+                <li>C4 High-CPU Extra Large (c4.xlarge)</li>
+                <li>C5 High-CPU 18xlarge (c5.18xlarge)</li>
+                <li>C5 High-CPU Double Extra Large (c5.2xlarge)</li>
+                <li>C5 High-CPU Quadruple Extra Large (c5.4xlarge)</li>
+                <li>C5 High-CPU 9xlarge (c5.9xlarge)</li>
+                <li>C5 High-CPU Large (c5.large)</li>
+                <li>C5 High-CPU Extra Large (c5.xlarge)</li>
+                <li>C5 High-CPU 18xlarge (c5d.18xlarge)</li>
+                <li>C5 High-CPU Double Extra Large (c5d.2xlarge)</li>
+                <li>C5 High-CPU Quadruple Extra Large (c5d.4xlarge)</li>
+                <li>C5 High-CPU 9xlarge (c5d.9xlarge)</li>
+                <li>C5 High-CPU Large (c5d.large)</li>
+                <li>C5 High-CPU Extra Large (c5d.xlarge)</li>
+                <li>Cluster Compute Quadruple Extra Large (cc1.4xlarge)</li>
+                <li>Cluster Compute Eight Extra Large (cc2.8xlarge)</li>
+                <li>Cluster GPU Quadruple Extra Large (cg1.4xlarge)</li>
+                <li>High Memory Cluster Eight Extra Large (cr1.8xlarge)</li>
+                <li>D2 Double Extra Large (d2.2xlarge)</li>
+                <li>D2 Quadruple Extra Large (d2.4xlarge)</li>
+                <li>D2 Eight Extra Large (d2.8xlarge)</li>
+                <li>D2 Extra Large (d2.xlarge)</li>
+                <li>F1 16xlarge (f1.16xlarge)</li>
+                <li>F1 Double Extra Large (f1.2xlarge)</li>
+                <li>G2 Double Extra Large (g2.2xlarge)</li>
+                <li>G2 Eight Extra Large (g2.8xlarge)</li>
+                <li>G3 16xlarge (g3.16xlarge)</li>
+                <li>G3 Quadruple Extra Large (g3.4xlarge)</li>
+                <li>G3 Eight Extra Large (g3.8xlarge)</li>
+                <li>H1 16xlarge (h1.16xlarge)</li>
+                <li>H1 Double Extra Large (h1.2xlarge)</li>
+                <li>H1 Quadruple Extra Large (h1.4xlarge)</li>
+                <li>H1 Eight Extra Large (h1.8xlarge)</li>
+                <li>High I/O Quadruple Extra Large (hi1.4xlarge)</li>
+                <li>High Storage Eight Extra Large (hs1.8xlarge)</li>
+                <li>I2 Double Extra Large (i2.2xlarge)</li>
+                <li>I2 Quadruple Extra Large (i2.4xlarge)</li>
+                <li>I2 Eight Extra Large (i2.8xlarge)</li>
+                <li>I2 Extra Large (i2.xlarge)</li>
+                <li>I3 High I/O 16xlarge (i3.16xlarge)</li>
+                <li>I3 High I/O Double Extra Large (i3.2xlarge)</li>
+                <li>I3 High I/O Quadruple Extra Large (i3.4xlarge)</li>
+                <li>I3 High I/O Eight Extra Large (i3.8xlarge)</li>
+                <li>I3 High I/O Large (i3.large)</li>
+                <li>I3 High I/O Metal (i3.metal)</li>
+                <li>I3 High I/O Extra Large (i3.xlarge)</li>
+                <li>M1 General Purpose Large (m1.large)</li>
+                <li>M1 General Purpose Medium (m1.medium)</li>
+                <li>M1 General Purpose Small (m1.small)</li>
+                <li>M1 General Purpose Extra Large (m1.xlarge)</li>
+                <li>M2 High Memory Double Extra Large (m2.2xlarge)</li>
+                <li>M2 High Memory Quadruple Extra Large (m2.4xlarge)</li>
+                <li>M2 High Memory Extra Large (m2.xlarge)</li>
+                <li>M3 General Purpose Double Extra Large (m3.2xlarge)</li>
+                <li>M3 General Purpose Large (m3.large)</li>
+                <li>M3 General Purpose Medium (m3.medium)</li>
+                <li>M3 General Purpose Extra Large (m3.xlarge)</li>
+                <li>M4 General Purpose Deca Extra Large (m4.10xlarge)</li>
+                <li>M4 General Purpose 16xlarge (m4.16xlarge)</li>
+                <li>M4 General Purpose Double Extra Large (m4.2xlarge)</li>
+                <li>M4 General Purpose Quadruple Extra Large (m4.4xlarge)</li>
+                <li>M4 General Purpose Large (m4.large)</li>
+                <li>M4 General Purpose Extra Large (m4.xlarge)</li>
+                <li>M5 General Purpose 12xlarge (m5.12xlarge)</li>
+                <li>M5 General Purpose 24xlarge (m5.24xlarge)</li>
+                <li>M5 General Purpose Double Extra Large (m5.2xlarge)</li>
+                <li>M5 General Purpose Quadruple Extra Large (m5.4xlarge)</li>
+                <li>M5 General Purpose Large (m5.large)</li>
+                <li>M5 General Purpose Extra Large (m5.xlarge)</li>
+                <li>M5 General Purpose 12xlarge (m5d.12xlarge)</li>
+                <li>M5 General Purpose 24xlarge (m5d.24xlarge)</li>
+                <li>M5 General Purpose Double Extra Large (m5d.2xlarge)</li>
+                <li>M5 General Purpose Quadruple Extra Large (m5d.4xlarge)</li>
+                <li>M5 General Purpose Large (m5d.large)</li>
+                <li>M5 General Purpose Extra Large (m5d.xlarge)</li>
+                <li>General Purpose GPU 16xlarge (p2.16xlarge)</li>
+                <li>General Purpose GPU Eight Extra Large (p2.8xlarge)</li>
+                <li>General Purpose GPU Extra Large (p2.xlarge)</li>
+                <li>P3 16xlarge (p3.16xlarge)</li>
+                <li>P3 Double Extra Large (p3.2xlarge)</li>
+                <li>P3 Eight Extra Large (p3.8xlarge)</li>
+                <li>R3 High-Memory Double Extra Large (r3.2xlarge)</li>
+                <li>R3 High-Memory Quadruple Extra Large (r3.4xlarge)</li>
+                <li>R3 High-Memory Eight Extra Large (r3.8xlarge)</li>
+                <li>R3 High-Memory Large (r3.large)</li>
+                <li>R3 High-Memory Extra Large (r3.xlarge)</li>
+                <li>R4 High-Memory 16xlarge (r4.16xlarge)</li>
+                <li>R4 High-Memory Double Extra Large (r4.2xlarge)</li>
+                <li>R4 High-Memory Quadruple Extra Large (r4.4xlarge)</li>
+                <li>R4 High-Memory Eight Extra Large (r4.8xlarge)</li>
+                <li>R4 High-Memory Large (r4.large)</li>
+                <li>R4 High-Memory Extra Large (r4.xlarge)</li>
+                <li>R5 12xlarge (r5.12xlarge)</li>
+                <li>R5 16xlarge (r5.16xlarge)</li>
+                <li>R5 24xlarge (r5.24xlarge)</li>
+                <li>R5 Double Extra Large (r5.2xlarge)</li>
+                <li>R5 Quadruple Extra Large (r5.4xlarge)</li>
+                <li>R5 Eight Extra Large (r5.8xlarge)</li>
+                <li>R5 Large (r5.large)</li>
+                <li>R5 Metal (r5.metal)</li>
+                <li>R5 Extra Large (r5.xlarge)</li>
+                <li>R5D 12xlarge (r5d.12xlarge)</li>
+                <li>R5D 16xlarge (r5d.16xlarge)</li>
+                <li>R5D 24xlarge (r5d.24xlarge)</li>
+                <li>R5D Double Extra Large (r5d.2xlarge)</li>
+                <li>R5D Quadruple Extra Large (r5d.4xlarge)</li>
+                <li>R5D Eight Extra Large (r5d.8xlarge)</li>
+                <li>R5D Large (r5d.large)</li>
+                <li>R5D Metal (r5d.metal)</li>
+                <li>R5D Extra Large (r5d.xlarge)</li>
+                <li>T1 Micro (t1.micro)</li>
+                <li>T2 Double Extra Large (t2.2xlarge)</li>
+                <li>T2 Large (t2.large)</li>
+                <li>T2 Medium (t2.medium)</li>
+                <li>T2 Micro (t2.micro)</li>
+                <li>T2 Nano (t2.nano)</li>
+                <li>T2 Small (t2.small)</li>
+                <li>T2 Extra Large (t2.xlarge)</li>
+                <li>X1 Extra High-Memory 16xlarge (x1.16xlarge)</li>
+                <li>X1 Extra High-Memory 32xlarge (x1.32xlarge)</li>
+                <li>X1E 16xlarge (x1e.16xlarge)</li>
+                <li>X1E Double Extra Large (x1e.2xlarge)</li>
+                <li>X1E 32xlarge (x1e.32xlarge)</li>
+                <li>X1E Quadruple Extra Large (x1e.4xlarge)</li>
+                <li>X1E Eight Extra Large (x1e.8xlarge)</li>
+                <li>X1E Extra Large (x1e.xlarge)</li>
+                <li>Z1D 12xlarge (z1d.12xlarge)</li>
+                <li>Z1D Double Extra Large (z1d.2xlarge)</li>
+                <li>Z1D 3xlarge (z1d.3xlarge)</li>
+                <li>Z1D 6xlarge (z1d.6xlarge)</li>
+                <li>Z1D Large (z1d.large)</li>
+                <li>Z1D Extra Large (z1d.xlarge)</li>
             </ul>
           </td>
         </tr>
@@ -1938,6 +2463,12 @@
     </div>
 
         <h1 id="rns">Release Notes</h1>
+        <h2>@PLUGIN_KEY@ 2.5.1</h2>
+        <ul>
+            <li>
+                Updated list of available instances (now it contains 142 items)
+            </li>
+        </ul>
         <h2>@PLUGIN_KEY@ 2.5.0</h2>
         <ul>
           <li>
