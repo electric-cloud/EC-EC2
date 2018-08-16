@@ -22,4 +22,6 @@ my $projName = "@PLUGIN_NAME@";
 
 $ec->deleteProperty("/projects/$projName/ec2_cfgs/$[config]");
 $ec->deleteCredential($projName, "$[config]");
+$ec->deleteCredential($projName, "$[config]" . '_proxy_credential');
+
 exit 0;
