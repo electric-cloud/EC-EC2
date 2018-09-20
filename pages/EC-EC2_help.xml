@@ -2465,9 +2465,8 @@
         <h1 id="rns">Release Notes</h1>
         <h2>@PLUGIN_KEY@ 2.5.2</h2>
         <ul>
-            <li>
-                Proxy credentials are now removed when configuration is deleted.
-            </li>
+            <li>Proxy credentials are now removed when configuration is deleted.</li>
+            <li>Logo icon has been added.</li>
         </ul>
         <h2>@PLUGIN_KEY@ 2.5.1</h2>
         <ul>
