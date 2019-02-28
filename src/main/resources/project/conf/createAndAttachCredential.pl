@@ -56,7 +56,7 @@ for my $credName (keys %credentials) {
     my $password = $xpath->findvalue("//password");
 
     # Create credential
-    my $projName = "@PLUGIN_KEY@-@PLUGIN_VERSION@";
+    my $projName = '@PLUGIN_KEY@-@PLUGIN_VERSION@';
 
     $ec->deleteCredential($projName, $credName);
     $xpath = $ec->createCredential($projName, $credName, $userName, $password);
@@ -73,7 +73,7 @@ for my $credName (keys %credentials) {
     $errors .= $ec->checkAllErrors($xpath);
 
     # Give job launcher full permissions on the credential
-    my $user = "$[/myJob/launchedByUser]";
+    my $user = '$[/myJob/launchedByUser]';
     $xpath = $ec->createAclEntry("user", $user, {
         projectName => $projName,
         credentialName => $credName,

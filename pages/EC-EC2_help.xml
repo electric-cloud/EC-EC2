@@ -21,7 +21,7 @@
     <p>Plugin Version @PLUGIN_VERSION@</p>
     <hr style="margin-left: -10px; margin-top: 10px; height: 1px; width: 100%; color: #5981BD;" noshade="noshade" />
 
-    <p>Revised on September 20, 2018</p>
+    <p>Revised on February, 2019</p>
 
 				<h1>Contents</h1>
 
@@ -2463,6 +2463,10 @@
     </div>
 
         <h1 id="rns">Release Notes</h1>
+        <h2>@PLUGIN_KEY@ 2.5.3</h2>
+        <ul>
+            <li>Fixed creating configuration by user with "@" in username.</li>
+        </ul>        
         <h2>@PLUGIN_KEY@ 2.5.2</h2>
         <ul>
             <li>Proxy credentials are now removed when configuration is deleted.</li>
