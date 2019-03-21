@@ -373,10 +373,6 @@ sub tearDownResource {
 
     my $proj = '@PLUGIN_NAME@';
 
-    if ( substr( $proj, 0, 1 ) eq '@' ) {
-        $proj = "EC-EC2-1.0.0.0";
-    }
-
     my $config = '';
     for my $inst (@$instances) {
         my $init = 0;
@@ -410,7 +406,7 @@ sub tearDownResource {
             1;
         } or do {
             mesg(0, "Can't get information from config provided. Can't terminate $inst->{instance_id}\n");
-            next;
+            return
         };
 
         eval {
@@ -460,7 +456,7 @@ sub API_AllocateIP {
 
     mesg( 1, "--Allocating Amazon EC2 Address -------\n" );
 
-    my $request = new Amazon::EC2::Model::AllocateAddressRequest();
+    my $request = Amazon::EC2::Model::AllocateAddressRequest->new();
     eval {
         my $response = $service->allocateAddress($request);
         if ( $response->isSetAllocateAddressResult() ) {
@@ -485,29 +481,6 @@ sub API_AllocateIP {
     exit 0;
 }
 
-sub MOCK_API_AllocateIP {
-    my ( $opts, $service ) = @_;
-
-    my $ip = "";
-    my $propResult = getOptionalParam( "propResult", $opts );
-
-    mesg( 1, "--Allocating Amazon EC2 Address -------\n" );
-
-    my $r1 = getRandKey(255);
-    my $r2 = getRandKey(255);
-    $ip = "192.168.$r1.$2";
-    $opts->{pdb}->setProp( "$::gMockRegistry/ElasticIPS", $ip );
-
-    mesg( 1, "Address $ip allocated\n" );
-
-    ## store new key in properties
-    if ( "$propResult" ne "" ) {
-        $opts->{pdb}->setProp( "$propResult/ip", $ip );
-    }
-
-    exit 0;
-}
-
 sub API_AssociateIP {
     my ( $opts, $service ) = @_;
 
@@ -517,7 +490,7 @@ sub API_AssociateIP {
 
     require Amazon::EC2::Model::AssociateAddressRequest;
 
-    my $request = new Amazon::EC2::Model::AssociateAddressRequest(
+    my $request = Amazon::EC2::Model::AssociateAddressRequest->new(
         { "InstanceId" => "$instance", "PublicIp" => "$ip" } );
 
     # associate address
@@ -529,17 +502,6 @@ sub API_AssociateIP {
     mesg( 1, "Address $ip associated with instance $instance\n" );
 }
 
-sub MOCK_API_AssociateIP {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Associate Amazon EC2 Address -------\n" );
-    my $ip       = getRequiredParam( "ip",       $opts );
-    my $instance = getRequiredParam( "instance", $opts );
-
-    $opts->{pdb}->setProp( "$::gMockRegistry/IPAssociations/$ip", $instance );
-
-    mesg( 1, "Address $ip associated with instance $instance\n" );
-}
 
 sub API_ReleaseIP {
     my ( $opts, $service ) = @_;
@@ -550,7 +512,7 @@ sub API_ReleaseIP {
     my $ip = getRequiredParam( "ip", $opts );
 
     my $request =
-      new Amazon::EC2::Model::ReleaseAddressRequest( { "PublicIp" => "$ip" } );
+      Amazon::EC2::Model::ReleaseAddressRequest->new( { "PublicIp" => "$ip" } );
 
     eval { my $response = $service->releaseAddress($request); };
     if ($@) { throwEC2Error($@); }
@@ -560,29 +522,6 @@ sub API_ReleaseIP {
     exit 0;
 }
 
-sub MOCK_API_ReleaseIP {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Releasing Amazon EC2 Address -------\n" );
-
-    # see if an IP was passed in
-    my $ip = getRequiredParam( "ip", $opts );
-
-    # if associated, throw error
-    my $instance = $opts->{pdb}->setProp("$::gMockRegistry/IPAssociations/$ip");
-    if ( $instance ne "" ) {
-        mesg( 1, "Caught Exception: " . "IP address in use\n" );
-    }
-    else {
-
-        # else remove
-        $opts->{pdb}->deleteProp("$::gMockRegistry/ElasticIPS/$ip");
-    }
-
-    mesg( 1, "Address $ip released\n" );
-
-    exit 0;
-}
 
 sub API_AttachVolume {
     my ( $opts, $service ) = @_;
@@ -630,7 +569,7 @@ sub API_AttachVolume {
                 # check to make sure volume is in available state
                 eval {
                     my $request =
-                      new Amazon::EC2::Model::DescribeVolumesRequest(
+                      Amazon::EC2::Model::DescribeVolumesRequest->new(
                         { "VolumeId" => "$vol_id" } );
                     my $response = $service->describeVolumes($request);
                     if ( $response->isSetDescribeVolumesResult() ) {
@@ -653,7 +592,7 @@ sub API_AttachVolume {
                     mesg( 1, "Trying to attach $vol_id to $instance_id\n" );
                     eval {
                         my $request =
-                          new Amazon::EC2::Model::AttachVolumeRequest(
+                          Amazon::EC2::Model::AttachVolumeRequest->new(
                             {
                                 "VolumeId"   => "$vol_id",
                                 "InstanceId" => "$instance_id",
@@ -688,83 +627,6 @@ sub API_AttachVolume {
     exit 0;
 }
 
-sub MOCK_API_AttachVolume {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "-- Attach Volumes -------\n" );
-
-    my $instlist1 = getRequiredParam( "instances", $opts );
-    my $vollist1  = getRequiredParam( "volumes",   $opts );
-    my $device    = getRequiredParam( "device",    $opts );
-
-    my $attachCount = 0;
-
-    my @instlist = split( /;/, $instlist1 );
-    my @vollist  = split( /;/, $vollist1 );
-
-    if ( scalar(@vollist) == 0 ) {
-        mesg( 1, "--No volumes to attach\n" );
-        exit 0;
-    }
-
-    # pair instances with volumes in order
-    my %vol_id_match;
-    my $i = 0;
-    foreach (@instlist) {
-        my $instance_id = $_;
-        $vol_id_match{$instance_id} = @vollist[$i];
-        $i++;
-    }
-
-    my $done = 0;
-    my %doneList;
-    while ( !$done ) {
-        $done = 1;
-        foreach (@instlist) {
-            my $instance_id = $_;
-            my $vol_id      = $vol_id_match{$instance_id};
-            my $status      = "";
-
-            if ( "$vol_id" eq "" ) { next; }
-
-            if ( !$doneList{$vol_id} ) {
-
-                # at least one more to process
-                $done = 0;
-
-                mesg( 1, "Attaching $vol_id to instance $instance_id\n" );
-
-                $status = "available";
-
-                mesg( 1, "Volume $vol_id is in state $status\n" );
-                if ( "$status" eq "available" ) {
-                    mesg( 1, "Attaching $vol_id to instance $instance_id\n" );
-                    $opts->{pdb}->setProp(
-                        "$::gMockRegistry/Instances/$instance_id/volume",
-                        "$vol_id" );
-                    $opts->{pdb}->setProp(
-                        "$::gMockRegistry/Instances/$instance_id/device",
-                        "$device" );
-                    $opts->{pdb}
-                      ->setProp( "$::gMockRegistry/Volumes/$vol_id/instance",
-                        $instance_id );
-
-                    mesg( 1,
-                        "Volume $vol_id attached to instance $instance_id\n" );
-                    $doneList{$vol_id} = 1;
-                    $attachCount++;
-                }
-            }
-            else {
-                mesg( 1, "Volume $vol_id already attached to $instance_id.\n" );
-            }
-        }
-        sleep(10);
-    }
-
-    mesg( 1, "$attachCount volumes were attached to instances.\n" );
-    exit 0;
-}
 
 sub API_CreateKeyPair {
     my ( $opts, $service ) = @_;
@@ -775,7 +637,7 @@ sub API_CreateKeyPair {
     my $pem;
 
     mesg( 1, "Create request...\n" );
-    my $request = new Amazon::EC2::Model::CreateKeyPairRequest(
+    my $request = Amazon::EC2::Model::CreateKeyPairRequest->new(
         { "KeyName" => "$newkeyname" } );
 
     eval {
@@ -818,7 +680,7 @@ sub API_CreateVPC {
     my $VpcState;
 
     mesg( 1, "Create request...\n" );
-    my $request = new Amazon::EC2::Model::CreateVpcRequest(
+    my $request = Amazon::EC2::Model::CreateVpcRequest->new(
         { "CidrBlock" => "$cidrBlock" } );
 
     eval {
@@ -889,7 +751,7 @@ sub API_CreateVPC {
         }
         eval {
 
-            my $describeRequest = new Amazon::EC2::Model::DescribeVpcsRequest(
+            my $describeRequest = Amazon::EC2::Model::DescribeVpcsRequest->new(
                 { "VpcId" => "$VpcId" } );
             my $describeVpcResponse = $service->describeVpcs($describeRequest);
             if ( $describeVpcResponse->isSetDescribeVpcsResult() ) {
@@ -944,7 +806,7 @@ sub API_CreateSubnet {
     my $createSubnetResult;
 
     mesg( 1, "Create request...\n" );
-    my $request = new Amazon::EC2::Model::CreateSubnetRequest(
+    my $request = Amazon::EC2::Model::CreateSubnetRequest->new(
         {
             "VpcId"            => "$vpcId",
             "CidrBlock"        => "$cidrBlock",
@@ -1050,7 +912,7 @@ sub API_CreateSubnet {
         eval {
 
             my $describeRequest =
-              new Amazon::EC2::Model::DescribeSubnetsRequest(
+              Amazon::EC2::Model::DescribeSubnetsRequest->new(
                 { "SubnetId" => "$subnetId" } );
             my $describeSubnetResponse =
               $service->describeSubnets($describeRequest);
@@ -1100,7 +962,7 @@ sub API_DeleteVPC {
     my @listOfSubnets;
 
     ## Get the list of all subnets within VPC.
-    my $subnetFilter = new Amazon::EC2::Model::Filter(
+    my $subnetFilter = Amazon::EC2::Model::Filter->new(
         { "Name" => "vpc-id", "Value" => "$vpcId" } );
 
     require Amazon::EC2::Model::DescribeSubnetsRequest;
@@ -1108,7 +970,7 @@ sub API_DeleteVPC {
     require Amazon::EC2::Model::DescribeSubnetsResult;
 
     eval {
-        my $describeRequest = new Amazon::EC2::Model::DescribeSubnetsRequest();
+        my $describeRequest = Amazon::EC2::Model::DescribeSubnetsRequest->new();
         $describeRequest->setFilter($subnetFilter);
         my $describeSubnetResponse =
           $service->describeSubnets($describeRequest);
@@ -1128,7 +990,7 @@ sub API_DeleteVPC {
     foreach $subnet (@listOfSubnets) {
 
         mesg( 1, "--Deleting subnet $subnet -------\n" );
-        $request = new Amazon::EC2::Model::DeleteSubnetRequest(
+        $request = Amazon::EC2::Model::DeleteSubnetRequest->new(
             { "SubnetId" => "$subnet" } );
 
         eval {
@@ -1160,7 +1022,7 @@ sub API_DeleteVPC {
 
     mesg( 1, "--Deleting VPC $vpcId -------\n" );
     $request =
-      new Amazon::EC2::Model::DeleteVpcRequest( { "VpcId" => "$vpcId" } );
+      Amazon::EC2::Model::DeleteVpcRequest->new( { "VpcId" => "$vpcId" } );
 
     eval {
 
@@ -1189,29 +1051,6 @@ sub API_DeleteVPC {
     exit 0;
 }
 
-sub MOCK_API_CreateKeyPair {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Creating Amazon EC2 KeyPair -------\n" );
-
-    my $newkeyname = getRequiredParam( "keyname", $opts );
-    my $propResult = getOptionalParam( "propResult", $opts );
-    my $pem;
-
-    $pem = "lalalala";
-    $opts->{pdb}
-      ->setProp( $::gMockRegistry . "/Keypairs/$newkeyname", "created" );
-
-    ## store new key in properties
-    if ( "$propResult" ne "" ) {
-        $opts->{pdb}->setProp( "$propResult/KeyPairId", $newkeyname );
-    }
-
-    ## extract private key from results
-    extract_keyfile( $newkeyname . ".pem", $pem );
-    mesg( 1, "KeyPair $newkeyname created\n" );
-    exit 0;
-}
 
 sub API_DeleteKeyPair {
     my ( $opts, $service ) = @_;
@@ -1222,7 +1061,7 @@ sub API_DeleteKeyPair {
     my $keynames = getRequiredParam( "keyname", $opts );
     my @keylist = split( /;/, "$keynames" );
     foreach my $keyname (@keylist) {
-        my $request = new Amazon::EC2::Model::DeleteKeyPairRequest(
+        my $request = Amazon::EC2::Model::DeleteKeyPairRequest->new(
             { "KeyName" => "$keyname" } );
 
         eval { my $response = $service->deleteKeyPair($request); };
@@ -1232,20 +1071,6 @@ sub API_DeleteKeyPair {
     exit 0;
 }
 
-sub MOCK_API_DeleteKeyPair {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Deleting Amazon EC2 KeyPair -------\n" );
-
-    # see if a key was created for this tag
-    my $keynames = getRequiredParam( "keyname", $opts );
-    my @keylist = split( /;/, "$keynames" );
-    foreach my $keyname (@keylist) {
-        $opts->{pdb}->deleteProp("$::gMockData/Keypairs/$keyname");
-        mesg( 1, "KeyPair $keyname deleted\n" );
-    }
-    exit 0;
-}
 
 sub CreateVolume {
     my ( $opts, $service ) = @_;
@@ -1278,7 +1103,7 @@ sub CreateVolume {
               $opts->{pdb}->getProp("$propResult/Instance-$id/Zone");
             mesg( 1, "Creating volume from snapshot in zone $actualZone\n" );
 
-            my $request = new Amazon::EC2::Model::CreateVolumeRequest(
+            my $request = Amazon::EC2::Model::CreateVolumeRequest->new(
                 {
                     "SnapshotId"       => "$snap_id",
                     "AvailabilityZone" => "$actualZone"
@@ -1313,7 +1138,7 @@ sub CreateVolume {
         sleep 10;
         eval {
             mesg( 1, "Waiting for volume $newvol\n" );
-            my $request  = new Amazon::EC2::Model::DescribeVolumesRequest();
+            my $request  = Amazon::EC2::Model::DescribeVolumesRequest->new();
             my $response = $service->describeVolumes($request);
             if ( $response->isSetDescribeVolumesResult() ) {
                 my $result  = $response->getDescribeVolumesResult();
@@ -1335,45 +1160,6 @@ sub CreateVolume {
     exit 0;
 }
 
-sub MOCK_CreateVolume {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "-- Create Volume  -------\n" );
-    my $snap_id = $opts->{snapshot};
-    my $propResult = getRequiredParam( "propResult", $opts );
-    if ( "$snap_id" eq "" ) {
-        mesg( 0, "No snapshots to process.\n" );
-        $opts->{pdb}->setProp( "$propResult/VolumeList", "" );
-        exit 0;
-    }
-
-    my $propResult = getRequiredParam( "propResult", $opts );
-    $opts->{pdb}->setProp( "$propResult/Snapshot", "$snap_id" );
-
-    # get list of instances
-    my $instListProp = $opts->{pdb}->getProp("$propResult/InstanceList");
-    my @instList = split( /;/, $instListProp );
-
-    my %volsCreated;
-    my $vollist = "";
-    foreach (@instList) {
-        my $id     = $_;
-        my $v      = getRandKey(9999999);
-        my $newvol = "vol-$v";
-        mesg( 1,
-"New volume $newvol created from snapshot $snap_id for instance $id\n"
-        );
-        $opts->{pdb}->setProp( "$propResult/Instance-$id/NewVolume", $newvol );
-
-        $opts->{pdb}
-          ->setProp( "$::gMockRegistry/Volumes/$newvol/state", "created" );
-        if ( "$vollist" ne "" ) { $vollist .= ";"; }
-        $vollist .= $newvol;
-    }
-    $opts->{pdb}->setProp( "$propResult/VolumeList", $vollist );
-    mesg( 1, "Snapshot $snap_id used to create volumes\n" );
-    exit 0;
-}
 
 sub SnapVolume {
     my ( $opts, $service ) = @_;
@@ -1396,7 +1182,7 @@ sub SnapVolume {
 
     ## double check that the volume is attached to the instance
     eval {
-        my $request = new Amazon::EC2::Model::DescribeVolumesRequest(
+        my $request = Amazon::EC2::Model::DescribeVolumesRequest->new(
             { "VolumeId" => "$vol" } );
         my $response = $service->describeVolumes($request);
         if ( $response->isSetDescribeVolumesResult() ) {
@@ -1424,7 +1210,7 @@ sub SnapVolume {
 
     ## create a snapshot from volume
     eval {
-        my $request = new Amazon::EC2::Model::CreateSnapshotRequest(
+        my $request = Amazon::EC2::Model::CreateSnapshotRequest->new(
             { "VolumeId" => "$vol" } );
         my $response = $service->createSnapshot($request);
         if ( $response->isSetCreateSnapshotResult() ) {
@@ -1441,34 +1227,6 @@ sub SnapVolume {
     exit 0;
 }
 
-sub MOCK_SnapVolume {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "-- Snapping Volume -------\n" );
-
-    my $vol        = getRequiredParam( "volume",     $opts );
-    my $instance   = getRequiredParam( "instance",   $opts );
-    my $propResult = getRequiredParam( "propResult", $opts );
-    my $snap_id    = "";
-
-    if ( "$vol" eq "" ) {
-        mesg( 0, "Volume parameter is blank.\n" );
-        exit 0;
-    }
-    if ( "$instance" eq "" ) {
-        mesg( 0, "Instance parameter is blank.\n" );
-        exit 0;
-    }
-
-    my $r = getRandKey(9999999);
-    $snap_id = "snap-$r";
-    $opts->{pdb}->setProp( "$::gMockRegistry/Snapshots/$snap_id", "created" );
-    mesg( 1, "Created new snapshot $snap_id\n" );
-
-    # return new snapid
-    $opts->{pdb}->setProp( "$propResult/NewSnapshot", $snap_id );
-    exit 0;
-}
 
 sub _DescribeInstance {
     my ($service, $resultHash, $instanceName, $filter) = @_;
@@ -1481,9 +1239,9 @@ sub _DescribeInstance {
     }
 
     eval {
-        my $request = new Amazon::EC2::Model::DescribeInstancesRequest($instance);
+        my $request = Amazon::EC2::Model::DescribeInstancesRequest->new($instance);
         if(defined $filter) {
-            my $describeInstancesFilter = new Amazon::EC2::Model::Filter($filter);
+            my $describeInstancesFilter = Amazon::EC2::Model::Filter->new($filter);
             $request->setFilter($describeInstancesFilter);
         }
 
@@ -1495,20 +1253,28 @@ sub _DescribeInstance {
 
             foreach my $res (@$resList) {
                 my $instanceList = $res->getRunningInstance();
-                foreach my $instance (@$instanceList) {
-                            my $stateObj = $instance->getInstanceState();
-                            $resultHash->{$instance->getInstanceId()} = {};
-                            my $instanceHash = $resultHash->{$instance->getInstanceId()};
-                             $instanceHash->{state} = $stateObj->getName();
-                               $instanceHash->{image} = $instance->getImageId();
-                            $instanceHash->{prvdns} = ref $instance->getPrivateDnsName() eq ref {} ? "" : $instance->getPrivateDnsName();
-                            $instanceHash->{pubdns} = ref $instance->getPublicDnsName() eq ref {} ? "" : $instance->getPublicDnsName();
-                            $instanceHash->{key} = $instance->getKeyName();
-                            $instanceHash->{type} = $instance->getInstanceType();
-                            $instanceHash->{launch} = $instance->getLaunchTime();
-                            my $placement = $instance->getPlacement();
-                            $instanceHash->{zone} = $placement->getAvailabilityZone();
-                        }
+                foreach my $ins (@$instanceList) {
+                    my $stateObj = $ins->getInstanceState();
+                    $resultHash->{$ins->getInstanceId()} = {};
+
+                    my $instanceHash = $resultHash->{$ins->getInstanceId()};
+                    $instanceHash->{state} = $stateObj->getName();
+                    $instanceHash->{image} = $ins->getImageId();
+                    $instanceHash->{prvdns} = ( ref $ins->getPrivateDnsName() eq 'HASH' )
+                        ? ""
+                        : $ins->getPrivateDnsName();
+
+                    $instanceHash->{pubdns} = ( ref $ins->getPublicDnsName() eq 'HASH' )
+                        ? ""
+                        : $ins->getPublicDnsName();
+
+                    $instanceHash->{key} = $ins->getKeyName();
+                    $instanceHash->{type} = $ins->getInstanceType();
+                    $instanceHash->{launch} = $ins->getLaunchTime();
+
+                    my $placement = $ins->getPlacement();
+                    $instanceHash->{zone} = $placement->getAvailabilityZone();
+                }
             }
         }
     };
@@ -1588,82 +1354,6 @@ sub API_DescribeInstances {
 
 }
 
-sub MOCK_API_DescribeInstances {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "-- Describe Instances -------\n" );
-
-    # possible states
-    #   pending
-    #   running
-    #   shutting-down
-    #   terminated
-    #   stopping
-    #   stopped
-    #
-    # answer will be in form $resultHash->{instance} = state;
-    my $resultHash;
-
-    # instances can be of 2 forms
-    # 1-  a single instance i-1232
-    # 2 - a list of instances i-1232;i-4566
-    my $reservation = getRequiredParam( "instances", $opts );
-    my $propResult = getOptionalParam( "propResult", $opts );
-
-    @instances = split( /;/, $reservation );
-    mesg( 1,
-        " found " . scalar(@instances) . " in instance list $reservation\n" );
-
-    foreach my $instanceName (@instances) {
-        mesg( 2, " describing $instanceName\n" );
-        $resultHash->{$instanceName}{state} =
-          $opts->{pdb}
-          ->getProp("$::gMockRegistry/Instances/$instanceName/state");
-        if ( $resultHash->{$instanceName}{state} eq "" ) {
-            $resultHash->{$instanceName}{state} = "terminated";
-        }
-        $resultHash->{$instanceName}{image} =
-          $opts->{pdb}
-          ->getProp("$::gMockRegistry/Instances/$instanceName/image");
-        $resultHash->{$instanceName}{pvrdns} =
-          $opts->{pdb}
-          ->getProp("$::gMockRegistry/Instances/$instanceName/pvrdns");
-        $resultHash->{$instanceName}{pubdns} =
-          $opts->{pdb}
-          ->getProp("$::gMockRegistry/Instances/$instanceName/pubdns");
-        $resultHash->{$instanceName}{key} =
-          $opts->{pdb}->getProp("$::gMockRegistry/Instances/$instanceName/key");
-        $resultHash->{$instanceName}{type} =
-          $opts->{pdb}
-          ->getProp("$::gMockRegistry/Instances/$instanceName/type");
-        $resultHash->{$instanceName}{launch} =
-          $opts->{pdb}
-          ->getProp("$::gMockRegistry/Instances/$instanceName/launch");
-        $resultHash->{$instanceName}{zone} =
-          $opts->{pdb}
-          ->getProp("$::gMockRegistry/Instances/$instanceName/zone");
-        $resultHash->{$instanceName}{volue} =
-          $opts->{pdb}
-          ->getProp("$::gMockRegistry/Instances/$instanceName/volume");
-    }
-    my $xml = "<DescribeResponse>";
-    foreach my $i ( keys %{$resultHash} ) {
-        $xml .= "  <instance>\n";
-        $xml .= "    <id>$i</id>\n";
-        foreach my $p ( keys %{ $resultHash->{$i} } ) {
-            $xml .= "    <$p>" . $resultHash->{$i}{$p} . "</$p>\n";
-        }
-        $xml .= "  </instance>\n";
-    }
-    $xml .= "</DescribeResponse>\n";
-    if ( !$propResult ) {
-        mesg( 0, "$xml" );
-    }
-    else {
-        $opts->{pdb}->setProp( "$propResult/describe", $xml );
-    }
-}
-
 sub API_DeleteVol {
     my ( $opts, $service ) = @_;
 
@@ -1691,7 +1381,7 @@ sub API_DeleteVol {
         my $status = "";
         while (1) {
             eval {
-                my $request = new Amazon::EC2::Model::DescribeVolumesRequest(
+                my $request = Amazon::EC2::Model::DescribeVolumesRequest->new(
                     { "VolumeId" => "$vol_id" } );
                 my $response = $service->describeVolumes($request);
                 if ( $response->isSetDescribeVolumesResult() ) {
@@ -1717,7 +1407,7 @@ sub API_DeleteVol {
             if ( $status eq "in-use" ) {
                 mesg( 1, "Trying to detach $vol_id\n" );
                 eval {
-                    my $request = new Amazon::EC2::Model::DetachVolumeRequest(
+                    my $request = Amazon::EC2::Model::DetachVolumeRequest->new(
                         { "VolumeId" => "$vol_id" } );
                     my $response = $service->detachVolume($request);
                 };
@@ -1735,7 +1425,7 @@ sub API_DeleteVol {
             ## delete volume
             eval {
                 mesg( 1, "Deleting volume $vol_id\n" );
-                my $request = new Amazon::EC2::Model::DeleteVolumeRequest(
+                my $request = Amazon::EC2::Model::DeleteVolumeRequest->new(
                     { "VolumeId" => "$vol_id" } );
                 my $response = $service->deleteVolume($request);
             };
@@ -1755,59 +1445,6 @@ sub API_DeleteVol {
     exit 0;
 }
 
-sub MOCK_API_DeleteVol {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "-- Delete Dynamic Volume -------\n" );
-
-    my $volumes = $opts->{volumes};
-    my @volumeList = split( /;/, "$volumes" );
-    if ( @volumeList == 0 ) {
-        mesg( 1, "No volumes to delete.\n" );
-        exit 0;
-    }
-
-    my $detachOnly = getRequiredParam( "detachOnly", $opts );
-
-    my $delCount = 0;
-    my $detCount = 0;
-
-    foreach (@volumeList) {
-        my $vol_id = $_;
-
-        mesg( 1, "Deleting Volume $vol_id\n" );
-
-        # if volume attached
-        my $instance =
-          $opts->{pdb}->getProp("$::gMockRegistry/Volumes/$vol_id/instance");
-
-        if ( $instance ne "" ) {
-            mesg( 1, "Trying to detach $vol_id\n" );
-            $opts->{pdb}
-              ->setProp( "$::gMockRegistry/Volumes/$vol_id/instance", "" );
-            $opts->{pdb}
-              ->setProp( "$::gMockRegistry/Instances/$instance/volume", "" );
-            $detCount++;
-            mesg( 1, "Volume $vol_id detached\n" );
-        }
-
-        if ( !$detachOnly ) {
-            ## delete volume
-            $opts->{pdb}->delRow("$::gMockRegistry/Volumes/$vol_id");
-            mesg( 1, "Volume $vol_id deleted\n" );
-            $delCount++;
-        }
-
-    }
-
-    if ( !$detachOnly ) {
-        mesg( 1, "$delCount volumes deleted.\n" );
-    }
-    else {
-        mesg( 1, "$detCount volumes detached.\n" );
-    }
-    exit 0;
-}
 
 sub API_Start {
     my ( $opts, $service ) = @_;
@@ -1822,7 +1459,7 @@ sub API_Start {
 
     eval {
 
-        my $request = new Amazon::EC2::Model::StartInstancesRequest(
+        my $request = Amazon::EC2::Model::StartInstancesRequest->new(
             { "InstanceId" => "$instance", } );
         my $response = $service->startInstances($request);
     };
@@ -1830,21 +1467,6 @@ sub API_Start {
     exit 0;
 }
 
-sub MOCK_API_Start {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Start Amazon EC2 Instance -------\n" );
-
-    my $instance = getRequiredParam( "instance", $opts );
-
-    ## start EBS instance
-
-    mesg( 1, "Starting instance\n" );
-
-    $opts->{pdb}
-      ->setProp( "$::gMockRegistry/Instances/$instance/state", "running" );
-    exit 0;
-}
 
 sub API_Stop {
     my ( $opts, $service ) = @_;
@@ -1859,7 +1481,7 @@ sub API_Stop {
 
     eval {
 
-        my $request = new Amazon::EC2::Model::StopInstancesRequest(
+        my $request = Amazon::EC2::Model::StopInstancesRequest->new(
             { "InstanceId" => "$instance", } );
         my $response = $service->stopInstances($request);
     };
@@ -1868,33 +1490,19 @@ sub API_Stop {
 
 }
 
-sub MOCK_API_Stop {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Stop Amazon EC2 Instance -------\n" );
-
-    my $instance = getRequiredParam( "instance", $opts );
-
-    ## stop EBS instance
-    mesg( 1, "Stopping instance\n" );
-
-    $opts->{pdb}
-      ->setProp( "$::gMockRegistry/Instances/$instance/state", "stopped" );
-    exit 0;
-}
 
 sub _wait_for_instance_termination {
 
     my ($list, $service)  = @_;
     my $terminated = 0;         # instances terminated till now
-    my $total   = @list;        # total number of instance to terminate
+    my $total      = scalar @$list;        # total number of instance to terminate
     my $instanceState = "";     # initial state of an instance
 
      foreach (@$list) {
          my $instanceId = $_;
             while($instanceState ne "terminated"){
                 eval {
-                    my $request = new Amazon::EC2::Model::DescribeInstancesRequest(
+                    my $request = Amazon::EC2::Model::DescribeInstancesRequest->new(
                         { "InstanceId" => "$instanceId" } );
                     my $response = $service->describeInstances($request);
 
@@ -1937,7 +1545,7 @@ sub _terminate_instance {
 
     my ( $request, $response );
     eval {
-        $request = new Amazon::EC2::Model::TerminateInstancesRequest(
+        $request = Amazon::EC2::Model::TerminateInstancesRequest->new(
             { "InstanceId" => "$instanceId" } );
         $response = $service->terminateInstances($request);
         my @list = ( $instanceId );
@@ -1961,13 +1569,11 @@ sub API_TerminateInstances {
     my $termCount = 0;
     my $terminated;
     my @list = getInstanceList( $id, $service );
-    foreach (@list) {
-        my $id = $_;
-
-        mesg( 1, "Terminating instance $id\n" );
+    foreach my $instance_id (@list) {
+        mesg( 1, "Terminating instance $instance_id\n" );
         eval {
-            my $request = new Amazon::EC2::Model::TerminateInstancesRequest(
-                { "InstanceId" => "$id" } );
+            my $request = Amazon::EC2::Model::TerminateInstancesRequest->new(
+                { "InstanceId" => "$instance_id" } );
             my $response = $service->terminateInstances($request);
         };
         if ($@) { throwEC2Error($@); }
@@ -1985,32 +1591,6 @@ sub API_TerminateInstances {
     exit 0;
 }
 
-sub MOCK_API_TerminateInstances {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Terminate Amazon EC2 Instance -------\n" );
-    my $id = getRequiredParam( "id", $opts );
-    my $resources = getOptionalParam( "resources", $opts );
-
-    ## terminate instance
-    my $termCount = 0;
-    my @list = getInstanceList( $id, $service );
-    foreach (@list) {
-        my $id = $_;
-        mesg( 1, "Terminating instance $id\n" );
-        $opts->{pdb}
-          ->setProp( "$::gMockRegistry/Instances/$id/state", "terminated" );
-        $termCount++;
-    }
-    mesg( 1, "$termCount instances terminated.\n" );
-
-    mesg( 1, "Deleting resources.\n" );
-    my @rlist = split( /;/, $resources );
-    foreach my $r (@rlist) {
-        deleteResource( $opts, $r );
-    }
-    exit 0;
-}
 
 sub API_TearDownResource {
     my ( $opts, $service ) = @_;
@@ -2034,17 +1614,14 @@ sub API_TearDownResource {
     }
 
     my ( $createdBy, $instance_id, $config_name );
-    $p_path = "/resources/$resource_name/ec_cloud_instance_details";
+    my $p_path = "/resources/$resource_name/ec_cloud_instance_details";
     eval {
         $createdBy =
-          $ec->getProperty("$p_path/createdBy")->findvalue('//value')
-          ->string_value;
+          $ec->getProperty("$p_path/createdBy")->findvalue('//value')->string_value;
         $instance_id =
-          $ec->getProperty("$p_path/instance_id")->findvalue('//value')
-          ->string_value;
+          $ec->getProperty("$p_path/instance_id")->findvalue('//value')->string_value;
         $config_name =
-          $ec->getProperty("$p_path/config")->findvalue('//value')
-          ->string_value;
+          $ec->getProperty("$p_path/config")->findvalue('//value')->string_value;
         1;
     } or do {
         mesg( 1,
@@ -2088,8 +1665,8 @@ sub getInstanceList($$) {
 
     # otherwise make a list of each instance in the reservation
     eval {
-        my $reservationFilter = new Amazon::EC2::Model::Filter({ "Name" => "reservation-id", "Value" => $resIn } );
-        my $request = new Amazon::EC2::Model::DescribeInstancesRequest();
+        my $reservationFilter = Amazon::EC2::Model::Filter->new({ "Name" => "reservation-id", "Value" => $resIn } );
+        my $request = Amazon::EC2::Model::DescribeInstancesRequest->new();
         $request->setFilter($reservationFilter);
         my $response = $service->describeInstances($request);
 
@@ -2102,7 +1679,7 @@ sub getInstanceList($$) {
 
                 # if instance not in reservation
                 if ( "$resId" ne "$resIn" ) { next; }
-                $instanceList = $res->getRunningInstance();
+                my $instanceList = $res->getRunningInstance();
                 foreach (@$instanceList) {
                     my $instance = $_;
                     my $id       = $instance->getInstanceId();
@@ -2121,21 +1698,6 @@ sub getInstanceList($$) {
 #    instance of the form i-xxxxx
 #    instance list of the form i-xxxx;i-xxxxx;i-xxxxxx
 #
-sub MOCK_getInstanceList($$) {
-    my ( $resIn, $service ) = @_;
-
-    my @list;
-
-# if first letter of id is "r" then we want to terminate all instances of reservation.
-# If the first letter is "i" then we only want to terminate a specific instance or list of instances
-    if ( $resIn =~ m/i-/ ) {
-        @list = split( /;/, $resIn );
-        return @list;
-    }
-
-    print "Mock Data mode does not support reservations...\n";
-    exit 1;
-}
 
 sub DeregisterInstance {
     my ( $opts, $service ) = @_;
@@ -2145,22 +1707,10 @@ sub DeregisterInstance {
     my $ami = getRequiredParam( "ami", $opts );
 
     my $request =
-      new Amazon::EC2::Model::DeregisterImageRequest( { "ImageId" => "$ami" } );
+      Amazon::EC2::Model::DeregisterImageRequest->new( { "ImageId" => "$ami" } );
 
     eval { my $response = $service->deregisterImage($request); };
     if ($@) { throwEC2Error($@); }
-    mesg( 1, "AMI $ami deregistered.\n" );
-    exit 0;
-}
-
-sub MOCK_DeregisterInstance {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Deregister Amazon EC2 Windows Instance -------\n" );
-
-    my $ami = getRequiredParam( "ami", $opts );
-    $opts->{pdb}->delRow("$::gMockRegistry/Images/$ami");
-
     mesg( 1, "AMI $ami deregistered.\n" );
     exit 0;
 }
@@ -2177,7 +1727,7 @@ sub CreateImage {
     my $propResult = getRequiredParam( "propResult", $opts );
     my $newami     = "";
 
-    my $request = new Amazon::EC2::Model::CreateImageRequest(
+    my $request = Amazon::EC2::Model::CreateImageRequest->new(
         {
             "InstanceId"  => "$instance",
             "Name"        => "$name",
@@ -2207,7 +1757,7 @@ sub CreateImage {
             sleep(30);
         }
         eval {
-            my $request = new Amazon::EC2::Model::DescribeImagesRequest(
+            my $request = Amazon::EC2::Model::DescribeImagesRequest->new(
                 { "ImageId" => "$newami" } );
             my $response = $service->describeImages($request);
 
@@ -2232,33 +1782,12 @@ sub CreateImage {
     exit 0;
 }
 
-sub MOCK_CreateImage {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Create EBS Image from existing EBS image -------\n" );
-
-    my $instance   = getRequiredParam( "instance",   $opts );
-    my $name       = getRequiredParam( "name",       $opts );
-    my $desc       = getRequiredParam( "desc",       $opts );
-    my $noreboot   = getRequiredParam( "noreboot",   $opts );
-    my $propResult = getRequiredParam( "propResult", $opts );
-    my $newami     = "";
-
-    my $r = getRandKey(999999);
-    $newami = "ami-$r";
-    $opts->{pdb}->setProp( "$::gMockRegistry/Images/$newami", "created" );
-    mesg( 1, "Image $newami created.\n" );
-    $opts->{pdb}->setProp( "$propResult/NewAMI",  $newami );
-    $opts->{pdb}->setProp( "$propResult/NewName", $name );
-    exit 0;
-}
-
 sub _getInstancesLimit {
     my ($service) = @_;
     my $maxInstances = 50; # Setup reasonable default in case of error
 
     eval {
-        $request = new Amazon::EC2::Model::DescribeAccountAttributesRequest({ "AttributeName" => "max-instances" });
+        my $request = Amazon::EC2::Model::DescribeAccountAttributesRequest->new({ "AttributeName" => "max-instances" });
         my $response = $service->describeAccountAttributes($request);
 
         # get instances limit
@@ -2294,7 +1823,7 @@ sub _getAvailableIpAddressCount {
     my $ipCount = 0;
 
     eval {
-        $request = new Amazon::EC2::Model::DescribeSubnetsRequest({ "SubnetId" => $subnet_id });
+        $request = Amazon::EC2::Model::DescribeSubnetsRequest->new({ "SubnetId" => $subnet_id });
         my $response = $service->describeSubnets($request);
 
         # get available IP count
@@ -2383,7 +1912,7 @@ sub API_RunInstance {
 
     ## run new instance
     my $reservation = "";
-    my $placement   = new Amazon::EC2::Model::Placement();
+    my $placement   = Amazon::EC2::Model::Placement->new();
     $placement->setAvailabilityZone($zone);
     if ($tenancy) {
         $placement->setTenancy($tenancy);
@@ -2416,7 +1945,7 @@ sub API_RunInstance {
 
 
     eval {
-        $request = new Amazon::EC2::Model::RunInstancesRequest(\%requestParameters);
+        $request = Amazon::EC2::Model::RunInstancesRequest->new(\%requestParameters);
         $request->setPlacement($placement);
 
         my $response = $service->runInstances($request);
@@ -2437,8 +1966,8 @@ sub API_RunInstance {
         my $running = 0;         # number ready
         my $total   = $count;    # number in reservation
         eval {
-            my $reservationFilter = new Amazon::EC2::Model::Filter({ "Name" => "reservation-id", "Value" => $reservation } );
-            my $request = new Amazon::EC2::Model::DescribeInstancesRequest();
+            my $reservationFilter = Amazon::EC2::Model::Filter->new({ "Name" => "reservation-id", "Value" => $reservation } );
+            my $request = Amazon::EC2::Model::DescribeInstancesRequest->new();
             $request->setFilter($reservationFilter);
             my $response = $service->describeInstances($request);
 
@@ -2493,8 +2022,8 @@ sub API_RunInstance {
 
     # Now describe them one more time to capture the attributes
     eval {
-        my $reservationFilter = new Amazon::EC2::Model::Filter({ "Name" => "reservation-id", "Value" => $reservation } );
-        my $request = new Amazon::EC2::Model::DescribeInstancesRequest();
+        my $reservationFilter = Amazon::EC2::Model::Filter->new({ "Name" => "reservation-id", "Value" => $reservation } );
+        my $request = Amazon::EC2::Model::DescribeInstancesRequest->new();
         $request->setFilter($reservationFilter);
         my $response = $service->describeInstances($request);
 
@@ -2604,96 +2133,6 @@ sub API_RunInstance {
     exit 0;
 }
 
-sub MOCK_API_RunInstance {
-    my ( $opts, $service ) = @_;
-
-    mesg( 1, "--Run Amazon EC2 Instances -------\n" );
-
-    my $ami          = getRequiredParam( "image",        $opts );
-    my $key          = getRequiredParam( "keyname",      $opts );
-    my $instanceType = getRequiredParam( "instanceType", $opts );
-    my $group        = getRequiredParam( "group",        $opts );
-    my $zone         = getRequiredParam( "zone",         $opts );
-    my $count        = getRequiredParam( "count",        $opts );
-    my $resource_zone = getOptionalParam( "resource_zone", $opts );
-    my $poolName = getOptionalParam( "res_poolName", $opts );
-    my $propResult = getPropResultLocationForPool( $opts, $poolName );
-
-    my $workspace = getOptionalParam( "res_workspace", $opts );
-    my $port      = getOptionalParam( "res_port",      $opts );
-
-    my $userData = getOptionalParam( "userData", $opts );
-    if ( "$userData" eq "" ) {
-        $userData = MIME::Base64::encode_base64("none");
-    }
-    else {
-        $userData = MIME::Base64::encode_base64("$userData");
-    }
-
-    mesg( 1,
-"Running $count instance(s) of $ami in zone $zone as type $instanceType with group $group\n"
-    );
-
-    ## run new instance
-
-    my $reservation = "";
-
-    for ( my $num = 0 ; $num < $count ; $num++ ) {
-        my $r  = getRandKey(9999999);
-        my $id = "i-$r";
-        $opts->{pdb}
-          ->setProp( "$::gMockRegistry/Instances/$id/state", "running" );
-        $opts->{pdb}->setProp( "$::gMockRegistry/Instances/$id/key", "$key" );
-        $opts->{pdb}
-          ->setProp( "$::gMockRegistry/Instances/$id/group", "$group" );
-        $opts->{pdb}->setProp( "$::gMockRegistry/Instances/$id/zone", "$zone" );
-        $opts->{pdb}
-          ->setProp( "$::gMockRegistry/Instances/$id/userData", "$userData" );
-        $opts->{pdb}->setProp( "$::gMockRegistry/Instances/$id/ami",  "$ami" );
-        $opts->{pdb}->setProp( "$::gMockRegistry/Instances/$id/root", "ebs" );
-
-        my $publicIP = $opts->{pdb}->getProp("/myProject/publicIP");
-        if ( $publicIP eq "" ) {
-            $publicIP = "192.168." . getRandKey(255) . "." . getRandKey(255);
-        }
-        my $privateIP = "192.168." . getRandKey(255) . "." . getRandKey(255);
-        $opts->{pdb}
-          ->setProp( "$::gMockRegistry/Instances/$id/prvdns", "$privateIP" );
-        $opts->{pdb}
-          ->setProp( "$::gMockRegistry/Instances/$id/pubdns", "$publicIP" );
-
-        my $resource = "";
-        if ( "$poolName" ne "" ) {
-            $resource =
-              makeNewResource( $opts, $publicIP, $poolName, $workspace, $port, $resource_zone );
-        }
-
-        if ( "$propResult" ne "" ) {
-            $opts->{pdb}->setProp( "$propResult/Instance-$id/AMI", "$ami" );
-            $opts->{pdb}->setProp( "$propResult/Instance-$id/RootType", "ebs" );
-            $opts->{pdb}
-              ->setProp( "$propResult/Instance-$id/Address", "$publicIP" );
-            $opts->{pdb}
-              ->setProp( "$propResult/Instance-$id/Private", "$privateIP" );
-            $opts->{pdb}->setProp( "$propResult/Instance-$id/Zone", "$zone" );
-            $opts->{pdb}
-              ->setProp( "$propResult/Instance-$id/Resource", "$resource" );
-        }
-        if ( "$instlist" ne "" ) { $instlist .= ";"; }
-        $instlist .= "$id";
-        mesg( 1, "Adding $id to instance list\n" );
-    }
-
-    if ( "$propResult" ne "" ) {
-        mesg( 1, "Saving instance list $instlist\n" );
-        $opts->{pdb}->setProp( "$propResult/InstanceList", $instlist );
-        $opts->{pdb}->setProp( "$propResult/Reservation",  $reservation );
-        $opts->{pdb}->setProp( "$propResult/Count",        $count );
-    }
-
-    exit 0;
-}
-
 sub makeNewResource {
     my ( $opts, $host, $pool, $workspace, $port, $zone ) = @_;
     my $ec = $opts->{pdb}->getCmdr();
@@ -2789,7 +2228,7 @@ sub API_CreateTags {
     my $tagsMap    = getRequiredParam( 'tagsMap',    $opts );
     my @resources = split( ' ', $resourceId );
 
-    my $request = new Amazon::EC2::Model::CreateTagsRequest();
+    my $request = Amazon::EC2::Model::CreateTagsRequest->new();
 
     $request->setIdList( \@resources );
 
@@ -2797,7 +2236,7 @@ sub API_CreateTags {
     my @tags = ();
 
     for ( keys %$map ) {
-        my $tag = new Amazon::EC2::Model::Tag();
+        my $tag = Amazon::EC2::Model::Tag->new();
         mesg( 1,
 "Adding $_ tag(s) to Amazon EC2 resource(s): $resourceId with value: $map->{$_}\n"
         );
@@ -2849,14 +2288,14 @@ sub createTag {
 
     mesg( 1, "Adding Tag '$tagName'='$tagValue' to Amazon EC2 resource '$resourceId'\n");
 
-    my $request = new Amazon::EC2::Model::CreateTagsRequest();
+    my $request = Amazon::EC2::Model::CreateTagsRequest->new();
 
     my @resources = ();
     push( @resources, $resourceId );
     $request->setIdList( \@resources );
 
     my @tags = ();
-    my $tag  = new Amazon::EC2::Model::Tag();
+    my $tag  = Amazon::EC2::Model::Tag->new();
     $tag->setKey($tagName);
     $tag->setValue($tagValue);
     push( @tags, $tag );

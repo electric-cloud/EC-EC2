@@ -370,7 +370,7 @@ class APICalls extends TestHelper {
 			result.outcome == 'success'
 	}
 	@IgnoreIf ({ skipVolume || skipInstance })
-	def 'API_DeleteVolume'() {   // >>> detachOnly == 1 <<<
+	def 'API_DeleteVolume detachOnly == 1'() {   // >>> detachOnly == 1 <<<
 		when: 'API_DeleteVolume procedure is ran with detachOnly = 1'
 			def result = runProcedure(
 				'/plugins/EC-EC2/project',
@@ -384,7 +384,7 @@ class APICalls extends TestHelper {
 			result.outcome == 'success'
 	}
 	@IgnoreIf ({ skipVolume })
-	def 'API_DeleteVolume'() {
+	def 'API_DeleteVolume detachOnly == 0'() {
 		when: 'API_DeleteVolume procedure is ran with detachOnly = 0'
 			def result = runProcedure(
 				'/plugins/EC-EC2/project',

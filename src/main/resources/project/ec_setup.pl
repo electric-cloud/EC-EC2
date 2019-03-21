@@ -435,17 +435,17 @@ if (compareMinor($serverVersion, '6.1') >= 0) {
     my $disabledCreateConfigurationOp = $batch->findvalue($reqIds[1], 'property/value')->string_value();
     my $disabledRunInstancesOp = $batch->findvalue($reqIds[2], 'property/value')->string_value();
 
-    if ($disabledOps == '1') {
+    if ($disabledOps) {
         my $desc = $batch->findvalue($reqIds[0], 'property/description');
         $commander->setProperty( "/plugins/$pluginName/project/ec_disable_dynamic_operations", { value => '1', description => $desc});
     }
 
-    if ($disabledCreateConfigurationOp == '1') {
+    if ($disabledCreateConfigurationOp) {
         my $desc = $batch->findvalue($reqIds[1], 'property/description');
         $commander->setProperty( "/plugins/$pluginName/project/procedures/CreateConfiguration/ec_form/disable", { value => '1', description => $desc});
     }
 
-    if ($disabledRunInstancesOp == '1') {
+    if ($disabledRunInstancesOp) {
         my $desc = $batch->findvalue($reqIds[2], 'property/description');
         $commander->setProperty( "/plugins/$pluginName/project/procedures/API_RunInstances/ec_form/disable", { value => '1', description => $desc});
     }
@@ -536,7 +536,7 @@ sub publishArtifact {
 
         my $resultChecksum = md5_hex($base64);
         unless($checksum) {
-            die "No checksum found in dependendencies property, please reinstall the plugin";
+            die "No checksum found in dependencies property, please reinstall the plugin";
         }
         if ($resultChecksum ne $checksum) {
             die "Wrong dependency checksum: original checksum is $checksum";

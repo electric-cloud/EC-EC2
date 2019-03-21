@@ -35,7 +35,7 @@ sub main()
                                 procedureName => "API_CreateTags",
                                 pollInterval    => '1',
                                 timeout         => 600,
-                                actualParameter => [ { actualParameterName => 'config', value => $[config] },
+                                actualParameter => [ { actualParameterName => 'config', value => '$[config]' },
                                                      { actualParameterName => 'resourceId', value => $instances[$num] },
                                                      { actualParameterName => 'tagsMap', value => "Name => $name" },
                                                     ]
@@ -50,7 +50,7 @@ sub main()
         }
         else {
 
-            print "Warning: can't assign name to instance $instance[$num]\n";
+            print "Warning: can't assign name to instance $instances[$num]\n";
 
         }
     }
