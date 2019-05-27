@@ -1,4 +1,4 @@
-The ElectricFlow Amazon EC2 integration
+The CloudBees Flow Amazon EC2 integration
 
 ## Compile ##
 
