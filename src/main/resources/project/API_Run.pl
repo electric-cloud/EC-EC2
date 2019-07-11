@@ -20,6 +20,8 @@ package main;
 $::gDebug = 1;
 $|        = 1;
 
+use strict;
+use warnings FATAL => 'all';
 use ElectricCommander;
 use ElectricCommander::PropDB;
 use ElectricCommander::PropMod qw(/myProject/lib);
