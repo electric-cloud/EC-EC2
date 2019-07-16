@@ -2414,10 +2414,13 @@ sub API_RunInstance {
         $requestParameters{"PrivateIpAddress"} = "$privateIp";
     }
 
-
     eval {
         $request = new Amazon::EC2::Model::RunInstancesRequest(\%requestParameters);
         $request->setPlacement($placement);
+        # if (blablabla){
+           $request->withIamInstanceProfile('ecsInstanceRole');
+        # }
+
 
         my $response = $service->runInstances($request);
 

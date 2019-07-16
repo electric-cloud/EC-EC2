@@ -29,6 +29,7 @@ use warnings;
 use Digest::SHA qw (hmac_sha1_base64 hmac_sha256_base64);
 use XML::Simple;
 use LWP::UserAgent;
+use Data::Dumper;
 use URI;
 use URI::Escape;
 use Time::HiRes qw(usleep);
@@ -2942,11 +2943,11 @@ my $SERVICE_VERSION = "2010-06-15";
         $parameters->{AWSAccessKeyId} = $self->{_awsAccessKeyId};
         $parameters->{Timestamp} = $self->_getFormattedTimestamp();
 
-        unless ($parameters->{'Placement.Tenancy'}) {
-            $parameters->{Version} = $SERVICE_VERSION;
+        if ($parameters->{'Placement.Tenancy'} || $parameters->{'IamInstanceProfile.Name'}) {
+            $parameters->{Version} = '2016-11-15';
         }
         else {
-            $parameters->{Version} = '2016-11-15';
+            $parameters->{Version} = $SERVICE_VERSION;
         }
 
         $parameters->{SignatureVersion} = $self->{_config}->{SignatureVersion} || "1";
@@ -4642,6 +4643,9 @@ my $SERVICE_VERSION = "2010-06-15";
         }
         if ($request->isSetPrivateIpAddress()) {
             $parameters->{"PrivateIpAddress"} =  $request->getPrivateIpAddress();
+        }
+        if ($request->isSetIamInstanceProfile()) {
+            $parameters->{'IamInstanceProfile.Name'} = $request->getIamInstanceProfile();
         }
 
         return $parameters;
