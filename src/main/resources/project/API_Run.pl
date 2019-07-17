@@ -2422,9 +2422,6 @@ sub API_RunInstance {
            $request->withIamInstanceProfile($iamProfile);
         }
 
-        use Data::Dumper;
-        print Dumper $request;
-
         my $response = $service->runInstances($request);
 
         # get reservation
