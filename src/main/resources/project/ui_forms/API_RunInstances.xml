@@ -171,6 +171,14 @@
         </option>
     </formElement>
     <formElement>
+        <label>IAM Profile Name:</label>
+        <property>iamProfileName</property>
+        <documentation>If specified, new instance will be associated with given IAM profile.</documentation>
+        <value/>
+        <type>entry</type>
+        <required>0</required>
+    </formElement>
+    <formElement>
         <type>entry</type>
         <label>Resource Pool:</label>
         <property>res_poolName</property>

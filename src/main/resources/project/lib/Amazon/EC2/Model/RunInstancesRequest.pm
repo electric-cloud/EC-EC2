@@ -558,7 +558,4 @@ use base qw (Amazon::EC2::Model);
     }
 
 
-
-
-
 1;
