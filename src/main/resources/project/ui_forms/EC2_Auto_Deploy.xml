@@ -40,6 +40,7 @@
         <label>Number of Instances:</label>
         <property>count</property>
         <required>1</required>
+        <value>1</value>
         <documentation>How many Instances to AutoDeploy.</documentation>
     </formElement>
     <formElement>
