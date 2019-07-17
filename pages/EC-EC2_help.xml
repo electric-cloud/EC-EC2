@@ -2463,10 +2463,14 @@
     </div>
 
         <h1 id="rns">Release Notes</h1>
-
-    <h2 id="2.5.4">@PLUGIN_KEY@ 2.5.4</h2>
-    <p>Renaming from "Electric Cloud" to "CloudBees"</p>
-
+        <h2>@PLUGIN_KEY@ 2.6.0</h2>
+        <ul>
+            <li>"IAM Profile Name" parameter has been added to "API_RunInstances" procedure.</li>
+        </ul>
+        <h2>@PLUGIN_KEY@ 2.5.4</h2>
+        <ul>
+          <li>Renaming from "Electric Cloud" to "CloudBees"</li>
+        </ul>
         <h2>@PLUGIN_KEY@ 2.5.3</h2>
         <ul>
             <li>Configurations can be created by users with "@" sign in a name.</li>

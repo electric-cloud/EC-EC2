@@ -2327,6 +2327,7 @@ sub API_RunInstance {
     my $privateIp = getOptionalParam( "privateIp",    $opts );
     my $resource_zone = getOptionalParam( "resource_zone", $opts );
     my $instanceInitiatedShutdownBehavior = getOptionalParam( "instanceInitiatedShutdownBehavior", $opts );
+    my $iamProfile   = getOptionalParam( "iamProfileName",        $opts );
 
     my $propResult = getPropResultLocationForPool( $opts, $poolName );
 
@@ -2414,10 +2415,12 @@ sub API_RunInstance {
         $requestParameters{"PrivateIpAddress"} = "$privateIp";
     }
 
-
     eval {
-        $request = new Amazon::EC2::Model::RunInstancesRequest(\%requestParameters);
+        $request = Amazon::EC2::Model::RunInstancesRequest->new(\%requestParameters);
         $request->setPlacement($placement);
+        if (defined $iamProfile && $iamProfile ne ''){
+           $request->withIamInstanceProfile($iamProfile);
+        }
 
         my $response = $service->runInstances($request);
 

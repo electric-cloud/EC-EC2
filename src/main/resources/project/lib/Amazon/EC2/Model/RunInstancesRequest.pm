@@ -59,25 +59,25 @@ use base qw (Amazon::EC2::Model);
         my ($class, $data) = @_;
         my $self = {};
         $self->{_fields} = {
-            
-            ImageId => { FieldValue => undef, FieldType => "string"},
-            MinCount => { FieldValue => undef, FieldType => "int"},
-            MaxCount => { FieldValue => undef, FieldType => "int"},
-            KeyName => { FieldValue => undef, FieldType => "string"},
-            SecurityGroup => {FieldValue => [], FieldType => ["string"]},
-            UserData => { FieldValue => undef, FieldType => "string"},
-            InstanceType => { FieldValue => undef, FieldType => "string"},
-            Placement => {FieldValue => undef, FieldType => "Amazon::EC2::Model::Placement"},
-            KernelId => { FieldValue => undef, FieldType => "string"},
-            RamdiskId => { FieldValue => undef, FieldType => "string"},
-            BlockDeviceMapping => {FieldValue => [], FieldType => ["Amazon::EC2::Model::BlockDeviceMapping"]},
-            Monitoring => {FieldValue => undef, FieldType => "Amazon::EC2::Model::MonitoringSpecification"},
-            SubnetId => { FieldValue => undef, FieldType => "string"},
-            AdditionalInfo => { FieldValue => undef, FieldType => "string"},
-            DisableApiTermination => { FieldValue => undef, FieldType => "bool"},
-            InstanceInitiatedShutdownBehavior => { FieldValue => undef, FieldType => "string"},
-            License => {FieldValue => undef, FieldType => "Amazon::EC2::Model::InstanceLicenseSpecification"},
-            PrivateIpAddress => { FieldValue => undef, FieldType => "string"},
+            ImageId                           => { FieldValue => undef, FieldType => "string" },
+            MinCount                          => { FieldValue => undef, FieldType => "int" },
+            MaxCount                          => { FieldValue => undef, FieldType => "int" },
+            KeyName                           => { FieldValue => undef, FieldType => "string" },
+            SecurityGroup                     => { FieldValue => [], FieldType => [ "string" ] },
+            UserData                          => { FieldValue => undef, FieldType => "string" },
+            InstanceType                      => { FieldValue => undef, FieldType => "string" },
+            Placement                         => { FieldValue => undef, FieldType => "Amazon::EC2::Model::Placement" },
+            KernelId                          => { FieldValue => undef, FieldType => "string" },
+            RamdiskId                         => { FieldValue => undef, FieldType => "string" },
+            BlockDeviceMapping                => { FieldValue => [], FieldType => [ "Amazon::EC2::Model::BlockDeviceMapping" ] },
+            Monitoring                        => { FieldValue => undef, FieldType => "Amazon::EC2::Model::MonitoringSpecification" },
+            SubnetId                          => { FieldValue => undef, FieldType => "string" },
+            AdditionalInfo                    => { FieldValue => undef, FieldType => "string" },
+            DisableApiTermination             => { FieldValue => undef, FieldType => "bool" },
+            License                           => { FieldValue => undef, FieldType => "Amazon::EC2::Model::InstanceLicenseSpecification" },
+            PrivateIpAddress                  => { FieldValue => undef, FieldType => "string" },
+            IamInstanceProfile                => { FieldValue => undef, FieldType => "string" },
+            InstanceInitiatedShutdownBehavior => { FieldValue => undef, FieldType => "string" }
         };
 
         bless ($self, $class);
@@ -537,8 +537,25 @@ use base qw (Amazon::EC2::Model);
         return defined (shift->{_fields}->{PrivateIpAddress}->{FieldValue});
     }
 
+    sub withIamInstanceProfile {
+        my ($self, $value) = @_;
+        $self->setIamInstanceProfile($value);
+        return $self;
+    }
 
+    sub setIamInstanceProfile {
+        my ($self, $value) = @_;
+        $self->{_fields}->{IamInstanceProfile}->{FieldValue} = $value;
+        return $self;
+    }
 
+    sub isSetIamInstanceProfile {
+        return defined (shift->{_fields}->{IamInstanceProfile}->{FieldValue});
+    }
+
+    sub getIamInstanceProfile {
+        return shift->{_fields}->{IamInstanceProfile}->{FieldValue};
+    }
 
 
 1;
