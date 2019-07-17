@@ -32,21 +32,21 @@ class RunInstances extends TestHelper {
         def templateName = 'simple specs'
         def environmentName = 'provisioned ec2 specs'
         def templateParams = [
-            projectName: projectName,
-            templateName: templateName,
-            parameters: [
-                config: getConfigName(),
-                count: '1',
-                group: group,
-                image: ami,
-                keyname: keyname,
-                resource_zone: 'default',
-                zone: zone,
-                propResult: propResult,
-                instanceType: type,
-                subnet_id: '',
-                use_private_ip: '0'
-            ]
+                projectName : projectName,
+                templateName: templateName,
+                parameters  : [
+                        config        : getConfigName(),
+                        count         : '1',
+                        group         : group,
+                        image         : ami,
+                        keyname       : keyname,
+                        resource_zone : 'default',
+                        zone          : zone,
+                        propResult    : propResult,
+                        instanceType  : type,
+                        subnet_id     : '',
+                        use_private_ip: '0'
+                ]
         ]
         dslFile "dsl/template.dsl", templateParams
         when:
@@ -60,13 +60,13 @@ class RunInstances extends TestHelper {
         Instance instance = helper.getInstance(instanceId)
         println instance
         logger.debug(objectToJson(instance))
-        then:
+        cleanup:
         def tearDownResult = tearDownEnvironment(projectName, environmentName)
         assert tearDownResult.outcome == 'success'
         assert tearDownResult.logs =~ /terminated/
         where:
-        group            |    ami           | zone            | type
-        'default'        | 'ami-23e8c646'   | 'us-east-2c'    | 't2.micro'
+        group     | ami            | zone         | type
+        'default' | 'ami-23e8c646' | 'us-east-2c' | 't2.micro'
     }
 
 
