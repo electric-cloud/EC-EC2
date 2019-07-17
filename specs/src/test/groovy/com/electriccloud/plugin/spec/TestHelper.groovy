@@ -2,7 +2,6 @@ package com.electriccloud.plugin.spec
 
 import com.electriccloud.spec.PluginSpockTestSupport
 import spock.util.concurrent.PollingConditions
-import sun.reflect.generics.reflectiveObjects.NotImplementedException
 
 class TestHelper extends PluginSpockTestSupport {
     static EC2Helper helper
@@ -47,20 +46,20 @@ class TestHelper extends PluginSpockTestSupport {
     }
 
     def createConfig() {
-        String httpProxy		= System.getenv('HTTP_PROXY') ?: ''
-        String httpProxyUser	= System.getenv('HTTP_PROXY_USER') ?: ''
-        String httpProxyPass	= System.getenv('HTTP_PROXY_PASS') ?: ''
+        String httpProxy = System.getenv('HTTP_PROXY') ?: ''
+        String httpProxyUser = System.getenv('HTTP_PROXY_USER') ?: ''
+        String httpProxyPass = System.getenv('HTTP_PROXY_PASS') ?: ''
 
         def pluginConfig = [
-            service_url: getEndpoint(),
-            debug: '10',
-            attempt: '1',
-            desc: 'Spec config',
-            resource_pool: 'spec resource pool',
-            workspace: 'default',
-            http_proxy: httpProxy,
-            credential: configName,
-            config: configName,
+                service_url  : getEndpoint(),
+                debug        : '10',
+                attempt      : '1',
+                desc         : 'Spec config',
+                resource_pool: 'spec resource pool',
+                workspace    : 'default',
+                http_proxy   : httpProxy,
+                credential   : configName,
+                config       : configName,
         ]
 
         def credentials = [[credentialName: configName, userName: clientId, password: clientSecret]]
@@ -75,8 +74,7 @@ class TestHelper extends PluginSpockTestSupport {
 //            TODO env
             if (System.getenv('RECREATE_CONFIG')) {
                 deleteConfiguration(pluginName, configName)
-            }
-            else {
+            } else {
                 println "Configuration $configName exists"
                 return
             }
