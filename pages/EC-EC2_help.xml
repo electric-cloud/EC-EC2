@@ -21,7 +21,7 @@
     <p>Plugin Version @PLUGIN_VERSION@</p>
     <hr style="margin-left: -10px; margin-top: 10px; height: 1px; width: 100%; color: #5981BD;" noshade="noshade" />
 
-    <p>Revised on May 27, 2019</p>
+    <p>Revised on Aug 13, 2019</p>
 
 				<h1>Contents</h1>
 
@@ -1145,6 +1145,11 @@
             dedicated - Your instance runs on single-tenant hardware.<br/>
             host - Your instance runs on a Dedicated Host, which is an isolated server with configurations that you can control.
         </td>
+      </tr>
+      <tr>
+        <td>IAM Profile Name</td>
+        <td>Specify an IAM profile you want this instance to be associated with. If this parameter is not specified,
+        instance will not be associated with a profile.</td>
       </tr>
         <tr>
           <td>Resource Pool</td>
