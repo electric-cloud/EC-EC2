@@ -1784,8 +1784,12 @@
     <xpath>//procedure[procedureName=&quot;CreateConfiguration&quot;]/step[stepName=&quot;CreateConfiguration&quot;]/command</xpath>
   </file>
   <file>
-    <path>conf/retrieveGrapeDependencies.pl</path>
-    <xpath>//procedure[procedureName=&quot;Setup&quot;]/step[stepName=&quot;setup&quot;]/command</xpath>
+    <path>conf/setup.pl</path>
+    <xpath>//procedure[procedureName=&quot;flowpdk-setup&quot;]/step[stepName=&quot;setup&quot;]/command</xpath>
+  </file>
+  <file>
+    <path>conf/compressAndDeliver.groovy</path>
+    <xpath>//procedure[procedureName=&quot;flowpdk-setup&quot;]/property[propertyName=&quot;ec_compressAndDeliver&quot;]/value</xpath>
   </file>
   <file>
     <path>conf/createAndAttachCredential.pl</path>
