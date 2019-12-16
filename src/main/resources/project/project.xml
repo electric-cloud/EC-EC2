@@ -12840,7 +12840,7 @@
             <procedureName />
             <projectName />
             <releaseExclusive>0</releaseExclusive>
-            <resourceName />
+            <resourceName>$[grabbedResource]</resourceName>
             <retries>0</retries>
             <shell>ec-groovy</shell>
             <stepName>UpdateInstances</stepName>
