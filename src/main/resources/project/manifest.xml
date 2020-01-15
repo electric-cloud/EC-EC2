@@ -1789,7 +1789,7 @@
   </file>
   <file>
     <path>conf/compressAndDeliver.groovy</path>
-    <xpath>//procedure[procedureName=&quot;flowpdk-setup&quot;]/property[propertyName=&quot;ec_compressAndDeliver&quot;]/value</xpath>
+    <xpath>//procedure[procedureName=&quot;flowpdk-setup&quot;]/propertySheet/property[propertyName=&quot;ec_compressAndDeliver&quot;]/value</xpath>
   </file>
   <file>
     <path>conf/createAndAttachCredential.pl</path>
