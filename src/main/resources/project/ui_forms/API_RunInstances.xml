@@ -52,7 +52,7 @@
         <required>1</required>
         <serverOptions>1</serverOptions>
         <dependsOn>config</dependsOn>
-        <documentation>The name of the EC2 image that you would like to deploy.</documentation>
+        <documentation>The AMI ID of the EC2 image that you would like to deploy.</documentation>
     </formElement>
     <formElement>
         <type>entry</type>
