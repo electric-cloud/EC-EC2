@@ -1,6 +1,6 @@
 version: '3'
 services:
-  efserver:
+  electric-flow:
     image: "electricflow/efserver:latest"
     ports:
       - "8000:8000"
