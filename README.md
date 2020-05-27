@@ -1,4 +1,4 @@
-The CloudBees Flow Amazon EC2 integration
+The CloudBees CD Amazon EC2 integration
 
 ## Compile ##
 
