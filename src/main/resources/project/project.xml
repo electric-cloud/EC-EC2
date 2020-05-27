@@ -12851,7 +12851,7 @@
           </step>
         </procedure>
         <procedure>
-          <description>Delivers binary dependencies from the Flow server to the agent.</description>
+          <description>Delivers binary dependencies from the CloudBees CD server to the agent.</description>
           <jobNameTemplate />
           <procedureName>flowpdk-setup</procedureName>
           <projectName />
