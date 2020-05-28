@@ -7,7 +7,7 @@
 
   <meta content="text/html; charset=us-ascii" http-equiv="content-type" />
 
-  <title>CloudBees Flow Plugin for Elastic Compute Cloud (EC2) Implementations</title>
+  <title>CloudBees CD Plugin for Elastic Compute Cloud (EC2) Implementations</title>
 
   <link rel="stylesheet" href="../../plugins/@PLUGIN_KEY@/pluginhelp.css" type="text/css" media="screen" />
 
@@ -21,7 +21,7 @@
     <p>Plugin Version @PLUGIN_VERSION@</p>
     <hr style="margin-left: -10px; margin-top: 10px; height: 1px; width: 100%; color: #5981BD;" noshade="noshade" />
 
-    <p>Revised on Aug 13, 2019</p>
+    <p>Revised on May 18, 2020</p>
 
 				<h1>Contents</h1>
 
@@ -91,11 +91,11 @@
     <p>For more information about Amazon EC2, go to the <a href="http://aws.amazon.com/ec2/">Amazon Web Services website</a>.</p>
 		<p>You can view the documentation at <a href="http://aws.amazon.com/documentation/ec2/">EC2</a>.</p>
 
-   <h2>CloudBees Flow Integration to EC2 Implementations</h2>
+   <h2>CloudBees CD Integration to EC2 Implementations</h2>
 
     <p>This plugin uses the Amazon EC2 application programming interface (API) that lets developers choose where their applications physically run and
 		that provides access to infrastructure resources. Using this secure API, your application is automatically scaled up and down as needed. This integration
-		allows CloudBees Flow to manage EC2 resources.</p>
+		allows CloudBees CD to manage EC2 resources.</p>
 
    <p>The plugin interacts with EC2 data by using PERL to perform the following tasks:</p>
 
@@ -104,7 +104,7 @@
       <li>Query for virtual machine and configuration information.</li>
       <li>Perform actions on instances.</li>
       <li>Make API Requests.</li>
-      <li>Create CloudBees Flow resources.</li>
+      <li>Create CloudBees CD resources.</li>
     </ul>
 
     <p>The integration has two types of procedures to accomplish a specific task:</p>
@@ -250,7 +250,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_AllocateIP</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_AllocateIP</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -300,7 +300,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_AllocateIP</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_AllocateIP</b> step,
 		click the Log button to see the diagnostic information.</p>
 
     </div>
@@ -354,7 +354,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_AttachVolumes</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_AttachVolumes</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -417,7 +417,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_CreateImage</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_CreateImage</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -471,7 +471,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_CreateKey</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_CreateKey</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -532,7 +532,7 @@
 
           <h3>Output</h3>
 
-          <p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_CreateSubnet</b> step,
+          <p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_CreateSubnet</b> step,
               click the Log button to see the diagnostic information.</p>
 
       </div>
@@ -581,7 +581,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_CreateTags</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_CreateTags</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -635,7 +635,7 @@
 
           <h3>Output</h3>
 
-          <p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_CreateVPC</b> step,
+          <p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_CreateVPC</b> step,
               click the Log button to see the diagnostic information.</p>
 
       </div>
@@ -680,7 +680,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_DeleteKey</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_DeleteKey</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -729,7 +729,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_DeleteVolume</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_DeleteVolume</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -778,7 +778,7 @@
 
           <h3>Output</h3>
 
-          <p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_DeleteVPC</b> step,
+          <p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_DeleteVPC</b> step,
               click the Log button to see the diagnostic information.</p>
 
       </div>
@@ -827,7 +827,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_DescribeInstances</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_DescribeInstances</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -872,7 +872,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_ReleaseIP</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_ReleaseIP</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -918,7 +918,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_Run</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_Run</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -1153,11 +1153,11 @@
       </tr>
         <tr>
           <td>Resource Pool</td>
-          <td>If you would like to add CloudBees Flow resources for each instance created, enter the CloudBees Flow pool name for the new resource.
+          <td>If you would like to add CloudBees CD resources for each instance created, enter the CloudBees CD pool name for the new resource.
           If left blank no resource will be created.</td>
         </tr>
         <tr>
-          <td>CloudBees Flow Workspace</td>
+          <td>CloudBees CD Workspace</td>
           <td>If you specify a resource poolName in res_poolName, this is the workspace that will be used when creating the resource.</td>
         </tr>
         <tr>
@@ -1255,7 +1255,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_StartInstance</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_StartInstance</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -1300,7 +1300,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_StopInstance</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_StopInstance</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -1345,7 +1345,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_TearDownResource</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_TearDownResource</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -1379,7 +1379,7 @@
         </tr>
         <tr>
           <td>List of Resources</td>
-          <td>List of CloudBees Flow resources to delete, separated by semi-colons.</td>
+          <td>List of CloudBees CD resources to delete, separated by semi-colons.</td>
         </tr>
       </tbody>
     </table>
@@ -1394,7 +1394,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>API_Terminate</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>API_Terminate</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -1618,7 +1618,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>CloudManagerGrow</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>CloudManagerGrow</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -1663,7 +1663,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>CloudManagerShrink</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>CloudManagerShrink</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -1704,7 +1704,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>CloudManagerSync</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>CloudManagerSync</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -1747,7 +1747,7 @@
         </tr>
         <tr>
           <td>List of Resources</td>
-          <td>List of CloudBees Flow resources to delete, separated by semi-colons.</td>
+          <td>List of CloudBees CD resources to delete, separated by semi-colons.</td>
         </tr>
       </tbody>
     </table>
@@ -1760,7 +1760,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>EC2 Auto Cleanup</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>EC2 Auto Cleanup</b> step,
 		click the Log button to see the diagnostic information.</p>
 
  	</div>
@@ -1980,7 +1980,7 @@
           <td>Name of the resource pool. If you enter a name, a new resource is created and put in the pool.</td>
         </tr>
         <tr>
-          <td>CloudBees Flow Workspace</td>
+          <td>CloudBees CD Workspace</td>
           <td>Name of the workspace where the resources are created.</td>
         </tr>
         <tr>
@@ -1998,7 +1998,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>EC2 Auto Deploy</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>EC2 Auto Deploy</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -2045,7 +2045,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>EC2 Auto Pause</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>EC2 Auto Pause</b> step,
 		click the Log button to see the diagnostic information.</p>
 
     </div>
@@ -2271,7 +2271,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>EC2 Auto Resume</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>EC2 Auto Resume</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -2318,7 +2318,7 @@
 
 		<h3>Output</h3>
 
-		<p>After the job runs, you can view the results on the Job Details page in CloudBees Flow. In the <b>EC2 Set Name</b> step,
+		<p>After the job runs, you can view the results on the Job Details page in CloudBees CD. In the <b>EC2 Set Name</b> step,
 		click the Log button to see the diagnostic information.</p>
 
 		</div>
@@ -2372,7 +2372,7 @@
 
     <h2>Use Case 1: Deploy, Consume, and Clean up the Job</h2>
 
-    <p>The most common use for this plugin is to create an instance, create a resource in CloudBees Flow that is assigned to this instance, run some operations using the resoruce,
+    <p>The most common use for this plugin is to create an instance, create a resource in CloudBees CD that is assigned to this instance, run some operations using the resoruce,
 		and then delete the resource and the instance. To do this, you must:</p>
 
     <ol>
@@ -2392,7 +2392,7 @@
 
     <h4>Create a Plugin Configuration</h4>
 
-    <p>In CloudBees Flow, go to <b>Administration</b> > <b>Plugins</b> to open the Plugin Manager. Then click <b>Configure</b> and enter the values
+    <p>In CloudBees CD, go to <b>Administration</b> > <b>Plugins</b> to open the Plugin Manager. Then click <b>Configure</b> and enter the values
 		for the parameters in the EC2 Configuration page.</p>
 		<img alt="" src="../../plugins/@PLUGIN_KEY@/images/use_cases/Case_1/create_config.png" />
     <p>After the configuration is created, you can see it in "EC2 Configurations".</p>
@@ -2468,6 +2468,10 @@
     </div>
 
         <h1 id="rns">Release Notes</h1>
+        <h2>@PLUGIN_KEY@ 2.7.1</h2>
+        <ul>
+            <li>Renaming from "CloudBees Flow" to "CloudBees CD"</li>
+        </ul>
         <h2>@PLUGIN_KEY@ 2.7.0</h2>
         <ul>
             <li>Provisioning of Binary Dependencies (for example Grape jars) in the agent resource, required by this plugin, is now delivered through a newly introduced mechanism called Plugin Dependency Management. Binary dependencies will now be seamlessly delivered to the agent resource from the Flow Server, any time a new version of a plugin is invoked the first time. Flow Repository set up is no longer required for this plugin.
