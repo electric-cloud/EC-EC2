@@ -183,7 +183,7 @@
         <label>Resource Pool:</label>
         <property>res_poolName</property>
         <required>0</required>
-        <documentation>If you would like to add Commander resources for each instance created, enter the Commander pool name for the new resource. If left blank no resource will be created.</documentation>
+        <documentation>If you would like to add CloudBees CD resources for each instance created, enter the CloudBees CD pool name for the new resource. If left blank no resource will be created.</documentation>
     </formElement>
     <formElement>
         <type>entry</type>
@@ -194,7 +194,7 @@
     </formElement>
     <formElement>
         <type>entry</type>
-        <label>Commander Workspace:</label>
+        <label>CloudBees CD Workspace:</label>
         <property>res_workspace</property>
         <required>0</required>
         <serverOptions>1</serverOptions>

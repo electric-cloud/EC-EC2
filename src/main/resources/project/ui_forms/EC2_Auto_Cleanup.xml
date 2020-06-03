@@ -53,6 +53,6 @@
         <label>List of Resources:</label>
         <property>resources</property>
         <required>0</required>
-        <documentation>List of Commander resources to delete. Separate a list of resources with semi-colons.</documentation>
+        <documentation>List of CloudBees CD resources to delete. Separate a list of resources with semi-colons.</documentation>
     </formElement>
 </editor>
