@@ -113,7 +113,7 @@
     </formElement>
     <formElement>
         <type>entry</type>
-        <label>Commander Workspace:</label>
+        <label>CloudBees CD Workspace:</label>
         <property>res_workspace</property>
         <required>0</required>
         <documentation>Optional. Assigned to the resources created.</documentation>
