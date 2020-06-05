@@ -2461,10 +2461,10 @@
     <div>
         HTTP Proxy functionality introduced in 2.5.0 will have the following UI limitations for customers who want to use this functionality:
         <ul>
-        <li>On CloudBees Flow version 8.3, Proxy credentials will not appear in Resource Template UI and hence cannot be used to overrride what is defined already in Configuration. Other than this minor limitation, HTTP proxy will be completely functional.</li>
-        <li>On CloudBees Flow versions 8.2 and prior, Resource Template UI cannot be used to specify HTTP Proxy information and hence cannot create working Resource templates using this UI. However the workaround for this use case would be to use DSL to create the Resource Templates.</li>
+        <li>On CloudBees CD (Flow) version 8.3, Proxy credentials will not appear in Resource Template UI and hence cannot be used to overrride what is defined already in Configuration. Other than this minor limitation, HTTP proxy will be completely functional.</li>
+        <li>On CloudBees CD (Flow) versions 8.2 and prior, Resource Template UI cannot be used to specify HTTP Proxy information and hence cannot create working Resource templates using this UI. However the workaround for this use case would be to use DSL to create the Resource Templates.</li>
         </ul>
-        Starting version 2.5.0 this plugin will work only for CloudBees Flow versions that support ec-groovy.
+        Starting version 2.5.0 this plugin will work only for CloudBees CD versions that support ec-groovy.
     </div>
 
         <h1 id="rns">Release Notes</h1>
