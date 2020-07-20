@@ -21,7 +21,7 @@
     <p>Plugin Version @PLUGIN_VERSION@</p>
     <hr style="margin-left: -10px; margin-top: 10px; height: 1px; width: 100%; color: #5981BD;" noshade="noshade" />
 
-    <p>Revised on May 18, 2020</p>
+    <p>Revised on Jul 20, 2020</p>
 
 				<h1>Contents</h1>
 
@@ -2468,6 +2468,10 @@
     </div>
 
         <h1 id="rns">Release Notes</h1>
+        <h2>@PLUGIN_KEY@ 2.7.2</h2>
+        <ul>
+            <li>Upgrading certain third-party dependencies to address security issues.</li>
+        </ul>
         <h2>@PLUGIN_KEY@ 2.7.1</h2>
         <ul>
             <li>Renaming from "CloudBees Flow" to "CloudBees CD"</li>
