@@ -1,0 +1,44 @@
+---
+- file: lib.*\.(pl|pm)
+  push:
+    command: setProperty
+    server: 'ubuntu-esxi'
+    args:
+      projectName: '/plugins/EC-EC2/project'
+      propertyName: |
+        # perl
+        my $filename = $FILENAME;
+        $filename =~ s/.+lib/lib/;
+        print "$filename\n";
+        $filename;
+      value: |
+        # perl
+        my $filename = $FILENAME;
+        open my $fh, $filename or die $!;
+        my $content = join('', <$fh>);
+        close $fh;
+
+        my $projectName = $EC->getProject('/plugins/EC-EC2/project')->findvalue('//projectName')->string_value;
+
+        print "$projectName\n";
+        $content =~ s/\@PLUGIN_NAME@/$projectName/g;
+        $content;
+- file: API_Run.pl
+  push:
+    command: modifyStep
+    server: ubuntu-esxi
+    args:
+        projectName: '/plugins/EC-EC2/project'
+        procedureName: 'API_Run'
+        stepName: 'run'
+        command: |
+            # perl
+            my $filename = $FILENAME;
+            open my $fh, $filename or die $!;
+            my $content = join('', <$fh>);
+            close $fh;
+
+            my $projectName = $EC->getProject('/plugins/EC-EC2/project')->findvalue('//projectName')->string_value;
+            print "$projectName\n";
+            $content =~ s/\@PLUGIN_NAME@/$projectName/g;
+            $content;

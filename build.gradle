@@ -20,7 +20,7 @@ buildscript {
 group = "com.electriccloud"
 description = "Plugins : EC-EC2"
 
-version = "2.7.1"
+version = "2.7.2"
 
 apply plugin: 'groovy'
 apply plugin: 'flow-gradle-plugin'
@@ -38,6 +38,36 @@ task wrapper(type: Wrapper) { gradleVersion = '2.13' }
 configurations {
 	includeInPluginJar
 }
+
+configurations.all {
+        resolutionStrategy {
+                // fail eagerly on version conflict (includes transitive dependencies)
+                // e.g. multiple different versions of the same dependency (group and name are equal)
+                //failOnVersionConflict()
+
+                // prefer modules that are part of this build (multi-project or composite build) over external modules
+                //preferProjectModules()
+
+                // force certain versions of dependencies (including transitive)
+                //  *append new forced modules:
+                //force 'asm:asm-all:3.3.1', 'commons-io:commons-io:1.4'
+                //  *replace existing forced modules with new ones:
+                //forcedModules = ['asm:asm-all:3.3.1']
+
+                force 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+                force group: 'commons-codec', name: 'commons-codec', version: '1.13'
+                // force group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+
+
+                // https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils
+                //force group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+
+                //forcedModules = ['com.fasterxml.jackson.core:jackson-databind:2.11.1']
+
+                cacheChangingModulesFor 0, 'seconds'
+        }
+}
+
 
 dependencies {
 	compile localGroovy()
