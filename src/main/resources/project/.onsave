@@ -1,0 +1,19 @@
+VAR:
+    # variable
+ENV:
+    # environment variable
+
+CONSOLE : right
+
+LISTENER:
+    -   CMD : ecupdate-hot --filename "$FILE"
+        CONSOLE : right
+        WATCH : *.sh
+        TIMEOUT : 5000
+
+
+#  $ROOT       = .onsave file directory
+#  $FILE       = current file path
+#  $FILENAME   = current file name
+#  $BASENAME   = current file name, not postfix
+#  $DIR        = current file directory

@@ -1,6 +1,8 @@
 package com.electriccloud.plugin.spec
 
 import com.electriccloud.spec.PluginSpockTestSupport
+import software.amazon.awssdk.services.ec2.model.CreateKeyPairRequest
+import software.amazon.awssdk.services.ec2.model.DescribeKeyPairsRequest
 import spock.util.concurrent.PollingConditions
 
 class TestHelper extends PluginSpockTestSupport {
@@ -32,8 +34,17 @@ class TestHelper extends PluginSpockTestSupport {
         return endpoint
     }
 
+    static def getAmi() {
+        //Some ubuntu
+        return 'ami-0ac80df6eff0e70b5'
+    }
+
+    static def getZone() {
+        return getRegionName() + 'a'
+    }
+
     static def getRegionName() {
-        def regionName = System.getenv('AWS_REGION_NAME') ?: "us-east-2"
+        def regionName = System.getenv('AWS_REGION_NAME') ?: "us-east-1"
         return regionName
     }
 
@@ -107,5 +118,15 @@ class TestHelper extends PluginSpockTestSupport {
         def outcome = jobStatus(result.jobId).outcome
         def logs = readJobLogs(result.jobId)
         return [jobId: result.jobId, logs: logs, outcome: outcome]
+    }
+
+    def ensureKeyPair(name) {
+        try {
+            getHelperInstance().ec2Client.describeKeyPairs(DescribeKeyPairsRequest.builder().keyNames(name).build())
+        } catch (Throwable e) {
+            println e.message
+            CreateKeyPairRequest request = CreateKeyPairRequest.builder().keyName(name).build()
+            println getHelperInstance().ec2Client.createKeyPair(request)
+        }
     }
 }

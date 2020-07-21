@@ -47,9 +47,9 @@ class UpdateInstances extends TestHelper {
                 [
                         config      : getConfigName(),
                         propResult  : '/myJob/EC-EC2-Test-UpdateInstances',
-                        image       : 'ami-6a003c0f',
-                        keyname     : 'EC-EC2-Test',
-                        zone        : "${getRegionName()}c",
+                        image       : getAmi(),
+                        keyname     : 'ec2_specs',
+                        zone        : getZone(),
                         count       : 2,
                         instanceType: "t2.nano",
                 ])
@@ -65,19 +65,20 @@ class UpdateInstances extends TestHelper {
 
     def 'simple update 1'() {
         when:
+        def newSg = 'sg-0f795e024778c1c53'
         def result = runProcedure(
                 '/plugins/EC-EC2/project',
                 'API_UpdateInstances',
                 [
                         config     : getConfigName(),
                         instanceIDs: instances[0],
-                        group      : 'sg-688e3800'
+                        group      : newSg
                 ])
         then:
         assert result
         assert result.outcome == "success"
         Instance instance = helper.getInstance(instances[0])
-        assert helper.instanceInSecurityGroup(instance, 'sg-688e3800')
+        assert helper.instanceInSecurityGroup(instance, newSg)
     }
 
     def 'simple update 2'() {
@@ -88,25 +89,25 @@ class UpdateInstances extends TestHelper {
                 [
                         config     : getConfigName(),
                         instanceIDs: instances[0],
-                        group      : 'sg-6d728404'
+                        group      : 'sg-0f795e024778c1c53'
                 ])
         then:
         assert result
         assert result.outcome == "success"
         Instance instance = helper.getInstance(instances[0])
-        assert helper.instanceInSecurityGroup(instance, 'sg-6d728404')
-        assert !helper.instanceInSecurityGroup(instance, 'sg-688e3800')
+        assert helper.instanceInSecurityGroup(instance, 'sg-0f795e024778c1c53')
     }
 
     def 'complex update'() {
         when:
+        def newSg = 'sg-0f795e024778c1c53'
         def result = runProcedure(
                 '/plugins/EC-EC2/project',
                 'API_UpdateInstances',
                 [
                         config                           : getConfigName(),
                         instanceIDs                      : instances.join(','),
-                        group                            : 'sg-6d728404',
+                        group                            : newSg,
                         instanceType                     : 't2.micro',
                         instanceInitiatedShutdownBehavior: ShutdownBehavior.TERMINATE,
                         userData                         : 'test user data'
@@ -118,8 +119,7 @@ class UpdateInstances extends TestHelper {
         assert result.outcome == "success"
         instances.each {
             Instance instance = helper.getInstance(it)
-            assert helper.instanceInSecurityGroup(instance, 'sg-6d728404')
-            assert !helper.instanceInSecurityGroup(instance, 'sg-688e3800')
+            assert helper.instanceInSecurityGroup(instance, newSg)
             assert instance.instanceTypeAsString() == "t2.micro"
             assert helper.getInstanceAttribute(it, "userData") == 'test user data'
             assert ShutdownBehavior.fromValue(helper.getInstanceAttribute(it, "instanceInitiatedShutdownBehavior")) == ShutdownBehavior.TERMINATE

@@ -29,6 +29,7 @@ class RunInstances extends TestHelper {
     def doSetupSpec() {
         createConfig()
         helper = getHelperInstance()
+        ensureKeyPair(keyname)
     }
 
     @Unroll
@@ -37,22 +38,22 @@ class RunInstances extends TestHelper {
         def templateName = 'simple specs'
         def environmentName = 'provisioned ec2 specs'
         def templateParams = [
-                projectName : projectName,
-                templateName: templateName,
-                parameters  : [
-                        config        : getConfigName(),
-                        count         : '1',
-                        group         : group,
-                        image         : ami,
-                        keyname       : keyname,
-                        resource_zone : 'default',
-                        zone          : zone,
-                        propResult    : propResult,
-                        instanceType  : type,
-                        subnet_id     : '',
-                        use_private_ip: '0',
-                        iamProfileName: iamProfile,
-                ]
+            projectName : projectName,
+            templateName: templateName,
+            parameters  : [
+                config        : getConfigName(),
+                count         : '1',
+                group         : group,
+                image         : ami,
+                keyname       : keyname,
+                resource_zone : 'default',
+                zone          : zone,
+                propResult    : propResult,
+                instanceType  : type,
+                subnet_id     : '',
+                use_private_ip: '0',
+                iamProfileName: iamProfile,
+            ]
         ]
         dslFile "dsl/template.dsl", templateParams
         when:
@@ -71,9 +72,9 @@ class RunInstances extends TestHelper {
         assert tearDownResult.outcome == 'success'
         assert tearDownResult.logs =~ /terminated/
         where:
-        group     | ami            | zone         | type       | iamProfile
-        'default' | 'ami-23e8c646' | 'us-east-2c' | 't2.micro' | ''
-        'default' | 'ami-23e8c646' | 'us-east-2c' | 't2.micro' | 'ecsInstanceRole'
+        group     | ami      | zone      | type       | iamProfile
+        'default' | getAmi() | getZone() | 't2.micro' | ''
+        //'default' | TestHelper.getAmi() | getZone() | 't2.micro' | 'ecsInstanceRole'
     }
 
 

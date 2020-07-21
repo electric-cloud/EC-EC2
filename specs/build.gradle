@@ -1,3 +1,21 @@
+//buildscript{
+//  repositories {
+//
+//      mavenCentral()
+//      maven { url "https://plugins.gradle.org/m2/" }
+//      mavenLocal()
+//
+//      dependencies{
+//        classpath 'com.cloudbees.cd.plugins:cbcd-plugin-build:1.4.0-SNAPSHOT'
+//      }
+//  }
+//}
+//
+
+plugins {
+    id "com.cloudbees.cd.plugins.specs" version "1.3.0.0"
+}
+
 apply plugin: "groovy"
 apply plugin: 'idea'
 
@@ -12,12 +30,8 @@ repositories {
     jcenter()
     mavenCentral()
     maven {
-        url 'https://oss.sonatype.org/content/repositories/snapshots'
-    }
-    maven {
         url  "https://dl.bintray.com/ecpluginsdev/maven"
     }
-
 }
 
 dependencies {
@@ -26,35 +40,26 @@ dependencies {
     compile 'com.electriccloud:ec-specs-plugins-core:1.2'
     compile 'com.jayway.restassured:rest-assured:2.4.0'
     compile 'de.gesellix:docker-client:2018-01-26T21-28-05'
-//    Let's play with it
     compile 'software.amazon.awssdk:ec2:2.0.0-preview-10'
 
-    testCompile( 'com.athaydes:spock-reports:1.6.0' ) {
-        transitive = false // this avoids affecting your version of Groovy/Spock
-    }
     testCompile 'org.slf4j:slf4j-api:1.7.13'
     testCompile 'org.slf4j:slf4j-simple:1.7.13'
-
-
 }
+
 
 test {
-    systemProperty 'com.athaydes.spockframework.report.showCodeBlocks', true
-
-    systemProperties["COMMANDER_SECURE"] = '1'
-    def server = findProperty('commanderServer') ?: findProperty('COMMANDER_SERVER') ?: 'localhost'
-    systemProperties['COMMANDER_SERVER'] = server
-
-    testLogging {
-        showStandardStreams = true
-        exceptionFormat = 'full'
-    }
-    outputs.upToDateWhen { false }
-    systemProperties['EC_SPECS_CLI'] = true
-
-    def destination = findProperty('reportDestination') ?: "spec-report"
-    if (destination) {
-        systemProperty 'com.athaydes.spockframework.report.outputDir', destination
-    }
-
+    systemProperties['COMMANDER_SERVER'] = findProperty('server') ?: 'localhost'
+    systemProperties['COMMANDER_SERVER'] = findProperty('server') ?: 'localhost'
+    systemProperties['COMMANDER_PASSWORD'] = findProperty('password') ?: 'changeme'
 }
+
+sendAllureReports {
+    projectName = 'ec-ec2'
+}
+
+configureTests {
+    environmentName = findProperty('envName') ?: 'default'
+    readEnvironmentVariables = true
+    readSecrets = true
+}
+
