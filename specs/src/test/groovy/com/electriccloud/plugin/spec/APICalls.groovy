@@ -11,6 +11,7 @@ import spock.lang.Stepwise
 import spock.util.concurrent.PollingConditions
 
 @Stepwise
+@Ignore
 class APICalls extends TestHelper {
 //	TODO get vars from environment or whatever
     static final String pluginName = 'EC-EC2'
