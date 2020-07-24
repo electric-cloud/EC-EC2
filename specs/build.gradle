@@ -1,5 +1,5 @@
 plugins {
-    id "com.cloudbees.cd.plugins.specs" version "1.5.11.0"
+    id "com.cloudbees.cd.plugins.specs" version "1.5.12.0"
 }
 
 version = "1.0"
@@ -26,12 +26,6 @@ dependencies {
 
     testImplementation 'org.slf4j:slf4j-api:1.7.13'
     testImplementation 'org.slf4j:slf4j-simple:1.7.13'
-}
-
-test {
-    systemProperties['COMMANDER_SERVER'] = findProperty('server') ?: 'localhost'
-    systemProperties['COMMANDER_SERVER'] = findProperty('server') ?: 'localhost'
-    systemProperties['COMMANDER_PASSWORD'] = findProperty('password') ?: 'changeme'
 }
 
 sendAllureReports {
