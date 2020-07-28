@@ -1,27 +1,9 @@
-//buildscript{
-//  repositories {
-//
-//      mavenCentral()
-//      maven { url "https://plugins.gradle.org/m2/" }
-//      mavenLocal()
-//
-//      dependencies{
-//        classpath 'com.cloudbees.cd.plugins:cbcd-plugin-build:1.4.0-SNAPSHOT'
-//      }
-//  }
-//}
-//
-
 plugins {
-    id "com.cloudbees.cd.plugins.specs" version "1.4.2.0"
+    id "com.cloudbees.cd.plugins.specs" version "1.5.13.0"
 }
-
-apply plugin: "groovy"
-apply plugin: 'idea'
 
 version = "1.0"
 description = "EC-EC2 Specs"
-
 sourceCompatibility = 1.8
 
 defaultTasks 'test'
@@ -35,31 +17,17 @@ repositories {
 }
 
 dependencies {
-    compile 'org.codehaus.groovy:groovy-all:2.4.5:indy'
-    compile 'org.spockframework:spock-core:1.1-groovy-2.4'
-    compile 'com.electriccloud:ec-specs-plugins-core:1.2'
-    compile 'com.jayway.restassured:rest-assured:2.4.0'
-    compile 'de.gesellix:docker-client:2018-01-26T21-28-05'
-    compile 'software.amazon.awssdk:ec2:2.0.0-preview-10'
+    implementation 'org.codehaus.groovy:groovy-all:2.4.5:indy'
+    implementation 'org.spockframework:spock-core:1.1-groovy-2.4'
+    implementation 'com.electriccloud:ec-specs-plugins-core:1.2'
+    implementation 'com.jayway.restassured:rest-assured:2.4.0'
+    implementation 'de.gesellix:docker-client:2018-01-26T21-28-05'
+    implementation 'software.amazon.awssdk:ec2:2.0.0-preview-10'
 
-    testCompile 'org.slf4j:slf4j-api:1.7.13'
-    testCompile 'org.slf4j:slf4j-simple:1.7.13'
-}
-
-
-test {
-    systemProperties['COMMANDER_SERVER'] = findProperty('server') ?: 'localhost'
-    systemProperties['COMMANDER_SERVER'] = findProperty('server') ?: 'localhost'
-    systemProperties['COMMANDER_PASSWORD'] = findProperty('password') ?: 'changeme'
+    testImplementation 'org.slf4j:slf4j-api:1.7.13'
+    testImplementation 'org.slf4j:slf4j-simple:1.7.13'
 }
 
 sendAllureReports {
     projectName = 'ec-ec2'
 }
-
-configureTests {
-    environmentName = findProperty('envName') ?: 'default'
-    readEnvironmentVariables = true
-    readSecrets = true
-}
-
