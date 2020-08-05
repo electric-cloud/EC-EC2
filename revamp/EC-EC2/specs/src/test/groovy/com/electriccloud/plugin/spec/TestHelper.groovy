@@ -56,6 +56,10 @@ class TestHelper extends PluginSpockTestSupport {
         deleteConfiguration(pluginName, getConfigName())
     }
 
+    static def getRoleArn() {
+        return 'arn:aws:iam::372416831963:role/test-role-to-play-with-sts'
+    }
+
     def createConfig() {
 
         def pluginConfig = [
@@ -71,7 +75,8 @@ class TestHelper extends PluginSpockTestSupport {
         createPluginConfiguration(pluginName,
             configName,
             pluginConfig,
-            clientId, clientSecret
+            clientId,
+            clientSecret
         )
 
         //String httpProxy = System.getenv('HTTP_PROXY') ?: ''
@@ -142,5 +147,17 @@ class TestHelper extends PluginSpockTestSupport {
             CreateKeyPairRequest request = CreateKeyPairRequest.builder().keyName(name).build()
             println getHelperInstance().ec2Client.createKeyPair(request)
         }
+    }
+
+    List<Map> getFormalParameterOptions(String pluginName, String procedureName, String parameterName, Map actualParameters) {
+        String params = actualParameters.collect { k, v -> "$k: '$v'" }.join(",")
+        String script = """
+getFormalParameterOptions formalParameterName: '$parameterName',
+    projectName: '/plugins/$pluginName/project',
+    procedureName: '$procedureName',
+    actualParameter: [$params]
+            """
+        def formalParameterOptions = dsl(script)?.option
+        return formalParameterOptions
     }
 }

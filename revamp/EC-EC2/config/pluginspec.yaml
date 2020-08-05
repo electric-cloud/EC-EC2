@@ -30,11 +30,14 @@ configuration:
   - name: region
     required: true
     type: entry
+    label: Region
+    htmlDocumentation: AWS Region to work with. See the list of available regions <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html" target="_blank">here</a>.
+#    propertyReference: '/plugins/@PLUGIN_NAME@/project/ec_dropdowns/regions'
   - name: authType
     type: select
     options:
-      - name: Environment
-        value: environment
+#      - name: Environment
+#        value: environment
       - name: Basic
         value: basic
       - name: STS
@@ -54,6 +57,14 @@ configuration:
 properties:
   ec_dsl_libraries_path: agent/deps/libs
   ec_configurations: ec_plugin_cfgs
+  ec_dropdowns:
+    regions:
+      us-east-1: US East (N. Virginia)
+      us-east-2: US East (Ohio)
+      us-west-1: US West (N. California)
+      us-west-2: US West (Oregon)
+      ap-northeast-1: Asia Pacific (Tokyo)
+      ap-northeast-2: Asia Pacific (Seoul)
   ec_cloudprovisioning_plugin:
     configurationLocation: ec_plugin_cfgs
     displayName: EC2
@@ -95,6 +106,29 @@ procedures:
   name: API_RunInstances
   description: This procedure provisions one or several EC2 instances and creates resources for them.
   hasConfig: true
+
+  properties:
+    ec_form:
+      - propertyName: configurationParameterRef
+        value: config
+      - propertyName: usesConfigurationNameAsCredential
+        value: 1
+      - propertyName: parameterOptions
+        credentialProtected: true
+        properties:
+          image:
+            path: dsl/procedures/API_RunInstances/dropdowns.groovy
+          zone:
+            path: dsl/procedures/API_RunInstances/dropdowns.groovy
+          instanceType:
+            path: dsl/procedures/API_RunInstances/dropdowns.groovy
+          subnet_id:
+            path: dsl/procedures/API_RunInstances/dropdowns.groovy
+          group:
+            path: dsl/procedures/API_RunInstances/dropdowns.groovy
+          keyname:
+            path: dsl/procedures/API_RunInstances/dropdowns.groovy
+
   parameters:
   -
     name: image
@@ -102,10 +136,14 @@ procedures:
     required: true
     type: entry
     label: AMI
+    dependsOn: config
+    serverOptions: 1
   - name: zone
     required: false
     documentation: The Availability Zone you want to launch the instance into.
     label: Availability Zone
+    serverOptions: 1
+    dependsOn: config
     type: entry
   - name: name
     required: false

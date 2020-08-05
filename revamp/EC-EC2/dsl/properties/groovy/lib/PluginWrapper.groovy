@@ -1,26 +1,30 @@
 import com.cloudbees.flowpdf.Log
+import groovy.xml.XmlSlurper
+import org.apache.http.HttpResponse
 import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
 import software.amazon.awssdk.auth.credentials.AwsCredentials
 import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider
 import software.amazon.awssdk.auth.credentials.AwsSessionCredentials
 import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider
 import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.http.SdkHttpClient
+import software.amazon.awssdk.http.TlsTrustManagersProvider
+import software.amazon.awssdk.http.apache.ApacheHttpClient
+import software.amazon.awssdk.http.apache.ProxyConfiguration
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.ec2.Ec2Client
-import software.amazon.awssdk.services.ec2.model.CapacityReservationSpecification
+import software.amazon.awssdk.services.ec2.model.AvailabilityZone
 import software.amazon.awssdk.services.ec2.model.CreateTagsRequest
 import software.amazon.awssdk.services.ec2.model.DescribeImagesRequest
 import software.amazon.awssdk.services.ec2.model.DescribeImagesResponse
 import software.amazon.awssdk.services.ec2.model.DescribeInstancesRequest
-import software.amazon.awssdk.services.ec2.model.DescribeReservedInstancesRequest
 import software.amazon.awssdk.services.ec2.model.Ec2Exception
 import software.amazon.awssdk.services.ec2.model.Filter
 import software.amazon.awssdk.services.ec2.model.IamInstanceProfileSpecification
+import software.amazon.awssdk.services.ec2.model.Image
 import software.amazon.awssdk.services.ec2.model.Instance
-import software.amazon.awssdk.services.ec2.model.InstanceNetworkInterfaceSpecification
-import software.amazon.awssdk.services.ec2.model.InstanceState
+import software.amazon.awssdk.services.ec2.model.InstanceType
 import software.amazon.awssdk.services.ec2.model.Placement
-import software.amazon.awssdk.services.ec2.model.Reservation
 import software.amazon.awssdk.services.ec2.model.RunInstancesRequest
 import software.amazon.awssdk.services.ec2.model.RunInstancesResponse
 import software.amazon.awssdk.services.ec2.model.Tag
@@ -30,17 +34,27 @@ import software.amazon.awssdk.services.sts.StsClient
 import software.amazon.awssdk.services.sts.model.AssumeRoleRequest
 import software.amazon.awssdk.services.sts.model.AssumeRoleResponse
 
+import javax.net.ssl.TrustManager
+import javax.net.ssl.X509TrustManager
+import java.security.cert.X509Certificate
+
 class PluginWrapper {
     private String accessKeyId
     private String accessKeySecret
     private String sessionToken
     private String region
     private String roleArn
+    private String proxyUrl
+    private String proxyUser
+    private String proxyPassword
     private boolean environmentAuth
-    private Log log = new Log()
+    Log log = new Log()
+    private boolean ignoreSslIssues
+
 
     @Lazy
     private AwsCredentialsProvider credentialsProvider = {
+        //todo untested!!!
         if (environmentAuth) {
             return EnvironmentVariableCredentialsProvider.create()
         }
@@ -54,17 +68,24 @@ class PluginWrapper {
             )
             return StaticCredentialsProvider.create(credentials)
         } else if (roleArn) {
+            log.info "Assuming role $roleArn"
             AwsCredentials credentials = AwsBasicCredentials.create(
                 accessKeyId,
                 accessKeySecret
             )
-            StsClient stsClient = StsClient.builder().credentialsProvider(StaticCredentialsProvider.create(credentials)).build()
+            assert region: "No region is provided"
+            StsClient stsClient = StsClient
+                .builder()
+                .region(Region.of(region))
+                .credentialsProvider(StaticCredentialsProvider.create(credentials))
+                .build()
             String sessionName = '@PLUGIN_KEY@_' + new Random().nextInt()
             AssumeRoleRequest request = AssumeRoleRequest.builder()
                 .roleArn(roleArn)
                 .roleSessionName(sessionName)
                 .build()
             AssumeRoleResponse response = stsClient.assumeRole(request)
+            log.info "Assumed role user: ${response.assumedRoleUser().arn()}"
             AwsSessionCredentials sessionCredentials = AwsSessionCredentials.create(
                 response.credentials().accessKeyId(),
                 response.credentials().secretAccessKey(),
@@ -82,18 +103,88 @@ class PluginWrapper {
 
 
     @Lazy
+    private SdkHttpClient httpClient = {
+        def builder = ApacheHttpClient.builder().proxyConfiguration(proxyConfiguration)
+        if (ignoreSslIssues) {
+            log.warning("Ignoring SSL issues")
+            TlsTrustManagersProvider allTrustingProvider = new TlsTrustManagersProvider() {
+                @Override
+                TrustManager[] trustManagers() {
+                    new TrustManager[]{
+                        new X509TrustManager() {
+                            X509Certificate[] getAcceptedIssuers() {
+                                return null
+                            }
+
+                            void checkClientTrusted(
+                                X509Certificate[] certs, String authType) {
+                            }
+
+                            void checkServerTrusted(
+                                X509Certificate[] certs, String authType) {
+                            }
+                        }
+                    }
+                }
+            }
+            builder.tlsTrustManagersProvider(allTrustingProvider)
+        }
+        return builder.build()
+    }()
+
+    @Lazy
+    private ProxyConfiguration proxyConfiguration = {
+        if (proxyUrl) {
+            log.info "Using proxy URL $proxyUrl"
+
+            ProxyConfiguration.Builder builder = ProxyConfiguration
+                .builder()
+                .endpoint(new URI(proxyUrl))
+
+            if (proxyUser) {
+                log.info("Using proxy user $proxyUser")
+                assert proxyPassword: "Proxy password is not provided"
+                builder.username(proxyUser)
+                builder.password(proxyPassword)
+                log.info "Using proxy password ${'*' * proxyPassword.size()}"
+            }
+            return builder.build()
+        } else {
+            log.debug("Using system property values for the proxy")
+            return ProxyConfiguration.builder()
+                .useSystemPropertyValues(true)
+                .build()
+        }
+    }()
+
+
+    @Lazy
     private Ec2Client ec2Client = {
         assert region: "No region is provided"
+
         return Ec2Client
             .builder()
+            .httpClient(httpClient)
             .credentialsProvider(this.credentialsProvider)
             .region(Region.of(region))
             .build()
     }()
 
-
     void testConnection() {
         log.info ec2Client.describeAccountAttributes().accountAttributes()
+    }
+
+    @Lazy
+    RawHttpRequestHandler rawHttpRequestHandler = {
+        new RawHttpRequestHandler(
+            credentials: credentialsProvider.resolveCredentials(),
+            ignoreSslIssues: ignoreSslIssues
+        )
+    }()
+
+
+    List<AvailabilityZone> describeAvailabilityZones() {
+        return ec2Client.describeAvailabilityZones().availabilityZones()
     }
 
     String fetchAmi(String name) {
@@ -112,7 +203,7 @@ class PluginWrapper {
         return response.images().first().imageId()
     }
 
-    List<Instance> terminateInstances(String... instanceIds) {
+    List<Instance> terminateInstances(List<String> instanceIds) {
         TerminateInstancesRequest request = TerminateInstancesRequest
             .builder()
             .instanceIds(instanceIds)
@@ -239,7 +330,8 @@ class PluginWrapper {
 
 
      */
-    List<Instance> describeInstances(String ... ids) {
+
+    List<Instance> describeInstances(List<String> ids) {
         List<Instance> instances = []
         ec2Client.describeInstances(
             DescribeInstancesRequest.builder().instanceIds(ids).build() as DescribeInstancesRequest
@@ -277,20 +369,143 @@ class PluginWrapper {
                         done = false
                         log.info "Instance ${it.instanceId()} is not yet ready: status ${it.state().name()}"
                     } else {
-                        log.info "Instance ${it.instanceId()} is ready"
+                        log.info "Instance ${it.instanceId()} is ${it.state().name()}"
                     }
                 }
             }
             sleep(5 * 1000)
         }
     }
-
-
-
 }
+
 
 enum InstanceState {
     RUNNING, TERMINATED
+}
+
+class DropdownOption {
+    String name
+    String value
+}
+
+class DropdownHandler {
+    private PluginWrapper wrapper
+    private static DropdownHandler instance
+
+    private DropdownHandler() {}
+
+    static DropdownHandler getInstance(def args) {
+        if (instance) {
+            return instance
+        }
+        def configurationParameters = args.configurationParameters
+        def authType = configurationParameters.authType
+        def region = configurationParameters.region
+        def roleArn = configurationParameters.roleArn
+
+        def credentials = args.credential
+        if (credentials.size() != 1) {
+            return
+        }
+        def secretKeyId = credentials.first().userName
+        def secretKey = credentials.first().password
+        PluginWrapper wrapper = new PluginWrapper(
+            accessKeyId: secretKeyId,
+            accessKeySecret: secretKey,
+            environmentAuth: authType == 'environment',
+            roleArn: roleArn,
+            region: region,
+            ignoreSslIssues: true
+        )
+        instance = new DropdownHandler()
+        instance.wrapper = wrapper
+        return instance
+    }
+
+
+    List<DropdownOption> fetchDropdown(String parameterName) {
+        switch (parameterName) {
+            case 'zone': return availabilityZones()
+            case 'image': return images()
+            case 'instanceType': return instanceTypes()
+            case 'group': return groups()
+            case 'subnet_id': return subnets()
+            case 'keyname': return keys()
+            default: return []
+        }
+    }
+
+
+    List<DropdownOption> images() {
+        HttpResponse response = wrapper.rawHttpRequestHandler.executeHttpRequest('ec2', [
+            Version: "2016-11-15",
+            Action : "DescribeImages",
+            Owner  : "self"
+        ])
+        String xml = response.getEntity().content.text
+        def node = new XmlSlurper().parseText(xml)
+        return node.imagesSet.item.collect {
+            new DropdownOption(name: it.name, value: it.imageId)
+        }
+    }
+
+    List<DropdownOption> availabilityZones() {
+        HttpResponse response = wrapper.rawHttpRequestHandler.executeHttpRequest('ec2', [
+            Version: "2016-11-15",
+            Action : "DescribeAvailabilityZones",
+        ])
+        String xml = response.getEntity().content.text
+        def node = new XmlSlurper().parseText(xml)
+        return node.availabilityZoneInfo.item.collect {
+            new DropdownOption(name: it.zoneName, value: it.zoneName)
+        }
+    }
+
+    List<DropdownOption> keys() {
+        HttpResponse response = wrapper.rawHttpRequestHandler.executeHttpRequest('ec2', [
+            Version: "2016-11-15",
+            Action : "DescribeKeyPairs",
+        ])
+        String xml = response.getEntity().content.text
+        def node = new XmlSlurper().parseText(xml)
+        return node.keySet.item.collect {
+            //groupId
+            new DropdownOption(name: it.keyName, value: it.keyName)
+        }
+
+    }
+
+    List<DropdownOption> subnets() {
+        HttpResponse response = wrapper.rawHttpRequestHandler.executeHttpRequest('ec2', [
+            Version: "2016-11-15",
+            Action : "DescribeSubnets",
+        ])
+        String xml = response.getEntity().content.text
+        def node = new XmlSlurper().parseText(xml)
+        return node.subnetSet.item.collect {
+            //groupId
+            new DropdownOption(name: it.subnetId, value: it.subnetId)
+        }
+    }
+
+    List<DropdownOption> groups() {
+        HttpResponse response = wrapper.rawHttpRequestHandler.executeHttpRequest('ec2', [
+            Version: "2016-11-15",
+            Action : "DescribeSecurityGroups",
+        ])
+        String xml = response.getEntity().content.text
+        def node = new XmlSlurper().parseText(xml)
+        return node.securityGroupInfo.item.collect {
+            //groupId
+            new DropdownOption(name: it.groupName, value: it.groupName)
+        }
+    }
+
+    List<DropdownOption> instanceTypes() {
+        InstanceType.values().collect {
+            new DropdownOption(name: it.toString(), value: it.toString())
+        }
+    }
 }
 
 

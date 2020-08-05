@@ -61,7 +61,7 @@ class RunInstances extends TestHelper {
         then:
         logger.debug(objectToJson(result))
         assert result.outcome == 'success'
-        def instanceId = getJobProperty("${propResult}/instanceList", result.jobId)
+        def instanceId = getJobProperty("${propResult}/InstanceList", result.jobId)
         assert instanceId
         logger.debug(instanceId)
         Instance instance = helper.getInstance(instanceId)

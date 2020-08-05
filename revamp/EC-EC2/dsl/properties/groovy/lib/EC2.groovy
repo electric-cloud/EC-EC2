@@ -107,7 +107,7 @@ class EC2 extends FlowPlugin {
             ami: sp.image,
             type: sp.instanceType,
             zone: sp.zone,
-            name: sp.name,
+            name: sp.name ?: sp.res_poolName,
             subnet: sp.subnet_id,
             keyPairName: sp.keyname,
             sg: sp.group,
@@ -122,32 +122,36 @@ class EC2 extends FlowPlugin {
         List<Instance> instances
         try {
             instances = wrapper.provisionInstances(runInstancesParameters)
+            log.debug "Provisioned instances $instances"
         } catch (Throwable e) {
             return context.bailOut("Failed to provision instances: $e.message")
         }
 
         if (sp.propResult) {
+            log.info "Saving results to the property sheet $sp.propResult"
+            def ids = instances.collect { it.instanceId() }
+            FlowAPI.setFlowProperty("$sp.propResult/InstanceList", ids.join(";"))
             instances.each {
-                if (sp.propResult) {
-                    if (sp.count as int > 1) {
-                        FlowAPI.setFlowProperty("$sp.propResult/Instance-${it.instanceId()}/AMI", it.imageId())
-                        FlowAPI.setFlowProperty("$sp.propResult/Instance-${it.instanceId()}/Address", it.publicIpAddress())
-                        FlowAPI.setFlowProperty("$sp.propResult/Instance-${it.instanceId()}/Private", it.privateIpAddress())
-                        FlowAPI.setFlowProperty("$sp.propResult/Instance-${it.instanceId()}/Zone", it.placement().availabilityZone())
-                    } else {
-                        FlowAPI.setFlowProperty("$sp.propResult/AMI", it.imageId())
-                        FlowAPI.setFlowProperty("$sp.propResult/Address", it.publicIpAddress())
-                        FlowAPI.setFlowProperty("$sp.propResult/Private", it.privateIpAddress())
-                        FlowAPI.setFlowProperty("$sp.propResult/Zone", it.placement().availabilityZone())
-                        FlowAPI.setFlowProperty("$sp.propResult/InstanceId", it.instanceId())
-                    }
+                if (sp.count as int > 1) {
+                    FlowAPI.setFlowProperty("$sp.propResult/Instance-${it.instanceId()}/AMI", it.imageId())
+                    FlowAPI.setFlowProperty("$sp.propResult/Instance-${it.instanceId()}/Address", it.publicIpAddress())
+                    FlowAPI.setFlowProperty("$sp.propResult/Instance-${it.instanceId()}/Private", it.privateIpAddress())
+                    FlowAPI.setFlowProperty("$sp.propResult/Instance-${it.instanceId()}/Zone", it.placement().availabilityZone())
+                } else {
+                    FlowAPI.setFlowProperty("$sp.propResult/AMI", it.imageId())
+                    FlowAPI.setFlowProperty("$sp.propResult/Address", it.publicIpAddress())
+                    FlowAPI.setFlowProperty("$sp.propResult/Private", it.privateIpAddress())
+                    FlowAPI.setFlowProperty("$sp.propResult/Zone", it.placement().availabilityZone())
+                    FlowAPI.setFlowProperty("$sp.propResult/InstanceId", it.instanceId())
                 }
             }
         }
 
         if (sp.res_poolName) {
+            log.info "Provisioning resources in the pool $sp.res_poolName"
             int port = sp.res_port ? sp.res_port as int : 7800
             String me = '$[/myJob/launchedByUser]'
+
             instances.each {
                 String id = it.instanceId()
                 String ip = sp.use_private_ip == 'true' ? it.privateIpAddress() : it.publicIpAddress()
@@ -163,7 +167,8 @@ class EC2 extends FlowPlugin {
                     hostName: ip,
                     zoneName: sp.resource_zone ?: 'default'
                 )
-                log.info "Launched by user: $me"
+                log.info "Resource $resourceName has been created"
+
                 try {
                     FlowAPI.ec.createAclEntry(
                         principalType: 'user',
@@ -180,6 +185,7 @@ class EC2 extends FlowPlugin {
                 }
 
                 if (me) {
+                    log.info "Launched by user: $me"
                     try {
                         FlowAPI.ec.createAclEntry(
                             principalType: 'user',
@@ -190,18 +196,21 @@ class EC2 extends FlowPlugin {
                             executePrivilege: 'allow',
                             resourceName: resourceName
                         )
+                        log.info "Created ACL entry fot the resource $resourceName"
                     } catch (Throwable e) {
                         log.info "Failed to grant ACL for $me: ${e.message}"
                     }
                 }
 
+                String configName = p.getRequiredParameter('config').value as String
                 FlowAPI.setFlowProperty("/resources/$resourceName/ec_cloud_instance_details/createdBy", "@PLUGIN_KEY@")
                 FlowAPI.setFlowProperty("/resources/$resourceName/ec_cloud_instance_details/instance_id", id)
-                FlowAPI.setFlowProperty("/resources/$resourceName/ec_cloud_instance_details/config", p.getRequiredParameter('config').value)
+                FlowAPI.setFlowProperty("/resources/$resourceName/ec_cloud_instance_details/config", configName)
                 FlowAPI.setFlowProperty("/resources/$resourceName/ec_cloud_instance_details/etc/private_ip", it.privateIpAddress())
                 FlowAPI.setFlowProperty("/resources/$resourceName/ec_cloud_instance_details/etc/public_ip", it.publicIpAddress())
 
                 if (sp.pingResource) {
+                    log.info "Going to ping resource $resourceName"
                     def slept = 0
                     def ready = false
                     def sleepTime = 5
@@ -258,7 +267,7 @@ class EC2 extends FlowPlugin {
             log.info("${e.message}")
         }
         log.info("Found resources $resources")
-        List<PluginWrapper> clients = []
+        def clients = [:]
         def errors = []
         def instances = [:]
         int opsDone = 0
@@ -269,20 +278,23 @@ class EC2 extends FlowPlugin {
             String createdBy = FlowAPI.getFlowProperty("/resources/$resName/ec_cloud_instance_details/createdBy")
             log.info "The resource $resName is created by $createdBy"
             String instanceId = FlowAPI.getFlowProperty("/resources/$resName/ec_cloud_instance_details/instance_id")
-            log.info "The instance id is $instanceName"
+            log.info "The instance id is $instanceId"
             String config = FlowAPI.getFlowProperty("/resources/$resName/ec_cloud_instance_details/config")
             log.info "The config name is $config"
             if (createdBy == '@PLUGIN_KEY@') {
                 PluginWrapper wrapper = clients[config]
+
                 if (!wrapper) {
                     log.debug("Loading configuration for $config")
                     def cfg = context.retrieveConfigByNameAndLocation(config, pluginInfo().configLocations[0])
+                    log.debug "Config $config is $cfg"
                     wrapper = buildWrapper(cfg)
                     clients[config] = wrapper
+                    log.trace "Wrapper for config $config $wrapper"
                 }
 
                 try {
-                    wrapper.terminateInstances(instanceId)
+                    wrapper.terminateInstances([instanceId])
                     //should be only one instance
                     if (!instances[config]) {
                         instances[config] = []
