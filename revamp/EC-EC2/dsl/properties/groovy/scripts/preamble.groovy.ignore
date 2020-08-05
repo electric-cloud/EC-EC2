@@ -1,0 +1,5 @@
+
+$[/myProject/groovy/lib/EC2.groovy]
+$[/myProject/groovy/lib/PluginWrapper.groovy]
+$[/myProject/groovy/lib/API_RunInstancesParameters.groovy]
+$[/myProject/groovy/lib/API_TearDownResourceParameters.groovy]

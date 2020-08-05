@@ -1,0 +1,89 @@
+plugins {
+    id 'groovy'
+    id 'idea'
+    id 'java'
+}
+
+allprojects {
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs new File(rootProject.projectDir, 'agent/deps/libs')
+        }
+    }
+}
+
+configurations.all {
+    resolutionStrategy {
+        force 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+        force group: 'commons-io', name: 'commons-io', version: '2.7'
+        force group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
+        force group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+        force group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+        force group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.9'
+        force group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.9'
+
+        cacheChangingModulesFor 0, 'seconds'
+    }
+}
+
+sourceSets {
+    main {
+        groovy {
+            srcDirs = [new File(rootProject.projectDir, 'dsl/properties/groovy/lib')]
+        }
+    }
+    test {
+        groovy {
+            srcDirs = ["t"]
+        }
+    }
+}
+
+
+dependencies {
+    implementation group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.5'
+
+    implementation platform('software.amazon.awssdk:bom:2.13.58')
+    implementation 'software.amazon.awssdk:ec2'
+    //implementation 'software.amazon.awssdk:core'
+    //implementation 'software.amazon.awssdk:auth'
+    //implementation 'software.amazon.awssdk:http'
+    //implementation 'software.amazon.awssdk:apache-client'
+    implementation 'software.amazon.awssdk:sts'
+
+
+    // Change the version if you have upgraded the groovy library
+    implementation 'com.electriccloud.plugins:flowpdf-groovy-lib:1.1.0.0'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0-M1'
+}
+
+
+test {
+    useJUnit()
+    include "t/**"
+
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
+}
+
+// Use this task to include third-party dependencies into to agent folder
+task copyDependencies(type: Copy) {
+    outputs.upToDateWhen { false }
+
+    fileTree(dir: 'agent/deps/libs').exclude("flowpdf-groovy-lib*").visit { FileVisitDetails details ->
+        delete details.file
+    }
+
+    from configurations.runtimeClasspath {
+        // Dependencies already included into the COMMANDER_HOME/utils/langs
+        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        exclude group: "org.apache.commons", module: 'commons-lang'
+        exclude group: "commons-collections", module: 'commons-collections'
+        exclude group: "com.electriccloud.plugins", module: 'flowpdf-groovy-lib'
+    }
+
+    into 'agent/deps/libs'
+}
