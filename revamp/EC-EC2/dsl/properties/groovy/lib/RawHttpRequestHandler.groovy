@@ -1,4 +1,3 @@
-import org.apache.http.HttpHost
 import org.apache.http.HttpRequest
 import org.apache.http.HttpResponse
 import org.apache.http.client.HttpClient
@@ -12,7 +11,6 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory
 import org.apache.http.impl.client.CloseableHttpClient
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager
-import org.apache.http.impl.conn.DefaultProxyRoutePlanner
 import org.apache.http.ssl.SSLContexts
 import org.apache.http.ssl.TrustStrategy
 import software.amazon.awssdk.auth.credentials.AwsCredentials
@@ -24,7 +22,6 @@ import software.amazon.awssdk.regions.Region
 
 import javax.net.ssl.SSLContext
 import java.time.Instant
-
 //Made to work with httpcore 4.4.4
 class RawHttpRequestHandler {
     private AwsCredentials credentials
@@ -66,27 +63,26 @@ class RawHttpRequestHandler {
 
     HttpClient buildHttpClient() {
         if (ignoreSslIssues) {
-            TrustStrategy acceptingTrustStrategy = (cert, authType) -> true;
+            TrustStrategy acceptingTrustStrategy = (cert, authType) -> true
             SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
             SSLConnectionSocketFactory sslsf = new SSLConnectionSocketFactory(sslContext,
-                NoopHostnameVerifier.INSTANCE);
+                NoopHostnameVerifier.INSTANCE)
 
             Registry<ConnectionSocketFactory> socketFactoryRegistry =
                 RegistryBuilder.<ConnectionSocketFactory> create()
                     .register("https", sslsf)
                     .register("http", new PlainConnectionSocketFactory())
-                    .build();
+                    .build()
 
             BasicHttpClientConnectionManager connectionManager =
-                new BasicHttpClientConnectionManager(socketFactoryRegistry);
+                new BasicHttpClientConnectionManager(socketFactoryRegistry)
 
             CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslsf)
-                .setConnectionManager(connectionManager).build();
+                .setConnectionManager(connectionManager).build()
             return httpClient
         } else {
             //HttpHost proxy = new HttpHost("proxy.com", 80, "http");
             //DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-
             CloseableHttpClient httpClient = HttpClients.custom().build()
             return httpClient
         }

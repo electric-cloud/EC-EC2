@@ -50,7 +50,7 @@ class API_RunInstancesParameters {
     */
     String tenancy
     /**
-    * Label: User Data, type: entry
+    * Label: User Data, type: textarea
     */
     String userData
     /**
@@ -133,4 +133,4 @@ class API_RunInstancesParameters {
         return parameters
     }
 }
-// DO NOT EDIT THIS BLOCK ABOVE ^^^=== Parameters ends, checksum: 044c00951b3459f2a7f3444092c2ad39 ===
+// DO NOT EDIT THIS BLOCK ABOVE ^^^=== Parameters ends, checksum: 7b95e689f1e68eb3024a6153cbc124ca ===

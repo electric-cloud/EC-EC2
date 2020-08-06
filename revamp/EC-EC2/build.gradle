@@ -22,6 +22,7 @@ configurations.all {
         force group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
         force group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.9'
         force group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.9'
+        //force group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.4'
 
         cacheChangingModulesFor 0, 'seconds'
     }
@@ -49,12 +50,12 @@ dependencies {
     //implementation 'software.amazon.awssdk:core'
     //implementation 'software.amazon.awssdk:auth'
     //implementation 'software.amazon.awssdk:http'
-    //implementation 'software.amazon.awssdk:apache-client'
+    implementation 'software.amazon.awssdk:apache-client'
     implementation 'software.amazon.awssdk:sts'
 
 
     // Change the version if you have upgraded the groovy library
-    implementation 'com.electriccloud.plugins:flowpdf-groovy-lib:1.1.0.0'
+    implementation 'com.electriccloud.plugins:flowpdf-groovy-lib:1.1.1.0'
 
     testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0-M1'
 }
@@ -72,10 +73,10 @@ test {
 // Use this task to include third-party dependencies into to agent folder
 task copyDependencies(type: Copy) {
     outputs.upToDateWhen { false }
-
-    fileTree(dir: 'agent/deps/libs').exclude("flowpdf-groovy-lib*").visit { FileVisitDetails details ->
-        delete details.file
-    }
+    //
+    //fileTree(dir: 'agent/deps/libs').exclude("flowpdf-groovy-lib*").visit { FileVisitDetails details ->
+    //    delete details.file
+    //}
 
     from configurations.runtimeClasspath {
         // Dependencies already included into the COMMANDER_HOME/utils/langs

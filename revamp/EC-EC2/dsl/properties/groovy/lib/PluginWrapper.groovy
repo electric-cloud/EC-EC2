@@ -1,35 +1,15 @@
+import InstanceState
 import com.cloudbees.flowpdf.Log
 import groovy.xml.XmlSlurper
 import org.apache.http.HttpResponse
-import software.amazon.awssdk.auth.credentials.AwsBasicCredentials
-import software.amazon.awssdk.auth.credentials.AwsCredentials
-import software.amazon.awssdk.auth.credentials.AwsCredentialsProvider
-import software.amazon.awssdk.auth.credentials.AwsSessionCredentials
-import software.amazon.awssdk.auth.credentials.EnvironmentVariableCredentialsProvider
-import software.amazon.awssdk.auth.credentials.StaticCredentialsProvider
+import software.amazon.awssdk.auth.credentials.*
 import software.amazon.awssdk.http.SdkHttpClient
 import software.amazon.awssdk.http.TlsTrustManagersProvider
 import software.amazon.awssdk.http.apache.ApacheHttpClient
 import software.amazon.awssdk.http.apache.ProxyConfiguration
 import software.amazon.awssdk.regions.Region
 import software.amazon.awssdk.services.ec2.Ec2Client
-import software.amazon.awssdk.services.ec2.model.AvailabilityZone
-import software.amazon.awssdk.services.ec2.model.CreateTagsRequest
-import software.amazon.awssdk.services.ec2.model.DescribeImagesRequest
-import software.amazon.awssdk.services.ec2.model.DescribeImagesResponse
-import software.amazon.awssdk.services.ec2.model.DescribeInstancesRequest
-import software.amazon.awssdk.services.ec2.model.Ec2Exception
-import software.amazon.awssdk.services.ec2.model.Filter
-import software.amazon.awssdk.services.ec2.model.IamInstanceProfileSpecification
-import software.amazon.awssdk.services.ec2.model.Image
-import software.amazon.awssdk.services.ec2.model.Instance
-import software.amazon.awssdk.services.ec2.model.InstanceType
-import software.amazon.awssdk.services.ec2.model.Placement
-import software.amazon.awssdk.services.ec2.model.RunInstancesRequest
-import software.amazon.awssdk.services.ec2.model.RunInstancesResponse
-import software.amazon.awssdk.services.ec2.model.Tag
-import software.amazon.awssdk.services.ec2.model.Tenancy
-import software.amazon.awssdk.services.ec2.model.TerminateInstancesRequest
+import software.amazon.awssdk.services.ec2.model.*
 import software.amazon.awssdk.services.sts.StsClient
 import software.amazon.awssdk.services.sts.model.AssumeRoleRequest
 import software.amazon.awssdk.services.sts.model.AssumeRoleResponse
@@ -183,10 +163,6 @@ class PluginWrapper {
     }()
 
 
-    List<AvailabilityZone> describeAvailabilityZones() {
-        return ec2Client.describeAvailabilityZones().availabilityZones()
-    }
-
     String fetchAmi(String name) {
         Filter filter = Filter.builder().name("name").values(name).build()
         DescribeImagesRequest request = DescribeImagesRequest
@@ -260,8 +236,13 @@ class PluginWrapper {
             log.info "Using private IP $p.privateIp"
         }
         if (p.sg) {
-            //todo id
-            builder.securityGroups(p.sg)
+            if (p.sg.startsWith("sg-")) {
+                builder.securityGroupIds(p.sg)
+                log.info "Using security group id $p.sg"
+            } else {
+                builder.securityGroups(p.sg)
+                log.info "Using security group name $p.sg"
+            }
         }
         if (p.userData) {
             String userData = p.userData.bytes.encodeBase64().toString()
@@ -277,6 +258,21 @@ class PluginWrapper {
         log.debug("Placement: $placement")
         builder.placement(placement)
 
+        List<Tag> tags = []
+
+        if (p.name) {
+            log.info "Assigning name $p.name"
+            if (p.count > 1) {
+                log.warning("More than one instance has been created.They will have the same name.")
+            }
+            Tag nameTag = Tag.builder().key("Name").value(p.name).build()
+            tags << nameTag
+            log.info "Assigning name tag $nameTag"
+        }
+        Tag referenceTag = Tag.builder().key("created-by").value('@PLUGIN_NAME@').build()
+        tags << referenceTag
+        builder.tagSpecifications(TagSpecification.builder().resourceType(ResourceType.INSTANCE).tags(tags).build())
+
         RunInstancesRequest request = builder.build()
         log.debug "Request: $request"
 
@@ -288,10 +284,9 @@ class PluginWrapper {
             it.instanceId()
         }
         log.info "Instances IDs: $instanceIds"
-        //16 = running
-        waitForInstances(instanceIds, InstanceState.RUNNING)
 
-        //Attaching the name tag after the instance has been properly launched
+        //Sometimes it says that the instance does not exist
+        assertThatInstancesExist(instanceIds)
         if (p.name) {
             log.info "Assigning name $p.name"
             if (instanceIds.size() > 1) {
@@ -311,6 +306,8 @@ class PluginWrapper {
             }
         }
 
+        //16 = running
+        waitForInstances(instanceIds, InstanceState.RUNNING)
         return describeInstances(instanceIds)
     }
 
@@ -340,6 +337,23 @@ class PluginWrapper {
             instances.addAll(it.instances())
         }
         return instances
+    }
+
+    private void assertThatInstancesExist(List<String> ids) {
+        boolean found = false
+        int tries = 0
+        while (!found && tries < 5) {
+            try {
+                log.debug "Trying to describe the instances $ids...."
+                log.debug describeInstances(ids)
+                found = true
+                log.info "Found instances"
+            } catch (Throwable e) {
+                log.debug("Describe failed: $e.message")
+                sleep(1000 * 4)
+                tries++
+            }
+        }
     }
 
 

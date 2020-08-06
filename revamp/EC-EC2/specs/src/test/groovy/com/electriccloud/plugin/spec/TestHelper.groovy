@@ -160,4 +160,56 @@ getFormalParameterOptions formalParameterName: '$parameterName',
         def formalParameterOptions = dsl(script)?.option
         return formalParameterOptions
     }
+
+
+    def switchUser() {
+        String userName = 'ec2-provision-spec-user'
+
+        try {
+            dsl """
+                createUser userName: "$userName", email: '$userName', password: "$userName"
+            """
+            println ":Created user $userName"
+        } catch (Throwable e) {
+
+        }
+        //ACL
+
+        def allowAll = """
+ changePermissionsPrivilege = 'allow'
+ executePrivilege = 'allow'
+ modifyPrivilege = 'allow'
+ readPrivilege = 'allow'
+"""
+
+        dsl """
+aclEntry principalType: 'user', principalName: '$userName', {
+    systemObjectName = 'projects'
+    objectType = 'systemObject'
+$allowAll
+}
+
+
+aclEntry principalType: 'user', principalName: '$userName', {
+    systemObjectName = 'resources'
+    objectType = 'systemObject'
+$allowAll
+}
+
+
+aclEntry principalType: 'user', principalName: '$userName', {
+    zoneName = 'default'
+    objectType = 'zone'
+$allowAll
+}
+
+"""
+        login(userName, userName)
+    }
+
+    def switchAdmin() {
+        def userName = System.getProperty("COMMANDER_USER", "admin")
+        def password = System.getProperty("COMMANDER_PASSWORD", "changeme")
+        login(userName, password)
+    }
 }

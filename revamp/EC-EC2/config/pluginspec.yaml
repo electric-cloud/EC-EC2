@@ -152,6 +152,8 @@ procedures:
     type: entry
   - name: instanceType
     required: true
+    serverOptions: 1
+    dependsOn: config
     type: entry
     htmlDocumentation: |
       The  instance  type.
@@ -161,16 +163,21 @@ procedures:
     label: Subnet ID
     required: false
     type: entry
+    serverOptions: 1
+    dependsOn: config
     documentation: The ID of the subnet to launch the instance(s) into (for use with VPCs)
   - name: group
     label: Security Group
     required: false
-    value: default
     type: entry
+    serverOptions: 1
+    dependsOn: config
   - name: keyname
     label: Key Name
     required: false
     type: entry
+    serverOptions: 1
+    dependsOn: config
     documentation: The name of the keypair to use for the instance.
   - name: instanceInitiatedShutdownBehavior
     label: Initiated Shutdown Behaviour
@@ -211,7 +218,7 @@ procedures:
     documentation: |
       Extra user data to pass into runInstance.
     required: false
-    type: entry
+    type: textarea
   - name: count
     label: Number of Instances
     value: 1
@@ -275,7 +282,7 @@ procedures:
   description: Terminates resources created with this plugin.
   parameters:
     - name: resName
-      description: Resource or Resource Pool name to delete.
+      documentation: Resource or Resource Pool name to delete.
       required: true
       type: textarea
       label: Resource Name

@@ -30,10 +30,15 @@ class RunInstances extends TestHelper {
         createConfig()
         helper = getHelperInstance()
         ensureKeyPair(keyname)
+        switchUser()
+    }
+
+    def doCleanupSpec() {
+        switchAdmin()
     }
 
     @Unroll
-    def 'minimalistic template. IAM profile: "#iamProfile"'() {
+    def 'minimalistic template. IAM profile: "#iamProfile", sg: #group'() {
         given:
         def templateName = 'simple specs'
         def environmentName = 'provisioned ec2 specs'
@@ -41,18 +46,20 @@ class RunInstances extends TestHelper {
             projectName : projectName,
             templateName: templateName,
             parameters  : [
-                config        : getConfigName(),
-                count         : '1',
-                group         : group,
-                image         : ami,
-                keyname       : keyname,
-                resource_zone : 'default',
-                zone          : zone,
-                propResult    : propResult,
-                instanceType  : type,
-                subnet_id     : '',
-                use_private_ip: '0',
-                iamProfileName: iamProfile,
+                config                           : getConfigName(),
+                count                            : '1',
+                group                            : group,
+                image                            : ami,
+                keyname                          : keyname,
+                resource_zone                    : 'default',
+                zone                             : zone,
+                propResult                       : propResult,
+                instanceType                     : type,
+                subnet_id                        : 'subnet-28240574',
+                use_private_ip                   : '0',
+                userData                         : userData,
+                iamProfileName                   : iamProfile,
+                instanceInitiatedShutdownBehavior: 'terminate'
             ]
         ]
         dslFile "dsl/template.dsl", templateParams
@@ -66,16 +73,26 @@ class RunInstances extends TestHelper {
         logger.debug(instanceId)
         Instance instance = helper.getInstance(instanceId)
         println instance
+        if (group) {
+            assert instance.securityGroups().find { it.groupName() == group || it.groupId() == group }
+        }
+        println instance.securityGroups()
+        println instance.iamInstanceProfile()
         logger.debug(objectToJson(instance))
+        println instance.placement()
+        assert instance.placement().availabilityZone() == zone
         cleanup:
         def tearDownResult = tearDownEnvironment(projectName, environmentName)
         assert tearDownResult.outcome == 'success'
         assert tearDownResult.logs =~ /terminated/
         where:
-        group     | ami      | zone      | type       | iamProfile
-        'default' | getAmi() | getZone() | 't2.micro' | ''
-        //'default' | TestHelper.getAmi() | getZone() | 't2.micro' | 'ecsInstanceRole'
+        group                  | ami      | zone      | type       | iamProfile | userData
+        ''                     | getAmi() | getZone() | 't2.micro' | ''         | ''
+        'default'              | getAmi() | getZone() | 't2.micro' | ''         | ''
+        'another-sg'           | getAmi() | getZone() | 't2.micro' | ''         | ''
+        //does not work
+        //'sg-0f795e024778c1c53' | getAmi() | getZone() | 't2.micro' | 'test-role-for-iam-instance-profile' |
+        'sg-0f795e024778c1c53' | getAmi() | getZone() | 't2.micro' | ''         | "#!/bin/bash\necho hello"
     }
-
 
 }

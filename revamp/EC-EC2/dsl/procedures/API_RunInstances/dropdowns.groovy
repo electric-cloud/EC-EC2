@@ -19,7 +19,6 @@ try {
     }
 }
 catch (Throwable e) {
-    throw e
     throw EcException
         .code(ErrorCodes.InvalidArgument)
         .message("Failed execute EC2 API call: ${e.message}")
