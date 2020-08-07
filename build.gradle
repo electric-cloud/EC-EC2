@@ -1,100 +1,90 @@
-// -*- Groovy -*-
-// build.gradle
-//
-// Gradle build script for EC-EC2 plugin.
-//
-// Copyright (c) 2015 Electric Cloud, Inc.
-// All rights reserved
-
-buildscript {
-	repositories {
-		maven { url 'http://dl.bintray.com/ecpluginsdev/maven' }
-		jcenter()
-	}
-
-	dependencies {
-		classpath group: 'com.electriccloud.plugins', name: 'flow-gradle-plugin', version: '+'
-	}
+plugins {
+    id 'groovy'
+    id 'idea'
+    id 'java'
 }
 
-group = "com.electriccloud"
-description = "Plugins : EC-EC2"
-
-version = "2.7.2"
-
-apply plugin: 'groovy'
-apply plugin: 'flow-gradle-plugin'
-apply plugin: 'license'
-
-license {
-	header = file ('shortHeader.txt')
-	exclude "**/project.xml"
-}
-
-task wrapper(type: Wrapper) { gradleVersion = '2.13' }
-
-// Configuration for the jar files we want
-// to include in the plugin jar
-configurations {
-	includeInPluginJar
+allprojects {
+    repositories {
+        mavenCentral()
+        flatDir {
+            dirs new File(rootProject.projectDir, 'agent/deps/libs')
+        }
+    }
 }
 
 configurations.all {
-        resolutionStrategy {
-                // fail eagerly on version conflict (includes transitive dependencies)
-                // e.g. multiple different versions of the same dependency (group and name are equal)
-                //failOnVersionConflict()
+    resolutionStrategy {
+        force 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
+        force group: 'commons-io', name: 'commons-io', version: '2.7'
+        force group: 'commons-collections', name: 'commons-collections', version: '3.2.2'
+        force group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
+        force group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
+        force group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.9'
+        force group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.9'
+        //force group: 'org.apache.httpcomponents', name: 'httpcore', version: '4.4.4'
 
-                // prefer modules that are part of this build (multi-project or composite build) over external modules
-                //preferProjectModules()
+        cacheChangingModulesFor 0, 'seconds'
+    }
+}
 
-                // force certain versions of dependencies (including transitive)
-                //  *append new forced modules:
-                //force 'asm:asm-all:3.3.1', 'commons-io:commons-io:1.4'
-                //  *replace existing forced modules with new ones:
-                //forcedModules = ['asm:asm-all:3.3.1']
-
-                force 'com.fasterxml.jackson.core:jackson-databind:2.11.1'
-                force group: 'commons-codec', name: 'commons-codec', version: '1.13'
-                // force group: 'org.slf4j', name: 'slf4j-api', version: '1.7.30'
-
-
-                // https://mvnrepository.com/artifact/commons-beanutils/commons-beanutils
-                //force group: 'commons-beanutils', name: 'commons-beanutils', version: '1.9.4'
-
-                //forcedModules = ['com.fasterxml.jackson.core:jackson-databind:2.11.1']
-
-                cacheChangingModulesFor 0, 'seconds'
+sourceSets {
+    main {
+        groovy {
+            srcDirs = [new File(rootProject.projectDir, 'dsl/properties/groovy/lib')]
         }
+    }
+    test {
+        groovy {
+            srcDirs = ["t"]
+        }
+    }
 }
 
 
 dependencies {
-	compile localGroovy()
-	compile 'com.electriccloud:commander-api:6.1.+'
-	includeInPluginJar 'com.amazonaws:aws-java-sdk-ec2:1.11.380'
-	includeInPluginJar 'com.amazonaws:aws-java-sdk-core:1.11.380'
-	testCompile 'junit:junit:[4,)'
-	testCompile 'org.mockito:mockito-core:1.9.5'
-	testCompile 'com.amazonaws:aws-java-sdk-ec2:1.11.380'
+    implementation group: 'org.codehaus.groovy', name: 'groovy-all', version: '3.0.5'
+
+    implementation platform('software.amazon.awssdk:bom:2.13.58')
+    implementation 'software.amazon.awssdk:ec2'
+    //implementation 'software.amazon.awssdk:core'
+    //implementation 'software.amazon.awssdk:auth'
+    //implementation 'software.amazon.awssdk:http'
+    implementation 'software.amazon.awssdk:apache-client'
+    implementation 'software.amazon.awssdk:sts'
+
+
+    // Change the version if you have upgraded the groovy library
+    implementation 'com.electriccloud.plugins:flowpdf-groovy-lib:1.1.1.0'
+
+    testImplementation group: 'org.junit.jupiter', name: 'junit-jupiter-api', version: '5.7.0-M1'
 }
+
 
 test {
-	Properties props = new Properties()
+    useJUnit()
+    include "t/**"
 
-	systemProperties['COMMANDER_SERVER'] = "$commanderServer"
-	systemProperties['PLUGIN_VERSION'] = version
-
-	testLogging {
-		// Show that tests are run in the command-line output
-		events 'started', 'passed'
-		exceptionFormat = 'full'
-	}
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
 
-// Include any dependent jars in the plugin jar file for
-// evaluating the validation and dynamic option scripts
-// on the ElectricFlow server.
-jar {
-	from(configurations.includeInPluginJar, { into('libs') })
+// Use this task to include third-party dependencies into to agent folder
+task copyDependencies(type: Copy) {
+    outputs.upToDateWhen { false }
+    //
+    //fileTree(dir: 'agent/deps/libs').exclude("flowpdf-groovy-lib*").visit { FileVisitDetails details ->
+    //    delete details.file
+    //}
+
+    from configurations.runtimeClasspath {
+        // Dependencies already included into the COMMANDER_HOME/utils/langs
+        exclude group: 'org.codehaus.groovy', module: 'groovy-all'
+        exclude group: "org.apache.commons", module: 'commons-lang'
+        exclude group: "commons-collections", module: 'commons-collections'
+        exclude group: "com.electriccloud.plugins", module: 'flowpdf-groovy-lib'
+    }
+
+    into 'agent/deps/libs'
 }

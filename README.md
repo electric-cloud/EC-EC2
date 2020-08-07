@@ -1,10 +1,3 @@
-The CloudBees CD Amazon EC2 integration
+## EC-EC2
 
-## Compile ##
-
-Run gradlew to compile the plugin
-
-`./gradlew`
-
-## Tests ##
-[TBD]
+Please fill this readme file with some meaningful information about your plugin.
