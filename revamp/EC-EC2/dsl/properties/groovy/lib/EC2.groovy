@@ -19,12 +19,20 @@ class EC2 extends FlowPlugin {
 
     PluginWrapper buildWrapper(Config config) {
         String region = config.getRequiredParameter("region")
+
+        String proxyUrl = config.getParameter('httpProxyUrl')?.value
+        String proxyUser = config.getCredential('proxy_credential')?.userName
+        String proxyPassword = config.getCredential('proxy_credential')?.secretValue
+
         switch (config.getRequiredParameter('authType').value) {
             case 'environment':
                 return new PluginWrapper(
                     environmentAuth: true,
                     log: log,
-                    region: region
+                    region: region,
+                    proxyUrl: proxyUrl,
+                    proxyUser: proxyUser,
+                    proxyPassword: proxyPassword,
                 )
             case 'basic':
                 def credential = config.getRequiredCredential('credential')
@@ -32,7 +40,10 @@ class EC2 extends FlowPlugin {
                     accessKeyId: credential.userName,
                     accessKeySecret: credential.secretValue,
                     log: log,
-                    region: region
+                    region: region,
+                    proxyUrl: proxyUrl,
+                    proxyUser: proxyUser,
+                    proxyPassword: proxyPassword,
                 )
             case 'sts':
                 def credential = config.getRequiredCredential('credential')
@@ -43,6 +54,9 @@ class EC2 extends FlowPlugin {
                     roleArn: roleArn,
                     log: log,
                     region: region,
+                    proxyUrl: proxyUrl,
+                    proxyUser: proxyUser,
+                    proxyPassword: proxyPassword,
                 )
             default:
                 log.errorDiag("Invalid configuration. Auth type ${config.getRequiredParameter('authType').value} is not valid.")

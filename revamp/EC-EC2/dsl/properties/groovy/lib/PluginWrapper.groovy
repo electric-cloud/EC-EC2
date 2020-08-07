@@ -56,6 +56,7 @@ class PluginWrapper {
             assert region: "No region is provided"
             StsClient stsClient = StsClient
                 .builder()
+                .httpClient(httpClient)
                 .region(Region.of(region))
                 .credentialsProvider(StaticCredentialsProvider.create(credentials))
                 .build()
@@ -158,7 +159,10 @@ class PluginWrapper {
     RawHttpRequestHandler rawHttpRequestHandler = {
         new RawHttpRequestHandler(
             credentials: credentialsProvider.resolveCredentials(),
-            ignoreSslIssues: ignoreSslIssues
+            ignoreSslIssues: ignoreSslIssues,
+            proxyPassword: proxyPassword,
+            proxyUser: proxyUser,
+            proxyUrl: proxyUrl,
         )
     }()
 
@@ -413,24 +417,37 @@ class DropdownHandler {
             return instance
         }
         def configurationParameters = args.configurationParameters
+        if (!configurationParameters) {
+            return
+        }
+
+
         def authType = configurationParameters.authType
         def region = configurationParameters.region
         def roleArn = configurationParameters.roleArn
 
         def credentials = args.credential
-        if (credentials.size() != 1) {
+        def credential = credentials.find { !it.credentialName.endsWith('proxy_credential') }
+
+        if (!credential) {
             return
         }
-        def secretKeyId = credentials.first().userName
-        def secretKey = credentials.first().password
+        def proxyCredential = credentials.find { it.credentialName.endsWith('proxy_credential') }
+        def secretKeyId = credential.userName
+        def secretKey = credential.password
+
         PluginWrapper wrapper = new PluginWrapper(
             accessKeyId: secretKeyId,
             accessKeySecret: secretKey,
             environmentAuth: authType == 'environment',
             roleArn: roleArn,
             region: region,
-            ignoreSslIssues: true
+            ignoreSslIssues: true,
+            proxyUrl: configurationParameters.httpProxyUrl,
+            proxyUser: proxyCredential?.userName,
+            proxyPassword: proxyCredential?.password
         )
+
         instance = new DropdownHandler()
         instance.wrapper = wrapper
         return instance

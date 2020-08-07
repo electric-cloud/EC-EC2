@@ -1,5 +1,9 @@
+import org.apache.http.HttpHost
 import org.apache.http.HttpRequest
 import org.apache.http.HttpResponse
+import org.apache.http.auth.AuthScope
+import org.apache.http.auth.UsernamePasswordCredentials
+import org.apache.http.client.CredentialsProvider
 import org.apache.http.client.HttpClient
 import org.apache.http.client.methods.HttpGet
 import org.apache.http.config.Registry
@@ -8,7 +12,7 @@ import org.apache.http.conn.socket.ConnectionSocketFactory
 import org.apache.http.conn.socket.PlainConnectionSocketFactory
 import org.apache.http.conn.ssl.NoopHostnameVerifier
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory
-import org.apache.http.impl.client.CloseableHttpClient
+import org.apache.http.impl.client.BasicCredentialsProvider
 import org.apache.http.impl.client.HttpClients
 import org.apache.http.impl.conn.BasicHttpClientConnectionManager
 import org.apache.http.ssl.SSLContexts
@@ -22,10 +26,14 @@ import software.amazon.awssdk.regions.Region
 
 import javax.net.ssl.SSLContext
 import java.time.Instant
+
 //Made to work with httpcore 4.4.4
 class RawHttpRequestHandler {
     private AwsCredentials credentials
     boolean ignoreSslIssues
+    String proxyUrl
+    String proxyUser
+    String proxyPassword
 
     private Aws4PresignerParams buildPresignerParams(String serviceName) {
         return Aws4PresignerParams.builder()
@@ -62,6 +70,9 @@ class RawHttpRequestHandler {
     }
 
     HttpClient buildHttpClient() {
+        def httpClientBuilder = HttpClients
+            .custom()
+
         if (ignoreSslIssues) {
             TrustStrategy acceptingTrustStrategy = (cert, authType) -> true
             SSLContext sslContext = SSLContexts.custom().loadTrustMaterial(null, acceptingTrustStrategy).build();
@@ -77,14 +88,22 @@ class RawHttpRequestHandler {
             BasicHttpClientConnectionManager connectionManager =
                 new BasicHttpClientConnectionManager(socketFactoryRegistry)
 
-            CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(sslsf)
-                .setConnectionManager(connectionManager).build()
-            return httpClient
-        } else {
-            //HttpHost proxy = new HttpHost("proxy.com", 80, "http");
-            //DefaultProxyRoutePlanner routePlanner = new DefaultProxyRoutePlanner(proxy);
-            CloseableHttpClient httpClient = HttpClients.custom().build()
-            return httpClient
+            httpClientBuilder.setSSLSocketFactory(sslsf)
+                .setConnectionManager(connectionManager)
         }
+
+        if (proxyUrl) {
+            URL proxy = new URL(proxyUrl)
+            httpClientBuilder.setProxy(new HttpHost(proxy.host, proxy.port))
+            if (proxyUser) {
+                CredentialsProvider credsProvider = new BasicCredentialsProvider()
+                UsernamePasswordCredentials proxyCredentials = new UsernamePasswordCredentials(proxyUser, proxyPassword);
+                AuthScope proxyAuthScope = new AuthScope(proxy.getHost(), proxy.getPort())
+                credsProvider.setCredentials(proxyAuthScope, proxyCredentials)
+                httpClientBuilder.setDefaultCredentialsProvider(credsProvider)
+            }
+        }
+
+        return httpClientBuilder.build()
     }
 }

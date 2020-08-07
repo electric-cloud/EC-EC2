@@ -60,58 +60,55 @@ class TestHelper extends PluginSpockTestSupport {
         return 'arn:aws:iam::372416831963:role/test-role-to-play-with-sts'
     }
 
+
+    def createPluginConfig(config) {
+        String httpProxy = System.getenv('HTTP_PROXY') ?: ''
+        String httpProxyUser = System.getenv('HTTP_PROXY_USER') ?: ''
+        String httpProxyPass = System.getenv('HTTP_PROXY_PASS') ?: ''
+
+        config.credential = 'credential'
+        config.proxy_credential = 'proxy_credential'
+
+        def credentials = [
+            [credentialName: 'credential', userName: clientId, password: clientSecret],
+            [credentialName: 'proxy_credential', userName: httpProxyUser, password: httpProxyPass]
+        ]
+        if (doesConfExist("/plugins/$pluginName/project/ec_plugin_cfgs", configName)) {
+            println "Configuration $configName exists"
+        }
+
+        def result = runProcedure('/plugins/EC-EC2/project', 'CreateConfiguration', config, credentials)
+        assert result.outcome == 'success'
+    }
+
     def createConfig() {
+        String httpProxy = System.getenv('HTTP_PROXY') ?: ''
+        String httpProxyUser = System.getenv('HTTP_PROXY_USER') ?: ''
+        String httpProxyPass = System.getenv('HTTP_PROXY_PASS') ?: ''
 
         def pluginConfig = [
-            region         : getRegionName(),
-            debugLevel     : '10',
-            checkConnection: '0',
-            desc           : 'Spec config',
-            credential     : configName,
-            config         : configName,
-            authType       : 'basic'
+            region          : getRegionName(),
+            debugLevel      : '10',
+            checkConnection : '0',
+            desc            : 'Spec config',
+            credential      : 'credential',
+            config          : configName,
+            authType        : 'basic',
+            proxy_credential: 'proxy_credential',
+            httpProxyUrl    : httpProxy
         ]
 
-        createPluginConfiguration(pluginName,
-            configName,
-            pluginConfig,
-            clientId,
-            clientSecret
-        )
+        def credentials = [
+            [credentialName: 'credential', userName: clientId, password: clientSecret],
+            [credentialName: 'proxy_credential', userName: httpProxyUser, password: httpProxyPass]
+        ]
+        if (doesConfExist("/plugins/$pluginName/project/ec_plugin_cfgs", configName)) {
+            println "Configuration $configName exists"
+            return
+        }
 
-        //String httpProxy = System.getenv('HTTP_PROXY') ?: ''
-        //String httpProxyUser = System.getenv('HTTP_PROXY_USER') ?: ''
-        //String httpProxyPass = System.getenv('HTTP_PROXY_PASS') ?: ''
-        //
-
-        //
-        //
-        //createPluginConfiguration(pluginName,
-        //    configName,
-        //    [desc     : "test configuration", checkConnection: "0",
-        //     projectId: getProjectId(), zone: getZone()],
-        //    "admin", getKey())
-        //
-        //def credentials = [[credentialName: configName, userName: clientId, password: clientSecret]]
-        //if (httpProxy) {
-        //    pluginConfig.proxy_credential = "${configName}_proxy_credential"
-        //    credentials << [credentialName: configName + "_proxy_credential", userName: httpProxyUser, password: httpProxyPass]
-        //}
-        //
-        //def confPath = 'ec2_cfgs'
-        //def pluginName = 'EC-EC2'
-        //if (doesConfExist("/plugins/$pluginName/project/$confPath", configName)) {
-        //    //            TODO env
-        //    if (System.getenv('RECREATE_CONFIG')) {
-        //        deleteConfiguration(pluginName, configName)
-        //    } else {
-        //        println "Configuration $configName exists"
-        //        return
-        //    }
-        //}
-        //
-        //def result = runProcedure('/plugins/EC-EC2/project', 'CreateConfiguration', pluginConfig, credentials)
-        //assert result.outcome == 'success'
+        def result = runProcedure('/plugins/EC-EC2/project', 'CreateConfiguration', pluginConfig, credentials)
+        assert result.outcome == 'success'
     }
 
     def provisionEnvironment(projectName, templateName, environmentName) {

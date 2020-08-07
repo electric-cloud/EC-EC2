@@ -15,56 +15,72 @@ configuration:
   checkConnection: 'true'
   # A set of fields will be added to process debug level in the configuration
   hasDebugLevel: true
+  hasProxySupport: true
   parameters:
-  -
-    name: config
-    documentation: The name for the created configuration
-    required: true
-    type: entry
-    label: Configuration Name
-  - name: desc
-    documentation: Description for the configuration
-    required: false
-    type: entry
-    label: Description
-  - name: region
-    required: true
-    type: entry
-    label: Region
-    htmlDocumentation: AWS Region to work with. See the list of available regions <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html" target="_blank">here</a>.
-#    propertyReference: '/plugins/@PLUGIN_NAME@/project/ec_dropdowns/regions'
-  - name: authType
-    type: select
-    options:
-#      - name: Environment
-#        value: environment
-      - name: Basic
-        value: basic
-      - name: STS
-        value: sts
-  - name: roleArn
-    label: Role ARN
-    documentation: The Amazon Resource Name (ARN) of the role to assume.
-    dependsOn: authType
-    condition: ${authType} == "sts"
-  - name: credential
-    documentation: |
-      Basic credential: access key ID and secret.
-    required: false
-    type: credential
-    label: Key ID & Secret
+    - name: config
+      documentation: The name for the created configuration
+      required: true
+      type: entry
+      label: Configuration Name
+    - name: desc
+      documentation: Description for the configuration
+      required: false
+      type: entry
+      label: Description
+    - name: region
+      required: true
+      type: entry
+      label: Region
+      htmlDocumentation: AWS Region to work with. See the list of available regions <a href="https://docs.aws.amazon.com/AmazonRDS/latest/UserGuide/Concepts.RegionsAndAvailabilityZones.html" target="_blank">here</a>.
+      propertyReference: 'ec_dropdowns/regions'
+    - name: authType
+      type: select
+      label: Authorization Type
+      htmlDocumentation: |
+        Choose the authorization type.
+        <b>basic</b> - requires Access Key ID and Key Secret
+        <b>sts</b> - requires Access Key ID, Secret and the Role ARN.
+      required: true
+      options:
+        #      - name: Environment
+        #        value: environment
+        - name: Basic
+          value: basic
+        - name: STS
+          value: sts
+    - name: roleArn
+      label: Role ARN
+      documentation: The Amazon Resource Name (ARN) of the role to assume.
+      dependsOn: authType
+      condition: ${authType} == "sts"
+      required: false
+    - name: credential
+      documentation: |
+        Basic AWS credentials: Access Key ID and Secret.
+      required: true
+      type: credential
+      label: AWS Credentials
+      usernameLabel: Access Key ID
+      passwordLabel: Access Key Secret
+      retypePasswordLabel: Access Key Secret
 
 properties:
   ec_dsl_libraries_path: agent/deps/libs
   ec_configurations: ec_plugin_cfgs
   ec_dropdowns:
     regions:
-      us-east-1: US East (N. Virginia)
-      us-east-2: US East (Ohio)
-      us-west-1: US West (N. California)
-      us-west-2: US West (Oregon)
-      ap-northeast-1: Asia Pacific (Tokyo)
-      ap-northeast-2: Asia Pacific (Seoul)
+      'US East (N. Virginia)': us-east-1
+      'US East (Ohio)': us-east-2
+      'US West (N. California)': us-west-1
+      'US West (Oregon)': us-west-2
+      'Asia Pacific (Tokyo)': ap-northeast-1
+      'Asia Pacific (Seoul)': ap-northeast-2
+      'Asia Pacific (Mumbai)': ap-south-1
+      'Asia Pacific (Singapore)': ap-southeast-1
+      'Asia Pacific (Sydney)': ap-southeast-2
+      'EU (Frankfurt)': eu-central-1
+      'EU (Ireland)': eu-west-1
+      'South America (Sao Paulo)': sa-east-1
   ec_cloudprovisioning_plugin:
     configurationLocation: ec_plugin_cfgs
     displayName: EC2
@@ -102,187 +118,175 @@ properties:
 
 
 procedures:
--
-  name: API_RunInstances
-  description: This procedure provisions one or several EC2 instances and creates resources for them.
-  hasConfig: true
+  - name: API_RunInstances
+    description: This procedure provisions one or several EC2 instances and creates resources for them.
+    hasConfig: true
 
-  properties:
-    ec_form:
-      - propertyName: configurationParameterRef
-        value: config
-      - propertyName: usesConfigurationNameAsCredential
+    properties:
+      ec_form:
+        - propertyName: configurationParameterRef
+          value: config
+        - propertyName: usesConfigurationNameAsCredential
+          value: 1
+        - propertyName: parameterOptions
+          credentialProtected: true
+          properties:
+            image:
+              path: dsl/procedures/API_RunInstances/dropdowns.groovy
+            zone:
+              path: dsl/procedures/API_RunInstances/dropdowns.groovy
+            instanceType:
+              path: dsl/procedures/API_RunInstances/dropdowns.groovy
+            subnet_id:
+              path: dsl/procedures/API_RunInstances/dropdowns.groovy
+            group:
+              path: dsl/procedures/API_RunInstances/dropdowns.groovy
+            keyname:
+              path: dsl/procedures/API_RunInstances/dropdowns.groovy
+
+    parameters:
+      - name: image
+        documentation: The Amazon Image ID (AMI) of the image to deploy.
+        required: true
+        type: entry
+        label: AMI
+        dependsOn: config
+        serverOptions: 1
+      - name: zone
+        required: false
+        documentation: The Availability Zone you want to launch the instance into.
+        label: Availability Zone
+        serverOptions: 1
+        dependsOn: config
+        type: entry
+      - name: name
+        required: false
+        documentation: Name for the instance.
+        label: Name
+        type: entry
+      - name: instanceType
+        required: true
+        serverOptions: 1
+        dependsOn: config
+        type: entry
+        htmlDocumentation: |
+          The  instance  type.
+          For more information, see <a target="_blank" href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance Types</a>.
+        label: Instance Type
+      - name: subnet_id
+        label: Subnet ID
+        required: false
+        type: entry
+        serverOptions: 1
+        dependsOn: config
+        documentation: The ID of the subnet to launch the instance(s) into (for use with VPCs)
+      - name: group
+        label: Security Group
+        required: false
+        type: entry
+        serverOptions: 1
+        dependsOn: config
+      - name: keyname
+        label: Key Name
+        required: false
+        type: entry
+        serverOptions: 1
+        dependsOn: config
+        documentation: The name of the keypair to use for the instance.
+      - name: instanceInitiatedShutdownBehavior
+        label: Initiated Shutdown Behaviour
+        documentation: Specify the instance behaviour when an OS-level shutdown is performed.Instance can be either terminated or shut down.
+        required: false
+        type: select
+        options:
+          - name: Terminate
+            value: terminate
+          - name: Stop
+            value: stop
+      - name: iamProfileName
+        label: IAM Profile Name
+        documentation: If specified, new instance will be associated with given IAM profile.
+        required: false
+      - name: privateIp
+        label: Private IP
+        documentation: The primary IP address. You must specify a value from the IP address range of the subnet.If no value is supplied then IP address from the IP address range of the subnet is selected.(for use with VPCs)
+        required: false
+      - name: tenancy
+        label: Tenancy
+        documentation: |
+          Each instance that you launch into a VPC has a tenancy attribute. This attribute has the following values:
+          default - Your instance runs on shared hardware.
+          dedicated - Your instance runs on single-tenant hardware.
+          host - Your instance runs on a Dedicated Host, which is an isolated server with configurations that you can control.
+        required: false
+        type: select
+        options:
+          - name: Default
+            value: default
+          - name: Dedicated
+            value: dedicated
+          - name: Host
+            value: host
+      - name: userData
+        label: User Data
+        documentation: |
+          Extra user data to pass into runInstance.
+        required: false
+        type: textarea
+      - name: count
+        label: Number of Instances
         value: 1
-      - propertyName: parameterOptions
-        credentialProtected: true
-        properties:
-          image:
-            path: dsl/procedures/API_RunInstances/dropdowns.groovy
-          zone:
-            path: dsl/procedures/API_RunInstances/dropdowns.groovy
-          instanceType:
-            path: dsl/procedures/API_RunInstances/dropdowns.groovy
-          subnet_id:
-            path: dsl/procedures/API_RunInstances/dropdowns.groovy
-          group:
-            path: dsl/procedures/API_RunInstances/dropdowns.groovy
-          keyname:
-            path: dsl/procedures/API_RunInstances/dropdowns.groovy
+        required: false
+        documentation: The number of instances to start.
+        type: integer
+      - name: res_poolName
+        type: entry
+        label: Resource Pool
+        required: false
+        documentation: |
+          If you would like to add CloudBees CD resources for each instance created, enter the CloudBees CD pool name for the new resource. If left blank no resource will be created.
+      - name: use_private_ip
+        label: Use Private IP?
+        documentation: If checked, private IP will be used for the resource creation.
+        required: false
+        type: entry
+      - name: res_port
+        label: Resource Port
+        type: integer
+        required: false
+        documentation: |
+          If you specify a resource pool name in 'Resource Pool' field, this is the port that will be used when creating the resource. If no value is specified, port 7800 will be used by default when creating the resource.
+      - name: res_workspace
+        type: entry
+        label: Resource Workspace
+        required: false
+        documentation: |
+          If you specify a resource pool name in 'Resource Pool' field, this is the workspace that will be used when creating the resource.
+      - name: resource_zone
+        type: entry
+        label: Resource Zone Name
+        required: false
+        documentation: |
+          Created resource will belong to the specified zone. Zone 'default' is used by default.
+      - name: pingResource
+        type: checkbox
+        checkedValue: true
+        uncheckedValue: false
+        label: Ping Resource?
+        documentation: If checked, the resource will be pinged after the creation.
+      - name: propResult
+        documentation: Property path to store results
+        label: Result Property Sheet
+        required: false
+        type: entry
+        value: /myJob/result
 
-  parameters:
-  -
-    name: image
-    documentation: The Amazon Image ID (AMI) of the image to deploy.
-    required: true
-    type: entry
-    label: AMI
-    dependsOn: config
-    serverOptions: 1
-  - name: zone
-    required: false
-    documentation: The Availability Zone you want to launch the instance into.
-    label: Availability Zone
-    serverOptions: 1
-    dependsOn: config
-    type: entry
-  - name: name
-    required: false
-    documentation: Name for the instance.
-    label: Name
-    type: entry
-  - name: instanceType
-    required: true
-    serverOptions: 1
-    dependsOn: config
-    type: entry
-    htmlDocumentation: |
-      The  instance  type.
-      For more information, see <a target="_blank" href="https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/instance-types.html">Instance Types</a>.
-    label: Instance Type
-  - name: subnet_id
-    label: Subnet ID
-    required: false
-    type: entry
-    serverOptions: 1
-    dependsOn: config
-    documentation: The ID of the subnet to launch the instance(s) into (for use with VPCs)
-  - name: group
-    label: Security Group
-    required: false
-    type: entry
-    serverOptions: 1
-    dependsOn: config
-  - name: keyname
-    label: Key Name
-    required: false
-    type: entry
-    serverOptions: 1
-    dependsOn: config
-    documentation: The name of the keypair to use for the instance.
-  - name: instanceInitiatedShutdownBehavior
-    label: Initiated Shutdown Behaviour
-    documentation: Specify the instance behaviour when an OS-level shutdown is performed.Instance can be either terminated or shut down.
-    required: false
-    type: select
-    options:
-      - name: Terminate
-        value: terminate
-      - name: Stop
-        value: stop
-  - name: iamProfileName
-    label: IAM Profile Name
-    documentation: If specified, new instance will be associated with given IAM profile.
-    required: false
-  - name: privateIp
-    label: Private IP
-    documentation: The primary IP address. You must specify a value from the IP address range of the subnet.If no value is supplied then IP address from the IP address range of the subnet is selected.(for use with VPCs)
-    required: false
-  - name: tenancy
-    label: Tenancy
-    documentation: |
-      Each instance that you launch into a VPC has a tenancy attribute. This attribute has the following values:
-      default - Your instance runs on shared hardware.
-      dedicated - Your instance runs on single-tenant hardware.
-      host - Your instance runs on a Dedicated Host, which is an isolated server with configurations that you can control.
-    required: false
-    type: select
-    options:
-      - name: Default
-        value: default
-      - name: Dedicated
-        value: dedicated
-      - name: Host
-        value: host
-  - name: userData
-    label: User Data
-    documentation: |
-      Extra user data to pass into runInstance.
-    required: false
-    type: textarea
-  - name: count
-    label: Number of Instances
-    value: 1
-    required: false
-    documentation: The number of instances to start.
-    type: integer
-  - name: res_poolName
-    type: entry
-    label: Resource Pool
-    required: false
-    documentation: |
-      If you would like to add CloudBees CD resources for each instance created, enter the CloudBees CD pool name for the new resource. If left blank no resource will be created.
-  - name: use_private_ip
-    dependsOn: res_poolName
-    condition: ${res_poolName}
-    label: Use Private IP?
-    documentation: If checked, private IP will be used for the resource creation.
-    required: false
-    type: entry
-  - name: res_port
-    label: Resource Port
-    type: integer
-    dependsOn: res_poolName
-    condition: ${res_poolName}
-    required: false
-    documentation: |
-      If you specify a resource pool name in 'Resource Pool' field, this is the port that will be used when creating the resource. If no value is specified, port 7800 will be used by default when creating the resource.
-  - name: res_workspace
-    type: entry
-    dependsOn: res_poolName
-    condition: ${res_poolName}
-    label: Resource Workspace
-    required: false
-    documentation: |
-      If you specify a resource pool name in 'Resource Pool' field, this is the workspace that will be used when creating the resource.
-  - name: resource_zone
-    type: entry
-    dependsOn: res_poolName
-    condition: ${res_poolName}
-    label: Resource Zone Name
-    required: false
-    documentation: |
-      Created resource will belong to the specified zone. Zone 'default' is used by default.
-  - name: pingResource
-    type: checkbox
-    dependsOn: res_poolName
-    condition: ${res_poolName}
-    checkedValue: true
-    uncheckedValue: false
-    label: Ping Resource?
-    documentation: If checked, the resource will be pinged after the creation.
-  - name: propResult
-    documentation: Property path to store results
-    label: Result Property Sheet
-    required: false
-    type: entry
-    value: /myJob/result
-
-- name: API_TearDownResource
-  hasConfig: attach
-  description: Terminates resources created with this plugin.
-  parameters:
-    - name: resName
-      documentation: Resource or Resource Pool name to delete.
-      required: true
-      type: textarea
-      label: Resource Name
+  - name: API_TearDownResource
+    hasConfig: attach
+    description: Terminates resources created with this plugin.
+    parameters:
+      - name: resName
+        documentation: Resource or Resource Pool name to delete.
+        required: true
+        type: textarea
+        label: Resource Name

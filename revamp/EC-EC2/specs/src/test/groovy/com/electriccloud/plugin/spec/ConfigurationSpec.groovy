@@ -1,5 +1,6 @@
 package com.electriccloud.plugin.spec
 
+
 import spock.lang.Shared
 
 class ConfigurationSpec extends TestHelper {
@@ -22,12 +23,7 @@ class ConfigurationSpec extends TestHelper {
             authType       : 'basic'
         ]
 
-        createPluginConfiguration(pluginName,
-            configName,
-            pluginConfig,
-            clientId,
-            clientSecret
-        )
+        createPluginConfig(pluginConfig)
         then:
         assert true
         cleanup:
@@ -48,16 +44,10 @@ class ConfigurationSpec extends TestHelper {
             roleArn        : roleArn
         ]
 
-        createPluginConfiguration(pluginName,
-            configName,
-            pluginConfig,
-            clientId,
-            clientSecret
-        )
+        createPluginConfig(pluginConfig)
         then:
         assert true
         cleanup:
         deleteConfiguration(pluginName, configName)
-
     }
 }

@@ -1,12 +1,11 @@
 package com.electriccloud.plugin.spec
 
-import spock.lang.Ignore
-
 class RunInstanceDropdownsSpec extends TestHelper {
 
     static String procedureName = 'API_RunInstances'
 
     def setupSpec() {
+        deleteConfiguration(pluginName, configName)
         createConfig()
     }
 
