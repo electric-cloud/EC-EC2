@@ -12,7 +12,7 @@ $query->submit();
 foreach my $type (@objTypes) {
     if ($query->findvalue(shift @reqs, 'code') ne 'NoSuchAclEntry') {
         $batch->deleteAclEntry('user', "project: $pluginName", { systemObjectName => $type });
-        print "Deleted ACL for $pluginName for $type\n";
+        # print "Deleted ACL for $pluginName for $type\n";
     }
 }
 
@@ -29,7 +29,7 @@ if ($promoteAction eq 'promote') {
                 changePermissionsPrivilege => 'allow'
             }
         );
-        print "Created ACL for $pluginName for $type\n";
+        # print "Created ACL for $pluginName for $type\n";
     }
 
     # Version 3.0 config change

@@ -61,18 +61,21 @@ class TestHelper extends PluginSpockTestSupport {
     }
 
 
-    def createPluginConfig(config) {
+    def createPluginConfig(config, credentials = []) {
         String httpProxy = System.getenv('HTTP_PROXY') ?: ''
         String httpProxyUser = System.getenv('HTTP_PROXY_USER') ?: ''
         String httpProxyPass = System.getenv('HTTP_PROXY_PASS') ?: ''
 
         config.credential = 'credential'
         config.proxy_credential = 'proxy_credential'
+        config.httpProxyUrl = httpProxy
 
-        def credentials = [
-            [credentialName: 'credential', userName: clientId, password: clientSecret],
-            [credentialName: 'proxy_credential', userName: httpProxyUser, password: httpProxyPass]
-        ]
+        if (!credentials.find { it.credentialName == 'credential' }) {
+            credentials << [credentialName: 'credential', userName: clientId, password: clientSecret]
+        }
+        if (!credentials.find { it.credentialName == 'proxy_credential'}) {
+            credentials << [credentialName: 'proxy_credential', userName: httpProxyUser, password: httpProxyPass]
+        }
         if (doesConfExist("/plugins/$pluginName/project/ec_plugin_cfgs", configName)) {
             println "Configuration $configName exists"
         }

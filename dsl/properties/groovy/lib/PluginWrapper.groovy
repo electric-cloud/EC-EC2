@@ -41,6 +41,7 @@ class PluginWrapper {
         assert accessKeyId: "accessKeyId must be provided"
         assert accessKeySecret: "accessKeySecret must be provided"
         if (sessionToken) {
+            log.info "Using session token"
             AwsSessionCredentials credentials = AwsSessionCredentials.create(
                 accessKeyId,
                 accessKeySecret,

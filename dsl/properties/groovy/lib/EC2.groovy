@@ -58,6 +58,19 @@ class EC2 extends FlowPlugin {
                     proxyUser: proxyUser,
                     proxyPassword: proxyPassword,
                 )
+            case 'sessionToken':
+                def credential = config.getRequiredCredential('credential')
+                def token = config.getRequiredCredential('sessionToken_credential')
+                return new PluginWrapper(
+                    accessKeyId: credential.userName,
+                    accessKeySecret: credential.secretValue,
+                    log: log,
+                    region: region,
+                    sessionToken: token.secretValue,
+                    proxyUrl: proxyUrl,
+                    proxyUser: proxyUser,
+                    proxyPassword: proxyPassword,
+                )
             default:
                 log.errorDiag("Invalid configuration. Auth type ${config.getRequiredParameter('authType').value} is not valid.")
                 context.bailOut("Invalid configuration, invalid authType")

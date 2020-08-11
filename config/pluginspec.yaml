@@ -48,6 +48,8 @@ configuration:
           value: basic
         - name: STS
           value: sts
+        - name: Session Token
+          value: sessionToken
     - name: roleArn
       label: Role ARN
       documentation: The Amazon Resource Name (ARN) of the role to assume.
@@ -63,6 +65,14 @@ configuration:
       usernameLabel: Access Key ID
       passwordLabel: Access Key Secret
       retypePasswordLabel: Access Key Secret
+    - name: sessionToken_credential
+      type: credential
+      credentialType: secret
+      label: Session Token
+      documentation: Session token to use with Access Key ID and the Secret.
+      required: false
+      dependsOn: authType
+      condition: ${authType} == "sessionToken"
 
 properties:
   ec_dsl_libraries_path: agent/deps/libs

@@ -4,6 +4,7 @@ plugins {
 
 apply plugin: "groovy"
 apply plugin: 'idea'
+apply plugin: 'java'
 
 version = "1.0"
 description = "EC-EC2 Specs"
@@ -26,8 +27,9 @@ dependencies {
     implementation 'com.jayway.restassured:rest-assured:2.4.0'
     implementation "org.codehaus.groovy.modules.http-builder:http-builder:0.7.1"
 
-    implementation platform('software.amazon.awssdk:bom:2.13.58')
-    implementation 'software.amazon.awssdk:ec2'
+    testImplementation platform('software.amazon.awssdk:bom:2.13.58')
+    testImplementation 'software.amazon.awssdk:ec2'
+    testImplementation 'software.amazon.awssdk:sts'
 }
 
 
