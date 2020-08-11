@@ -64,7 +64,7 @@ configuration:
       label: AWS Credentials
       usernameLabel: Access Key ID
       passwordLabel: Access Key Secret
-      retypePasswordLabel: Access Key Secret
+      retypePasswordLabel: Retype Access Key Secret
     - name: sessionToken_credential
       type: credential
       credentialType: secret
