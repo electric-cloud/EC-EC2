@@ -73,7 +73,7 @@ class TestHelper extends PluginSpockTestSupport {
         if (!credentials.find { it.credentialName == 'credential' }) {
             credentials << [credentialName: 'credential', userName: clientId, password: clientSecret]
         }
-        if (!credentials.find { it.credentialName == 'proxy_credential'}) {
+        if (!credentials.find { it.credentialName == 'proxy_credential' }) {
             credentials << [credentialName: 'proxy_credential', userName: httpProxyUser, password: httpProxyPass]
         }
         if (doesConfExist("/plugins/$pluginName/project/ec_plugin_cfgs", configName)) {
@@ -90,20 +90,22 @@ class TestHelper extends PluginSpockTestSupport {
         String httpProxyPass = System.getenv('HTTP_PROXY_PASS') ?: ''
 
         def pluginConfig = [
-            region          : getRegionName(),
-            debugLevel      : '10',
-            checkConnection : '0',
-            desc            : 'Spec config',
-            credential      : 'credential',
-            config          : configName,
-            authType        : 'basic',
-            proxy_credential: 'proxy_credential',
-            httpProxyUrl    : httpProxy
+            region                 : getRegionName(),
+            debugLevel             : '10',
+            checkConnection        : '0',
+            desc                   : 'Spec config',
+            credential             : 'credential',
+            config                 : configName,
+            authType               : 'basic',
+            proxy_credential       : 'proxy_credential',
+            httpProxyUrl           : httpProxy,
+            sessionToken_credential: 'sessionToken_credential'
         ]
 
         def credentials = [
             [credentialName: 'credential', userName: clientId, password: clientSecret],
-            [credentialName: 'proxy_credential', userName: httpProxyUser, password: httpProxyPass]
+            [credentialName: 'proxy_credential', userName: httpProxyUser, password: httpProxyPass],
+            [credentialName: 'sessionToken_credential', userName: '', password: '']
         ]
         if (doesConfExist("/plugins/$pluginName/project/ec_plugin_cfgs", configName)) {
             println "Configuration $configName exists"

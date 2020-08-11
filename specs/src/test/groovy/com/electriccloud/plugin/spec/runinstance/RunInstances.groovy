@@ -55,7 +55,7 @@ class RunInstances extends TestHelper {
                 zone                             : zone,
                 propResult                       : propResult,
                 instanceType                     : type,
-                subnet_id                        : 'subnet-28240574',
+                subnet_id                        : '',
                 use_private_ip                   : '0',
                 userData                         : userData,
                 iamProfileName                   : iamProfile,
@@ -86,13 +86,14 @@ class RunInstances extends TestHelper {
         assert tearDownResult.outcome == 'success'
         assert tearDownResult.logs =~ /terminated/
         where:
-        group                  | ami      | zone      | type       | iamProfile | userData
-        ''                     | getAmi() | getZone() | 't2.micro' | ''         | ''
-        'default'              | getAmi() | getZone() | 't2.micro' | ''         | ''
-        'another-sg'           | getAmi() | getZone() | 't2.micro' | ''         | ''
+        group                  | ami      | zone      | type       | iamProfile | userData                  | subnetId
+        ''                     | getAmi() | getZone() | 't2.micro' | ''         | ''                        | ''
+        'default'              | getAmi() | getZone() | 't2.micro' | ''         | ''                        | ''
+        'another-sg'           | getAmi() | getZone() | 't2.micro' | ''         | ''                        | ''
         //does not work
         //'sg-0f795e024778c1c53' | getAmi() | getZone() | 't2.micro' | 'test-role-for-iam-instance-profile' |
-        'sg-0f795e024778c1c53' | getAmi() | getZone() | 't2.micro' | ''         | "#!/bin/bash\necho hello"
+        'sg-0f795e024778c1c53' | getAmi() | getZone() | 't2.micro' | ''         | "#!/bin/bash\necho hello" | ''
+        ''                     | getAmi() | getZone() | 't2.micro' | ''         | "#!/bin/bash\necho hello" | 'subnet-28240574'
     }
 
 }
