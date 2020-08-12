@@ -69,6 +69,7 @@ class TestHelper extends PluginSpockTestSupport {
         config.credential = 'credential'
         config.proxy_credential = 'proxy_credential'
         config.httpProxyUrl = httpProxy
+        config.sessionToken_credential = 'sessionToken_credential'
 
         if (!credentials.find { it.credentialName == 'credential' }) {
             credentials << [credentialName: 'credential', userName: clientId, password: clientSecret]
@@ -79,6 +80,10 @@ class TestHelper extends PluginSpockTestSupport {
         if (doesConfExist("/plugins/$pluginName/project/ec_plugin_cfgs", configName)) {
             println "Configuration $configName exists"
         }
+        if (!credentials.find { it.credentialName == 'sessionToken_credential' }) {
+            credentials << [credentialName: 'sessionToken_credential', userName: '', password: '']
+        }
+        println credentials
 
         def result = runProcedure('/plugins/EC-EC2/project', 'CreateConfiguration', config, credentials)
         assert result.outcome == 'success'
