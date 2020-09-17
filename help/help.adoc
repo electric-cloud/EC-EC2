@@ -1460,7 +1460,7 @@ The most common use for this plugin is to create an instance, create a resource 
 
 In {CD}, go to *Administration* > *Plugins* to open the Plugin Manager. Then click *Configure* and enter the values for the parameters in the EC2 Configuration page.
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/create_config.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create_config.png[image]
 
 After the configuration is created, you can see it in "EC2 Configurations".
 
@@ -1468,7 +1468,7 @@ After the configuration is created, you can see it in "EC2 Configurations".
 
 Go to the EC2 Auto Deploy procedure, enter the values from your EC2 server in the parameter fields:
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/deploy_parameters.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/deploy_parameters.png[image]
 
 This procedure calls the API_CreateKey, API_RunInstances, API_Run and API_AttachVolumes procedures to deploy the instance.
 
@@ -1476,13 +1476,13 @@ This procedure calls the API_CreateKey, API_RunInstances, API_Run and API_Attach
 
 Create a new command step for the resource. In this example, get a resource from the resource pool and add an ec-perl *sleep* command for 30 seconds
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/consume_parameters.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/consume_parameters.png[image]
 
 ==== Clean up the instance
 
 After the resource is used, create a step using the EC2 Auto Cleanup procedure and enter the parameters:
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/cleanup_parameters.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/cleanup_parameters.png[image]
 
 This procedure calls the API_DeleteKey, API_Terminate and API_DeleteVolume procedures to clean up the instance.
 
@@ -1490,41 +1490,41 @@ This procedure calls the API_DeleteKey, API_Terminate and API_DeleteVolume proce
 
 After the job runs, you can see properties in the results location that you specified.
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/job.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/job.png[image]
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/results.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/results.png[image]
 
 The following output appears during the Deploy procedures:
 
 ==== CreateKeyPair
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/create_keypair_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create_keypair_log.png[image]
 
 ==== RunInstances
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/run_instances_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/run_instances_log.png[image]
 
 ==== ProcessVolumes
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/process_volumes_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/process_volumes_log.png[image]
 
 ==== AttachVolume
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/attach_volumes_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/attach_volumes_log.png[image]
 
 The following output appears during the Cleanup procedures:
 
 ==== DeleteKeyPair
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/delete_keypair_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete_keypair_log.png[image]
 
 ==== Terminate
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/terminate_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/terminate_log.png[image]
 
 ==== DeleteVolumes
 
-image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/delete_volumes_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete_volumes_log.png[image]
 
 [[knownIssues]]
 == Known issues
