@@ -34,4 +34,5 @@
     </component>
   </components>
 <hasAdoc>true</hasAdoc>
+  <catalogLabel>Amazon EC2</catalogLabel>
 </plugin>
