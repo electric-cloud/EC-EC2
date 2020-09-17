@@ -993,7 +993,7 @@ This procedure cleans up the instances created with the "EC2 Auto Deploy" proced
 [cols=",",options="header",]
 |===
 |Parameter |Description
-|Configuration |The name of a valid existing configuration with the connection information. (Required)
+= |Configuration |The name of a valid existing configuration with the connection information. (Required)
 |Key name |Name of the key pair to delete. (Required)
 |Reservation Id |The reservation ID. All instances in the reservation will be deleted. (Required).
 |List of Volumes |The names of volumes to delete. The volumne IDs are separated by semi-colons.
@@ -1439,7 +1439,7 @@ image::cloudbees-common::cd-plugins/ec-ec2/parameters/snap_attached_volume_panel
 [[example]]
 == Use cases and examples
 
-== Use case 1: deploy, consume, and clean up the job
+=== Use case 1: deploy, consume, and clean up the job
 
 The most common use for this plugin is to create an instance, create a resource in {CD} that is assigned to this instance, run some operations using the resoruce, and then delete the resource and the instance. To do this, you must:
 
@@ -1456,7 +1456,7 @@ The most common use for this plugin is to create an instance, create a resource 
 . Delete the deployed instance.
 . Delete volume.
 
-== Create a plugin configuration
+==== Create a plugin configuration
 
 In {CD}, go to *Administration* > *Plugins* to open the Plugin Manager. Then click *Configure* and enter the values for the parameters in the EC2 Configuration page.
 
@@ -1464,7 +1464,7 @@ image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/create_config.png[im
 
 After the configuration is created, you can see it in "EC2 Configurations".
 
-== Deploy an instance in ec2
+==== Deploy an instance in ec2
 
 Go to the EC2 Auto Deploy procedure, enter the values from your EC2 server in the parameter fields:
 
@@ -1472,13 +1472,13 @@ image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/deploy_parameters.pn
 
 This procedure calls the API_CreateKey, API_RunInstances, API_Run and API_AttachVolumes procedures to deploy the instance.
 
-== Use the resource
+==== Use the resource
 
 Create a new command step for the resource. In this example, get a resource from the resource pool and add an ec-perl *sleep* command for 30 seconds
 
 image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/consume_parameters.png[image]
 
-== Clean up the instance
+==== Clean up the instance
 
 After the resource is used, create a step using the EC2 Auto Cleanup procedure and enter the parameters:
 
@@ -1486,7 +1486,7 @@ image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/cleanup_parameters.p
 
 This procedure calls the API_DeleteKey, API_Terminate and API_DeleteVolume procedures to clean up the instance.
 
-== View the results and output
+==== View the results and output
 
 After the job runs, you can see properties in the results location that you specified.
 
@@ -1496,33 +1496,33 @@ image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/results.png[image]
 
 The following output appears during the Deploy procedures:
 
-== CreateKeyPair
+==== CreateKeyPair
 
 image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/create_keypair_log.png[image]
 
-== RunInstances
+==== RunInstances
 
 image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/run_instances_log.png[image]
 
-== ProcessVolumes
+==== ProcessVolumes
 
 image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/process_volumes_log.png[image]
 
-== AttachVolume
+==== AttachVolume
 
 image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/attach_volumes_log.png[image]
 
 The following output appears during the Cleanup procedures:
 
-== DeleteKeyPair
+==== DeleteKeyPair
 
 image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/delete_keypair_log.png[image]
 
-== Terminate
+==== Terminate
 
 image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/terminate_log.png[image]
 
-== DeleteVolumes
+==== DeleteVolumes
 
 image::cloudbees-common::cd-plugins/ec-ec2/use_cases/case-1/delete_volumes_log.png[image]
 
