@@ -1,0 +1,1704 @@
+
+Plugin Version @PLUGIN_VERSION@
+
+'''''
+
+Revised on Jul 20, 2020
+
+== Overview
+
+=== Amazon Elastic Compute Cloud (Amazon EC2)
+
+Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides resizable compute capacity in the cloud. It is designed to make web-scale computing easier for developers. EC2 allows users to rent virtual computers on which to run their computer applications.
+
+It provides you with complete control of your computing resources and lets you run on the proven Amazon computing environment. Amazon EC2 reduces the time required to obtain and boot new server instances to minutes, allowing you to quickly scale capacity, both up and down, as your computing requirements change. You can create, launch, and terminate server instances as needed, paying by the hour for active servers. EC2 provides developers the tools to build failure resilient applications and isolate thems from common failure scenarios.
+
+Amazon EC2 presents a true virtual computing environment, allowing you to use web service interfaces to launch instances with a variety of operating systems, load them with your custom application environment, manage your network access permissions, and run your image using as many or few systems as you want.
+
+For more information about Amazon EC2, go to the http://aws.amazon.com/ec2/[Amazon Web Services website].
+
+You can view the documentation at http://aws.amazon.com/documentation/ec2/[EC2].
+
+== {CD} integration to ec2 implementations
+
+This plugin uses the Amazon EC2 application programming interface (API) that lets developers choose where their applications physically run and that provides access to infrastructure resources. Using this secure API, your application is automatically scaled up and down as needed. This integration allows {CD} to manage EC2 resources.
+
+The plugin interacts with EC2 data by using PERL to perform the following tasks:
+
+* Create configurations with connection information.
+* Query for virtual machine and configuration information.
+* Perform actions on instances.
+* Make API Requests.
+* Create {CD} resources.
+
+The integration has two types of procedures to accomplish a specific task:
+
+* API procedures named _API_xxx_ that directly wrap an EC2 API call
+* Higher-level procedures named _EC2_xxx_ that combine many API calls
+
+The procedure that you select determines which fields are available.
+
+This plugin was developed and tested against Amazon Elastic Compute Cloud (Amazon EC2).
+
+[[CreateConfiguration]]
+
+
+[[setupconfig]]
+== Setting up the plugin configuration
+
+Plugin configurations are sets of parameters that apply across some or all of the plugin procedures. They reduce repetition of common values, create predefined sets of parameters for end users, and store credentials securely. Each configuration has a unique name that is automatically entered in designated parameters in the procedures.
+
+== Input
+
+Go to *Administration* > *Plugins* to open the Plugin Manager.
+
+Find the EC-EC2 row.
+
+Click *Configure* to open the EC2 Configurations page.
+
+Click *Create Configuration*.
+
+To create a EC2 configuration, enter the following information and click *OK*.
+
+Remember that you may need to create additional configurations later.
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration Name |Provide a unique name for the connection, keeping in mind that you may need to create additional connections over time. (Required)
+|Description |A description for this configuration. The default is _EC2 integration_.
+|Service URL |The service URL for the EC2 service. For the Amazon public EC2, this should be _https://ec2.amazonaws.com_. (Required)
+|Resource Pool to use |The name of the pool of resources on which the plugin procedure steps can run. The default is _default_ (Required)
+|Workspace |The workspace to use for resources dynamically created by this configuration. The default is _default_. (Required)
+|Access Key (Credential Parameters) |The Access Key ID and Secret Access Key, that are required for communicating with EC2. The configuration stores these as a credential. (Required)
+|Attempt Connection? |If the check box is selected, the system tries a connection to check credentials. (Required)
+|Debug Level a|
+The debug level for the output (Required):
+
+* *0* for errors only
+* *1* for normal headers and responses
+* *2+* for debugging information included
+
+The default is *1*.
+
+|HTTP Proxy |A HTTP proxy that should be used for connections.
+|Proxy Authorization |Username and password used to connect to HTTP proxy.
+|===
+
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/configuration.png[image]
+
+== Output
+
+The EC2 Configurations page now shows the new configuration.
+
+[[procedures]]
+== Plugin procedures
+
+[[API_AllocateIP]]
+
+
+=== API_AllocateIP
+
+This procedure allocates a public IP address using the Amazon EC2 API. You run this procedure to get an Elastic IP address to use with your EC2 account.
+
+==== Input
+
+. Go to the API_AllocateIP procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Results Location |Where to put the result. If you do not enter a location, the result is only printed.
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_AllocateIP* step, click the Log button to see the diagnostic information.
+
+[[API_AssociateIP]]
+
+
+=== API_AssociateIP
+
+This procedure attaches a previously allocated IP address to an instance. This procedure associates an Elastic IP address with the instance. If the IP address is currently assigned to another instance, it is re-assigned to the instance.
+
+==== Input
+
+. Go to the API_AssociateIP procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Instance |The instance to associate with the IP address. (Required)
+|Elastic IP |IP address to assign to the instance. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_AllocateIP* step, click the Log button to see the diagnostic information.
+
+[[API_AttachVolumes]]
+
+
+=== API_AttachVolumes
+
+This procedure attaches a list of volumes to a list of instances, using the order of both lists to match volumes to instances. It attaches each Amazon EBS volume to a running instance and exposes it as the specified device.
+
+==== Input
+
+. Go to the API_AttachVolumes procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Device |How the device is exposed to the instance. The default is _/dev/sdh_. (Required)
+|List of Instances |The instances to which the volumes are attached. (Required)
+|List of Volumes |The volumes that are attached to the instances. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_AttachVolumes* step, click the Log button to see the diagnostic information.
+
+[[API_CreateImage]]
+
+
+=== API_CreateImage
+
+This procedure converts a running instance into a new image. It creates an Amazon EBS-backed AMI from an Amazon EBS-backed instance.
+
+==== Input
+
+. Go to the API_CreateImage procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Instance |The name of the instance to convert. (Required)
+|New Image Name |The name of the new image. (Required)
+|New Image Description |The description for the new image. (Required)
+|No Reboot |By default, this parameter is set to *False*. Amazon EC2 tries to shut down the instance cleanly before the new image is created. Amazon EC2 then restarts the new instance with the new image. When the parameter is set to *True*, Amazon EC2 does not shut down the instance before creating the image, and the file system integrity on the new image cannot be guaranteed. (Required)
+|Results Location |Where to put the result. If you do not enter a location, the result is only printed. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_CreateImage* step, click the Log button to see the diagnostic information.
+
+[[API_CreateKey]]
+
+
+=== API_CreateKey
+
+This procedure creates a new key pair with the specified name. If a key with the specified name already exists, Amazon EC2 returns an error. The public key is stored by Amazon EC2, and the private key file is saved in the job workspace with read permission for the user running the agent. The private key file name is the key pair name, with _.pem_ as extension.
+
+*Important:* You should retrieve the private key file from the job workspace and save it in a secure place. You will need the private key file in order to connect (using SSH or Windows Remote Desktop) to any EC2 instance that was launched using the key pair name.
+
+==== Input
+
+. Go to the API_CreateKey procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Key name |A unique name for the key pair. The default is _cmdr-$[jobStepId]_. (Required)
+|Results Location |Where to put the result. If the location is not specified, the result is only printed.
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_CreateKey* step, click the Log button to see the diagnostic information.
+
+[[API_CreateSubnet]]
+
+
+== API_CreateSubnet
+
+This procedure allows you to create a new subnet within Amazon VPC by specifying its name, CIDR block, VPC ID and availability zone.
+
+==== Input
+
+. Go to the API_CreateSubnet procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Subnet Name |Name to be given to subnet.
+|CIDR Block |The range of IP addresses to use in the subnet in CIDR format (for example, 10.0.0.0/24). The range of IP addresses in the subnet must be subset of IP address in the VPC. The size subnet can equal the size of the VPC. (Required)
+|Availability Zone |Availability zone where this subnet will reside. If no preferences are entered, Amazon will choose an availability zone for you. (Required)
+|VPC ID |VPC to use for this subnet. (Required)
+|Results Location |Where to put the result. If not specified, the result is only printed.
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_CreateSubnet* step, click the Log button to see the diagnostic information.
+
+[[API_CreateTags]]
+
+
+=== API_CreateTags
+
+This procedure adds or overwrites one or more tags for the specified Amazon EC2 resources.
+
+==== Input
+
+. Go to the API_CreateTags procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Resources |A list of resource IDs, separated by spaces. (Required)
+|Tags |A list of key-value pairs, separated by commas, in this format: key1 => value1, key2 => value 2, ... (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_CreateTags* step, click the Log button to see the diagnostic information.
+
+[[API_CreateVPC]]
+
+
+=== API_CreateVPC
+
+Amazon Virtual Private Cloud (Amazon VPC) lets you provision a logically isolated section of the Amazon Web Services (AWS) Cloud where you can launch AWS resources in a virtual network that you define. This procedure allows you to create a new Amazon VPC by specifying the VPC name and CIDR block.
+
+==== Input
+
+. Go to the API_CreateVPC procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|VPC Name |Name to be given to VPC.
+|CIDR Block |The range of IP addresses to use for your VPC, in CIDR format, for example,10.0.0.0/24.Block size must be between a /16 netmask and /28 netmask. (Required)
+|Results Location |Where to put the result. If not specified, the result is only printed.
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_CreateVPC* step, click the Log button to see the diagnostic information.
+
+[[API_DeleteKey]]
+
+
+=== API_DeleteKey
+
+This procedure deletes the specified key pair by removing the public key from Amazon EC2. You must own the key pair.
+
+==== Input
+
+. Go to the API_DeleteKey procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Key name |The name of the key pair to delete. The default is _$[/myJob/Amazon EC2/$[cleanup_tag]/KeyPairId]_. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_DeleteKey* step, click the Log button to see the diagnostic information.
+
+[[API_DeleteVolume]]
+
+
+=== API_DeleteVolume
+
+This procedure deletes an EBS volume. It is usually used to delete a volume created for a specific instance.
+
+==== Input
+
+. Go to the API_DeleteVolume procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Detach Only? |If the check box is selected, the volume is not deleted after it is detached from the instance. (Required)
+|Volume |Name of volume to delete.
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_DeleteVolume* step, click the Log button to see the diagnostic information.
+
+[[API_DeleteVPC]]
+
+
+=== API_DeleteVPC
+
+This procedure allows you to delete the VPC and any subnets created within it by specifying the VPC ID.
+
+==== Input
+
+. Go to the API_DeleteVPC procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|VPC ID |ID of VPC to delete. (Required)
+|Results Location |Where to put the result. If not specified, the result is only printed.
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_DeleteVPC* step, click the Log button to see the diagnostic information.
+
+[[API_DescribeInstances]]
+
+
+=== API_DescribeInstances
+
+This procedure adds descriptions to one or more instances.
+
+==== Input
+
+. Go to the API_DescribeInstances procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Instances |One or more instances. You can specify one instance, a list of instances separated with semi-colons, or reservation.
+|Results Location |Where to put the result. If the location is not specified, the result is only printed.
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_DescribeInstances* step, click the Log button to see the diagnostic information.
+
+[[API_ReleaseIP]]
+
+
+== API_ReleaseIP
+
+This procedure releases a public IP address allocated to your account.
+
+==== Input
+
+. Go to the API_ReleaseIP procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Elastic IP |The IP address to be released. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_ReleaseIP* step, click the Log button to see the diagnostic information.
+
+[[API_Run]]
+
+
+=== API_Run
+
+This procedure runs the specified API method (procedure). Individual API procedures collect parameter values and call this procedure. Credentials should be attached to this procedure.
+
+==== Input
+
+. Go to the API_Run procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Method |The API method (procedure) to run. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_Run* step, click the Log button to see the diagnostic information.
+
+[[API_RunInstances]]
+
+
+=== API_RunInstances
+
+This procedure allows the user to start one or more instances from a machine image (AMI/EMI). The instances are part of one reservation and can be terminated later as a group or individually.
+
+[width="100%",cols="50%,50%",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of the config which holds all the connection information. This must reference a valid existing configuration. (Required)
+|Number of Instances |The number of instances to start(default is '1'). (Required)
+|Security Group |The security group to use (default is 'default').
+|Image |The name of the EC2 image that you would like to deploy. (Required)
+|Instance Type a|
+The instance type (default is 'Small(m1.small)'). (Required)
+
+* Options:
+* C1 High-CPU Medium (c1.medium)
+* C1 High-CPU Extra Large (c1.xlarge)
+* C3 High-CPU Double Extra Large (c3.2xlarge)
+* C3 High-CPU Quadruple Extra Large (c3.4xlarge)
+* C3 High-CPU Eight Extra Large (c3.8xlarge)
+* C3 High-CPU Large (c3.large)
+* C3 High-CPU Extra Large (c3.xlarge)
+* C4 High-CPU Double Extra Large (c4.2xlarge)
+* C4 High-CPU Quadruple Extra Large (c4.4xlarge)
+* C4 High-CPU Eight Extra Large (c4.8xlarge)
+* C4 High-CPU Large (c4.large)
+* C4 High-CPU Extra Large (c4.xlarge)
+* C5 High-CPU 18xlarge (c5.18xlarge)
+* C5 High-CPU Double Extra Large (c5.2xlarge)
+* C5 High-CPU Quadruple Extra Large (c5.4xlarge)
+* C5 High-CPU 9xlarge (c5.9xlarge)
+* C5 High-CPU Large (c5.large)
+* C5 High-CPU Extra Large (c5.xlarge)
+* C5 High-CPU 18xlarge (c5d.18xlarge)
+* C5 High-CPU Double Extra Large (c5d.2xlarge)
+* C5 High-CPU Quadruple Extra Large (c5d.4xlarge)
+* C5 High-CPU 9xlarge (c5d.9xlarge)
+* C5 High-CPU Large (c5d.large)
+* C5 High-CPU Extra Large (c5d.xlarge)
+* Cluster Compute Quadruple Extra Large (cc1.4xlarge)
+* Cluster Compute Eight Extra Large (cc2.8xlarge)
+* Cluster GPU Quadruple Extra Large (cg1.4xlarge)
+* High Memory Cluster Eight Extra Large (cr1.8xlarge)
+* D2 Double Extra Large (d2.2xlarge)
+* D2 Quadruple Extra Large (d2.4xlarge)
+* D2 Eight Extra Large (d2.8xlarge)
+* D2 Extra Large (d2.xlarge)
+* F1 16xlarge (f1.16xlarge)
+* F1 Double Extra Large (f1.2xlarge)
+* G2 Double Extra Large (g2.2xlarge)
+* G2 Eight Extra Large (g2.8xlarge)
+* G3 16xlarge (g3.16xlarge)
+* G3 Quadruple Extra Large (g3.4xlarge)
+* G3 Eight Extra Large (g3.8xlarge)
+* H1 16xlarge (h1.16xlarge)
+* H1 Double Extra Large (h1.2xlarge)
+* H1 Quadruple Extra Large (h1.4xlarge)
+* H1 Eight Extra Large (h1.8xlarge)
+* High I/O Quadruple Extra Large (hi1.4xlarge)
+* High Storage Eight Extra Large (hs1.8xlarge)
+* I2 Double Extra Large (i2.2xlarge)
+* I2 Quadruple Extra Large (i2.4xlarge)
+* I2 Eight Extra Large (i2.8xlarge)
+* I2 Extra Large (i2.xlarge)
+* I3 High I/O 16xlarge (i3.16xlarge)
+* I3 High I/O Double Extra Large (i3.2xlarge)
+* I3 High I/O Quadruple Extra Large (i3.4xlarge)
+* I3 High I/O Eight Extra Large (i3.8xlarge)
+* I3 High I/O Large (i3.large)
+* I3 High I/O Metal (i3.metal)
+* I3 High I/O Extra Large (i3.xlarge)
+* M1 General Purpose Large (m1.large)
+* M1 General Purpose Medium (m1.medium)
+* M1 General Purpose Small (m1.small)
+* M1 General Purpose Extra Large (m1.xlarge)
+* M2 High Memory Double Extra Large (m2.2xlarge)
+* M2 High Memory Quadruple Extra Large (m2.4xlarge)
+* M2 High Memory Extra Large (m2.xlarge)
+* M3 General Purpose Double Extra Large (m3.2xlarge)
+* M3 General Purpose Large (m3.large)
+* M3 General Purpose Medium (m3.medium)
+* M3 General Purpose Extra Large (m3.xlarge)
+* M4 General Purpose Deca Extra Large (m4.10xlarge)
+* M4 General Purpose 16xlarge (m4.16xlarge)
+* M4 General Purpose Double Extra Large (m4.2xlarge)
+* M4 General Purpose Quadruple Extra Large (m4.4xlarge)
+* M4 General Purpose Large (m4.large)
+* M4 General Purpose Extra Large (m4.xlarge)
+* M5 General Purpose 12xlarge (m5.12xlarge)
+* M5 General Purpose 24xlarge (m5.24xlarge)
+* M5 General Purpose Double Extra Large (m5.2xlarge)
+* M5 General Purpose Quadruple Extra Large (m5.4xlarge)
+* M5 General Purpose Large (m5.large)
+* M5 General Purpose Extra Large (m5.xlarge)
+* M5 General Purpose 12xlarge (m5d.12xlarge)
+* M5 General Purpose 24xlarge (m5d.24xlarge)
+* M5 General Purpose Double Extra Large (m5d.2xlarge)
+* M5 General Purpose Quadruple Extra Large (m5d.4xlarge)
+* M5 General Purpose Large (m5d.large)
+* M5 General Purpose Extra Large (m5d.xlarge)
+* General Purpose GPU 16xlarge (p2.16xlarge)
+* General Purpose GPU Eight Extra Large (p2.8xlarge)
+* General Purpose GPU Extra Large (p2.xlarge)
+* P3 16xlarge (p3.16xlarge)
+* P3 Double Extra Large (p3.2xlarge)
+* P3 Eight Extra Large (p3.8xlarge)
+* R3 High-Memory Double Extra Large (r3.2xlarge)
+* R3 High-Memory Quadruple Extra Large (r3.4xlarge)
+* R3 High-Memory Eight Extra Large (r3.8xlarge)
+* R3 High-Memory Large (r3.large)
+* R3 High-Memory Extra Large (r3.xlarge)
+* R4 High-Memory 16xlarge (r4.16xlarge)
+* R4 High-Memory Double Extra Large (r4.2xlarge)
+* R4 High-Memory Quadruple Extra Large (r4.4xlarge)
+* R4 High-Memory Eight Extra Large (r4.8xlarge)
+* R4 High-Memory Large (r4.large)
+* R4 High-Memory Extra Large (r4.xlarge)
+* R5 12xlarge (r5.12xlarge)
+* R5 16xlarge (r5.16xlarge)
+* R5 24xlarge (r5.24xlarge)
+* R5 Double Extra Large (r5.2xlarge)
+* R5 Quadruple Extra Large (r5.4xlarge)
+* R5 Eight Extra Large (r5.8xlarge)
+* R5 Large (r5.large)
+* R5 Metal (r5.metal)
+* R5 Extra Large (r5.xlarge)
+* R5D 12xlarge (r5d.12xlarge)
+* R5D 16xlarge (r5d.16xlarge)
+* R5D 24xlarge (r5d.24xlarge)
+* R5D Double Extra Large (r5d.2xlarge)
+* R5D Quadruple Extra Large (r5d.4xlarge)
+* R5D Eight Extra Large (r5d.8xlarge)
+* R5D Large (r5d.large)
+* R5D Metal (r5d.metal)
+* R5D Extra Large (r5d.xlarge)
+* T1 Micro (t1.micro)
+* T2 Double Extra Large (t2.2xlarge)
+* T2 Large (t2.large)
+* T2 Medium (t2.medium)
+* T2 Micro (t2.micro)
+* T2 Nano (t2.nano)
+* T2 Small (t2.small)
+* T2 Extra Large (t2.xlarge)
+* X1 Extra High-Memory 16xlarge (x1.16xlarge)
+* X1 Extra High-Memory 32xlarge (x1.32xlarge)
+* X1E 16xlarge (x1e.16xlarge)
+* X1E Double Extra Large (x1e.2xlarge)
+* X1E 32xlarge (x1e.32xlarge)
+* X1E Quadruple Extra Large (x1e.4xlarge)
+* X1E Eight Extra Large (x1e.8xlarge)
+* X1E Extra Large (x1e.xlarge)
+* Z1D 12xlarge (z1d.12xlarge)
+* Z1D Double Extra Large (z1d.2xlarge)
+* Z1D 3xlarge (z1d.3xlarge)
+* Z1D 6xlarge (z1d.6xlarge)
+* Z1D Large (z1d.large)
+* Z1D Extra Large (z1d.xlarge)
+
+|Key name |The name of the key pair to use. (Required)
+|Results Location |Where to put the result. If not specified, the result is only printed.
+|User Data |Extra user data to pass to runInstance.
+|Availability Zone |The Availability Zone you want to launch the instance into. (Required)
+|Subnet Id |The ID of the subnet to launch the instance(s) into (for use with VPCs)
+|Private IP |The primary IP address. You must specify a value from the IP address range of the subnet. If no value is entered, an IP address from the IP address range of the subnet is selected to use with theVPCs.
+|Use Private IP for subnet? |If selected, a private IP address is used to create the resource.
+|Instance Initiated Shutdown Behavior |Specify the instance behaviour when an OS-level shutdown is performed. The instance can be either terminated or shut down.
+|Tenancy |Each instance that you launch into a VPC has a tenancy attribute. This attribute has the following values:
+
+default - Your instance runs on shared hardware.
+
+dedicated - Your instance runs on single-tenant hardware.
+
+host - Your instance runs on a Dedicated Host, which is an isolated server with configurations that you can control.
+|IAM Profile Name |Specify an IAM profile you want this instance to be associated with. If this parameter is not specified, instance will not be associated with a profile.
+|Resource Pool |If you would like to add {CD} resources for each instance created, enter the {CD} pool name for the new resource. If left blank no resource will be created.
+|{CD} Workspace |If you specify a resource poolName in res_poolName, this is the workspace that will be used when creating the resource.
+|Resource port |If you specify a resource poolName in res_poolName, this is the port that will be used when creating the resource.
+|===
+
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/api_runinstances_panel.png[image]
+
+[[API_UpdateInstances]]
+
+
+=== API_UpdateInstances
+
+Updates one or more attribute values of an Instance. Where required the procedure can be used to update attribute values of multiple instances.
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of the config which holds all the connection information. This must reference a valid existing configuration. (Required)
+|Instance IDs |Comma-separated list of Instance IDs to update, e.g. i-00901da83f8647e57.
+|Security Group Id |New security group to use for updated instances, e.g. sg-79894433. If this field is left empty, the security group will not be updated.
+|Instance Type |New instance type. *Note*: to update instance type, the instance must be stopped and started again.
+|User Data |Extra user data to pass to runInstance. Note: to update User Data, the instance will be stopped and started again.
+|Instance Initiated Shutdown Behavior |Specify the instance behaviour when an OS-level shutdown is performed. Instance can be either terminated or shut down.
+|===
+
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/api_updateinstances.png[image]
+
+[[API_StartInstance]]
+
+
+=== API_StartInstance
+
+This procedure deploys an Amazon EBS-backed instance.
+
+==== Input
+
+. Go to the API_StartInstance procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Instance name |The name of the EC2 instance to deploy. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_StartInstance* step, click the Log button to see the diagnostic information.
+
+[[API_StopInstance]]
+
+
+=== API_StopInstance
+
+This procedure stops an Amazon EBS-backed instance. Data is not be lost when the instance stops.
+
+.
+
+=== Input
+
+. Go to the API_StartInstance procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Instance id |The ID of the Amazon EC2 instance to stop. (Required)
+|===
+
+=== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_StopInstance* step, click the Log button to see the diagnostic information.
+
+[[API_TearDownResource]]
+
+
+=== API_TearDownResource
+
+This procedure terminate one instance. When the procedure terminates, any data added to the disk or any changes made to the disk will be lost.
+
+==== Input
+
+. Go to the API_TearDownResource procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information.
+|Resource Name |The name of the cloud resource to tear down. This procedure works only on a resource that was created in a dynamic environment. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_TearDownResource* step, click the Log button to see the diagnostic information.
+
+[[API_Terminate]]
+
+
+=== API_Terminate
+
+This procedure terminate one or more instances. When the procedures terminates any data added to the disk or any changes made to the disk will be lost.
+
+==== Input
+
+. Go to the API_Terminate procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Instance|Reservation Id |If parameter value is an instance ID, terminate the specific instance. If it is a reservation ID, terminate all the instances in the reservation. (Required)
+|List of Resources |List of {CD} resources to delete, separated by semi-colons.
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *API_Terminate* step, click the Log button to see the diagnostic information.
+
+[[CloudManagerGrow]]
+
+
+=== CloudManagerGrow
+
+This procedure allows this plugin to work with CloudManager plugin. CloudManager runs this procedure to add servers and calls the _EC2 Auto Deploy_ procedure.
+
+==== Input
+
+. Go to the CloudManagerGrow procedure.
+. Enter the following parameters:
+
+
+[width="100%",cols="50%,50%",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of the configuration with all the EC-EC2 connection information. (Required)
+|Security Group |The EC2 security group for the new instances. The default is _default_. (Required)
+|Image Name |The AMI or EMI image to use. (Required)
+|Device |The OS device to which the snapshot is connected when a snapshot is specified.
+|Instance Type a|
+The EC2 instance type to create. The default is _Small(m1.small)_. (Required)
+
+* Options:
+* C1 High-CPU Medium (c1.medium)
+* C1 High-CPU Extra Large (c1.xlarge)
+* C3 High-CPU Double Extra Large (c3.2xlarge)
+* C3 High-CPU Quadruple Extra Large (c3.4xlarge)
+* C3 High-CPU Eight Extra Large (c3.8xlarge)
+* C3 High-CPU Large (c3.large)
+* C3 High-CPU Extra Large (c3.xlarge)
+* C4 High-CPU Double Extra Large (c4.2xlarge)
+* C4 High-CPU Quadruple Extra Large (c4.4xlarge)
+* C4 High-CPU Eight Extra Large (c4.8xlarge)
+* C4 High-CPU Large (c4.large)
+* C4 High-CPU Extra Large (c4.xlarge)
+* C5 High-CPU 18xlarge (c5.18xlarge)
+* C5 High-CPU Double Extra Large (c5.2xlarge)
+* C5 High-CPU Quadruple Extra Large (c5.4xlarge)
+* C5 High-CPU 9xlarge (c5.9xlarge)
+* C5 High-CPU Large (c5.large)
+* C5 High-CPU Extra Large (c5.xlarge)
+* C5 High-CPU 18xlarge (c5d.18xlarge)
+* C5 High-CPU Double Extra Large (c5d.2xlarge)
+* C5 High-CPU Quadruple Extra Large (c5d.4xlarge)
+* C5 High-CPU 9xlarge (c5d.9xlarge)
+* C5 High-CPU Large (c5d.large)
+* C5 High-CPU Extra Large (c5d.xlarge)
+* Cluster Compute Quadruple Extra Large (cc1.4xlarge)
+* Cluster Compute Eight Extra Large (cc2.8xlarge)
+* Cluster GPU Quadruple Extra Large (cg1.4xlarge)
+* High Memory Cluster Eight Extra Large (cr1.8xlarge)
+* D2 Double Extra Large (d2.2xlarge)
+* D2 Quadruple Extra Large (d2.4xlarge)
+* D2 Eight Extra Large (d2.8xlarge)
+* D2 Extra Large (d2.xlarge)
+* F1 16xlarge (f1.16xlarge)
+* F1 Double Extra Large (f1.2xlarge)
+* G2 Double Extra Large (g2.2xlarge)
+* G2 Eight Extra Large (g2.8xlarge)
+* G3 16xlarge (g3.16xlarge)
+* G3 Quadruple Extra Large (g3.4xlarge)
+* G3 Eight Extra Large (g3.8xlarge)
+* H1 16xlarge (h1.16xlarge)
+* H1 Double Extra Large (h1.2xlarge)
+* H1 Quadruple Extra Large (h1.4xlarge)
+* H1 Eight Extra Large (h1.8xlarge)
+* High I/O Quadruple Extra Large (hi1.4xlarge)
+* High Storage Eight Extra Large (hs1.8xlarge)
+* I2 Double Extra Large (i2.2xlarge)
+* I2 Quadruple Extra Large (i2.4xlarge)
+* I2 Eight Extra Large (i2.8xlarge)
+* I2 Extra Large (i2.xlarge)
+* I3 High I/O 16xlarge (i3.16xlarge)
+* I3 High I/O Double Extra Large (i3.2xlarge)
+* I3 High I/O Quadruple Extra Large (i3.4xlarge)
+* I3 High I/O Eight Extra Large (i3.8xlarge)
+* I3 High I/O Large (i3.large)
+* I3 High I/O Metal (i3.metal)
+* I3 High I/O Extra Large (i3.xlarge)
+* M1 General Purpose Large (m1.large)
+* M1 General Purpose Medium (m1.medium)
+* M1 General Purpose Small (m1.small)
+* M1 General Purpose Extra Large (m1.xlarge)
+* M2 High Memory Double Extra Large (m2.2xlarge)
+* M2 High Memory Quadruple Extra Large (m2.4xlarge)
+* M2 High Memory Extra Large (m2.xlarge)
+* M3 General Purpose Double Extra Large (m3.2xlarge)
+* M3 General Purpose Large (m3.large)
+* M3 General Purpose Medium (m3.medium)
+* M3 General Purpose Extra Large (m3.xlarge)
+* M4 General Purpose Deca Extra Large (m4.10xlarge)
+* M4 General Purpose 16xlarge (m4.16xlarge)
+* M4 General Purpose Double Extra Large (m4.2xlarge)
+* M4 General Purpose Quadruple Extra Large (m4.4xlarge)
+* M4 General Purpose Large (m4.large)
+* M4 General Purpose Extra Large (m4.xlarge)
+* M5 General Purpose 12xlarge (m5.12xlarge)
+* M5 General Purpose 24xlarge (m5.24xlarge)
+* M5 General Purpose Double Extra Large (m5.2xlarge)
+* M5 General Purpose Quadruple Extra Large (m5.4xlarge)
+* M5 General Purpose Large (m5.large)
+* M5 General Purpose Extra Large (m5.xlarge)
+* M5 General Purpose 12xlarge (m5d.12xlarge)
+* M5 General Purpose 24xlarge (m5d.24xlarge)
+* M5 General Purpose Double Extra Large (m5d.2xlarge)
+* M5 General Purpose Quadruple Extra Large (m5d.4xlarge)
+* M5 General Purpose Large (m5d.large)
+* M5 General Purpose Extra Large (m5d.xlarge)
+* General Purpose GPU 16xlarge (p2.16xlarge)
+* General Purpose GPU Eight Extra Large (p2.8xlarge)
+* General Purpose GPU Extra Large (p2.xlarge)
+* P3 16xlarge (p3.16xlarge)
+* P3 Double Extra Large (p3.2xlarge)
+* P3 Eight Extra Large (p3.8xlarge)
+* R3 High-Memory Double Extra Large (r3.2xlarge)
+* R3 High-Memory Quadruple Extra Large (r3.4xlarge)
+* R3 High-Memory Eight Extra Large (r3.8xlarge)
+* R3 High-Memory Large (r3.large)
+* R3 High-Memory Extra Large (r3.xlarge)
+* R4 High-Memory 16xlarge (r4.16xlarge)
+* R4 High-Memory Double Extra Large (r4.2xlarge)
+* R4 High-Memory Quadruple Extra Large (r4.4xlarge)
+* R4 High-Memory Eight Extra Large (r4.8xlarge)
+* R4 High-Memory Large (r4.large)
+* R4 High-Memory Extra Large (r4.xlarge)
+* R5 12xlarge (r5.12xlarge)
+* R5 16xlarge (r5.16xlarge)
+* R5 24xlarge (r5.24xlarge)
+* R5 Double Extra Large (r5.2xlarge)
+* R5 Quadruple Extra Large (r5.4xlarge)
+* R5 Eight Extra Large (r5.8xlarge)
+* R5 Large (r5.large)
+* R5 Metal (r5.metal)
+* R5 Extra Large (r5.xlarge)
+* R5D 12xlarge (r5d.12xlarge)
+* R5D 16xlarge (r5d.16xlarge)
+* R5D 24xlarge (r5d.24xlarge)
+* R5D Double Extra Large (r5d.2xlarge)
+* R5D Quadruple Extra Large (r5d.4xlarge)
+* R5D Eight Extra Large (r5d.8xlarge)
+* R5D Large (r5d.large)
+* R5D Metal (r5d.metal)
+* R5D Extra Large (r5d.xlarge)
+* T1 Micro (t1.micro)
+* T2 Double Extra Large (t2.2xlarge)
+* T2 Large (t2.large)
+* T2 Medium (t2.medium)
+* T2 Micro (t2.micro)
+* T2 Nano (t2.nano)
+* T2 Small (t2.small)
+* T2 Extra Large (t2.xlarge)
+* X1 Extra High-Memory 16xlarge (x1.16xlarge)
+* X1 Extra High-Memory 32xlarge (x1.32xlarge)
+* X1E 16xlarge (x1e.16xlarge)
+* X1E Double Extra Large (x1e.2xlarge)
+* X1E 32xlarge (x1e.32xlarge)
+* X1E Quadruple Extra Large (x1e.4xlarge)
+* X1E Eight Extra Large (x1e.8xlarge)
+* X1E Extra Large (x1e.xlarge)
+* Z1D 12xlarge (z1d.12xlarge)
+* Z1D Double Extra Large (z1d.2xlarge)
+* Z1D 3xlarge (z1d.3xlarge)
+* Z1D 6xlarge (z1d.6xlarge)
+* Z1D Large (z1d.large)
+* Z1D Extra Large (z1d.xlarge)
+
+|User Data |Data to pass to the instance.
+|Snapshot |An Amazon EC2 snapshot. If a snapshot is specified, a new volume is created from the snapshot and attached to the running instance.
+|Zone |The Availability Zone where the instance is launched. The default is _us-east-1b_. (Required)
+|Resource Pool |Pool name for resources. (Required)
+|Number of new instances |The number of new servers. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *CloudManagerGrow* step, click the Log button to see the diagnostic information.
+
+[[CloudManagerShrink]]
+
+
+=== CloudManagerShrink
+
+This procedure allows the plugin to work with CloudManager plugin. CloudManager runs this procedure to remove servers and calls the EC2 Auto Cleanup procedure.
+
+==== Input
+
+. Go to the CloudManagerShrink procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|List of Deployments |A list of deployments (previously created by the CloudManagerGrow procedure) to stop. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *CloudManagerShrink* step, click the Log button to see the diagnostic information.
+
+[[CloudManagerSync]]
+
+
+=== CloudManagerSync
+
+This procedure allows the plugin to work with CloudManager plugin. CloudManager runs this procedure to synchronize the servers.
+
+==== Input
+
+. Go to the CloudManagerSync procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|List of Deployments |A list of deployments. (Required)
+|===
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *CloudManagerSync* step, click the Log button to see the diagnostic information.
+
+
+=== EC2 auto cleanup
+
+This procedure cleans up the instances created with the "EC2 Auto Deploy" procedure. It uses the API_DeleteKey, API_Terminate, and API_DeleteVolume procedures to delete the key pair, storage, Elastic IP, and security settings.
+
+==== Input
+
+. Go to the EC2 Auto Cleanup procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+= |Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Key name |Name of the key pair to delete. (Required)
+|Reservation Id |The reservation ID. All instances in the reservation will be deleted. (Required).
+|List of Volumes |The names of volumes to delete. The volumne IDs are separated by semi-colons.
+|List of Resources |List of {CD} resources to delete, separated by semi-colons.
+|===
+
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_auto_cleanup_panel.png[image]
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *EC2 Auto Cleanup* step, click the Log button to see the diagnostic information.
+
+
+=== EC2 auto deploy
+
+This procedure depoy new EC2 instances. It calls the API_CreateKey, API_RunInstances, ProcessVolumes, and API_AttachVolumes procedures to automatically create and associate the key pair, storage, Elastic IP, and security settings.
+
+==== Input
+
+. Go to the EC2 Auto Deploy procedure.
+. Enter the following parameters:
+
+
+[width="100%",cols="50%,50%",options="header",]
+|===
+|Parameter |Description
+|Cleanup tag |A key used to match a cleanup step to the corresponding provision step. This allows recursive, multiple, or both recursive and multiple calls calls within a procedure. The default is _tag_. (Required)
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Number of Instances |The number of instances to automatically deploy. (Required)
+|EC2 AMI |The name of the Amazon EC2 instance to deploy. (Required)
+|Group |The security group to use. The default is _defaul_. (Required)
+|Instance Type a|
+The instance type. The default is _Large(m1.large)_. (Required)
+
+* Options:
+* C1 High-CPU Medium (c1.medium)
+* C1 High-CPU Extra Large (c1.xlarge)
+* C3 High-CPU Double Extra Large (c3.2xlarge)
+* C3 High-CPU Quadruple Extra Large (c3.4xlarge)
+* C3 High-CPU Eight Extra Large (c3.8xlarge)
+* C3 High-CPU Large (c3.large)
+* C3 High-CPU Extra Large (c3.xlarge)
+* C4 High-CPU Double Extra Large (c4.2xlarge)
+* C4 High-CPU Quadruple Extra Large (c4.4xlarge)
+* C4 High-CPU Eight Extra Large (c4.8xlarge)
+* C4 High-CPU Large (c4.large)
+* C4 High-CPU Extra Large (c4.xlarge)
+* C5 High-CPU 18xlarge (c5.18xlarge)
+* C5 High-CPU Double Extra Large (c5.2xlarge)
+* C5 High-CPU Quadruple Extra Large (c5.4xlarge)
+* C5 High-CPU 9xlarge (c5.9xlarge)
+* C5 High-CPU Large (c5.large)
+* C5 High-CPU Extra Large (c5.xlarge)
+* C5 High-CPU 18xlarge (c5d.18xlarge)
+* C5 High-CPU Double Extra Large (c5d.2xlarge)
+* C5 High-CPU Quadruple Extra Large (c5d.4xlarge)
+* C5 High-CPU 9xlarge (c5d.9xlarge)
+* C5 High-CPU Large (c5d.large)
+* C5 High-CPU Extra Large (c5d.xlarge)
+* Cluster Compute Quadruple Extra Large (cc1.4xlarge)
+* Cluster Compute Eight Extra Large (cc2.8xlarge)
+* Cluster GPU Quadruple Extra Large (cg1.4xlarge)
+* High Memory Cluster Eight Extra Large (cr1.8xlarge)
+* D2 Double Extra Large (d2.2xlarge)
+* D2 Quadruple Extra Large (d2.4xlarge)
+* D2 Eight Extra Large (d2.8xlarge)
+* D2 Extra Large (d2.xlarge)
+* F1 16xlarge (f1.16xlarge)
+* F1 Double Extra Large (f1.2xlarge)
+* G2 Double Extra Large (g2.2xlarge)
+* G2 Eight Extra Large (g2.8xlarge)
+* G3 16xlarge (g3.16xlarge)
+* G3 Quadruple Extra Large (g3.4xlarge)
+* G3 Eight Extra Large (g3.8xlarge)
+* H1 16xlarge (h1.16xlarge)
+* H1 Double Extra Large (h1.2xlarge)
+* H1 Quadruple Extra Large (h1.4xlarge)
+* H1 Eight Extra Large (h1.8xlarge)
+* High I/O Quadruple Extra Large (hi1.4xlarge)
+* High Storage Eight Extra Large (hs1.8xlarge)
+* I2 Double Extra Large (i2.2xlarge)
+* I2 Quadruple Extra Large (i2.4xlarge)
+* I2 Eight Extra Large (i2.8xlarge)
+* I2 Extra Large (i2.xlarge)
+* I3 High I/O 16xlarge (i3.16xlarge)
+* I3 High I/O Double Extra Large (i3.2xlarge)
+* I3 High I/O Quadruple Extra Large (i3.4xlarge)
+* I3 High I/O Eight Extra Large (i3.8xlarge)
+* I3 High I/O Large (i3.large)
+* I3 High I/O Metal (i3.metal)
+* I3 High I/O Extra Large (i3.xlarge)
+* M1 General Purpose Large (m1.large)
+* M1 General Purpose Medium (m1.medium)
+* M1 General Purpose Small (m1.small)
+* M1 General Purpose Extra Large (m1.xlarge)
+* M2 High Memory Double Extra Large (m2.2xlarge)
+* M2 High Memory Quadruple Extra Large (m2.4xlarge)
+* M2 High Memory Extra Large (m2.xlarge)
+* M3 General Purpose Double Extra Large (m3.2xlarge)
+* M3 General Purpose Large (m3.large)
+* M3 General Purpose Medium (m3.medium)
+* M3 General Purpose Extra Large (m3.xlarge)
+* M4 General Purpose Deca Extra Large (m4.10xlarge)
+* M4 General Purpose 16xlarge (m4.16xlarge)
+* M4 General Purpose Double Extra Large (m4.2xlarge)
+* M4 General Purpose Quadruple Extra Large (m4.4xlarge)
+* M4 General Purpose Large (m4.large)
+* M4 General Purpose Extra Large (m4.xlarge)
+* M5 General Purpose 12xlarge (m5.12xlarge)
+* M5 General Purpose 24xlarge (m5.24xlarge)
+* M5 General Purpose Double Extra Large (m5.2xlarge)
+* M5 General Purpose Quadruple Extra Large (m5.4xlarge)
+* M5 General Purpose Large (m5.large)
+* M5 General Purpose Extra Large (m5.xlarge)
+* M5 General Purpose 12xlarge (m5d.12xlarge)
+* M5 General Purpose 24xlarge (m5d.24xlarge)
+* M5 General Purpose Double Extra Large (m5d.2xlarge)
+* M5 General Purpose Quadruple Extra Large (m5d.4xlarge)
+* M5 General Purpose Large (m5d.large)
+* M5 General Purpose Extra Large (m5d.xlarge)
+* General Purpose GPU 16xlarge (p2.16xlarge)
+* General Purpose GPU Eight Extra Large (p2.8xlarge)
+* General Purpose GPU Extra Large (p2.xlarge)
+* P3 16xlarge (p3.16xlarge)
+* P3 Double Extra Large (p3.2xlarge)
+* P3 Eight Extra Large (p3.8xlarge)
+* R3 High-Memory Double Extra Large (r3.2xlarge)
+* R3 High-Memory Quadruple Extra Large (r3.4xlarge)
+* R3 High-Memory Eight Extra Large (r3.8xlarge)
+* R3 High-Memory Large (r3.large)
+* R3 High-Memory Extra Large (r3.xlarge)
+* R4 High-Memory 16xlarge (r4.16xlarge)
+* R4 High-Memory Double Extra Large (r4.2xlarge)
+* R4 High-Memory Quadruple Extra Large (r4.4xlarge)
+* R4 High-Memory Eight Extra Large (r4.8xlarge)
+* R4 High-Memory Large (r4.large)
+* R4 High-Memory Extra Large (r4.xlarge)
+* R5 12xlarge (r5.12xlarge)
+* R5 16xlarge (r5.16xlarge)
+* R5 24xlarge (r5.24xlarge)
+* R5 Double Extra Large (r5.2xlarge)
+* R5 Quadruple Extra Large (r5.4xlarge)
+* R5 Eight Extra Large (r5.8xlarge)
+* R5 Large (r5.large)
+* R5 Metal (r5.metal)
+* R5 Extra Large (r5.xlarge)
+* R5D 12xlarge (r5d.12xlarge)
+* R5D 16xlarge (r5d.16xlarge)
+* R5D 24xlarge (r5d.24xlarge)
+* R5D Double Extra Large (r5d.2xlarge)
+* R5D Quadruple Extra Large (r5d.4xlarge)
+* R5D Eight Extra Large (r5d.8xlarge)
+* R5D Large (r5d.large)
+* R5D Metal (r5d.metal)
+* R5D Extra Large (r5d.xlarge)
+* T1 Micro (t1.micro)
+* T2 Double Extra Large (t2.2xlarge)
+* T2 Large (t2.large)
+* T2 Medium (t2.medium)
+* T2 Micro (t2.micro)
+* T2 Nano (t2.nano)
+* T2 Small (t2.small)
+* T2 Extra Large (t2.xlarge)
+* X1 Extra High-Memory 16xlarge (x1.16xlarge)
+* X1 Extra High-Memory 32xlarge (x1.32xlarge)
+* X1E 16xlarge (x1e.16xlarge)
+* X1E Double Extra Large (x1e.2xlarge)
+* X1E 32xlarge (x1e.32xlarge)
+* X1E Quadruple Extra Large (x1e.4xlarge)
+* X1E Eight Extra Large (x1e.8xlarge)
+* X1E Extra Large (x1e.xlarge)
+* Z1D 12xlarge (z1d.12xlarge)
+* Z1D Double Extra Large (z1d.2xlarge)
+* Z1D 3xlarge (z1d.3xlarge)
+* Z1D 6xlarge (z1d.6xlarge)
+* Z1D Large (z1d.large)
+* Z1D Extra Large (z1d.xlarge)
+
+|Results Location |Where to put the result. If the location is not specified, the result is only printed. (Required)
+|Snapshot Id |The ID of the snapshot for a volume and attached to the new instances. If the snapshot ID is not specified, volumes are not attached.
+|User Data |Extra user data to pass to the API_runInstances procedure.
+|Volume device |The device name of a volume attached to an instance. Examples are _/dev/sdf_ in Linux and UNIX or _xvdf_ in Windows. The default is _xvdf_.
+|Zone |The zone where the instance is created. (Required)
+|Resource Pool |Name of the resource pool. If you enter a name, a new resource is created and put in the pool.
+|{CD} Workspace |Name of the workspace where the resources are created.
+|Resource port |ID of the port to which the new resources are assigned.
+|===
+
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_auto_deploy_panel.png[image]
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *EC2 Auto Deploy* step, click the Log button to see the diagnostic information.
+
+
+
+== EC2 auto pause
+
+This procedure pauses a instance store-backed AMI. It disconnects the volumes, saves them, and terminates the instance. It works with the EC2 Auto Resume procedure, which starts a new instance and re-attaches the volumes.
+
+==== Input
+
+. Go to the EC2 Auto Pause procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|List of Instances |The instances to terminate, which can be a reservation, a single instance, or a list of instances. (Required)
+|List of Volumes |The list of volumes to detach from instances. (Required)
+|===
+
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_auto_pause_panel.png[image]
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *EC2 Auto Pause* step, click the Log button to see the diagnostic information.
+
+
+
+=== EC2 auto resume
+
+This procedure restarts an instance. After the EC2 Auto Pause procedure runs, it starts a new istance and re-attaches the saved volumes.
+
+==== Input
+
+. Go to the EC2 Auto Resume procedure.
+. Enter the following parameters:
+
+
+[width="100%",cols="50%,50%",options="header",]
+|===
+|Parameter |Description
+|Cleanup tag |A key used to match a cleanup step to the corresponding provision step. This allows recursive, multiple, or both recursive and multiple calls within a procedure. The default is _tag_. (Required)
+|Configuration |The name of a valid existing configuration wtih the connection information. (Required)
+|Number of Instances |The number of instances to restart. (Required)
+|EC2 AMI |The name of the EC2 instance to deploy. (Required)
+|Group |The security group to use. The default is _default_. (Required)
+|Instance Type a|
+The instance type. The default is _Large(m1.large)_. (Required)
+
+* Options:
+* C1 High-CPU Medium (c1.medium)
+* C1 High-CPU Extra Large (c1.xlarge)
+* C3 High-CPU Double Extra Large (c3.2xlarge)
+* C3 High-CPU Quadruple Extra Large (c3.4xlarge)
+* C3 High-CPU Eight Extra Large (c3.8xlarge)
+* C3 High-CPU Large (c3.large)
+* C3 High-CPU Extra Large (c3.xlarge)
+* C4 High-CPU Double Extra Large (c4.2xlarge)
+* C4 High-CPU Quadruple Extra Large (c4.4xlarge)
+* C4 High-CPU Eight Extra Large (c4.8xlarge)
+* C4 High-CPU Large (c4.large)
+* C4 High-CPU Extra Large (c4.xlarge)
+* C5 High-CPU 18xlarge (c5.18xlarge)
+* C5 High-CPU Double Extra Large (c5.2xlarge)
+* C5 High-CPU Quadruple Extra Large (c5.4xlarge)
+* C5 High-CPU 9xlarge (c5.9xlarge)
+* C5 High-CPU Large (c5.large)
+* C5 High-CPU Extra Large (c5.xlarge)
+* C5 High-CPU 18xlarge (c5d.18xlarge)
+* C5 High-CPU Double Extra Large (c5d.2xlarge)
+* C5 High-CPU Quadruple Extra Large (c5d.4xlarge)
+* C5 High-CPU 9xlarge (c5d.9xlarge)
+* C5 High-CPU Large (c5d.large)
+* C5 High-CPU Extra Large (c5d.xlarge)
+* Cluster Compute Quadruple Extra Large (cc1.4xlarge)
+* Cluster Compute Eight Extra Large (cc2.8xlarge)
+* Cluster GPU Quadruple Extra Large (cg1.4xlarge)
+* High Memory Cluster Eight Extra Large (cr1.8xlarge)
+* D2 Double Extra Large (d2.2xlarge)
+* D2 Quadruple Extra Large (d2.4xlarge)
+* D2 Eight Extra Large (d2.8xlarge)
+* D2 Extra Large (d2.xlarge)
+* F1 16xlarge (f1.16xlarge)
+* F1 Double Extra Large (f1.2xlarge)
+* G2 Double Extra Large (g2.2xlarge)
+* G2 Eight Extra Large (g2.8xlarge)
+* G3 16xlarge (g3.16xlarge)
+* G3 Quadruple Extra Large (g3.4xlarge)
+* G3 Eight Extra Large (g3.8xlarge)
+* H1 16xlarge (h1.16xlarge)
+* H1 Double Extra Large (h1.2xlarge)
+* H1 Quadruple Extra Large (h1.4xlarge)
+* H1 Eight Extra Large (h1.8xlarge)
+* High I/O Quadruple Extra Large (hi1.4xlarge)
+* High Storage Eight Extra Large (hs1.8xlarge)
+* I2 Double Extra Large (i2.2xlarge)
+* I2 Quadruple Extra Large (i2.4xlarge)
+* I2 Eight Extra Large (i2.8xlarge)
+* I2 Extra Large (i2.xlarge)
+* I3 High I/O 16xlarge (i3.16xlarge)
+* I3 High I/O Double Extra Large (i3.2xlarge)
+* I3 High I/O Quadruple Extra Large (i3.4xlarge)
+* I3 High I/O Eight Extra Large (i3.8xlarge)
+* I3 High I/O Large (i3.large)
+* I3 High I/O Metal (i3.metal)
+* I3 High I/O Extra Large (i3.xlarge)
+* M1 General Purpose Large (m1.large)
+* M1 General Purpose Medium (m1.medium)
+* M1 General Purpose Small (m1.small)
+* M1 General Purpose Extra Large (m1.xlarge)
+* M2 High Memory Double Extra Large (m2.2xlarge)
+* M2 High Memory Quadruple Extra Large (m2.4xlarge)
+* M2 High Memory Extra Large (m2.xlarge)
+* M3 General Purpose Double Extra Large (m3.2xlarge)
+* M3 General Purpose Large (m3.large)
+* M3 General Purpose Medium (m3.medium)
+* M3 General Purpose Extra Large (m3.xlarge)
+* M4 General Purpose Deca Extra Large (m4.10xlarge)
+* M4 General Purpose 16xlarge (m4.16xlarge)
+* M4 General Purpose Double Extra Large (m4.2xlarge)
+* M4 General Purpose Quadruple Extra Large (m4.4xlarge)
+* M4 General Purpose Large (m4.large)
+* M4 General Purpose Extra Large (m4.xlarge)
+* M5 General Purpose 12xlarge (m5.12xlarge)
+* M5 General Purpose 24xlarge (m5.24xlarge)
+* M5 General Purpose Double Extra Large (m5.2xlarge)
+* M5 General Purpose Quadruple Extra Large (m5.4xlarge)
+* M5 General Purpose Large (m5.large)
+* M5 General Purpose Extra Large (m5.xlarge)
+* M5 General Purpose 12xlarge (m5d.12xlarge)
+* M5 General Purpose 24xlarge (m5d.24xlarge)
+* M5 General Purpose Double Extra Large (m5d.2xlarge)
+* M5 General Purpose Quadruple Extra Large (m5d.4xlarge)
+* M5 General Purpose Large (m5d.large)
+* M5 General Purpose Extra Large (m5d.xlarge)
+* General Purpose GPU 16xlarge (p2.16xlarge)
+* General Purpose GPU Eight Extra Large (p2.8xlarge)
+* General Purpose GPU Extra Large (p2.xlarge)
+* P3 16xlarge (p3.16xlarge)
+* P3 Double Extra Large (p3.2xlarge)
+* P3 Eight Extra Large (p3.8xlarge)
+* R3 High-Memory Double Extra Large (r3.2xlarge)
+* R3 High-Memory Quadruple Extra Large (r3.4xlarge)
+* R3 High-Memory Eight Extra Large (r3.8xlarge)
+* R3 High-Memory Large (r3.large)
+* R3 High-Memory Extra Large (r3.xlarge)
+* R4 High-Memory 16xlarge (r4.16xlarge)
+* R4 High-Memory Double Extra Large (r4.2xlarge)
+* R4 High-Memory Quadruple Extra Large (r4.4xlarge)
+* R4 High-Memory Eight Extra Large (r4.8xlarge)
+* R4 High-Memory Large (r4.large)
+* R4 High-Memory Extra Large (r4.xlarge)
+* R5 12xlarge (r5.12xlarge)
+* R5 16xlarge (r5.16xlarge)
+* R5 24xlarge (r5.24xlarge)
+* R5 Double Extra Large (r5.2xlarge)
+* R5 Quadruple Extra Large (r5.4xlarge)
+* R5 Eight Extra Large (r5.8xlarge)
+* R5 Large (r5.large)
+* R5 Metal (r5.metal)
+* R5 Extra Large (r5.xlarge)
+* R5D 12xlarge (r5d.12xlarge)
+* R5D 16xlarge (r5d.16xlarge)
+* R5D 24xlarge (r5d.24xlarge)
+* R5D Double Extra Large (r5d.2xlarge)
+* R5D Quadruple Extra Large (r5d.4xlarge)
+* R5D Eight Extra Large (r5d.8xlarge)
+* R5D Large (r5d.large)
+* R5D Metal (r5d.metal)
+* R5D Extra Large (r5d.xlarge)
+* T1 Micro (t1.micro)
+* T2 Double Extra Large (t2.2xlarge)
+* T2 Large (t2.large)
+* T2 Medium (t2.medium)
+* T2 Micro (t2.micro)
+* T2 Nano (t2.nano)
+* T2 Small (t2.small)
+* T2 Extra Large (t2.xlarge)
+* X1 Extra High-Memory 16xlarge (x1.16xlarge)
+* X1 Extra High-Memory 32xlarge (x1.32xlarge)
+* X1E 16xlarge (x1e.16xlarge)
+* X1E Double Extra Large (x1e.2xlarge)
+* X1E 32xlarge (x1e.32xlarge)
+* X1E Quadruple Extra Large (x1e.4xlarge)
+* X1E Eight Extra Large (x1e.8xlarge)
+* X1E Extra Large (x1e.xlarge)
+* Z1D 12xlarge (z1d.12xlarge)
+* Z1D Double Extra Large (z1d.2xlarge)
+* Z1D 3xlarge (z1d.3xlarge)
+* Z1D 6xlarge (z1d.6xlarge)
+* Z1D Large (z1d.large)
+* Z1D Extra Large (z1d.xlarge)
+
+|Key name |The name of the key pair to use. (Required)
+|Results Location |Where to put the result. If the location is not specified, the result is only printed. The default is _/myJob/Amazon EC2_. (Required)
+|Volume device |The device name of a volume attached to an instance. Examples are _/dev/sdf_ in Linux and UNIX or _xvdf_ in Windows. The default is _xvdf_.
+|List of Volumes |The list of volumes to attach to the new instances. (Required)
+|Zone |The zone where the instance is created. The default is _xen-cluster_. (Required)
+|===
+
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_auto_resume_panel.png[image]
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *EC2 Auto Resume* step, click the Log button to see the diagnostic information.
+
+
+
+=== Ec2 set name
+
+This procedure sets an instance name.
+
+==== Input
+
+. Go to the EC2 Set Name procedure.
+. Enter the following parameters:
+
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration wtih the connection information. (Required)
+|Instance |The ID of the instance. (Required)
+|Name |The new name of the instance. (Required)
+|===
+
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_set_name_panel.png[image]
+
+==== Output
+
+After the job runs, you can view the results on the Job Details page in {CD}. In the *EC2 Set Name* step, click the Log button to see the diagnostic information.
+
+
+=== Snap attached volume
+
+This procedure creates a new snapshot from a volume attached to an instance. It only creates a snapshot from the first volume found.
+
+[cols=",",options="header",]
+|===
+|Parameter |Description
+|Configuration |The name of a valid existing configuration with the connection information. (Required)
+|Instance Id |The ID of the running EC2 instance. (Required)
+|Results Location |Where to put the result. If the location is not specified, the result is only printed. (Required)
+|Volume Id |The ID of the volume. If you enter a list of volume IDs, separate the IDs with semi-colons. (Required)
+|===
+
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/snap_attached_volume_panel.png[image]
+
+[[example]]
+== Use cases and examples
+
+=== Use case 1: deploy, consume, and clean up the job
+
+The most common use for this plugin is to create an instance, create a resource in {CD} that is assigned to this instance, run some operations using the resoruce, and then delete the resource and the instance. To do this, you must:
+
+. Create a plugin configuration.
+. Deploy an instance in EC2.
+. Create a key pair.
+. Run the instance.
+. Create a new volume from an snapshot.
+. Attach the volume to an instance.
+. Create a resource for this instance.
+. Run an operation using the resource.
+. Delete the key pair.
+. Delete the resource.
+. Delete the deployed instance.
+. Delete volume.
+
+==== Create a plugin configuration
+
+In {CD}, go to *Administration* > *Plugins* to open the Plugin Manager. Then click *Configure* and enter the values for the parameters in the EC2 Configuration page.
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create_config.png[image]
+
+After the configuration is created, you can see it in "EC2 Configurations".
+
+==== Deploy an instance in ec2
+
+Go to the EC2 Auto Deploy procedure, enter the values from your EC2 server in the parameter fields:
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/deploy_parameters.png[image]
+
+This procedure calls the API_CreateKey, API_RunInstances, API_Run and API_AttachVolumes procedures to deploy the instance.
+
+==== Use the resource
+
+Create a new command step for the resource. In this example, get a resource from the resource pool and add an ec-perl *sleep* command for 30 seconds
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/consume_parameters.png[image]
+
+==== Clean up the instance
+
+After the resource is used, create a step using the EC2 Auto Cleanup procedure and enter the parameters:
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/cleanup_parameters.png[image]
+
+This procedure calls the API_DeleteKey, API_Terminate and API_DeleteVolume procedures to clean up the instance.
+
+==== View the results and output
+
+After the job runs, you can see properties in the results location that you specified.
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/job.png[image]
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/results.png[image]
+
+The following output appears during the Deploy procedures:
+
+==== CreateKeyPair
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create_keypair_log.png[image]
+
+==== RunInstances
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/run_instances_log.png[image]
+
+==== ProcessVolumes
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/process_volumes_log.png[image]
+
+==== AttachVolume
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/attach_volumes_log.png[image]
+
+The following output appears during the Cleanup procedures:
+
+==== DeleteKeyPair
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete_keypair_log.png[image]
+
+==== Terminate
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/terminate_log.png[image]
+
+==== DeleteVolumes
+
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete_volumes_log.png[image]
+
+[[knownIssues]]
+== Known issues
+
+HTTP Proxy functionality introduced in 2.5.0 will have the following UI limitations for customers who want to use this functionality:
+
+* On {CD} (Flow) version 8.3, Proxy credentials will not appear in Resource Template UI and hence cannot be used to overrride what is defined already in Configuration. Other than this minor limitation, HTTP proxy will be completely functional.
+* On {CD} (Flow) versions 8.2 and prior, Resource Template UI cannot be used to specify HTTP Proxy information and hence cannot create working Resource templates using this UI. However the workaround for this use case would be to use DSL to create the Resource Templates.
+
+Starting version 2.5.0 this plugin will work only for {CD} versions that support ec-groovy.
+
+[[rns]]
+== Release notes
+
+=== EC-EC2 2.7.3
+
+* The documentation has been moved to the main documentation site.
+
+=== EC-EC2 2.7.2
+
+* Upgrading certain third-party dependencies to address security issues.
+
+=== EC-EC2 2.7.1
+
+* Renaming from "CloudBees Flow" to "{CD}"
+
+=== EC-EC2 2.7.0
+
+* Provisioning of Binary Dependencies (for example Grape jars) in the agent resource, required by this plugin, is now delivered through a newly introduced mechanism called Plugin Dependency Management. Binary dependencies will now be seamlessly delivered to the agent resource from the Flow Server, any time a new version of a plugin is invoked the first time. Flow Repository set up is no longer required for this plugin.
+
+=== EC-EC2 2.6.0
+
+* "IAM Profile Name" parameter has been added to "API_RunInstances" procedure.
+
+=== EC-EC2 2.5.4
+
+* Renaming from "Electric Cloud" to "CloudBees"
+
+=== EC-EC2 2.5.3
+
+* Configurations can be created by users with "@" sign in a name.
+
+=== EC-EC2 2.5.2
+
+* Proxy credentials are now removed when configuration is deleted.
+* Logo icon has been added.
+
+=== EC-EC2 2.5.1
+
+* Updated list of available instances (now it contains 142 items)
+
+=== EC-EC2 2.5.0
+
+* Support for HTTP Proxy has been provided. Customers who use HTTP proxy can specify Proxy Information (Host, Port and Credentials at the configuration level) and all procedures will use the Proxy as second credentials for authentication. Proxy support will address both use cases of Procedure Invocation:
+** Direct Invocation and
+** Invocation through Resource Templates.
+
+For versions prior to 8.4 there are certain limitations with Proxy support for Resource Templates, using the Resource Template UI. Please refer to the Known Issues Section for details.
+* A new procedure called API_UpdateInstances has been introduced, that can be used to perform the following:
+** Update one or more attribute values of an Instance.
+** Optionally the procedure can be used to update attribute values of multiple instances.
+
+Note that the plugin has been packaged with new dependencies in order to address the API_UpdateInstances functionality. In order to promote the plugin the following steps need to be taken.
+** Configure the Flow Repository Server and have it up and running.
+** If plugin is promoted using ectool (i.e., not from the platformm UI) make sure that the flow repository server is visible to the instance from which ectool is invoked.
+
+=== EC-EC2 2.4.2
+
+* Configured the plugin to allow the ElectricFlow UI to create configs inline of procedure form.
+* Configured the plugin to allow the ElectricFlow UI to render the plugin procedure parameters entirely using the configured form XMLs.
+* Enabled the plugin for managing the plugin configurations in-line when defining an application process step or a pipeline stage task.
+
+=== EC-EC2 2.4.1
+
+* Default value for Tenancy field has been removed (this fixes a problem with uncompatible subnetId and groupName).
+
+In 2.4.0 (which is part of the 8.3 Release of Electric Flow) the Tenancy field was introduced by implementing the latest version of the AWS API. However this version of the plugin can error if both Security Group and Subnet ID are both chosen in the plugin procedures, as AWS does not allow specifying both of them in their newer version. The current version fixes this issue. The following is the behavior of the plugin based on the value chosen for the "Tenancy" field in conjunction with Subnet ID and Security Group:
+
+no value chosen: Subnet ID and Security Group can be both chosen.
+
+default: Security Group and Subnet ID are both optional. If they are used only one of them can be specified.
+
+dedicated: Subnet ID is mandatory. Security Group is optional. Only one of them can be specified.
+
+host: Subnet ID is mandatory. Security Group is optional. Only one of them can be specified.
+
+=== EC-EC2 2.4.0
+
+* "Tenancy" parameter has been added to "RunInstances" procedure.
+
+=== EC-EC2 2.3.5
+
+* Support of AWS Signature Version 4 has been added.
+
+=== EC-EC2 2.3.4
+
+* Added the ability to create a resource in non-default zone.
+* Added validation to the CreateConfiguration procedure for the dynamic environments feature.
+* Make 'instances' parameter optional for API_DescribeInstances procedure.
+* Added check for instances and subnet's IP limits before spinning instances in API_RunInstances procedure, minor changes.
+* Make resource_zone parameter optional with default value 'default' in API_RunInstances
+
+=== EC-EC2 2.3.3
+
+* Fixed issue with configurations being cached for IE.
+
+=== EC-EC2 2.3.2
+
+* Added 'API_CreateVPC' procedure.
+* Added 'API_CreateSubnet' procedure.
+* Added 'API_DeleteVPC' procedure.
+* Added 'Private IP' and 'Instance Initiated Shutdown Behaviour' parameters to 'API_RunInstance' procedure.
+* Modified of API_Terminate procedure. Changed the behaviour of the procedure to wait till all instances get terminated in reservation/instance list.
+
+=== EC-EC2 2.3.1
+
+* Fixed the issue where the API_CreateTags procedure is visible from step picker. Default value for tag was set as "Name."
+* Added properties in the 'ec_cloudprovisioning_plugin' property sheet for ElectricFlow Deploy .
+* Propogated the summary property to the upper level.
+* Add VPC support to the API_RunInstances procedures.
+* Updated the Configuraton page UI.
+* Removed Eucalytus support from the plugin.
+
+=== EC-EC2 2.2.0
+
+=== EC-EC2 2.2.0
+
+* Fixed the Secret access key in the log.
+* Changed the Configuration Management procedure.
+* Added a new parameter called *Attempt Connection?* in the CreateConfiguration procedure.
+* Added a step called AttemptConnection in the CreateConfiguration procedure.
+
+=== EC-EC2 2.1.2
+
+* Changed the procedure names in the step picker list.
+
+=== EC-EC2 2.0.7
+
+* Fixed the plugin configuration descriptions in the Help page.
+* Changed the Eucalytus tool description.
+
+=== EC-EC2 2.0.6
+
+* Fixed the problem with attached credentials.
+
+=== EC-EC2 2.0.5
+
+* Fixed the DescribeInstances procedure (it returned fake data when non-existent instance was specified).
+
+=== EC-EC2 2.0.4
+
+* Fixed the system test and API_DeleteVolume procedures.
+
+=== EC-EC2 2.0.3
+
+* Improved the error handling.
+
+=== EC-EC2 2.0.2
+
+* Removed the CloudManagerGrow and CloudManagerShrink procedures from step picker.
+* Changed the style of the Help page.
+
+=== EC-EC2 2.0.1
+
+* Added a link to each procedure.
+* Cleaned up the parameter panel XML file.
+
+=== EC-EC2 2.0.0
+
+* Applied the new Help page template.
+* Added a detalied use case.
+* Added the new XML parameter panel to all procedures.
+* Fixed image parameter label on the API_RunInstances procedure.
+
+=== EC-EC2 1.2.1
+
+* Updated the Help page.

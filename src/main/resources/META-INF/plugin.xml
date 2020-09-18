@@ -33,4 +33,6 @@
       <javascript>war/ecplugins.ec2.ConfigurationManagement/ecplugins.ec2.ConfigurationManagement.nocache.js</javascript>
     </component>
   </components>
+<hasAdoc>true</hasAdoc>
+  <catalogLabel>Amazon EC2</catalogLabel>
 </plugin>
