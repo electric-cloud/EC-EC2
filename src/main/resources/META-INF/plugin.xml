@@ -34,5 +34,15 @@
     </component>
   </components>
 <hasAdoc>true</hasAdoc>
-  <catalogLabel>Amazon EC2</catalogLabel>
+  
+<detailedDescription>Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides resizable compute capacity in the cloud. It is designed to make web-scale computing easier for developers. EC2 allows users to rent virtual computers on which to run their computer applications.
+
+The EC-EC2  plugin uses the Amazon EC2 application programming interface (API) that lets developers choose where their applications physically run and that provides access to infrastructure resources. Using this secure API, your application is automatically scaled up and down as needed. This integration allows CloudBees CD to manage EC2 resources. The plugin interacts with EC2 data by using PERL to perform the following tasks:
+
+* Create configurations with connection information.
+* Query for virtual machine and configuration information.
+* Perform actions on instances.
+* Make API Requests.
+* Create CloudBees CD resources.</detailedDescription>
+<catalogLabel>Amazon Elastic Compute Cloud</catalogLabel>
 </plugin>
