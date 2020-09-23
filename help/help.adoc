@@ -1,44 +1,7 @@
 
 Plugin Version @PLUGIN_VERSION@
-
-'''''
-
 Revised on Jul 20, 2020
 
-== Overview
-
-=== Amazon Elastic Compute Cloud (Amazon EC2)
-
-Amazon Elastic Compute Cloud (Amazon EC2) is a web service that provides resizable compute capacity in the cloud. It is designed to make web-scale computing easier for developers. EC2 allows users to rent virtual computers on which to run their computer applications.
-
-It provides you with complete control of your computing resources and lets you run on the proven Amazon computing environment. Amazon EC2 reduces the time required to obtain and boot new server instances to minutes, allowing you to quickly scale capacity, both up and down, as your computing requirements change. You can create, launch, and terminate server instances as needed, paying by the hour for active servers. EC2 provides developers the tools to build failure resilient applications and isolate thems from common failure scenarios.
-
-Amazon EC2 presents a true virtual computing environment, allowing you to use web service interfaces to launch instances with a variety of operating systems, load them with your custom application environment, manage your network access permissions, and run your image using as many or few systems as you want.
-
-For more information about Amazon EC2, go to the http://aws.amazon.com/ec2/[Amazon Web Services website].
-
-You can view the documentation at http://aws.amazon.com/documentation/ec2/[EC2].
-
-== {CD} integration to ec2 implementations
-
-This plugin uses the Amazon EC2 application programming interface (API) that lets developers choose where their applications physically run and that provides access to infrastructure resources. Using this secure API, your application is automatically scaled up and down as needed. This integration allows {CD} to manage EC2 resources.
-
-The plugin interacts with EC2 data by using PERL to perform the following tasks:
-
-* Create configurations with connection information.
-* Query for virtual machine and configuration information.
-* Perform actions on instances.
-* Make API Requests.
-* Create {CD} resources.
-
-The integration has two types of procedures to accomplish a specific task:
-
-* API procedures named _API_xxx_ that directly wrap an EC2 API call
-* Higher-level procedures named _EC2_xxx_ that combine many API calls
-
-The procedure that you select determines which fields are available.
-
-This plugin was developed and tested against Amazon Elastic Compute Cloud (Amazon EC2).
 
 [[CreateConfiguration]]
 
@@ -227,7 +190,7 @@ After the job runs, you can view the results on the Job Details page in {CD}. In
 [[API_CreateSubnet]]
 
 
-== API_CreateSubnet
+=== API_CreateSubnet
 
 This procedure allows you to create a new subnet within Amazon VPC by specifying its name, CIDR block, VPC ID and availability zone.
 
@@ -405,7 +368,7 @@ After the job runs, you can view the results on the Job Details page in {CD}. In
 [[API_ReleaseIP]]
 
 
-== API_ReleaseIP
+=== API_ReleaseIP
 
 This procedure releases a public IP address allocated to your account.
 
@@ -632,7 +595,7 @@ host - Your instance runs on a Dedicated Host, which is an isolated server with 
 |Resource port |If you specify a resource poolName in res_poolName, this is the port that will be used when creating the resource.
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/api_runinstances_panel.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/api-runinstances-panel.png[image]
 
 [[API_UpdateInstances]]
 
@@ -652,7 +615,7 @@ Updates one or more attribute values of an Instance. Where required the procedur
 |Instance Initiated Shutdown Behavior |Specify the instance behaviour when an OS-level shutdown is performed. Instance can be either terminated or shut down.
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/api_updateinstances.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/api-updateinstances.png[image]
 
 [[API_StartInstance]]
 
@@ -1000,7 +963,7 @@ This procedure cleans up the instances created with the "EC2 Auto Deploy" proced
 |List of Resources |List of {CD} resources to delete, separated by semi-colons.
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_auto_cleanup_panel.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-auto-cleanup-panel.png[image]
 
 ==== Output
 
@@ -1182,7 +1145,7 @@ The instance type. The default is _Large(m1.large)_. (Required)
 |Resource port |ID of the port to which the new resources are assigned.
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_auto_deploy_panel.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-auto-deploy-panel.png[image]
 
 ==== Output
 
@@ -1190,7 +1153,7 @@ After the job runs, you can view the results on the Job Details page in {CD}. In
 
 
 
-== EC2 auto pause
+=== EC2 auto pause
 
 This procedure pauses a instance store-backed AMI. It disconnects the volumes, saves them, and terminates the instance. It works with the EC2 Auto Resume procedure, which starts a new instance and re-attaches the volumes.
 
@@ -1208,7 +1171,7 @@ This procedure pauses a instance store-backed AMI. It disconnects the volumes, s
 |List of Volumes |The list of volumes to detach from instances. (Required)
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_auto_pause_panel.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-auto-pause-panel.png[image]
 
 ==== Output
 
@@ -1388,7 +1351,7 @@ The instance type. The default is _Large(m1.large)_. (Required)
 |Zone |The zone where the instance is created. The default is _xen-cluster_. (Required)
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_auto_resume_panel.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-auto-resume-panel.png[image]
 
 ==== Output
 
@@ -1414,7 +1377,7 @@ This procedure sets an instance name.
 |Name |The new name of the instance. (Required)
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2_set_name_panel.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-set-name-panel.png[image]
 
 ==== Output
 
@@ -1434,7 +1397,7 @@ This procedure creates a new snapshot from a volume attached to an instance. It 
 |Volume Id |The ID of the volume. If you enter a list of volume IDs, separate the IDs with semi-colons. (Required)
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/snap_attached_volume_panel.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/parameters/snap-attached-volume-panel.png[image]
 
 [[example]]
 == Use cases and examples
@@ -1460,7 +1423,7 @@ The most common use for this plugin is to create an instance, create a resource 
 
 In {CD}, go to *Administration* > *Plugins* to open the Plugin Manager. Then click *Configure* and enter the values for the parameters in the EC2 Configuration page.
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create_config.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create-config.png[image]
 
 After the configuration is created, you can see it in "EC2 Configurations".
 
@@ -1468,7 +1431,7 @@ After the configuration is created, you can see it in "EC2 Configurations".
 
 Go to the EC2 Auto Deploy procedure, enter the values from your EC2 server in the parameter fields:
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/deploy_parameters.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/deploy-parameters.png[image]
 
 This procedure calls the API_CreateKey, API_RunInstances, API_Run and API_AttachVolumes procedures to deploy the instance.
 
@@ -1476,13 +1439,13 @@ This procedure calls the API_CreateKey, API_RunInstances, API_Run and API_Attach
 
 Create a new command step for the resource. In this example, get a resource from the resource pool and add an ec-perl *sleep* command for 30 seconds
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/consume_parameters.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/consume-parameters.png[image]
 
 ==== Clean up the instance
 
 After the resource is used, create a step using the EC2 Auto Cleanup procedure and enter the parameters:
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/cleanup_parameters.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/cleanup-parameters.png[image]
 
 This procedure calls the API_DeleteKey, API_Terminate and API_DeleteVolume procedures to clean up the instance.
 
@@ -1498,33 +1461,33 @@ The following output appears during the Deploy procedures:
 
 ==== CreateKeyPair
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create_keypair_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create-keypair-log.png[image]
 
 ==== RunInstances
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/run_instances_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/run-instances-log.png[image]
 
 ==== ProcessVolumes
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/process_volumes_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/process-volumes-log.png[image]
 
 ==== AttachVolume
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/attach_volumes_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/attach-volumes-log.png[image]
 
 The following output appears during the Cleanup procedures:
 
 ==== DeleteKeyPair
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete_keypair_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete-keypair-log.png[image]
 
 ==== Terminate
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/terminate_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/terminate-log.png[image]
 
 ==== DeleteVolumes
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete_volumes_log.png[image]
+image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete-volumes-log.png[image]
 
 [[knownIssues]]
 == Known issues
