@@ -11,7 +11,7 @@ Revised on Jul 20, 2020
 
 Plugin configurations are sets of parameters that apply across some or all of the plugin procedures. They reduce repetition of common values, create predefined sets of parameters for end users, and store credentials securely. Each configuration has a unique name that is automatically entered in designated parameters in the procedures.
 
-== Input
+=== Input
 
 Go to *Administration* > *Plugins* to open the Plugin Manager.
 
@@ -50,7 +50,7 @@ The default is *1*.
 
 image::cloudbees-common::cd-plugins/ec-ec2/parameters/configuration.png[image]
 
-== Output
+=== Output
 
 The EC2 Configurations page now shows the new configuration.
 
@@ -1512,7 +1512,7 @@ Starting version 2.5.0 this plugin will work only for {CD} versions that support
 
 === EC-EC2 2.7.1
 
-* Renaming from "CloudBees Flow" to "{CD}"
+* Renaming to "{CD}"
 
 === EC-EC2 2.7.0
 
@@ -1524,7 +1524,7 @@ Starting version 2.5.0 this plugin will work only for {CD} versions that support
 
 === EC-EC2 2.5.4
 
-* Renaming from "Electric Cloud" to "CloudBees"
+* Renaming "CloudBees"
 
 === EC-EC2 2.5.3
 
