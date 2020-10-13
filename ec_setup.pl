@@ -1,6 +1,7 @@
 use strict;
 # use warnings;
 use ElectricCommander::Util qw(compareVersion);
+use Data::Dumper;
 
 # Resource management plugin
 my @objTypes = ('projects', 'resources', 'workspaces');
@@ -34,7 +35,7 @@ if ($promoteAction eq 'promote') {
 
     # Version 3.0 config change
     if (compareVersion($thisVersion, "3.0.0") >= 0 && compareVersion($otherVersion, "3.0.0") < 0) {
-        # migrateConfigs();
+        migrateConfigs();
     }
 }
 
@@ -51,7 +52,12 @@ sub migrateConfigs {
             my $value = $prop->findvalue('value')->string_value;
             $oldConfig->{$name} = $value;
         }
-        # migrateConfig($configName, $oldConfig);
+        eval {
+            migrateConfig($configName, $oldConfig);
+            1
+        } or do {
+            warn "Failed to migrate $configName: $@";
+        };
     }
 }
 
@@ -66,11 +72,11 @@ sub migrateConfig {
 
     print Dumper [ $otherPluginName, $pluginName ];
     for my $prop (keys %$newConfig) {
-        $batch->setProperty("/projects/$pluginName/ec_plugin_cfgs/$configName/$prop", $newConfig->{$prop});
+        $commander->setProperty("/projects/$pluginName/ec_plugin_cfgs/$configName/$prop", $newConfig->{$prop});
     }
 
     # todo attach
-    $batch->clone({
+    $commander->clone({
         path      => "/projects/$otherPluginName/credentials/$newConfig->{credential}",
         cloneName => "/projects/$pluginName/credentials/$newConfig->{credential}"
     });
@@ -85,9 +91,10 @@ sub convertConfig {
 
     my $serviceUrl = $oldConfig->{service_url};
     my ($region) = $serviceUrl =~ m{https?://ec2\.([\w\w-]+)\.amazonaws.com};
+
     unless ($region) {
-        warn "Cannot retrieve region from $serviceUrl\n";
-        return;
+        $region  = 'us-east-1';
+        warn "Cannot retrieve region from $serviceUrl, default region $region will be used\n";
     }
     my $newConfig = {
         debugLevel   => $oldConfig->{debug},
@@ -95,8 +102,8 @@ sub convertConfig {
         region       => $region,
         credential   => $oldConfig->{credential},
         authType     => "basic",
-        roleArn      => ""
-        # proxy_credential => $oldConfig->{proxy_credential}, ??
+        roleArn      => "",
+        proxy_credential => $oldConfig->{proxy_credential},
     };
     return $newConfig;
 }
