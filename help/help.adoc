@@ -3,6 +3,12 @@ Plugin Version @PLUGIN_VERSION@
 Revised on Jul 20, 2020
 
 
+== The plugin has been deprecated
+
+This plugin was deprecated and replaced with a new plugin, named EC-AWS-EC2. The new plugin has a similar set of capabilities, like
+working with environment templates, provisioning instances etc. It is using an updated version of Amazon SDK. Please consider using the new plugin.
+
+
 [[CreateConfiguration]]
 
 
@@ -48,7 +54,7 @@ The default is *1*.
 |Proxy Authorization |Username and password used to connect to HTTP proxy.
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/configuration.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/parameters/configuration.png[image]
 
 === Output
 
@@ -595,7 +601,7 @@ host - Your instance runs on a Dedicated Host, which is an isolated server with 
 |Resource port |If you specify a resource poolName in res_poolName, this is the port that will be used when creating the resource.
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/api-runinstances-panel.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/parameters/api-runinstances-panel.png[image]
 
 [[API_UpdateInstances]]
 
@@ -615,7 +621,7 @@ Updates one or more attribute values of an Instance. Where required the procedur
 |Instance Initiated Shutdown Behavior |Specify the instance behaviour when an OS-level shutdown is performed. Instance can be either terminated or shut down.
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/api-updateinstances.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/parameters/api-updateinstances.png[image]
 
 [[API_StartInstance]]
 
@@ -963,7 +969,7 @@ This procedure cleans up the instances created with the "EC2 Auto Deploy" proced
 |List of Resources |List of {CD} resources to delete, separated by semi-colons.
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-auto-cleanup-panel.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/parameters/ec2-auto-cleanup-panel.png[image]
 
 ==== Output
 
@@ -1145,7 +1151,7 @@ The instance type. The default is _Large(m1.large)_. (Required)
 |Resource port |ID of the port to which the new resources are assigned.
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-auto-deploy-panel.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/parameters/ec2-auto-deploy-panel.png[image]
 
 ==== Output
 
@@ -1171,7 +1177,7 @@ This procedure pauses a instance store-backed AMI. It disconnects the volumes, s
 |List of Volumes |The list of volumes to detach from instances. (Required)
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-auto-pause-panel.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/parameters/ec2-auto-pause-panel.png[image]
 
 ==== Output
 
@@ -1351,7 +1357,7 @@ The instance type. The default is _Large(m1.large)_. (Required)
 |Zone |The zone where the instance is created. The default is _xen-cluster_. (Required)
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-auto-resume-panel.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/parameters/ec2-auto-resume-panel.png[image]
 
 ==== Output
 
@@ -1377,7 +1383,7 @@ This procedure sets an instance name.
 |Name |The new name of the instance. (Required)
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/ec2-set-name-panel.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/parameters/ec2-set-name-panel.png[image]
 
 ==== Output
 
@@ -1397,7 +1403,7 @@ This procedure creates a new snapshot from a volume attached to an instance. It 
 |Volume Id |The ID of the volume. If you enter a list of volume IDs, separate the IDs with semi-colons. (Required)
 |===
 
-image::cloudbees-common::cd-plugins/ec-ec2/parameters/snap-attached-volume-panel.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/parameters/snap-attached-volume-panel.png[image]
 
 [[example]]
 == Use cases and examples
@@ -1423,7 +1429,7 @@ The most common use for this plugin is to create an instance, create a resource 
 
 In {CD}, go to *Administration* > *Plugins* to open the Plugin Manager. Then click *Configure* and enter the values for the parameters in the EC2 Configuration page.
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create-config.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/create-config.png[image]
 
 After the configuration is created, you can see it in "EC2 Configurations".
 
@@ -1431,7 +1437,7 @@ After the configuration is created, you can see it in "EC2 Configurations".
 
 Go to the EC2 Auto Deploy procedure, enter the values from your EC2 server in the parameter fields:
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/deploy-parameters.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/deploy-parameters.png[image]
 
 This procedure calls the API_CreateKey, API_RunInstances, API_Run and API_AttachVolumes procedures to deploy the instance.
 
@@ -1439,13 +1445,13 @@ This procedure calls the API_CreateKey, API_RunInstances, API_Run and API_Attach
 
 Create a new command step for the resource. In this example, get a resource from the resource pool and add an ec-perl *sleep* command for 30 seconds
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/consume-parameters.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/consume-parameters.png[image]
 
 ==== Clean up the instance
 
 After the resource is used, create a step using the EC2 Auto Cleanup procedure and enter the parameters:
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/cleanup-parameters.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/cleanup-parameters.png[image]
 
 This procedure calls the API_DeleteKey, API_Terminate and API_DeleteVolume procedures to clean up the instance.
 
@@ -1453,41 +1459,41 @@ This procedure calls the API_DeleteKey, API_Terminate and API_DeleteVolume proce
 
 After the job runs, you can see properties in the results location that you specified.
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/job.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/job.png[image]
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/results.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/results.png[image]
 
 The following output appears during the Deploy procedures:
 
 ==== CreateKeyPair
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/create-keypair-log.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/create-keypair-log.png[image]
 
 ==== RunInstances
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/run-instances-log.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/run-instances-log.png[image]
 
 ==== ProcessVolumes
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/process-volumes-log.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/process-volumes-log.png[image]
 
 ==== AttachVolume
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/attach-volumes-log.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/attach-volumes-log.png[image]
 
 The following output appears during the Cleanup procedures:
 
 ==== DeleteKeyPair
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete-keypair-log.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/delete-keypair-log.png[image]
 
 ==== Terminate
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/terminate-log.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/terminate-log.png[image]
 
 ==== DeleteVolumes
 
-image::cloudbees-common::cd-plugins/ec-ec2/use-cases/case-1/delete-volumes-log.png[image]
+image::cloudbees-common-sda::cd-plugins/ec-ec2/use-cases/case-1/delete-volumes-log.png[image]
 
 [[knownIssues]]
 == Known issues
