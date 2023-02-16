@@ -654,7 +654,6 @@ After the job runs, you can view the results on the Job Details page in {CD}. In
 
 This procedure stops an Amazon EBS-backed instance. Data is not be lost when the instance stops.
 
-.
 
 === Input
 
